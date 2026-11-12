@@ -9,13 +9,16 @@ const totals={ears:484,lore:140,waypoints:91,sidequests:30};
 const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
 const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
 const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
+const rewardPriority=q=>q.type==="passive"?"ควรเก็บ · Passive Point":q.type==="refund"?"ควรเก็บ · Refund Point":q.type==="choice"?"ระวัง · มีผลต่อทางเลือก":"ตามความต้องการ · ไม่ใช่รางวัล Achievement";
+const itemPriority=(type,item,guide)=>type==="ears"&&guide?.caution?"ระวังพลาด":type==="sidequests"?"จำเป็นต่อ No Loose Ends":type==="ears"?"จำเป็นต่อ All Ears":type==="lore"?"จำเป็นต่อ No Stone Unturned":"จำเป็นต่อ Locomancer";
+
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
 const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
 const routeOpen=new Set(["ears"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"todo",search:"",limit:40,reviewType:"lore",gameCount:""};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:40,reviewType:"lore",gameCount:""};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -42,35 +45,29 @@ function renderSummary(){const target=$("hubStats");target.replaceChildren();Obj
 card.append(el("span",names[k]+" · "+uiNames[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบในเว็บ · ยังต้องเทียบเกม":"เหลือ "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
 function itemCard(type,x){
 const done=entries(type).includes(x.id),guide=window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined),row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
+row.dataset.state=done?"done":"todo";
 box.type="checkbox";box.checked=done;box.setAttribute("aria-label",verbs[type]+" — "+label(x,type));
-box.addEventListener("change",()=>{
-if(type==="ears"&&box.checked&&guide?.caution&&!confirm("ตรวจจุดที่อาจพลาด (อ้างอิงคู่มือเก่า ยังไม่ยืนยัน 3.30):\n"+guide.caution+"\n\nฟังหัวข้อนี้ในเกมแล้วและตรวจเงื่อนไขก่อนทำเครื่องหมายใช่หรือไม่?")){box.checked=false;return;}
-writeMarks(type,x.id,box.checked);
-});
-const name=el("div",undefined,"hubName"),tag=el("span",uiNames[type],"hubTag");
-name.append(tag,document.createTextNode(label(x,type)));info.append(name);
-info.append(el("div",(type==="ears"?"Wiki "+(getRisk({type,id:x.id,act:x.act})?.wikiRow||"?")+" · ":type==="lore"&&x.wikiRow?"Wiki #"+x.wikiRow+" / ID เดิม #"+x.id+" · ":"")+area(x,type),"hubMeta"));
-if(guide){
-  info.append(el("div",guide.action,"hubHow"));
-  if(guide.caution)info.append(el("div","ระวังก่อนทำต่อ: "+guide.caution,"hubRisk"));
-  const details=el("details",undefined,"hubItemHelp"),summary=el("summary",guide.detailsKnown?"ดูวิธีเก็บและเงื่อนไข":"ดูรายละเอียด / สถานะข้อมูล");
-  details.append(summary);
-  const body=el("div",undefined,"hubItemHelpBody");
-  function fact(label,value){if(!value)return;const line=el("div",undefined,"hubFact");line.append(el("strong",label),el("span",value));body.append(line);}
-  fact("วิธีเก็บ",guide.action);
-  fact("พื้นที่ / NPC",guide.location);
-  fact("เงื่อนไขที่ต้องทำก่อน",guide.unlock);
-  fact("จุดที่ห้ามพลาด",guide.caution);
-  fact("หมายเหตุ",guide.tip);
-  if(type==="sidequests"){
-    const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);
-    if(reward)fact("รางวัลเควสต์ (ข้อมูลอ้างอิง)",reward.reward+" · ไม่ใช่รางวัลจากการทำ Achievement");
-  }
-  if(!guide.detailsKnown)body.append(el("p","ยังไม่มีเงื่อนไขรายรายการที่ตรวจยืนยันจากเกม; ควรเทียบกับแหล่งอ้างอิงก่อนผ่านจุดเปลี่ยนเควสต์","hubUnverifiedText"));
-  const source=el("a","เปิดแหล่งอ้างอิง");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";body.append(el("p","แหล่งข้อมูล: "+guide.sourceLabel+" · ไม่ได้รับรองแพตช์ 3.30","hubSubtle"),source);
-  details.append(body);info.append(details);
+box.addEventListener("change",()=>{if(type==="ears"&&box.checked&&guide?.caution&&!confirm("ระวังพลาดบทสนทนา (ข้อมูล Wiki เก่า ยังไม่รับรอง 3.30):\n"+guide.caution+"\n\nคุณฟังหัวข้อนี้ในเกมแล้วใช่หรือไม่?")){box.checked=false;return;}writeMarks(type,x.id,box.checked);});
+const name=el("div",undefined,"hubName");name.append(document.createTextNode(label(x,type)));info.append(name);
+const meta=el("div",undefined,"hubCompactMeta"),priority=el("span",itemPriority(type,x,guide),"hubPriority"+(type==="ears"&&guide?.caution?" hubUrgent":""));
+meta.append(priority);
+if(type==="sidequests"){
+const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);
+if(reward)meta.append(el("span","รางวัล: "+reward.reward,"hubRewardPreview"));
 }
-row.append(box,info);return row;}
+info.append(meta);
+if(type==="ears"&&guide?.caution)info.append(el("div","ก่อนทำต่อ: "+guide.caution,"hubRisk"));
+if(guide){
+ const detail=el("details",undefined,"hubItemHelp"),head=el("summary","วิธีเก็บ · เงื่อนไข · ที่มา"),body=el("div",undefined,"hubItemHelpBody");detail.append(head);
+ function fact(label,value){if(!value)return;const line=el("div",undefined,"hubFact");line.append(el("strong",label),el("span",value));body.append(line);}
+ fact("วิธีเก็บ",guide.action);fact("พื้นที่ / NPC",guide.location);fact("เงื่อนไข",guide.unlock);fact("ห้ามพลาด",guide.caution);fact("หมายเหตุ",guide.tip);
+ if(type==="sidequests"){const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);if(reward)fact("รางวัลเควสต์",reward.reward+" (ข้อมูลเก่า ไม่ใช่รางวัล Achievement)");}
+ if(!guide.detailsKnown)body.append(el("p","ยังไม่มีรายละเอียดเงื่อนไขรายรายการที่ยืนยันกับเกม 3.30","hubUnverifiedText"));
+ const source=el("a","ดูแหล่งอ้างอิง");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
+ body.append(el("p","ข้อมูลอ้างอิงเก่า · ยังไม่ยืนยันกับแพตช์ 3.30","hubSubtle"),source);detail.append(body);info.append(detail);
+}
+const stateText=el("span",done?"เก็บแล้ว":"ยังไม่เก็บ","hubItemState");row.append(box,info,stateText);return row;
+}
 function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined)?.action||"")+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.caution||"")).toLowerCase().includes(query)));}
 function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
 if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",uiNames[type]),el("span",list.length+" รายการที่แสดง","hubSubtle"));target.append(heading);}
@@ -82,30 +79,32 @@ container.append(itemCard(type,x));});target.append(container);
 if(shown.length<list.length){const more=el("button","ดูเพิ่มอีก "+(list.length-shown.length)+" รายการ","hubShowMore");more.onclick=()=>{state.limit=1000;renderView();};target.append(more);}}
 function section(title){const d=el("section",undefined,"hubSection");d.append(el("h2",title));return d;}
 function renderActRewards(act){
-const group=rewardIndex.find(x=>String(x.act)===String(act));
-if(!group||!group.quests.length)return null;
+const group=rewardIndex.find(x=>String(x.act)===String(act));if(!group||!group.quests.length)return null;
 const chapter=el("details",undefined,"hubChapter hubRewards");chapter.dataset.extra="rewards";
 const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
-heading.append(el("strong","รางวัลเควสต์"),el("small","ข้อมูลอ้างอิง · ไม่ใช่รายการเก็บ Achievement"));
-summary.append(heading,el("span",group.quests.length+" เควสต์","hubChapterCount"));
-chapter.append(summary);
+const major=group.quests.filter(q=>q.type==="passive"||q.type==="refund").length;
+heading.append(el("strong","รางวัลเควสต์ใน Act นี้"),el("small",major+" เควสต์ให้ Passive/Refund Point · "+group.quests.length+" เควสต์ในฐานข้อมูล"));
+summary.append(heading,el("span","เปิดดูรางวัล","hubChapterCount"));chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
-content.append(el("p","รางวัลที่อาจได้รับจากการส่งเควสต์ใน Act นี้ · Skill Gem และอุปกรณ์ขึ้นกับคลาส/ตัวเลือก ข้อมูลยังไม่ได้รับรองกับแพตช์ 3.30 และไม่ใช่รางวัลสำหรับการปลด All Ears","hubSubtle"));
+content.append(el("p","แสดงรางวัลตามเควสต์ (ข้อมูลอ้างอิงเดิม) · ไม่ใช่รายการที่นับใน Achievement · คำว่า ควรเก็บ หมายถึงรางวัล Passive/Refund Point ไม่ได้ยืนยันว่าเป็นเควสต์จำเป็นต่อเนื้อเรื่อง","hubSubtle"));
 const list=el("div",undefined,"hubRewardList");
-for(const quest of group.quests){
-  const card=el("div",undefined,"hubRewardRow");
-  const title=el("div",undefined,"hubRewardName");
-  title.append(el("strong",quest.name),el("span",rewardTypes[quest.type]||"รางวัล","hubRewardKind"));
-  card.append(title,el("p",quest.reward,"hubRewardText"));
-  list.append(card);
-}
+for(const q of [...group.quests].sort((a,b)=>Number(["passive","refund","choice"].includes(b.type))-Number(["passive","refund","choice"].includes(a.type)))){
+const card=el("div",undefined,"hubRewardRow"),title=el("div",undefined,"hubRewardName");
+title.append(el("strong",q.name),el("span",rewardPriority(q),"hubRewardKind"));
+card.append(title,el("p",q.reward,"hubRewardText"));
+const achievement=collections.sidequests.some(item=>String(item.act)===String(act)&&item.name===q.name);
+card.append(el("p",achievement?"จำเป็นต่อ No Loose Ends · เมื่อทำเควสต์นี้สำเร็จ ให้ทำเครื่องหมายในหมวดเควสต์รอง":"ไม่อยู่ในรายการ No Loose Ends ที่ใช้อ้างอิง · ไม่ได้หมายความว่าข้ามเควสต์เนื้อเรื่องได้","hubSubtle"));
+list.append(card);}
 content.append(list);
-const source=el("a","ดูรายการรางวัลและตัวเลือกตามคลาสบน PoE Wiki");
-source.href=window.POE_QUEST_REWARDS.source||"https://www.poewiki.net/wiki/List_of_quest_rewards";source.target="_blank";source.rel="noopener noreferrer";content.append(source);
-chapter.append(content);return chapter;
+const source=el("a","ตรวจรางวัลตามแพตช์จาก PoE Wiki");source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
 }
-function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการที่ต้องเก็บ");
-panel.append(el("p","เลือกหัวข้อด้านล่างเพื่อดูสิ่งที่ยังไม่ได้ทำใน Act นี้ · รายการ All Ears เรียงตาม PoE Wiki ปี 2025 แต่ยังไม่ใช่เส้นทางที่ยืนยันว่าปลอดภัยในแพตช์ 3.30","hubSubtle"));
+function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
+panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
+const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
+const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).filter(x=>entries(type).includes(x.id)).length,0);
+const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
+const quick=el("div",undefined,"hubActProgress");
+quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
 if(act==="2"){
 const guard=el("details",undefined,"hubChapter hubSafety");guard.open=true;
 guard.append(el("summary","ก่อนจัดการ Bandits · ตรวจจุดพลาด Act 2"));guard.append(safetyPanel());panel.append(guard);
@@ -221,7 +220,7 @@ const acts=[["all","ทุก Act"],...[1,2,3,4,5,6,7,8,9,10].map(a=>[String(a),
 acts.filter(([v])=>state.tab!=="route"||(!isNaN(Number(v))&&v!=="all")).forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
 if(state.tab==="route"&&(state.act==="all"||isNaN(Number(state.act))))state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
 act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหาชื่อ NPC, บทสนทนา หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
-[["todo","ยังไม่ได้เก็บ"],["all","แสดงทั้งหมด"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
+[["all","ทั้งหมด (เห็นสถานะ)"],["todo","ยังไม่เก็บ"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
 if(state.tab==="route")controls.append(search,status);else controls.append(act,search,status);t.append(controls);}
 function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";
 const previous=state.tab==="route"?"route":state.tab==="review"?"review":"collection";

@@ -262,6 +262,13 @@ assert(descriptions.get('ears',d.items.find(x=>x.id===118)).caution.includes('Cl
 assert(descriptions.get('lore',lore.entries.find(x=>x.id===1)).tip.includes('ชื่อจดหมายอาจออกซ้ำ'),'Random Letters of Exile explanation missing');
 assert(descriptions.get('lore',lore.entries.find(x=>x.id===56)).tip.includes('Instance'),'Random Library explanation missing');
 assert(descriptions.get('lore',lore.entries.find(x=>x.id===125)).caution.includes('3.30'),'Vaal patch caveat missing');
+const firstBranch=d.items.find(x=>x.id===89),secondBranch=d.items.find(x=>x.id===101);
+assert(descriptions.get('ears',firstBranch,{first:'Alira'}).displayLabel.includes('Alira'),'Act 2 first-kill branch must follow player choice');
+assert(descriptions.get('ears',firstBranch,{first:'Oak'}).action.includes('“Oak”'),'Act 2 alternative first-kill branch incorrect');
+assert(descriptions.get('ears',secondBranch,{first:'Alira',second:'Kraityn'}).displayLabel.includes('Oak'),'Act 2 second-kill branch must show surviving bandit');
+assert(descriptions.get('ears',secondBranch,{first:'Oak',second:'Alira'}).action.includes('“Kraityn”'),'Act 2 alternate survivor case incorrect');
+assert(descriptions.get('ears',firstBranch,{}).displayLabel.includes('Bandit ที่ฆ่าคนแรก'),'Act 2 unknown branch must not assume one fixed bandit');
+
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

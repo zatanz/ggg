@@ -277,6 +277,16 @@ const assert=require('node:assert/strict');
  await hub.reload();
  await hub.locator('.hubActStrip [data-act="2"]').click();
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
+ for(const [act,count] of [[4,4],[5,3],[6,6],[7,5],[8,2],[9,4]]){
+  await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
+  assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),count,'Act '+act+' shows all source-backed quest danger groups');
+ }
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a9-rescue"]').innerText()).includes('Act 10'),true,'Act 9 rescue warns before moving to Act 10');
+ await hub.locator('.hubActStrip [data-act="10"]').click();
+ assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),0,'Act 10 does not invent unsourced quest dependencies');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่า Act 10 ปลอดภัย'),true,'Act 10 missing historic warning markers is explicitly disclosed');
+ await hub.locator('.hubActStrip [data-act="2"]').click();
+
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="ears"]').click();
  await hub.locator('#patch').selectOption('3.30');

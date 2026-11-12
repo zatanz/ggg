@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "act": 9,
   "sourceVersion": "3.9 legacy spreadsheet",
   "source": "https://docs.google.com/spreadsheets/d/1RWPN_NO3wcl7QRTHP6iTONG-T47VForpQgZ-eN2IQzc/edit",
@@ -7,7 +7,7 @@
   "reviewedAt": "2026-11-12",
   "patchCertified": false,
   "routeSafe": false,
-  "ordering": "legacy spreadsheet only; wiki rows not independently verified",
+  "ordering": "PoE Wiki 2025-06-30 rows 417–452; patch and route safety unverified",
   "records": [
     {
       "id": 417,
@@ -15,10 +15,11 @@
       "npc": "Sin",
       "topic": "Trathan Powder",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 417,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 418,
@@ -26,10 +27,11 @@
       "npc": "Sin",
       "topic": "Chimeric Acid",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 418,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 419,
@@ -37,10 +39,11 @@
       "npc": "Petarus and Vanja",
       "topic": "Oyun - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 419,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 420,
@@ -48,10 +51,11 @@
       "npc": "Petarus and Vanja",
       "topic": "Kira",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 420,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 421,
@@ -59,10 +63,11 @@
       "npc": "Petarus and Vanja",
       "topic": "Irasha",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 432,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 422,
@@ -70,10 +75,11 @@
       "npc": "Petarus and Vanja",
       "topic": "The Old Gods",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 421,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 423,
@@ -81,10 +87,11 @@
       "npc": "Irasha",
       "topic": "Maraketh Tradition",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 424,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 424,
@@ -92,10 +99,11 @@
       "npc": "Irasha",
       "topic": "Tasuni",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 425,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 425,
@@ -103,10 +111,11 @@
       "npc": "Irasha",
       "topic": "Petarus and Vanja",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 426,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 426,
@@ -114,10 +123,11 @@
       "npc": "Irasha",
       "topic": "Kira",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 427,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 427,
@@ -125,10 +135,11 @@
       "npc": "Irasha",
       "topic": "Garukhan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 428,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 428,
@@ -136,10 +147,11 @@
       "npc": "Irasha",
       "topic": "Lady Dialla",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 429,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 429,
@@ -147,10 +159,11 @@
       "npc": "Irasha",
       "topic": "Trading",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 430,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 430,
@@ -158,10 +171,11 @@
       "npc": "Irasha",
       "topic": "Beast Blood",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 431,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 431,
@@ -169,10 +183,11 @@
       "npc": "Tasuni",
       "topic": "Sin",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 422,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 432,
@@ -180,10 +195,11 @@
       "npc": "Tasuni",
       "topic": "The Beast",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 423,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 433,
@@ -191,10 +207,11 @@
       "npc": "Tasuni",
       "topic": "Irasha",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 433,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 434,
@@ -202,10 +219,11 @@
       "npc": "Sin",
       "topic": "Garukhan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 434,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 435,
@@ -213,10 +231,11 @@
       "npc": "Sin",
       "topic": "Queen of the Winds",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 435,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 436,
@@ -224,10 +243,11 @@
       "npc": "Petarus and Vanja",
       "topic": "General Adus",
       "legacyNote": "After getting The Storm Blade - Do NOT enter The Foothills",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 436,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 437,
@@ -235,10 +255,11 @@
       "npc": "Sin",
       "topic": "Queen of the Sands",
       "legacyNote": "After seeing blocked way - Do NOT enter The Foothills",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 437,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 438,
@@ -246,10 +267,11 @@
       "npc": "Sin *",
       "topic": "The Dark Ember",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 438,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 439,
@@ -257,10 +279,11 @@
       "npc": "Sin *",
       "topic": "Garukhan - (!)",
       "legacyNote": "After killing Garukhan - Do NOT talk to Irasha or Tasuni",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 439,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 440,
@@ -268,10 +291,11 @@
       "npc": "Petarus and Vanja",
       "topic": "Oyun",
       "legacyNote": "After killing Garukhan - Do NOT talk to Irasha or Tasuni",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 440,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 441,
@@ -279,10 +303,11 @@
       "npc": "Irasha",
       "topic": "Maraketh Justice - QC",
       "legacyNote": "After giving Irasha the feather",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 443,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 442,
@@ -290,10 +315,11 @@
       "npc": "Irasha",
       "topic": "Garukhan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 444,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 443,
@@ -301,10 +327,11 @@
       "npc": "Tasuni",
       "topic": "Feather of Sekhema - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 441,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 444,
@@ -312,10 +339,11 @@
       "npc": "Petarus and Vanja",
       "topic": "Irasha",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 442,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 445,
@@ -323,10 +351,11 @@
       "npc": "Sin",
       "topic": "The Dark Ember - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 445,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 446,
@@ -334,10 +363,11 @@
       "npc": "Sin *",
       "topic": "The Black Core",
       "legacyNote": "After getting Trarthan Powder - Do NOT enter The Belly of the Beast",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 446,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 447,
@@ -345,10 +375,11 @@
       "npc": "Sin *",
       "topic": "Cataclysm",
       "legacyNote": "After getting Trarthan Powder - Do NOT enter The Belly of the Beast",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 447,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 448,
@@ -356,10 +387,11 @@
       "npc": "Weylam Roth *",
       "topic": "Rescue - QC - (!)",
       "legacyNote": "After killing Depraved Trinity - Do NOT continue to Act 10",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 448,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 449,
@@ -367,10 +399,11 @@
       "npc": "Weylam Roth *",
       "topic": "Lilly",
       "legacyNote": "After killing Depraved Trinity - Do NOT continue to Act 10",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 449,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 450,
@@ -378,10 +411,11 @@
       "npc": "Petarus and Vanja",
       "topic": "The Beast - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 450,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 451,
@@ -389,10 +423,11 @@
       "npc": "Irasha",
       "topic": "The Beast - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 451,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     },
     {
       "id": 452,
@@ -400,10 +435,47 @@
       "npc": "Tasuni",
       "topic": "The Beast - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 452,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
     }
-  ]
+  ],
+  "branch": {
+    "wikiRows": [
+      441,
+      442
+    ],
+    "patchCertified": false,
+    "options": [
+      {
+        "choice": "Irasha",
+        "row441": {
+          "npc": "Tasuni",
+          "dialog": "Feather of Sekhema",
+          "id": 443
+        },
+        "row442": {
+          "npc": "Petarus and Vanja",
+          "dialog": "Irasha",
+          "id": 444
+        }
+      },
+      {
+        "choice": "Tasuni",
+        "row441": {
+          "npc": "Irasha",
+          "dialog": "Feather of Sekhema",
+          "id": null
+        },
+        "row442": {
+          "npc": "Petarus and Vanja",
+          "dialog": "Tasuni",
+          "id": null
+        }
+      }
+    ],
+    "warning": "Historical 3.9 dataset includes only Irasha-ruler branch IDs; alternate Tasuni-ruler branch cannot be assigned existing stable IDs without altering achievement model. Do not mark both as required."
+  }
 }

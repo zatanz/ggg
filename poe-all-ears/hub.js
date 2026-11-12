@@ -19,9 +19,10 @@ const routeOpen=new Set(); // Detailed category lists start collapsed; the next-
 const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa","a4-deshret","a5-utula","a6-karui","a7-den","a8-love","a9-adus"]);
 const postQuestOpen=new Set(["a10-safe-passage"]);
 const specialOpen=new Set(["lab-plaza"]);
+const steamExpanded=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:""};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusAct1:null};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -320,6 +321,85 @@ function supplementalWarnings(act){
  unmatched.forEach(r=>{const item=items.get(r.id);if(item)list.append(itemCard("ears",item));});
  body.append(list);chapter.append(body);return chapter;
 }
+function actOneSteamGuide(){
+ const data=window.POE_STEAM_WALK,phases=data?.acts?.["1"]||[];
+ if(!phases.length)return null;
+ const allEars=new Set(entries("ears")),allLore=new Set(entries("lore"));
+ const start=phases.findIndex(p=>p.dialogueIds.some(id=>!allEars.has(id)));
+ const chosen=state.steamFocusAct1===null?Math.max(0,start):Math.max(0,Math.min(phases.length-1,state.steamFocusAct1));
+ const phase=phases[chosen],complete=phase.dialogueIds.filter(id=>allEars.has(id)).length;
+ const box=el("section",undefined,"hubWalkthrough");box.dataset.steamAct="1";box.dataset.phase=phase.id;
+ const header=el("div",undefined,"hubWalkHeader");
+ header.append(el("span","ACT 1 · โหมดเดินตามพื้นที่ (แหล่งอ้างอิง Steam 3.28)","hubWalkEyebrow"),el("h3","ทำตามลำดับเพื่อเก็บ All Ears 41 รายการ"),el("p","แสดงเพียงหนึ่งช่วงต่อครั้ง · แถบ 9 ช่วงครอบคลุมบทสนทนา Act 1 ทั้งหมด; Lore/Waypoint/เควสต์รองที่เหลือให้ตรวจในสรุป Act","hubSubtle"));
+ box.append(header);
+ const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
+ const position=el("strong","ช่วง "+(chosen+1)+" / "+phases.length,"hubStepPosition");
+ const select=el("select");select.setAttribute("aria-label","เลือกช่วงการเดิน Act 1");
+ phases.forEach((p,i)=>{const op=el("option",(i+1)+". "+p.place);op.value=String(i);select.append(op)});
+ select.value=String(chosen);
+ const goto=i=>{state.steamFocusAct1=i;renderView();document.querySelector('[data-steam-act="1"]')?.scrollIntoView({block:"start"})};
+ select.onchange=()=>goto(Number(select.value));
+ const prev=el("button","ก่อนหน้า"),next=el("button","ถัดไป");
+ prev.type="button";next.type="button";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
+ prev.onclick=()=>goto(chosen-1);next.onclick=()=>goto(chosen+1);
+ control.append(position,select,prev,next);box.append(control);
+ const head=el("div",undefined,"hubWalkFocus");
+ head.append(el("h4",phase.heading),el("p","พื้นที่: "+phase.place+" · เควสต์: "+phase.quest));
+ const count=el("span",complete+"/"+phase.dialogueIds.length+" บทสนทนาที่บันทึก","hubWalkCount");
+ head.append(count);box.append(head);
+ const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id));
+ if(phase.stop){
+   const gate=el("div",undefined,"hubStopGate"+(pending.length?" blocked":" reviewed"));
+   gate.dataset.stopPhase=phase.id;gate.dataset.stopState=pending.length?"hold":"review";
+   gate.append(el("strong",pending.length?"ยังไม่ควรผ่านจุดนี้":"รายการที่ผูกกับข้อห้ามนี้ติ๊กครบแล้ว · ต้องตรวจในเกมอีกครั้ง"),el("p",phase.stop));
+   if(pending.length){
+     const who=pending.map(id=>{const x=E.items.find(z=>z.id===id);return x?label(x,"ears"):"ID "+id;});
+     gate.append(el("div","ยังไม่บันทึก "+pending.length+" บทสนทนา: "+who.slice(0,3).join(" / ")+(who.length>3?" และอีก "+(who.length-3):""),"hubStopPending"));
+   }
+   box.append(gate);
+ }
+ if(phase.patchProblem){
+   const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";
+   alert.append(el("strong","ปัญหาที่มีรายงานจากแพตช์ 3.29"),el("p",phase.patchProblem),el("p","หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","hubSubtle"));box.append(alert);
+ }
+ const actions=el("ol",undefined,"hubWalkActions");
+ phase.actions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
+ if(phase.id==="mudflats"){
+   const visual=el("details",undefined,"hubQuestVisual");
+   visual.append(el("summary","ดูภาพจำลองหน้า World / Quest (ปุ่ม U) และจุดที่ยังไม่ควรผ่าน"));
+   const img=el("img");img.src="./assets/quest-journal-illustration.svg";img.alt="ภาพวาดจำลอง Quest Screen: Breaking Some Eggs, The Mud Flats และคำเตือนอย่าใส่ Glyphs ก่อนคุย Tarkleigh";img.loading="lazy";
+   const desc=el("p","ภาพประกอบที่สร้างสำหรับคู่มือ ไม่ใช่ภาพหน้าจอเกมจริง · ในเกมกด U เพื่อดู World / Quest และกด H เพื่อตรวจ Achievement","hubSubtle");
+   const reference=el("a","วิธีเปิด Quest Log และ World Map จาก PoE Wiki");reference.href="https://www.poewiki.net/wiki/Quest";reference.target="_blank";reference.rel="noopener noreferrer";
+   visual.append(img,desc,reference);box.append(visual);
+ }
+ const npc=el("section",undefined,"hubWalkCategory");
+ npc.append(el("h4","บทสนทนาที่ต้องเก็บช่วงนี้"),el("p","ติ๊กเฉพาะเมื่อฟังในเกมจริงแล้ว · รายการอื่นยังอยู่ในหมวดหลักด้วย","hubSubtle"));
+ const rows=el("div",undefined,"hubList");
+ const ids=phase.dialogueIds.slice(0,5),hidden=phase.dialogueIds.slice(5);
+ ids.forEach(id=>{const x=E.items.find(z=>z.id===id);if(x)rows.append(itemCard("ears",x))});
+ npc.append(rows);
+ if(hidden.length){
+   const details=el("details",undefined,"hubWalkMore");details.open=steamExpanded.has(phase.id);
+   details.append(el("summary","บทสนทนาที่ต้องเก็บเพิ่มอีก "+hidden.length+" รายการ"));
+   const more=el("div",undefined,"hubList");hidden.forEach(id=>{const x=E.items.find(z=>z.id===id);if(x)more.append(itemCard("ears",x))});
+   details.append(more);details.addEventListener("toggle",()=>{if(!details.isConnected)return;if(details.open)steamExpanded.add(phase.id);else steamExpanded.delete(phase.id);});
+   npc.append(details);
+ }
+ box.append(npc);
+ if(phase.loreIds?.length){
+   const found=phase.loreIds.filter(id=>allLore.has(id)).length;
+   const section=el("details",undefined,"hubWalkLore");
+   section.append(el("summary","Lore ที่เกี่ยวข้องในช่วงนี้ · "+found+" / "+phase.loreIds.length));
+   section.append(el("p","Letters of Exile อาจสุ่มซ้ำ ให้ตรวจยอดใน Achievement ที่เกมนับจริง","hubSubtle"));
+   const list=el("div",undefined,"hubList");
+   phase.loreIds.forEach(id=>{const x=L.entries.find(z=>z.id===id);if(x)list.append(itemCard("lore",x))});
+   section.append(list);box.append(section);
+ }
+ const foot=el("div",undefined,"hubWalkFooter");
+ const ref=el("a","ตรวจลำดับกับคู่มือ Steam");ref.href=data.source;ref.target="_blank";ref.rel="noopener noreferrer";
+ foot.append(el("span","ยังไม่ได้ทดสอบจริงในแพตช์ 3.30 · สีแดงคือข้อควรหยุดตรวจ ไม่ใช่สถานะที่เกมส่งมา"),ref);box.append(foot);
+ return box;
+}
 function journeyActGuide(act){
  const card=el("section",undefined,"hubActMission");
  card.dataset.goalAct=act;
@@ -336,6 +416,7 @@ function journeyActGuide(act){
    const top=el("div",undefined,"hubActMissionWarning");
    const text=el("div",undefined);text.append(el("strong","จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: "+risk.length+" กลุ่ม"),el("span","ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง"));
    const jump=el("button","ดูจุดตรวจที่ยังขาด");jump.type="button";jump.onclick=()=>{
+      if(act==="1"){state.steamFocusAct1=null;renderView();document.querySelector('[data-steam-act="1"]')?.scrollIntoView({block:"start"});return;}
       const stages=window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[];
       state.focusByAct[act]=stages.findIndex(s=>s.id===risk[0].id);renderView();
       const section=document.querySelector('[data-critical-act="'+act+'"]');section?.scrollIntoView({block:"start"});
@@ -385,7 +466,7 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
 panel.append(journeyActGuide(act));
-const critical=criticalPanel(act);if(critical)panel.append(critical);
+if(act==="1"){const route=actOneSteamGuide();if(route)panel.append(route);}else{const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{

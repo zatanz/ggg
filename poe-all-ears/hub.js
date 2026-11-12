@@ -75,6 +75,16 @@ function renderSummary(){
   next.append(action,jump);
  }else next.append(el("strong","ทุกช่องใน Checklist ครบแล้ว · ตรวจยอดในเกมทีละ Achievement ก่อนยืนยันว่าได้จริง"));
  hero.append(next);
+ const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
+ prep.append(el("summary","ก่อนเริ่มเก็บ 100% · ตรวจโหมดเกมและจุดที่มีรายงานว่าพลาดได้"));
+ const checklist=el("ul",undefined);
+ ["Ruthless: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดในโหมดนี้ จึงไม่ควรวางแผนเก็บ No Stone Unturned ให้ครบด้วยเส้นทางนี้",
+ "แพตช์ 3.29 มีรายงานว่า Fairgraves คุยไม่ได้และทำให้ All Ears ขาดบทสนทนา 34–38 — 3.30 ยังไม่ผ่านการทดสอบยืนยัน",
+ "Act 2: Steam กับ PoE Wiki แนะนำลำดับคุย Bandits ก่อน Ancient Seal ไม่ตรงกัน อย่าฆ่าหรือช่วย Bandit ก่อนตรวจ The Darkness",
+ "เปิด U เพื่อดูแผนที่/Quest และ H เพื่อตรวจยอด Achievement ที่เกมนับ — เครื่องหมายในเว็บไม่ใช่หลักฐานจากเกม"].forEach(x=>checklist.append(el("li",x)));
+ prep.append(checklist);
+ const link=el("a","PoE Wiki: Ruthless mode");link.href="https://www.poewiki.net/wiki/Ruthless_mode";link.target="_blank";link.rel="noopener noreferrer";
+ prep.append(link);hero.append(prep);
  const roadmap=el("details",undefined,"hubMissionRoadmap");
  roadmap.append(el("summary","ดูเส้นทางตรวจครบ: Act 1–10 / Labyrinth / Vaal / Epilogue"));
  const list=el("div",undefined,"hubMissionStages");
@@ -284,6 +294,7 @@ function specialLoreRoute(target,scope){
  const steps=el("ol",undefined,"hubSpecialSteps");
  info.steps.forEach((value,i)=>{const li=el("li");li.append(el("span","ขั้น "+(i+1),"hubSpecialStepNo"),el("span",value));steps.append(li);});panel.append(steps);
  panel.append(el("div",info.caveat,"hubNotice"));
+ if(scope==="Vaal")panel.append(el("div","ข้อจำกัดโหมด: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดใน Ruthless ดังนั้นอย่าวางแผนเก็บ No Stone Unturned ครบ 140 ชิ้นด้วยคู่มือนี้ใน Ruthless โดยไม่ตรวจข้อมูลแพตช์และโหมดที่เล่น","hubResearchConflict"));
  const source=el("a","คู่มือ No Stone Unturned (PoE Wiki)");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
  const refs=el("p",undefined,"hubSubtle");refs.append("ข้อมูลอ้างอิงปี 2025 · ยังไม่รับรองแพตช์ 3.30 · ",source);panel.append(refs);
  function group(id,name,hint,ids,defaultOpen){

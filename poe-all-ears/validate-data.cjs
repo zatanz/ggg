@@ -299,6 +299,9 @@ const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
 assert(banditAsset.includes('ILLUSTRATION ONLY')&&banditAsset.includes('Deal with the Bandits'),'Act 2 quest illustration must be self-labelled and tied to its real quest name');
+assert(!banditAsset.includes('ก่อนใส่ Strange Glyphs'),'Act 2 mock must not inherit Act 1 alt text');
+assert(banditAsset.includes('Check Eramir between kills.'),'Bandits mock must remind players to return to Eramir between kills');
+assert((banditAsset.match(/>Act 2<\/text>/g)||[]).length===1,'Act 2 mock must not repeat its active Act tab');
 
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;

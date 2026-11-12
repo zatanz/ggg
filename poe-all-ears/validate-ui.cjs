@@ -16,7 +16,7 @@ for(const name of ['index.html','walkthrough.html']){
     }
   }
   if(name==='walkthrough.html'){
-    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js','./act2-advisory.js']){
+    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js','./route-act9.js','./route-act10.js','./act2-advisory.js']){
       check(html.includes('src="'+ref+'"'),name+': missing '+ref)
     }
     check(html.includes('rec.id===item.id'),name+': route evidence is not tied to displayed ID');
@@ -26,6 +26,7 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('act===6?window.ALL_EARS_ROUTE_ACT6'),name+': Act 6 source ordering not wired');
     check(html.includes('act===7?window.ALL_EARS_ROUTE_ACT7'),name+': Act 7 source ordering not wired');
     check(html.includes('act===8?window.ALL_EARS_ROUTE_ACT8'),name+': Act 8 source ordering not wired');
+    check(html.includes('act===9?window.ALL_EARS_ROUTE_ACT9')&&html.includes('act===10?window.ALL_EARS_ROUTE_ACT10'),name+': Act 9–10 source ordering not wired');
     check(html.includes('act!==2&&act!==3&&act!==6&&act!==9&&act!==10')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
     check(html.includes('src="./act10-advisory.js"')&&html.includes('window.ALL_EARS_ACT10_ADVISORY.milestones.forEach'),name+': Act 10 historical checkpoints not displayed');
     check(html.includes('src="./act9-advisory.js"')&&html.includes('window.ALL_EARS_ACT9_ADVISORY.milestones.forEach'),name+': Act 9 historical warnings not displayed');
@@ -34,7 +35,7 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{
     check(html.includes('p.id!=="legacy-3.9"'),name+': unverified patches not blocked');
-    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js']){
+    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js','./route-act9.js','./route-act10.js']){
       check(html.includes('src="'+ref+'"'),name+': missing wiki route script '+ref)
     }
     check(html.includes('var wikiMeta=new Map()'),name+': source row mapping missing');
@@ -44,6 +45,7 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('window.ALL_EARS_ROUTE_ACT6'),name+': Act 6 source row mapping missing');
     check(html.includes('window.ALL_EARS_ROUTE_ACT7'),name+': Act 7 source row mapping missing');
     check(html.includes('window.ALL_EARS_ROUTE_ACT8'),name+': Act 8 source row mapping missing');
+    check(html.includes('window.ALL_EARS_ROUTE_ACT9')&&html.includes('window.ALL_EARS_ROUTE_ACT10'),name+': Act 9–10 source row mapping missing');
     check(html.includes('wikiMeta.get(x.id)?.before'),name+': wiki missable warnings omitted');
         check(html.includes('if(!save())o.checked=previousChecked'),name+': localStorage write rollback missing');
   }

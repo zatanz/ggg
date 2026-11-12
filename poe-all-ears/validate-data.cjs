@@ -244,6 +244,24 @@ assert(lore.entries.find(x=>x.id===130).wikiRow===128,'Concealed Caldarium histo
 const companion=fs.readFileSync(path.join(dir,'companion.html'),'utf8');
 assert(companion.includes('src="./lore-data.js"')&&companion.includes('poe-companion-lore-v1'),'Companion lore data or isolated persistence missing');
 assert(companion.includes('data-safety="alira"')&&companion.includes('id="gameCount"')&&companion.includes('id="vaalArea"'),'Companion safety/recheck/Vaal UI missing');
+load('guide-descriptions.js');
+const descriptions=ctx.window.POE_ITEM_DESCRIPTIONS;
+assert(descriptions.schema===1&&descriptions.certifiedFor330===false,'Guide descriptions must remain patch-unverified');
+let descChecked=0;
+for(const [type,records] of Object.entries({ears:d.items,lore:lore.entries,waypoints:extras.waypoints,sidequests:extras.sidequests})){
+ for(const item of records){
+  const g=descriptions.get(type,item);descChecked++;
+  assert(g&&g.action&&g.source&&g.sourceLabel&&g.patchCertified===false,'Guide description missing/provenance invalid '+type+'/'+item.id);
+  assert(!/^(DO NOT|Do not|After |Before |First talk|Talk to )/.test(g.caution||''),'Untranslated caution: '+type+'/'+item.id);
+  assert(!/^(After |Before |First talk)/.test(g.unlock||''),'Untranslated prerequisite: '+type+'/'+item.id);
+ }
+}
+assert(descChecked===745,'Expected contextual help for all 745 entries');
+assert(descriptions.get('ears',d.items.find(x=>x.id===21)).caution.includes('The Fetid Pool'),'Act 1 missable must be explained');
+assert(descriptions.get('ears',d.items.find(x=>x.id===118)).caution.includes('Clarissa'),'Act 3 warning must be translated');
+assert(descriptions.get('lore',lore.entries.find(x=>x.id===1)).tip.includes('ชื่อจดหมายอาจออกซ้ำ'),'Random Letters of Exile explanation missing');
+assert(descriptions.get('lore',lore.entries.find(x=>x.id===56)).tip.includes('Instance'),'Random Library explanation missing');
+assert(descriptions.get('lore',lore.entries.find(x=>x.id===125)).caution.includes('3.30'),'Vaal patch caveat missing');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

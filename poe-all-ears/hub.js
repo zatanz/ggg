@@ -361,7 +361,11 @@ function journeyActGuide(act){
    };
    row.append(left,btn);list.append(row);
  }
- card.append(list);
+ const gate=el("details",undefined,"hubActMissionGate");
+ const gateHead=el("summary",undefined);
+ const missing=summaries.reduce((sum,x)=>sum+x.total-x.done,0);
+ gateHead.append(el("strong","ก่อนออกจาก Act นี้ · ตรวจ "+summaries.length+" หมวด"),el("span",missing===0?"บันทึกครบทุกหมวดแล้ว":"ยังขาด "+missing+" รายการ"));
+ gate.append(gateHead,list);card.append(gate);
  const bottom=el("p","ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.30","hubSubtle");
  card.append(bottom);return card;
 }
@@ -535,7 +539,7 @@ if(profileRows.length>=2){
   manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);
   profileRows[1].remove();profileRows[0].after(manage);
 }
-const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","ความคืบหน้าของตัวละคร"),el("p","เช็กเฉพาะสิ่งที่ทำแล้วในเกม · ตัวเลขเป็นบันทึกของคุณ ไม่ใช่ข้อมูลจากเซิร์ฟเวอร์ PoE","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
+const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","เส้นทางสู่ 100%"),el("p","เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
 const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
 const status=el("div","ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30 เลือกเวอร์ชันข้อมูลด้านล่างก่อนใช้รายการ","hubNotice hubDataNotice");nav.after(status);
 $("patch").addEventListener("change",()=>{renderView();});

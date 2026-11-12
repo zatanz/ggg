@@ -1,5 +1,14 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Six source-linked Quest UI mock illustrations
+
+- Added four new original 960×540 static SVG quest explainer mock images for Act 1 Brutus and Fairgraves; Act 2 Chamber of Sins and The Root of the Problem.
+- Unified the original Mud Flats and Bandit mock panels into six metadata-driven phase visuals, each with accurate source quest name, ALT, current task, source link and full-size image link.
+- Use progressively disclosed imagery (collapsed initially) to keep the walkthrough readable; mock visuals always carry a prominent Thai **not a real game screenshot** statement.
+- Historical guidance remains patch-unverified, including 3.29 Fairgraves failure and disputed Bandit first-contact timing.
+- Added static source/asset integrity rules and Chromium responsive visual checks at 390px; no change to 745 Achievement IDs or user progress schema.
+- [Visual evidence and remaining work](./QUEST-VISUAL-UX-STATUS.md).
+
 ## 2026-11-12 — Goal-first 100% achievement journey
 
 - Introduced an explicit four-achievement **745 / 745** manually marked goal tracker, with stage roadmap across Acts 1–10, Labyrinth, Vaal Side Areas, and Epilogue; not a claim of unlock on game servers

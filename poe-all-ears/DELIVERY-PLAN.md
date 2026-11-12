@@ -235,3 +235,11 @@ Hard limits:
 - The Vaal area name lookup currently includes only four sourced examples; remaining area-to-lore relationships and patch-specific farm locations need evidence audit. Patch 3.30 removes Vaal Side Areas from Maps; pre-3.30 Map Device farming advice is obsolete.
 - QA/Release Gates G1–G6 still need current patch evidence and in-game route testing. Do not claim production accuracy based only on green CI.
 - Future improvement: unify a robust cross-page backup format with explicit migration and rollbacks; add source-level 3.30 evidence/quest-state gate for every risk item.
+
+
+## Final verification — player-feedback increment (2026-11-12 Asia/Bangkok)
+- Fixed a Playwright test-oracle assumption: the active character after backup import is not necessarily the first option. The expanded test now compares against the actual selected character, and checks independent character state after switching and reload.
+- Final implementation at commit a0812197d1cd0854761e92eefd6708173e137070 passed GitHub Actions run 43177423200: both validate and browser-smoke jobs succeeded, including the new 140-Lore, 91-Waypoint and 30-Side-Quest checks, progress reconciliation, Act 2 manual safety state, cross-character isolation and mobile rendering tests.
+- The same commit's GitHub Pages build and deployment run 43177423626 succeeded. The hosting action confirms deployment; there is not yet an independent live URL/browser QA report.
+- Release classification: functional historical-data companion (preview), NOT patch-3.30 gameplay certified. No change to the 0/484 current-patch certification count.
+- Resumption priorities: patch-3.30 quest/lore audit after release; Act 2 route-state review with actual game evidence; expand Vaal lookup only with sourced locations; consider unified multi-tracker backup with migration tests. Do not roll back any tests or rewrite the stable 484-item data absent evidence.

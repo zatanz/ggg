@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','guide-act1.js','act2-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','guide-act1.js','act2-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -89,6 +89,23 @@ assert(act4Route.routeSafe===false&&act4Inventory.routeSafe===false&&act4Invento
 assert(act4Route.records.filter(x=>x.before).length===9,'Act 4 risk warnings missing');
 assert(act4Route.records.find(x=>x.wikiRow===233)?.id===237,'Act 4 King of Fury dialogue mapping wrong');
 assert(act4Route.records.find(x=>x.wikiRow===246)?.id===245,'Act 4 Malachai apprentices dialogue mapping wrong');
+const act5Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act5-inventory.json'),'utf8'));
+const act5Items=d.items.filter(x=>x.act===5);
+const act5Route=ctx.window.ALL_EARS_ROUTE_ACT5;
+assert(act5Items.length===44&&act5Inventory.records.length===44&&act5Route.records.length===44,'Act 5 must contain 44 rows');
+assert(new Set(act5Route.records.map(x=>x.id)).size===44,'Act 5 duplicate route IDs');
+assert(act5Route.records.every((x,i)=>x.wikiRow===254+i),'Act 5 wiki row range mismatch');
+assert(act5Route.records.every(x=>act5Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 5 route source data mismatch');
+assert(act5Inventory.records.every((x,i)=>x.id===act5Items[i].id&&x.npc===act5Items[i].npc&&x.topic===act5Items[i].dialog&&x.legacyNote===act5Items[i].note),'Act 5 inventory source drift');
+const byAct5Id=new Map(act5Route.records.map(x=>[x.id,x]));
+assert(act5Inventory.records.every(x=>x.wikiRow===byAct5Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 5 wiki mapping or patch claim invalid');
+assert(act5Route.routeSafe===false&&act5Inventory.routeSafe===false&&act5Inventory.patchCertified===false,'Act 5 cannot claim safe certified route');
+assert(act5Route.records.filter(x=>x.before).length===3,'Act 5 must have three critical warnings');
+assert(act5Route.records.find(x=>x.wikiRow===270)?.id===267,'Act 5 first Vilenta/Utula mapping wrong');
+assert(act5Route.records.find(x=>x.wikiRow===278)?.id===278,'Act 5 post-Innocence Vilenta/Utula mapping wrong');
+assert(act5Route.records.find(x=>x.wikiRow===275)?.before.includes('Avarius'),'Act 5 Utula disappearance warning missing');
+assert(act5Route.records.find(x=>x.wikiRow===277)?.before.includes('Chamber'),'Act 5 Sin/Innocence warning missing');
+assert(act5Route.records.find(x=>x.wikiRow===295)?.before.includes('Ossuary'),'Act 5 Sin/Sign of Purity warning missing');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

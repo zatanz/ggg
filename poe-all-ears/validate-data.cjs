@@ -252,7 +252,9 @@ assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
 assert(checkpointData?.schema===1&&checkpointData.routeSafe===false&&checkpointData.patch==='2025-wiki-legacy-unverified','Critical checkpoints must not imply verified patch-safe quest route');
-assert(checkpointData.acts[1].length===3&&checkpointData.acts[2].length===7&&checkpointData.acts[3].length===5,'Expected 3 Act 1, 7 Act 2, and 5 Act 3 risk stages');
+const checkpointExpected={1:3,2:7,3:5,4:4,5:3,6:6,7:5,8:2,9:4};
+assert(Object.entries(checkpointExpected).every(([a,n])=>checkpointData.acts[a]?.length===n),'Risk checkpoint count drift across Acts 1–9');
+assert(checkpointData.acts[10]===undefined,'Act 10 must not invent a certified checkpoint without source evidence');
 let stepRows=0;
 for(const [act,list] of Object.entries(checkpointData.acts)){
  const stageIds=new Set();
@@ -268,7 +270,12 @@ for(const [act,list] of Object.entries(checkpointData.acts)){
   }
  }
 }
-assert(stepRows===35,'Critical checkpoint crosswalk must cover 35 explicit risk item references');
+assert(stepRows===72,'Critical checkpoint crosswalk must cover 72 explicit source-linked dialogue references');
+for(let act=4;act<=9;act++){
+ const covered=new Set(checkpointData.acts[act].flatMap(s=>s.ids));
+ const flagged=ctx.window['ALL_EARS_ROUTE_ACT'+act].records.filter(r=>r.before);
+ assert(flagged.every(r=>covered.has(r.id)),'Not all existing source flagged warnings are accessible for Act '+act);
+}
 assert(checkpointData.acts[3].find(x=>x.id==='a3-clarissa').ids.includes(118),'Clarissa pre-handoff source row missing');
 assert(checkpointData.acts[3].find(x=>x.id==='a3-piety').ids.includes(161),'Piety pre-boss source row missing');
 load('guide-descriptions.js');

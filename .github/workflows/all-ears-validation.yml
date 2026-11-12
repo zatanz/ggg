@@ -1,0 +1,21 @@
+name: All Ears data integrity
+on:
+  push:
+    paths:
+      - 'poe-all-ears/**'
+      - '.github/workflows/all-ears-validation.yml'
+  pull_request:
+    paths:
+      - 'poe-all-ears/**'
+      - '.github/workflows/all-ears-validation.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate dialogue and patch data
+        run: node poe-all-ears/validate-data.cjs

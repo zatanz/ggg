@@ -49,6 +49,15 @@ assert(act2Route.records.find(x=>x.wikiRow===101)?.id===89,'Act 2 bandit first-k
 assert(act2Route.records.find(x=>x.wikiRow===102)?.id===101,'Act 2 bandit survivor mapping mismatch');
 assert(act2Route.records.find(x=>x.wikiRow===103)?.id===103,'Act 2 bandit completion mapping mismatch');
 assert(act2Inventory.routeSafe===false&&act2Inventory.patchCertified===false,'Act 2 inventory cannot claim safe route or patch certification');
+const act3Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act3-inventory.json'),'utf8'));
+const act3Items=d.items.filter(x=>x.act===3);
+assert(act3Inventory.records.length===71,'Act 3 inventory must cover 71 dialogues');
+assert(new Set(act3Inventory.records.map(x=>x.id)).size===71,'Act 3 inventory contains duplicate IDs');
+assert(act3Inventory.records.every((x,i)=>x.id===act3Items[i].id),'Act 3 inventory ID/order drift');
+assert(act3Inventory.records.every((x,i)=>x.npc===act3Items[i].npc&&x.topic===act3Items[i].dialog&&x.legacyNote===act3Items[i].note),'Act 3 inventory content drift');
+assert(act3Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 3 inventory makes unsupported wiki/patch claims');
+assert(act3Inventory.patchCertified===false&&act3Inventory.routeSafe===false,'Act 3 inventory must not claim a safe certified route');
+assert(act3Inventory.records.filter(x=>x.riskCandidate).length===21,'Act 3 candidate risk inventory drift');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

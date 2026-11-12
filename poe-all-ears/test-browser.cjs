@@ -183,8 +183,10 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView input[aria-label="ค้นหาชื่อ Vaal Side Area"]').fill('Concealed Caldarium');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Wiki #128'),true,'Vaal area links local ID to Wiki row');
 
+ const firstLore=hub.locator('#hubView .hubItem input[type="checkbox"]').first();
+ if(await firstLore.isChecked())await firstLore.uncheck();
  const prev=await hub.locator('#hubStats .hubStat').nth(1).innerText();
- await hub.locator('#hubView .hubItem input[type="checkbox"]').first().click();
+ await hub.locator('#hubView .hubItem input[type="checkbox"]').first().check();
  const next=await hub.locator('#hubStats .hubStat').nth(1).innerText();
  assert.notEqual(next,prev,'inline Lore checkbox updates dashboard');
  assert.equal(await hub.locator('#hubView .hubItem').first().getAttribute('data-state'),'done','completed item remains in place and clearly marked');

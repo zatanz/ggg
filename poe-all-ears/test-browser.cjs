@@ -263,7 +263,38 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView .hubWalkLore > summary').innerText()).includes('/ 18'),true,'Library phase contains 18 historical lore references including Imperial Gardens');
  await hub.locator('.hubActStrip [data-act="1"]').click();
 
-
+ await hub.locator('.hubActStrip [data-act="4"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="4"]').count(),1,'Act 4 source-led walkthrough renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select option').count(),13,'Act 4 has 13 zone/quest-state phases');
+ assert.equal((await hub.locator('#hubView [data-steam-act="4"]').innerText()).includes('72 รายการ'),true,'Act 4 All Ears count remains 72');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('0');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"]').count(),1,'Act 4 first phase includes canonical Waypoints');
+ await hub.locator('#hubView [data-walk-extra="waypoints"] > summary').click();
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),2,'Aqueduct and Highgate Waypoints appear once');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('2');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="voll-mines"]').innerText()).includes('Deshret'),true,'Kira pre-freeing STOP visible');
+ assert.equal(await hub.locator('#hubView [data-stop-phase="voll-mines"] button').count(),1,'Act 4 STOP has direct link to hidden dialogue');
+ await hub.locator('#hubView [data-stop-phase="voll-mines"] button').click();
+ assert.equal(await hub.locator('#hubView .hubWalkMore').evaluate(x=>x.open),true,'Deshret STOP disclosure reveals hidden dialogue');
+ const deshretVisual=hub.locator('#hubView [data-visual-phase="voll-mines"]');
+ await deshretVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="voll-mines"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await deshretVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Deshret artwork marked as conceptual');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('3');
+ await hub.locator('#hubView [data-walk-extra="sidequests"] > summary').click();
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'Act 4 sidequest uses original No Loose Ends record');
+ assert.equal((await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').innerText()).includes('An Indomitable Spirit'),true,'Act 4 sidequest correctly named');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('10');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-before"]').innerText()).includes('Piety'),true,'Pre-organ Piety STOP shown');
+ const organVisual=hub.locator('#hubView [data-visual-phase="harvest-before"]');
+ await organVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="harvest-before"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await organVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Organ turn-in art marked as conceptual');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('11');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('Dialla'),true,'Post-organ Dialla STOP is separate');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),4,'Original Act 4 critical checkpoints preserved');
+ await hub.locator('.hubActStrip [data-act="1"]').click();
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="lore"]').click();
@@ -402,7 +433,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
- for(const [act,count] of [[4,4],[5,3],[6,6],[7,5],[8,2],[9,4]]){
+ for(const [act,count] of [[5,3],[6,6],[7,5],[8,2],[9,4]]){
   await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
   assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act '+act+' shows one checkpoint in focus mode');
   assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),count,'Act '+act+' retains all checkpoints in step picker');

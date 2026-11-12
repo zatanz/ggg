@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "act": 6,
   "sourceVersion": "3.9 legacy spreadsheet",
   "source": "https://docs.google.com/spreadsheets/d/1RWPN_NO3wcl7QRTHP6iTONG-T47VForpQgZ-eN2IQzc/edit",
@@ -7,7 +7,7 @@
   "reviewedAt": "2026-11-12",
   "patchCertified": false,
   "routeSafe": false,
-  "ordering": "legacy spreadsheet only; wiki rows not verified",
+  "ordering": "matched to PoE Wiki 2025-06-30; patch and safe progression unverified",
   "records": [
     {
       "id": 298,
@@ -15,10 +15,11 @@
       "npc": "Sin",
       "topic": "The Essence of Umbra",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 302,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 299,
@@ -26,10 +27,11 @@
       "npc": "Sin",
       "topic": "Shavronne's Soul",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 311,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 300,
@@ -37,10 +39,11 @@
       "npc": "Sin",
       "topic": "The Rise of the Gods",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 303,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 301,
@@ -48,10 +51,11 @@
       "npc": "Sin",
       "topic": "The Beast",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 312,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 302,
@@ -59,10 +63,11 @@
       "npc": "Lilly Roth",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 298,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 303,
@@ -70,10 +75,11 @@
       "npc": "Lilly Roth",
       "topic": "Weylam Roth",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 299,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 304,
@@ -81,10 +87,11 @@
       "npc": "Lilly Roth",
       "topic": "Tarkleigh",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 300,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 305,
@@ -92,10 +99,11 @@
       "npc": "Lilly Roth",
       "topic": "Bestel",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 301,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 306,
@@ -103,10 +111,11 @@
       "npc": "Bestel",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 304,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 307,
@@ -114,10 +123,11 @@
       "npc": "Bestel",
       "topic": "Nessa",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 305,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 308,
@@ -125,10 +135,11 @@
       "npc": "Bestel",
       "topic": "Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 313,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 309,
@@ -136,10 +147,11 @@
       "npc": "Bestel",
       "topic": "The Brine King",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 306,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 310,
@@ -147,10 +159,11 @@
       "npc": "Bestel",
       "topic": "Weylam Roth",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 307,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 311,
@@ -158,10 +171,11 @@
       "npc": "Tarkleigh",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 308,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 312,
@@ -169,10 +183,11 @@
       "npc": "Tarkleigh",
       "topic": "Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 314,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 313,
@@ -180,10 +195,11 @@
       "npc": "Tarkleigh",
       "topic": "Life with Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 315,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 314,
@@ -191,10 +207,11 @@
       "npc": "Tarkleigh",
       "topic": "The Brine King",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 309,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 315,
@@ -202,10 +219,11 @@
       "npc": "Tarkleigh",
       "topic": "The Twilight Strand",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 310,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 316,
@@ -213,10 +231,11 @@
       "npc": "Lily Roth",
       "topic": "Virtue Gems - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 316,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 317,
@@ -224,10 +243,11 @@
       "npc": "Lily Roth",
       "topic": "Trade",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 317,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 318,
@@ -235,10 +255,11 @@
       "npc": "Sin",
       "topic": "The Father of War - Talk to Tarkleigh first",
       "legacyNote": "After entering the area - Do NOT use the Eye of Conquest",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 318,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 319,
@@ -246,10 +267,11 @@
       "npc": "Sin",
       "topic": "Tukohama",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 319,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 320,
@@ -257,10 +279,11 @@
       "npc": "Bestel",
       "topic": "Tukohama",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 320,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 321,
@@ -268,10 +291,11 @@
       "npc": "Tarkleigh",
       "topic": "The Eye of Conquest - (!)",
       "legacyNote": "After getting Eye of Conquest - Do NOT use in door",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 321,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 322,
@@ -279,10 +303,11 @@
       "npc": "Tarkleigh",
       "topic": "The Karui Fortress - (!)",
       "legacyNote": "After using Eye of Conquest - Do NOT enter The Karui Fortress",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 322,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 323,
@@ -290,10 +315,11 @@
       "npc": "Tarkleigh",
       "topic": "Karui Revenants",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 323,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 324,
@@ -301,10 +327,11 @@
       "npc": "Bestel",
       "topic": "Shavronne of Umbra - QC",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 324,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 325,
@@ -312,10 +339,11 @@
       "npc": "Tarkleigh",
       "topic": "Shavronne of Umbra",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 325,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 326,
@@ -323,10 +351,11 @@
       "npc": "Sin *",
       "topic": "Shavronne - QC - (!)",
       "legacyNote": "After killing Shavronne - Do NOT leave The Prison",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 326,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 327,
@@ -334,10 +363,11 @@
       "npc": "Tarkleigh",
       "topic": "Shavronne of Umbra - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 327,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 328,
@@ -345,10 +375,11 @@
       "npc": "Sin",
       "topic": "The Cloven One - Talk to Bestel first",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 330,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 329,
@@ -356,10 +387,11 @@
       "npc": "Sin",
       "topic": "Abberath",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 331,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 330,
@@ -367,10 +399,11 @@
       "npc": "Sin",
       "topic": "The Puppet Mistress",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 328,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 331,
@@ -378,10 +411,11 @@
       "npc": "Sin",
       "topic": "Ryslatha",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 329,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 332,
@@ -389,10 +423,11 @@
       "npc": "Bestel",
       "topic": "The Ship Graveyard",
       "legacyNote": "After talking to Nessa - Do NOT enter The Western Forest",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 332,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 333,
@@ -400,10 +435,11 @@
       "npc": "Tarkleigh",
       "topic": "The Ship Graveyard",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 333,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 334,
@@ -411,10 +447,11 @@
       "npc": "Sin",
       "topic": "The Brine King",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 334,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 335,
@@ -422,10 +459,11 @@
       "npc": "Sin",
       "topic": "Tsoagoth",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 335,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 336,
@@ -433,10 +471,11 @@
       "npc": "Lily Roth",
       "topic": "The Black Flag",
       "legacyNote": "After getting The Black Flag - Do NOT enter The Beacon",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 336,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 337,
@@ -444,10 +483,11 @@
       "npc": "Lily Roth",
       "topic": "The Brine King",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 337,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 338,
@@ -455,10 +495,11 @@
       "npc": "Weylam Roth *",
       "topic": "The Brine King's Reef - (!)",
       "legacyNote": "After arriving at The Brine King's Reef - Do NOT kill Tsoagoth",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 338,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 339,
@@ -466,10 +507,11 @@
       "npc": "Weylam Roth *",
       "topic": "The Brine King",
       "legacyNote": "After arriving at The Brine King's Reef - Do NOT kill Tsoagoth",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 339,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 340,
@@ -477,10 +519,11 @@
       "npc": "Lily Roth",
       "topic": "The Brine King - QC - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 340,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     },
     {
       "id": 341,
@@ -488,10 +531,11 @@
       "npc": "Bestel",
       "topic": "The Brine King - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 341,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
     }
   ]
 }

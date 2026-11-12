@@ -160,6 +160,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="lore"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('No Stone Unturned'),true,'Lore tab renders without leaving page');
+ assert.equal(await hub.locator('#hubToolbar select').first().inputValue(),'all','full collection defaults to all Acts rather than inherited campaign Act');
  await hub.locator('#hubView .hubVaal > summary').click();
  await hub.locator('#hubView input[aria-label="ค้นหาชื่อ Vaal Side Area"]').fill('Concealed Caldarium');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Wiki #128'),true,'Vaal area links local ID to Wiki row');

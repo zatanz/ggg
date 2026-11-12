@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','route-act8.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -152,6 +152,22 @@ assert(act7Route.records.find(x=>x.wikiRow===376)?.id===380,'Act 7 Helena Greust
 assert(act7Route.records.find(x=>x.wikiRow===379)?.id===376,'Act 7 Sin Mother of Despair mapping wrong');
 assert(act7Route.records.find(x=>x.wikiRow===380)?.id===378,'Act 7 first Eramir Gruthkul mapping wrong');
 assert(act7Route.records.find(x=>x.wikiRow===381)?.id===381,'Act 7 second Eramir Gruthkul mapping wrong');
+const act8Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act8-inventory.json'),'utf8'));
+const act8Items=d.items.filter(x=>x.act===8);
+const act8Route=ctx.window.ALL_EARS_ROUTE_ACT8;
+assert(act8Items.length===30&&act8Inventory.records.length===30&&act8Route.records.length===30,'Act 8 must contain 30 dialogues');
+assert(new Set(act8Route.records.map(x=>x.id)).size===30,'Act 8 route duplicate IDs');
+assert(act8Route.records.every((x,i)=>x.wikiRow===387+i),'Act 8 wiki row range mismatch');
+assert(act8Route.records.every(x=>act8Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 8 route source mismatch');
+assert(act8Inventory.records.every((x,i)=>x.id===act8Items[i].id&&x.npc===act8Items[i].npc&&x.topic===act8Items[i].dialog&&x.legacyNote===act8Items[i].note),'Act 8 inventory source drift');
+const byAct8Id=new Map(act8Route.records.map(x=>[x.id,x]));
+assert(act8Inventory.records.every(x=>x.wikiRow===byAct8Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 8 inventory wiki mapping drift or unsupported patch claim');
+assert(act8Route.routeSafe===false&&act8Inventory.routeSafe===false&&act8Inventory.patchCertified===false,'Act 8 cannot claim certified safe route');
+assert(act8Route.records.filter(x=>x.before).length===4,'Act 8 risk warning count mismatch');
+assert(act8Inventory.discrepancies.length===1&&act8Inventory.discrepancies[0].id===403,'Act 8 Doedre discrepancy missing');
+assert(act8Route.records.find(x=>x.wikiRow===402)?.id===391,'Act 8 Doedre Hargan mapping wrong');
+assert(act8Route.records.find(x=>x.wikiRow===412)?.id===413,'Act 8 post-Tolman Clarissa mapping wrong');
+assert(act8Route.records.find(x=>x.wikiRow===413)?.id===412,'Act 8 post-Tolman Maramoa mapping wrong');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

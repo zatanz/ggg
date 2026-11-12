@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','guide-act1.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','guide-act1.js','act2-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -22,6 +22,12 @@ assert(Object.keys(guide.entries).length===41,'Guide entries must cover 41 Act 1
 assert(Object.entries(guide.entries).every(([id,x])=>act1.has(Number(id))&&x.review_status==='draft-unverified'),'Guide has missing ID or unapproved verification status');
 assert(patches.profiles.some(p=>p.id==='current'&&p.dialogues===null&&p.status==='unverified'),'Current patch must remain unsupported');
 assert(route.records.every(x=>x.source&&x.source.startsWith('https://')),'Missing source link');
+const a2=ctx.window.ALL_EARS_ACT2_ADVISORY;
+assert(a2.schema===2&&a2.patchCertified===false,'Act 2 model must remain patch-unverified');
+assert(a2.branchRows.length===3,'Act 2 must model 3 Eramir wiki rows');
+assert(a2.branchRows.every((x,i)=>x.wikiRow===101+i),'Act 2 Eramir wiki row numbering incorrect');
+assert(a2.branchRows[0].variants.length===3&&a2.branchRows[1].variants.length===3&&a2.branchRows[2].variants.length===1,'Act 2 conditional variant coverage incomplete');
+assert(a2.dependencies.length===3,'Act 2 quest-state dependencies missing');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

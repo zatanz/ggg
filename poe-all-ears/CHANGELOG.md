@@ -1,5 +1,15 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Focus-mode UI, Labyrinth/Vaal categories and workbook cross-check
+
+- Changed Act page into a **single active risk checkpoint** with previous/next controls and a stage selector, rather than stacking all checkpoints and 40 visible dialogues.
+- Historical 4-category detail lists are collapsed by default and now remember expansion *per Act*; opening a different Act no longer expands unrelated NPC lists.
+- Added **Labyrinth (10)** / **Vaal Side Area (16)** entrypoints, 3-step contextual instructions and self-contained lore groups, still using original No Stone IDs and storage.
+- Vaal Side Area lookup survives checkbox re-render and separates 12 Vaal Letters from 4 Research Journals; no deterministic acquisition order is asserted.
+- Imported **only source metadata** from the user's six-sheet workbook: 77 WARNING Wiki rows. The 22 rows not in existing checkpoints are visible in an optional caution section. No user progress was overwritten or new Achievement IDs invented.
+- Added integrity regression and browser checks for special category totals, focused stage navigation, Vaal finder state, 3.30 patch gating and mobile overflow.
+- Provenance and limitations in [REFERENCE-WORKBOOK-UX-AUDIT.md](./REFERENCE-WORKBOOK-UX-AUDIT.md).
+
 ## 2026-11-12 — Quest timing correction and Act 10 post-quest reminders
 
 - Fixed **priority-sort vs game-order confusion**: source-authored checkpoint grouping is preserved; severity no longer reorders checkpoint display.

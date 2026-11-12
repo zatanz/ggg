@@ -10,17 +10,17 @@ const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
 const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
 const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
 const rewardPriority=q=>q.type==="passive"?"ควรเก็บ · Passive Point":q.type==="refund"?"ควรเก็บ · Refund Point":q.type==="choice"?"ระวัง · มีผลต่อทางเลือก":"ตามความต้องการ · ไม่ใช่รางวัล Achievement";
-const itemPriority=(type,item,guide)=>type==="ears"&&guide?.caution?"ระวังพลาด":type==="sidequests"?"จำเป็นต่อ No Loose Ends":type==="ears"?"จำเป็นต่อ All Ears":type==="lore"?"จำเป็นต่อ No Stone Unturned":"จำเป็นต่อ Locomancer";
+const itemPriority=(type,item,guide)=>type==="ears"&&(guide?.caution||(window.POE_WORKBOOK_WARNINGS?.wikiRows||[]).includes(getRisk({type:"ears",id:item.id,act:item.act})?.wikiRow))?"ระวังพลาด":type==="sidequests"?"จำเป็นต่อ No Loose Ends":type==="ears"?"จำเป็นต่อ All Ears":type==="lore"?"จำเป็นต่อ No Stone Unturned":"จำเป็นต่อ Locomancer";
 
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
 const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
-const routeOpen=new Set(["ears"]);
+const routeOpen=new Set(); // Detailed category lists start collapsed; the next-step guide is the primary surface.
 const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa","a4-deshret","a5-utula","a6-karui","a7-den","a8-love","a9-adus"]);
 const postQuestOpen=new Set(["a10-safe-passage"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:40,reviewType:"lore",gameCount:""};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:""};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -40,7 +40,7 @@ function getRisk(x){if(x.type!=="ears")return null;return (routes[x.act]||[]).fi
 function sortedAllEars(act){const base=E.items.filter(x=>String(x.act)===String(act)),r=routes[Number(act)]||[];if(!r.length)return base;
 const byId=new Map(base.map(x=>[x.id,x]));return r.map(x=>byId.get(x.id)).filter(Boolean);}
 function records(type,act){if(type==="ears"){if(act==="all")return E.items;return sortedAllEars(act);}return collections[type].filter(x=>act==="all"||String(x.act)===String(act));}
-function label(x,type){if(type==="ears"&&x.act===2){const hint=window.POE_ITEM_DESCRIPTIONS?.get(type,x,getSafety());if(hint?.displayLabel)return hint.displayLabel;}return type==="ears"?x.npc+" — "+x.dialog:x.name;}
+function label(x,type){if(type==="ears"&&x.act===2){const hint=window.POE_ITEM_DESCRIPTIONS?.get(type,x,getSafety());if(hint?.displayLabel)return hint.displayLabel;}return type==="ears"?x.npc+" — "+x.dialog:type==="lore"&&x.id===73?"Bronze Plaque — The Just Goddess":x.name;}
 function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.act,type})?.area?" · "+getRisk({id:x.id,act:x.act,type}).area:""):type==="lore"?x.area:type==="waypoints"?"Waypoint · "+x.act:"Side Quest · Act "+x.act;}
 function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
 function renderSummary(){const target=$("hubStats");target.replaceChildren();Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);

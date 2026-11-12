@@ -133,3 +133,21 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 
 /* Keep all four Achievement category choices visible without horizontal scrolling on phones. */
 @media(max-width:720px){.hubCategoryPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;scroll-snap-type:none}.hubCategoryPicker button{width:100%;white-space:normal;min-height:47px;line-height:1.4}}
+
+/* Contextual per-item instructions: compact action on card, details on demand. */
+.hubItem{align-items:flex-start}
+.hubItem .hubText{min-width:0;flex:1}
+.hubHow{font-size:13px;line-height:1.55;color:#e7e3d9;margin:5px 0 6px;overflow-wrap:anywhere}
+.hubItem .hubRisk{margin:7px 0 7px;border-left:3px solid #d7a06d;padding:7px 10px;background:#382c24;border-radius:0 6px 6px 0;font-size:12px;color:#ffe1be}
+.hubItemHelp{margin-top:6px;border-top:1px solid #424851}
+.hubItemHelp>summary{display:inline-flex;gap:6px;align-items:center;cursor:pointer;color:#dac18b;padding:7px 0 2px;font-size:12px;font-weight:650;line-height:1.5}
+.hubItemHelp>summary:hover{color:#ffe1a3}
+.hubItemHelp>summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hubItemHelp[open]>summary{margin-bottom:7px}
+.hubItemHelpBody{background:#20242b;border:1px solid #414650;border-radius:9px;padding:12px 14px;margin:3px 0 7px}
+.hubFact{display:grid;grid-template-columns:minmax(118px,145px) minmax(0,1fr);gap:9px;margin-bottom:10px;font-size:12px;line-height:1.6}
+.hubFact strong{color:#e0c592;font-weight:650}
+.hubFact span{white-space:pre-wrap;overflow-wrap:anywhere}
+.hubItemHelpBody a{display:inline-flex;color:#ead095;font-size:12px;margin-top:2px;min-height:26px;align-items:center}
+.hubUnverifiedText{font-size:12px;color:#eebc8c;background:#332b24;padding:8px 10px;border-radius:7px;line-height:1.5}
+@media(max-width:720px){.hubFact{grid-template-columns:1fr;gap:1px;margin-bottom:11px}.hubItemHelpBody{padding:10px}.hubHow{font-size:13px}}

@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -134,6 +134,24 @@ assert(act6Advisory.patchCertified===false&&act6Advisory.routeSafe===false,'Act 
 assert(act6Advisory.milestones.length===5,'Act 6 advisory must include five quest milestones');
 assert(act6Advisory.milestones.flatMap(x=>x.ids).length===8,'Act 6 advisory must cover all eight legacy notes');
 assert(act6Advisory.milestones.flatMap(x=>x.ids).every(id=>act6Notes.some(x=>x.id===id)),'Act 6 advisory references non-risk dialogue');
+const act7Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act7-inventory.json'),'utf8'));
+const act7Items=d.items.filter(x=>x.act===7);
+const act7Route=ctx.window.ALL_EARS_ROUTE_ACT7;
+assert(act7Items.length===45&&act7Inventory.records.length===45&&act7Route.records.length===45,'Act 7 must contain 45 dialogues');
+assert(new Set(act7Route.records.map(x=>x.id)).size===45,'Act 7 route duplicate IDs');
+assert(act7Route.records.every((x,i)=>x.wikiRow===342+i),'Act 7 wiki row range mismatch');
+assert(act7Route.records.every(x=>act7Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 7 route source mismatch');
+assert(act7Inventory.records.every((x,i)=>x.id===act7Items[i].id&&x.npc===act7Items[i].npc&&x.topic===act7Items[i].dialog&&x.legacyNote===act7Items[i].note),'Act 7 inventory source drift');
+const byAct7Id=new Map(act7Route.records.map(x=>[x.id,x]));
+assert(act7Inventory.records.every(x=>x.wikiRow===byAct7Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 7 inventory wiki mapping drift or unsupported patch claim');
+assert(act7Route.routeSafe===false&&act7Inventory.routeSafe===false&&act7Inventory.patchCertified===false,'Act 7 cannot claim certified safe route');
+assert(act7Route.records.filter(x=>x.before).length===5,'Act 7 risk warning count mismatch');
+assert(act7Inventory.discrepancies.length===3,'Act 7 legacy/wiki discrepancies must be preserved');
+assert(act7Inventory.discrepancies.every(x=>act7Items.some(y=>y.id===x.id&&y.note===x.legacyNote)),'Act 7 discrepancy source note mismatch');
+assert(act7Route.records.find(x=>x.wikiRow===376)?.id===380,'Act 7 Helena Greust mapping wrong');
+assert(act7Route.records.find(x=>x.wikiRow===379)?.id===376,'Act 7 Sin Mother of Despair mapping wrong');
+assert(act7Route.records.find(x=>x.wikiRow===380)?.id===378,'Act 7 first Eramir Gruthkul mapping wrong');
+assert(act7Route.records.find(x=>x.wikiRow===381)?.id===381,'Act 7 second Eramir Gruthkul mapping wrong');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

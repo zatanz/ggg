@@ -309,13 +309,67 @@ function supplementalWarnings(act){
  unmatched.forEach(r=>{const item=items.get(r.id);if(item)list.append(itemCard("ears",item));});
  body.append(list);chapter.append(body);return chapter;
 }
-function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
+function journeyActGuide(act){
+ const card=el("section",undefined,"hubActMission");
+ card.dataset.goalAct=act;
+ const types=scopeTypes(act),summaries=types.map(type=>{
+   const list=records(type,act),done=new Set(entries(type));
+   return {type,total:list.length,done:list.filter(x=>done.has(x.id)).length,left:list.filter(x=>!done.has(x.id))};
+ }).filter(x=>x.total>0);
+ const complete=summaries.every(x=>x.done===x.total);
+ const h=el("div",undefined,"hubActMissionHead");
+ h.append(el("h3",complete?"Act "+act+" · Checklist บันทึกครบแล้ว":"Act "+act+" · ทำอย่างไรให้เก็บครบ"),el("p",complete?"ตรวจยอดที่เกมนับจริงก่อนออกจาก Act; การติ๊กครบไม่ยืนยัน Achievement จากเกม":"ก่อนเดินเรื่องต่อ ให้ตรวจบทสนทนาที่เสี่ยงพลาด แล้วเก็บ Lore, Waypoint และเควสต์รองที่พบใน Act นี้","hubSubtle"));
+ card.append(h);
+ const risk=(window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[]).filter(s=>s.ids.some(id=>!entries("ears").includes(id)));
+ if(risk.length){
+   const top=el("div",undefined,"hubActMissionWarning");
+   const text=el("div",undefined);text.append(el("strong","จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: "+risk.length+" กลุ่ม"),el("span","ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง"));
+   const jump=el("button","ดูจุดตรวจที่ยังขาด");jump.type="button";jump.onclick=()=>{
+      const stages=window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[];
+      state.focusByAct[act]=stages.findIndex(s=>s.id===risk[0].id);renderView();
+      const section=document.querySelector('[data-critical-act="'+act+'"]');section?.scrollIntoView({block:"start"});
+   };
+   top.append(text,jump);card.append(top);
+ }
+ const list=el("div",undefined,"hubActMissionList");
+ for(const s of summaries){
+   const row=el("div",undefined,"hubActMissionItem");
+   const left=el("div",undefined,"hubActMissionItemText");
+   left.append(el("strong",uiNames[s.type]),el("small",s.done+" / "+s.total+(s.done===s.total?" · บันทึกครบ":" · ขาด "+(s.total-s.done))));
+   if(s.left.length){
+      const example=el("span","รายการที่ยังขาด: "+label(s.left[0],s.type),"hubActMissionExample");
+      left.append(example);
+   }
+   const btn=el("button",s.done===s.total?"เปิดตรวจซ้ำ":"ดูรายการที่ยังขาด");btn.type="button";
+   btn.dataset.goalCategory=s.type;
+   btn.onclick=()=>{
+     for(const type of types)routeOpen.delete(act+":"+type);
+     routeOpen.add(act+":"+s.type);state.status=s.done===s.total?"all":"todo";state.search="";state.limit=12;
+     renderToolbar();renderView();
+     document.querySelector('#hubView [data-group="'+s.type+'"]')?.scrollIntoView({block:"start"});
+   };
+   row.append(left,btn);list.append(row);
+ }
+ card.append(list);
+ const bottom=el("p","ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.30","hubSubtle");
+ card.append(bottom);return card;
+}
+function epilogueRoute(target){
+ const all=records("waypoints","Epilogue"),done=new Set(entries("waypoints"));
+ const panel=section("Epilogue · Waypoint ที่ต้องตรวจ");panel.dataset.specialScope="Epilogue";
+ panel.append(el("p","หลังจบ Act 10 ตรวจ Waypoint อีก 2 จุดจากฐานข้อมูล Locomancer เดิม ไม่เพิ่มจำนวน Achievement ใหม่ · รายการยังไม่ได้รับรองกับแพตช์ 3.30","hubSubtle"));
+ const count=el("div","บันทึก "+all.filter(x=>done.has(x.id)).length+" / "+all.length+" · นับรวมใน Locomancer 91 จุด","hubActProgress");panel.append(count);
+ const list=el("div",undefined,"hubList");
+ all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
+}
+function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
 panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
 const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).filter(x=>entries(type).includes(x.id)).length,0);
 const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
+panel.append(journeyActGuide(act));
 const critical=criticalPanel(act);if(critical)panel.append(critical);
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
@@ -427,7 +481,7 @@ if(state.tab==="route"){
     b.onclick=()=>{state.act=String(i);state.limit=12;strip.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));renderView();};
     strip.append(b);
   }
-  [["Labyrinth","Labyrinth · 10"],["Vaal","Vaal Letter · 16"]].forEach(([id,name])=>{
+  [["Labyrinth","Labyrinth · 10"],["Vaal","Vaal Letter · 16"],["Epilogue","Epilogue · 2"]].forEach(([id,name])=>{
     const btn=el("button",name);btn.type="button";btn.dataset.act=id;btn.setAttribute("aria-pressed",String(state.act===id));
     btn.onclick=()=>{state.act=id;state.routeAct=id;state.limit=12;state.search="";renderToolbar();renderView();};
     strip.append(btn);
@@ -438,7 +492,7 @@ if(state.tab==="route"){
 const controls=el("div",undefined,"hubControls"),act=el("select"),status=el("select"),search=el("input");
 act.setAttribute("aria-label","เลือก Act หรือพื้นที่");
 const acts=[["all","ทุก Act"],...[1,2,3,4,5,6,7,8,9,10].map(a=>[String(a),"Act "+a]),["Labyrinth","Labyrinth"],["Vaal","Vaal Side Areas"],["Epilogue","Epilogue"]];
-acts.filter(([v])=>state.tab!=="route"||(v!=="all"&&v!=="Epilogue")).forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
+acts.filter(([v])=>state.tab!=="route"||v!=="all").forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
 if(state.tab==="route"&&state.act==="all")state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
 act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหาชื่อ NPC, บทสนทนา หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
 [["all","ทั้งหมด (เห็นสถานะ)"],["todo","ยังไม่เก็บ"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};

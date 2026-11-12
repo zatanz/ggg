@@ -145,3 +145,10 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added Act 6 integrity and advisory coverage checks to validate-data.cjs and display assertions to validate-ui.cjs. Intermediate commit e91d0dca6f828311a763d6ce6dd1b1fe020d72be failed CI because the advisory JS had not yet been added; follow-up commit 98b63155914b21b46e37034441e21e3478a7a88c restored CI PASS. Check latest runs before reporting.
 - Wiki source-row mappings remain 297/484 (Acts 1–5); 44 additional Act 6 rows inventoried but not source-row verified. Current patch certified remains 0/484.
 - Next: independently access Act 6 wiki table and map 44 rows; audit current patch against live game; browser interaction QA.
+
+## Continuation — Act 6 source reconciliation completed (2026-11-12)
+- Successfully retrieved PoE Wiki's All Ears guide (https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6), updated 2025-06-30. It lists 44 Act 6 dialogues in rows 298–341.
+- Reconciled all 44 source rows to stable legacy IDs; added route-act6.js and updated act6-inventory.json. For example Wiki row 298 = legacy ID 302 (Lilly introduction), Wiki row 302 = ID 298 (Sin Essence), and Wiki row 330 = ID 328 (Sin Cloven One). Source-derived warnings cover 12 rows; inventory risk candidates now 20.
+- Wired Act 6 wiki ordering and warnings into index.html and walkthrough.html; retained historical act6-advisory.js as explicitly unverified legacy milestone notes.
+- Updated validate-data.cjs and validate-ui.cjs for Act 6 source order and 12 cautions. Intermediate CI failed while validators still expected unverified wikiRow=null; updated checks now require the new source mapping. Latest run status must be checked before claiming pass.
+- Wiki source-row mapped: 341/484 (Acts 1–6; 70.45%). Acts 7–10 remain historical order. Current patch verified: 0/484. routeSafe=false. Browser QA outstanding.

@@ -44,8 +44,49 @@ function records(type,act){if(type==="ears"){if(act==="all")return E.items;retur
 function label(x,type){if(type==="ears"&&x.act===2){const hint=window.POE_ITEM_DESCRIPTIONS?.get(type,x,getSafety());if(hint?.displayLabel)return hint.displayLabel;}return type==="ears"?x.npc+" — "+x.dialog:type==="lore"&&x.id===73?"Bronze Plaque — The Just Goddess":x.name;}
 function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.act,type})?.area?" · "+getRisk({id:x.id,act:x.act,type}).area:""):type==="lore"?x.area:type==="waypoints"?"Waypoint · "+x.act:"Side Quest · Act "+x.act;}
 function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
-function renderSummary(){const target=$("hubStats");target.replaceChildren();Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
-card.append(el("span",names[k]+" · "+uiNames[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบในเว็บ · ยังต้องเทียบเกม":"เหลือ "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
+const journeyScopes=[...Array.from({length:10},(_,i)=>String(i+1)),"Labyrinth","Vaal","Epilogue"];
+function scopeName(scope){return scope==="Labyrinth"?"The Labyrinth":scope==="Vaal"?"Vaal Letter / Research Journal":scope==="Epilogue"?"Epilogue · Waypoints":"Act "+scope;}
+function scopeTypes(scope){return scope==="Labyrinth"||scope==="Vaal"?["lore"]:scope==="Epilogue"?["waypoints"]:Object.keys(names);}
+function scopeSnapshot(scope){
+ const groups=scopeTypes(scope).map(type=>{const rows=records(type,scope),marked=new Set(entries(type));return {type,all:rows.length,done:rows.filter(x=>marked.has(x.id)).length,remaining:rows.filter(x=>!marked.has(x.id))};});
+ return {scope,groups,all:groups.reduce((n,g)=>n+g.all,0),done:groups.reduce((n,g)=>n+g.done,0)};
+}
+function openJourneyScope(scope){
+ if(state.tab!=="route")openTab("route");
+ state.act=String(scope);state.routeAct=String(scope);state.status="all";state.search="";state.limit=12;
+ renderToolbar();renderView();
+}
+function renderSummary(){
+ const target=$("hubStats");target.replaceChildren();
+ const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
+ const hero=el("div",undefined,"hubMissionTotal");
+ const intro=el("div",undefined,"hubMissionHeading");
+ intro.append(el("strong","เป้าหมาย: เก็บ 4 Achievement ที่ติดตามให้ครบ 100%"),el("span","ครบทุกรายการใน Checklist ก่อนเทียบยอดจริงในเกม · เว็บไม่ตรวจความสำเร็จอัตโนมัติ","hubSubtle"));
+ const score=el("div",undefined,"hubMissionScore");
+ score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+"% ที่บันทึกในเว็บ"));
+ const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label","ความคืบหน้า Checklist ทั้งสี่ Achievement");hero.append(intro,score,bar);
+ const snapshots=journeyScopes.map(scopeSnapshot);
+ const first=snapshots.find(x=>x.done<x.all);
+ const next=el("div",undefined,"hubMissionNext");
+ if(first){
+  const action=el("span",undefined);action.append(el("strong","จุดค้างแรกตามหมวด: "+scopeName(first.scope)),el("small","เหลือ "+(first.all-first.done)+" รายการ · ตรวจเงื่อนไขก่อนเดินเควสต์ต่อ"));
+  const jump=el("button","เปิดจุดที่ยังขาด");jump.type="button";jump.onclick=()=>openJourneyScope(first.scope);
+  next.append(action,jump);
+ }else next.append(el("strong","ทุกช่องใน Checklist ครบแล้ว · ตรวจยอดในเกมทีละ Achievement ก่อนยืนยันว่าได้จริง"));
+ hero.append(next);
+ const roadmap=el("details",undefined,"hubMissionRoadmap");
+ roadmap.append(el("summary","ดูเส้นทางตรวจครบ: Act 1–10 / Labyrinth / Vaal / Epilogue"));
+ const list=el("div",undefined,"hubMissionStages");
+ for(const s of snapshots){
+   const b=el("button",undefined,"hubMissionStage");b.type="button";b.dataset.scope=s.scope;
+   b.append(el("strong",scopeName(s.scope)),el("span",s.done+" / "+s.all+(s.done===s.all?" · บันทึกครบ":" · เหลือ "+(s.all-s.done))));
+   b.onclick=()=>openJourneyScope(s.scope);list.append(b);
+ }
+ roadmap.append(list);hero.append(roadmap);
+ target.append(hero);
+ Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
+ card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบ · เทียบยอดเกมอีกครั้ง":"เหลือ "+(totals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
+}
 function itemCard(type,x){
 const done=entries(type).includes(x.id),guide=window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined),row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
 row.dataset.state=done?"done":"todo";

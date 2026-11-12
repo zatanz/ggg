@@ -21,3 +21,17 @@ jobs:
         run: node poe-all-ears/validate-data.cjs
       - name: Validate interface scripts and route wiring
         run: node poe-all-ears/validate-ui.cjs
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser automation runtime
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run real browser interaction smoke tests
+        run: node poe-all-ears/test-browser.cjs

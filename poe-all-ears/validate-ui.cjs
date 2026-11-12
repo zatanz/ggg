@@ -16,18 +16,20 @@ for(const name of ['index.html','walkthrough.html']){
     }
   }
   if(name==='walkthrough.html'){
-    for(const ref of ['./route-act1.js','./route-act2.js','./act2-advisory.js']){
+    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./act2-advisory.js']){
       check(html.includes('src="'+ref+'"'),name+': missing '+ref)
     }
     check(html.includes('rec.id===item.id'),name+': route evidence is not tied to displayed ID');
+    check(html.includes('act===3?window.ALL_EARS_ROUTE_ACT3'),name+': Act 3 source ordering not wired');
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{
     check(html.includes('p.id!=="legacy-3.9"'),name+': unverified patches not blocked');
-    for(const ref of ['./route-act1.js','./route-act2.js']){
+    for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js']){
       check(html.includes('src="'+ref+'"'),name+': missing wiki route script '+ref)
     }
     check(html.includes('var wikiMeta=new Map()'),name+': source row mapping missing');
+    check(html.includes('window.ALL_EARS_ROUTE_ACT3'),name+': Act 3 source row mapping missing');
     check(html.includes('wikiMeta.get(x.id)?.before'),name+': wiki missable warnings omitted');
         check(html.includes('if(!save())o.checked=previousChecked'),name+': localStorage write rollback missing');
   }

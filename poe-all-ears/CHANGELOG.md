@@ -2,7 +2,8 @@
 
 ## 2026-11-12 — P0 quest-sequence risk checkpoints
 
-- Added a source-labelled **Act 1–3 "ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด" panel** ahead of the long categories, covering 15 critical quest-state checkpoints and 35 linked historical All Ears rows.
+- Added a source-labelled **Act 1–9 "ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด" panel** ahead of the long categories, covering 39 critical quest-state checkpoints and 72 linked historical All Ears rows.
+- Expanded the high-priority UI through Acts 4–9, surfacing 37 additional route-file source warnings across 24 grouped checkpoints. Act 10 deliberately states that missing source risk markers do not prove safety.
 - Sourced the before/after rules from the June 2025 PoE Wiki All Ears guide, including Mud Flats glyphs, Brutus, Fairgraves/Allflame, Act 2 quest completion gates, Ancient Seal/The Darkness, branch-dependent Eramir topics, and Act 3 Clarissa/Dialla/Gravicius/Piety.
 - The same per-character All Ears IDs/checkboxes are reused: marking a checkpoint updates the canonical tracker. No duplicate counters; milestone completion means only user-marked entries, not automated in-game verification.
 - Moved Act 2 manual Bandit/Seal/Darkness tracking into the expanded high-priority checkpoint, removing the redundant standalone safety panel in the Act 2 page.

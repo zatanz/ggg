@@ -1,5 +1,17 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — P0 quest-sequence risk checkpoints
+
+- Added a source-labelled **Act 1–3 "ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด" panel** ahead of the long categories, covering 15 critical quest-state checkpoints and 35 linked historical All Ears rows.
+- Sourced the before/after rules from the June 2025 PoE Wiki All Ears guide, including Mud Flats glyphs, Brutus, Fairgraves/Allflame, Act 2 quest completion gates, Ancient Seal/The Darkness, branch-dependent Eramir topics, and Act 3 Clarissa/Dialla/Gravicius/Piety.
+- The same per-character All Ears IDs/checkboxes are reused: marking a checkpoint updates the canonical tracker. No duplicate counters; milestone completion means only user-marked entries, not automated in-game verification.
+- Moved Act 2 manual Bandit/Seal/Darkness tracking into the expanded high-priority checkpoint, removing the redundant standalone safety panel in the Act 2 page.
+- Each applicable quest risk checkpoint now displays its historical quest reward alongside the required dialogues. The other four achievement categories and source/order limitations remain visible.
+- Static validator checks all 15 groups, 35 ID-to-Act links, source URLs, and routeSafe=false. Chromium regression checks initial Act 1 step visibility, shared save update, Act 2 Bandit preflight, and Act 3 Clarissa/Piety timing.
+- Scope guardrails: not a complete campaign quest walkthrough; unrelated questlines have no proven overall sorting; no 3.30 game certification. Class-dependent reward tables remain deferred.
+- See [Quest Sequence Audit](./QUEST-SEQUENCE-AUDIT.md) and [UX Priority Backlog](./UX-PRIORITY-BACKLOG.md).
+
+
 ## 2026-11-12 — Source-labelled contextual gameplay explanations
 
 - Added guide-descriptions.js as an isolated presentation layer for **745 entries** (All Ears 484, Lore 140, Waypoints 91, side quests 30); original IDs, counts, localStorage and backup schema unchanged.

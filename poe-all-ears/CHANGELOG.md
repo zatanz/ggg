@@ -1,5 +1,15 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Quest timing correction and Act 10 post-quest reminders
+
+- Fixed **priority-sort vs game-order confusion**: source-authored checkpoint grouping is preserved; severity no longer reorders checkpoint display.
+- Every dialogue row in an expanded checkpoint now shows its own source-derived **เปิดเมื่อ** and **ต้องตรวจ** conditions; missing evidence is explicitly labeled.
+- Translated seven Act 3 trigger/quest-state rules into Thai without changing original stable dialogue IDs.
+- Added a *separate* Act 10 after-quest checklist for source-confirmed Lilly Roth dialogues (#471 after Safe Passage, #481 after Death and Rebirth, #482 after An End to Hunger). These are not labelled irreversible.
+- Clarified that the legacy Eramir All Ears branch assumes all three Bandits are killed; no 3.30 Book of Reform recovery was verified.
+- Added source and Chromium tests for Act 2 group order, per-row Act 3 conditions, Act 10 three after-quest reminders, and patch gating.
+- Historical sources only. No 3.30 game certification; do not confuse browser CI with in-game quest-state verification.
+
 ## 2026-11-12 — P0 quest-sequence risk checkpoints
 
 - Added a source-labelled **Act 1–9 "ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด" panel** ahead of the long categories, covering 39 critical quest-state checkpoints and 72 linked historical All Ears rows.

@@ -1,4 +1,30 @@
-# Path of Exile 1 — All Ears Checklist
+# Path of Exile 1 — Achievement Companion (single-page preview)
+
+**เข้าใช้งานหน้าเดียว:** https://zatanz.github.io/ggg/poe-all-ears/
+
+เว็บเดียวสำหรับ 4 Achievement: **All Ears (484 บทสนทนา)**, **No Stone Unturned (140 Lore)**, **Locomancer (91 Waypoints)** และ **No Loose Ends (30 Side Quests)** มีโหมด **เล่นตาม Act** สำหรับแสดงทั้งสี่หมวดร่วมกัน และแท็บแยกสำหรับค้นหาหรือแก้ไขเฉพาะประเภท
+
+## ฟีเจอร์หน้าเดียว
+
+- เลือกตัวละครด้านบนเพียงจุดเดียว: สี่หมวดบันทึกแยกกันต่อหนึ่งตัวละคร; ไม่รวมความคืบหน้าหลายตัวละคร
+- **เล่นตาม Act** แสดง All Ears ตามลำดับ PoE Wiki ปี 2025 แยกจาก Lore, Waypoint, Side Quest ตามหมวด ไม่อ้างว่าเป็นลำดับเดินเควสต์ทั้งหมดที่ได้รับรอง
+- **Act 2 Safety** เก็บเช็กลิสต์คุยกับ Bandits, Ancient Seal, The Darkness และลำดับการจัดการ Bandits แบบกรอกเอง; คำเตือนต้องตรวจตามแพตช์และการเล่นจริงอีกครั้ง
+- **Vaal side area search** ค้นชื่อพื้นที่จากตัวอย่างใน PoE Wiki และจับคู่กับ Vaal Letter/Research Journal; ใช้ ID เก่าเพื่อไม่เปลี่ยนเซฟ แต่แสดงหมายเลข Wiki แยก (16 รายการ)
+- **Progress Recheck** เปรียบเทียบยอดที่เกมแสดงกับจำนวนที่ติ๊ก แล้วบันทึกจุดเทียบยอดตรงกันเป็น baseline สำหรับย้อนตรวจ; ไม่สามารถระบุรายการที่พลาดจากเกมอัตโนมัติ
+- **Backup รวม (v2)** ส่งออกไฟล์เดียวสำหรับทุกตัวละครและทั้งสี่หมวด; นำเข้าเป็นตัวละครใหม่โดยไม่ทับเซฟเดิม ตรวจรูปแบบก่อนนำเข้า และทดสอบใน Chromium
+- ตัวหน้าหลักยังใช้ข้อมูล All Ears และ Backup v1 เดิมได้เหมือนเดิม; หน้า companion.html / extras.html / walkthrough.html ยังเก็บไว้เพื่อรองรับลิงก์เก่า แต่ไม่จำเป็นต้องสลับหน้าเพื่อใช้งานหลัก
+
+**คำเตือนด้านข้อมูล:** ชุดชื่อและลำดับ All Ears มาจาก PoE Wiki ฉบับปี 2025 และ Excel 3.9; ชุด Lore/Waypoint/Side Quest ตรงกับ Excel เดิมแต่ยังไม่ยืนยันกับแพตช์ 3.30 ที่เปิด 13 พฤศจิกายน 2026 (PST). Patch Notes 3.30 ระบุว่า Vaal Side Areas จะไม่ปรากฏใน Maps อีกต่อไป; ไม่ควรใช้วิธีฟาร์มจากคู่มือ Map Device เก่า. `0/484` คือจำนวนรายการที่ได้รับรองด้วยหลักฐานในเกมปัจจุบัน ณ Checkpoint นี้ ไม่ใช่จำนวนรายการที่อยู่ในเว็บ
+
+**QA:** [ชุดตรวจ GitHub Actions](https://github.com/zatanz/ggg/actions/workflows/all-ears-validation.yml) ทดสอบ Validation และ Chromium/browser smoke ทั้งหน้าเดียว, เซฟ, Backup, อุปกรณ์มือถือ. การผ่าน CI **ไม่เท่ากับ** การรับรองเงื่อนไข Achievement ในเกม.
+
+**แหล่งอ้างอิง:** [All Ears (Wiki)](https://www.poewiki.net/wiki/Guide:All_Ears_achievement) · [No Stone Unturned (Wiki)](https://www.poewiki.net/wiki/Guide:No_Stone_Unturned_achievement) · [Vaal side area (Wiki)](https://www.poewiki.net/wiki/Vaal_side_area) · [PoE 3.30 Patch Notes](https://poedb.tw/us/Version_3.30.0) · [Checkpoint](./DELIVERY-PLAN.md)
+
+---
+
+## เอกสารและข้อมูลรุ่นเดิม
+
+# All Ears Checklist — รายละเอียดรุ่นเดิม
 
 ## Companion update — 2026-11-12
 Three additional tracker surfaces are now available as historical, manual-use aids:

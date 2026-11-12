@@ -1,5 +1,15 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Goal-first 100% achievement journey
+
+- Introduced an explicit four-achievement **745 / 745** manually marked goal tracker, with stage roadmap across Acts 1–10, Labyrinth, Vaal Side Areas, and Epilogue; not a claim of unlock on game servers
+- Added per-Act requirement gates for NPC dialogue, environmental lore, Waypoints, and side quests, including missing item previews and one-tap filters
+- Added direct navigation to the earliest unresolved historical quest-risk checkpoint without automatically marking entries
+- Included the previously ungrouped Labyrinth waypoint (The Aspirants' Plaza) and two Epilogue waypoints in the 13-stage coverage, with exact-once ID validation
+- Kept existing per-character data and unified Backup unchanged; no new achievement IDs or progress migration
+- Added Chromium tests for roadmap selection, current missing-category shortcuts, total 745 partition, patch safety gate, and the formerly unstable Act 2 category state
+- 3.30 in-game certification and real user usability testing remain unfinished. Details: [ROAD-TO-100-PERCENT.md](./ROAD-TO-100-PERCENT.md)
+
 ## 2026-11-12 — Focus-mode UI, Labyrinth/Vaal categories and workbook cross-check
 
 - Changed Act page into a **single active risk checkpoint** with previous/next controls and a stage selector, rather than stacking all checkpoints and 40 visible dialogues.

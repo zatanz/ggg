@@ -88,3 +88,13 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - GitHub connector's fetch_commit_workflow_runs returned no PR-triggered runs for the checkpoint commit; the API is PR-filtered, so this does NOT prove the push workflow failed or never ran. CI result remains unknown.
 - IMPORTANT: Wiki row numbers 101–103 in act2-advisory.js must not be conflated with local legacy IDs 101–103. They are different coordinate systems until mapping is established.
 - Next: obtain source-by-source Wiki row reconciliation for Act 2; inspect 3.30 patch note campaign impacts; execute real Node/CI and browser checks.
+
+## Continuation — canonical GitHub repo and Act 2 source-order integration (2026-11-12)
+- Canonical repository: https://github.com/zatanz/ggg/tree/master/poe-all-ears (renamed from zatanz/Test; GitHub repository ID 24707296 remained the same). Use zatanz/ggg in all subsequent tool operations and links.
+- Confirmed preexisting GitHub Actions data integrity run success (run 43168585675). Also confirmed Pages deployment action success for prior commits, but this does NOT certify functional page rendering or current-patch All Ears accuracy.
+- Compared all 69 Act 2 legacy IDs (42–110) with PoE Wiki's Act 2 rows (42–110). Saved source-row mapping in route-act2.js and act2-inventory.json; 22 trigger annotations and 12 caution annotations in the route. Source: https://www.poewiki.net/wiki/Guide:All_Ears_achievement (last updated 2025-06-30).
+- The Eramir wiki row 101 is local legacy ID 89, row 102 is local ID 101, row 103 is local ID 103. Do not mix these numbering systems. Bandit variants remain conditional.
+- Both walkthrough.html and index.html now use wiki sequence for Acts 1–2 while preserving stable legacy IDs for localStorage checkboxes. Main checklist includes sourced missable warnings. Acts 3–10 still follow legacy order.
+- Added validate-ui.cjs and included it in GitHub Actions. The job validates inline script syntax, script references, patch gating, and UI route integration. GitHub Actions run 43169342999 succeeded with both data and UI checks. Newer runs should also be checked after this checkpoint.
+- This is SOURCE-ROW RECONCILIATION only. It does not establish safe in-game quest progression or certify PoE 3.29/3.30. Current patch certification remains 0/484. Browser interaction testing still outstanding.
+- Next: validate real browser interactions, review Act 2 per-row quest trigger evidence, verify Act 3 source-order mapping, examine current patch's NPC changes and quest-state behavior.

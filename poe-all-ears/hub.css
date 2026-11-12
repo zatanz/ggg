@@ -49,3 +49,77 @@ body:not([data-hub-tab="ears"]) .wrap>footer{margin-top:20px}
 @media(max-width:720px){#hubNav{position:relative;top:auto;gap:5px;padding:7px}#hubNav button{font-size:12px;flex:1 1 28%;padding:9px 7px;white-space:normal;line-height:1.3}.hubPanel{padding:14px}.hubStats{grid-template-columns:repeat(2,minmax(0,1fr))}.hubControls>*{flex:1 1 140px}.hubStat b{font-size:24px}}
 @media(prefers-reduced-motion:reduce){#hubNav{scroll-behavior:auto}}
 @media(min-width:721px){body[data-hub-tab="ears"] .toolbar{top:67px}}
+
+
+/* V2: fewer decisions, Wraeclast vocabulary, disclosure-first gameplay flow. */
+.wrap>header h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,5vw,48px);line-height:1.15}
+.wrap>header p{font-size:14px;line-height:1.65;max-width:800px}
+#hubNav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:7px;margin:15px 0 12px}
+#hubNav button{min-width:0;flex:none;white-space:normal;text-align:center;font-size:14px;min-height:46px;border-radius:9px}
+#hubNav button[aria-selected=true]{box-shadow:inset 0 -2px 0 #8b6a33}
+body:not([data-hub-tab="ears"]) .wrap>section[aria-label="เวอร์ชันเกม / แพตช์"]{display:block!important}
+.wrap>section[aria-label="เวอร์ชันเกม / แพตช์"]{box-shadow:none;padding:13px 16px}
+.wrap>section[aria-label="ตัวละคร"]{box-shadow:none;padding:14px 16px}
+.wrap>section[aria-label="ตัวละคร"] .ctrls select{max-width:100%;flex:1 1 225px}
+.wrap>section[aria-label="ตัวละคร"] .ctrls #addChar{flex:0 0 auto}
+.hubManage{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+.hubManage summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:600;padding:7px 0}
+.hubManage summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hubManage .ctrls{margin-top:10px}
+#hubOverview{box-shadow:none;margin-top:12px;padding:16px}
+#hubOverview>h2{font-size:19px}
+#hubOverview>.hubSubtle{margin-bottom:12px}
+.hubStats{gap:8px}
+.hubStat{padding:12px 13px;border-color:#494334;background:linear-gradient(150deg,#292b30,#24272e);text-align:left;transition:border-color .12s}
+.hubStat:hover{border-color:#c2a367}
+.hubStat:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hubStat b{font-size:25px;line-height:1.25;color:#eee4d3;margin:3px 0}
+.hubStat span:first-child{font-weight:650;color:#e7cf9c}
+.hubStat span:last-child{font-size:11px}
+.hubCategoryPicker{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:10px 0 5px}
+.hubCategoryPicker button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:11px 13px;min-height:45px;cursor:pointer;font-weight:600;font-size:13px}
+.hubCategoryPicker button[aria-pressed=true]{border-color:#b89a62;background:#3d3528;color:#f9e5b7}
+.hubCategoryPicker button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#hubToolbar{margin:12px 0}
+#hubToolbar .hubControls{margin:6px 0 11px}
+.hubChapter{background:#20242b;border:1px solid #454752;border-radius:12px;margin:10px 0;overflow:hidden}
+.hubChapter>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:15px;min-height:64px;padding:13px 16px;cursor:pointer;background:linear-gradient(90deg,#26292e,#23272e)}
+.hubChapter>summary::-webkit-details-marker{display:none}
+.hubChapter>summary:after{content:"+";font-weight:400;font-size:25px;line-height:1;color:#d9ba79;padding:0 2px}
+.hubChapter[open]>summary{border-bottom:1px solid #474c56;background:#343027}
+.hubChapter[open]>summary:after{content:"−"}
+.hubChapter>summary:focus-visible{outline:3px solid var(--gold);outline-offset:-4px}
+.hubChapterTitle{display:flex;flex-direction:column;gap:2px;flex:1}
+.hubChapterTitle strong{font-size:16px;font-weight:700;color:#f2e6d2}
+.hubChapterTitle small{font-size:11px;font-weight:400;color:#c5bda9}
+.hubChapterCount{background:#383c43;color:#eddeb8;border:1px solid #655b49;border-radius:18px;font-size:12px;padding:5px 9px;white-space:nowrap}
+.hubChapterBody{padding:10px 12px 15px}
+.hubChapterBody .hubGroup{margin:14px 0 7px}
+.hubChapter .hubPanel{border:0;border-radius:0;margin:0;padding:14px 17px;background:transparent}
+.hubSafety>summary{background:#382b22}
+.hubVaal{margin:14px 0}
+.hubItem{border-color:#444852;background:#272b33;padding:10px 12px}
+.hubItem .hubName{font-weight:650;font-size:14px}
+.hubItem.done .hubName{color:#b3d6be}
+.hubItem input[type=checkbox]{accent-color:#82bd9e}
+.hubTag{font-size:10px;color:#dcc698;border-color:#625841}
+.hubMeta{line-height:1.5}
+.hubNotice{line-height:1.6;font-size:13px}
+.hubDataNotice{margin-bottom:12px}
+.hubGood{font-size:13px}
+.hubPanel>h2{font-weight:650}
+body[data-hub-tab="ears"] .toolbar{top:70px}
+@media(max-width:720px){
+  #hubNav{position:sticky;top:0;z-index:15;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:6px;gap:4px}
+  #hubNav button{font-size:12px;min-height:46px;padding:8px 5px;line-height:1.3}
+  #hubOverview{padding:13px}
+  .hubStat{padding:11px}
+  .hubStat b{font-size:22px}
+  .hubCategoryPicker{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:9px 2px 12px}
+  .hubCategoryPicker button{flex:0 0 auto;scroll-snap-align:start}
+  .hubChapter>summary{min-height:62px;padding:11px 12px}
+  .hubChapterBody{padding:8px}
+  .hubItem{padding:11px 9px}
+  .wrap>section[aria-label="เวอร์ชันเกม / แพตช์"]{padding:13px}
+  body[data-hub-tab="ears"] .toolbar{top:57px}
+}

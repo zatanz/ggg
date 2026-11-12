@@ -23,7 +23,8 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('act===3?window.ALL_EARS_ROUTE_ACT3'),name+': Act 3 source ordering not wired');
     check(html.includes('act===4?window.ALL_EARS_ROUTE_ACT4'),name+': Act 4 source ordering not wired');
     check(html.includes('act===5?window.ALL_EARS_ROUTE_ACT5'),name+': Act 5 source ordering not wired');
-    check(html.includes('act!==2&&act!==3')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
+    check(html.includes('act!==2&&act!==3&&act!==6')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
+    check(html.includes('src="./act6-advisory.js"')&&html.includes('window.ALL_EARS_ACT6_ADVISORY.milestones.forEach'),name+': Act 6 historical warning not displayed');
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{

@@ -16,7 +16,7 @@ const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sid
 const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
 const routeOpen=new Set(["ears"]);
-const criticalOpen=new Set(["a1-glyphs","a2-darkness"]);
+const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:40,reviewType:"lore",gameCount:""};
@@ -164,7 +164,6 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
 const critical=criticalPanel(act);if(critical)panel.append(critical);
-if(act==="3")panel.append(el("div","ระวัง Act 3: ตรวจหัวข้อ Clarissa / Piety ที่มีเงื่อนไขก่อนส่งเควสต์หรือสู้บอส (ข้อมูล Wiki ปี 2025)","hubNotice"));
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;

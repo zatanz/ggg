@@ -120,3 +120,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added source-row, unique-ID, quest-risk and UI wiring checks in validate-data.cjs and validate-ui.cjs. The new route remains routeSafe=false; current patch verification remains 0/484.
 - Act 1–3 now have 41+69+71 = 181 source-row-mapped records; Acts 4–10 remain historical-only order.
 - GitHub Actions results need checking after final checkpoint commit. Browser interaction QA and source-versus-patch review remain outstanding.
+
+## Continuation — Act 4 full wiki-row mapping (2026-11-12)
+- Verified against PoE Wiki All Ears guide (last updated 2025-06-30): Act 4 has 72 dialogue points, numbered 182–253. Corrects the earlier conversational claim of 73; the historical data and existing validator both correctly counted 72.
+- Added route-act4.js and act4-inventory.json with 72/72 ID-to-wiki-row mappings and nine explicit source-based missable warnings (Deshret, Dialla, Belly of the Beast, Harvest, Malachai).
+- Updated index.html and walkthrough.html to use Act 4 source order and show warnings while keeping legacy stable IDs and patch gating unchanged.
+- Added Act 4 integrity assertions and UI wiring checks to validate-data.cjs and validate-ui.cjs.
+- Wiki source-order mapped total: Acts 1–4 = 41+69+71+72 = 253/484 (52.27%). Acts 5–10 remain historical-only. Current-patch verified 0/484; no certified safe route.
+- GitHub Actions validation on final commit should be checked before claiming PASS. Browser interaction QA remains outstanding.

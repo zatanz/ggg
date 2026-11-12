@@ -249,8 +249,27 @@ const allRewards=ctx.window.POE_QUEST_REWARDS?.acts||[];
 assert(allRewards.length===10&&allRewards.reduce((sum,a)=>sum+a.quests.length,0)===58,'Quest rewards must cover 58 historical quest entries across 10 Acts');
 assert(allRewards.every(a=>a.quests.length>0&&a.quests.every(q=>q.name&&q.reward&&['passive','refund','gem','item','choice'].includes(q.type))),'Quest reward descriptions/types missing');
 assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23,'Quest passive reward reference drift');
+load('special-lore-guide.js');
+load('workbook-warnings.js');
+const specialLore=ctx.window.POE_SPECIAL_LORE,sourceWarnings=ctx.window.POE_WORKBOOK_WARNINGS;
+assert(specialLore.schema===1&&specialLore.patchCertified===false,'Special lore routes must be patch-unverified');
+assert(specialLore.labyrinth.ids.length===10&&specialLore.vaal.ids.length===16,'Workbook specials must contain 10 Labyrinth and 16 Vaal entries');
+for(const [scope,ids] of [['Labyrinth',specialLore.labyrinth.ids],['Vaal',specialLore.vaal.ids]]){
+ assert(new Set(ids).size===ids.length&&ids.every(id=>lore.entries.some(x=>x.id===id&&x.act===scope)),'Special lore map must preserve original No Stone IDs: '+scope);
+}
+assert(specialLore.labyrinth.groups.flatMap(x=>x.ids).length===10&&new Set(specialLore.labyrinth.groups.flatMap(x=>x.ids)).size===10,'Labyrinth location groups must use exactly ten canonical IDs');
+assert(specialLore.vaal.letters.length===12&&specialLore.vaal.journals.length===4,'Vaal subcategories must preserve 12 Letters and four Research Journals');
+assert(sourceWarnings.schema===1&&sourceWarnings.wikiRows.length===77&&new Set(sourceWarnings.wikiRows).size===77,'Uploaded workbook must contain 77 distinct flagged Wiki rows');
+const mappedRows=Object.keys(ctx.window).filter(x=>/^ALL_EARS_ROUTE_ACT\d+$/.test(x)).flatMap(x=>ctx.window[x].records);
+assert(sourceWarnings.wikiRows.every(id=>mappedRows.some(r=>r.wikiRow===id)),'Excel warning Wiki row missing from route crosswalk');
+const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
+const checkpointMapped=new Set(Object.values(checkpointData.acts).flatMap(stages=>stages.flatMap(s=>s.ids)));
+const ungroupedWarningRows=sourceWarnings.wikiRows.map(row=>mappedRows.find(r=>r.wikiRow===row)).filter(r=>!checkpointMapped.has(r.id));
+assert(ungroupedWarningRows.length===22,'Workbook currently has 22 flagged Wiki rows not yet placed in core quest checkpoints');
+
 assert(checkpointData?.schema===1&&checkpointData.routeSafe===false&&checkpointData.patch==='2025-wiki-legacy-unverified','Critical checkpoints must not imply verified patch-safe quest route');
 const checkpointExpected={1:3,2:7,3:5,4:4,5:3,6:6,7:5,8:2,9:4};
 assert(Object.entries(checkpointExpected).every(([a,n])=>checkpointData.acts[a]?.length===n),'Risk checkpoint count drift across Acts 1–9');

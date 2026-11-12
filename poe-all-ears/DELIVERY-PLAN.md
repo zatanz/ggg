@@ -330,3 +330,10 @@ Feedback: player-facing labels and navigation were improved but explanations had
 
 **Next ordered work:** (1) test dangerous quest decisions in fresh-character 3.30 game and collect evidence; (2) reconcile branch alternatives, rewards and order; (3) expand sourced critical checkpoints to Acts 4–10; (4) test actual player findability and mobile ergonomics. Defer class-specific gem and equipment reward lists. Full evidence and stage matrix: [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
 
+
+## Checkpoint — Act 4–9 historical critical risk expansion (2026-11-12)
+
+**P0 implementation advanced:** source-linked checkpoints now cover Acts 1–9: **39 groups / 72 original All Ears dialogue IDs**. Act 4–9 adds 24 groups and 37 existing route-file warnings. All groups read/write the same per-character progress store; source/year caveats remain. Act 10 has no source risk flags and explicitly does **not** claim to be safe. No 3.30 game validation has been performed, so current-patch certified counts remain zero. No class-specific reward scope was added.
+
+**Continue with evidence-first work:** verify critical quest branches in a fresh running game, preserve proof of timing/availability, then reconcile the global quest order; investigate unsupported Act 10 and side-quest reward cross-links. Do not use CI green as substitute for in-game confirmation. See [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
+

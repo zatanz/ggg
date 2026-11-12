@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="ภาพจำลองหน้าจอ World และ Quest ของเกมแนวดาร์กแฟนตาซี แสดง Breaking Some Eggs และสถานะก่อนใส่ Strange Glyphs">
+<title>Quest World panel — illustrative example, not an in-game screenshot</title>
+<defs>
+<linearGradient id="base" x2="0" y2="1"><stop stop-color="#24231f"/><stop offset="1" stop-color="#0d1218"/></linearGradient>
+<radialGradient id="map"><stop stop-color="#b39b6c"/><stop offset="1" stop-color="#534d3d"/></radialGradient>
+<linearGradient id="wood" x2="0" y2="1"><stop stop-color="#30251a"/><stop offset="1" stop-color="#171715"/></linearGradient>
+<pattern id="mesh" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0 0L18 18M18 0L0 18" stroke="#d5b47b" stroke-opacity=".05" stroke-width="1"/></pattern>
+</defs>
+<rect width="960" height="540" fill="#10151c"/>
+<rect x="18" y="15" width="924" height="506" rx="16" fill="url(#base)" stroke="#c89c58" stroke-width="3"/>
+<rect x="28" y="25" width="904" height="486" rx="10" fill="url(#mesh)" stroke="#655037"/>
+<g font-family="'Trebuchet MS',Arial,sans-serif">
+<text x="480" y="62" fill="#ecd7a8" font-size="28" text-anchor="middle" font-weight="bold" letter-spacing="3">WORLD  /  QUESTS</text>
+<path d="M240 75H720" stroke="#96764c"/>
+<rect x="45" y="92" width="870" height="50" rx="5" fill="#32271e" stroke="#846841"/>
+<rect x="66" y="101" width="154" height="33" rx="4" fill="#79522b" stroke="#dfbb77"/>
+<text x="143" y="124" font-size="19" text-anchor="middle" fill="#fff0cc" font-weight="bold">Act 1</text>
+<text x="286" y="124" fill="#b9b3a6" font-size="18">Act 2</text><text x="420" y="124" fill="#b9b3a6" font-size="18">Act 3</text>
+<text x="571" y="124" fill="#b9b3a6" font-size="18">Act 4</text>
+<text x="770" y="124" fill="#e6c793" font-size="15">KEY: U</text>
+<rect x="48" y="156" width="533" height="279" rx="6" fill="url(#map)" stroke="#b69a6b" stroke-width="2"/>
+<path d="M80 206C190 244 207 310 304 273S430 229 528 270M90 390Q190 332 256 355T519 328" stroke="#29291f" stroke-width="18" fill="none" opacity=".35"/>
+<path d="M80 206C190 244 207 310 304 273S430 229 528 270M90 390Q190 332 256 355T519 328" stroke="#ecce93" stroke-dasharray="5 10" stroke-width="2" fill="none" opacity=".85"/>
+<text x="312" y="185" fill="#2c251c" font-size="26" font-weight="bold" text-anchor="middle">The Mud Flats</text>
+<circle cx="308" cy="271" r="23" fill="#402b19" stroke="#c9a365" stroke-width="4"/><circle cx="308" cy="271" r="9" fill="#edd28c"/>
+<text x="330" y="312" fill="#252118" font-size="17" font-weight="bold">Glyph Wall</text>
+<g fill="#4d3824" stroke="#c1a774" stroke-width="2"><circle cx="181" cy="220" r="13"/><circle cx="435" cy="341" r="13"/></g>
+<rect x="599" y="156" width="313" height="279" rx="5" fill="url(#wood)" stroke="#8b6c45"/>
+<text x="616" y="184" fill="#ebca88" font-size="17" font-weight="bold">ACTIVE QUEST</text>
+<path d="M612 194H898" stroke="#886c4d"/>
+<text x="615" y="223" fill="#fff0c9" font-size="23" font-weight="bold">Breaking Some Eggs</text>
+<text x="615" y="252" fill="#d5c8ad" font-size="17">Find Strange Glyphs</text>
+<text x="615" y="277" fill="#d5c8ad" font-size="17">in The Mud Flats.</text>
+<rect x="615" y="304" width="281" height="104" rx="5" fill="#3d2421" stroke="#da775f" stroke-width="2"/>
+<text x="627" y="330" fill="#ffc1ac" font-size="18" font-weight="bold">STOP — BEFORE GLYPH WALL</text>
+<text x="627" y="357" fill="#f1d3c5" font-size="16">Talk to Tarkleigh first.</text>
+<text x="627" y="381" fill="#f1d3c5" font-size="16">Check All Ears dialogue.</text>
+<text x="45" y="462" fill="#d4bf91" font-size="17">U — World / Quest screen</text>
+<text x="45" y="493" fill="#9ca6ad" font-size="14">ILLUSTRATION ONLY · NOT AN IN-GAME SCREENSHOT · CHECK ACTUAL QUEST STATE IN GAME</text>
+</g>
+</svg>

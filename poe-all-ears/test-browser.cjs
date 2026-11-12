@@ -192,8 +192,11 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView .hubItem .hubHow').first().innerText()).includes('Quest Log'),true,'Quest instructions explain where to verify');
  await hub.locator('#hubView .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
- assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('รางวัลเควสต์'),true,'matching side quest shows reward reference');
- assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('Passive Refund'),true,'A Dirty Job sidequest reward shown');
+ await hub.locator('#hubToolbar select').nth(1).selectOption('all');
+ const dirtyJob=hub.locator('#hubView .hubItem').filter({hasText:'A Dirty Job'});
+ await dirtyJob.locator('.hubItemHelp > summary').click();
+ assert.equal((await dirtyJob.locator('.hubItemHelpBody').innerText()).includes('รางวัลเควสต์'),true,'matching side quest shows reward reference');
+ assert.equal((await dirtyJob.locator('.hubItemHelpBody').innerText()).includes('Passive Refund'),true,'A Dirty Job sidequest reward shown');
 
 
  await hub.locator('#hubNav [data-tab="review"]').click();

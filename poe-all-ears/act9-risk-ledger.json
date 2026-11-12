@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "act": 9,
+  "source": "legacy-3.9",
+  "patchCertified": false,
+  "warning": "Historical notes only; do not treat as certified current patch or safe quest route.",
+  "records": [
+    {
+      "id": 436,
+      "npc": "Petarus and Vanja",
+      "topic": "General Adus",
+      "legacyNote": "After getting The Storm Blade - Do NOT enter The Foothills",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 437,
+      "npc": "Sin",
+      "topic": "Queen of the Sands",
+      "legacyNote": "After seeing blocked way - Do NOT enter The Foothills",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 439,
+      "npc": "Sin *",
+      "topic": "Garukhan - (!)",
+      "legacyNote": "After killing Garukhan - Do NOT talk to Irasha or Tasuni",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 440,
+      "npc": "Petarus and Vanja",
+      "topic": "Oyun",
+      "legacyNote": "After killing Garukhan - Do NOT talk to Irasha or Tasuni",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 441,
+      "npc": "Irasha",
+      "topic": "Maraketh Justice - QC",
+      "legacyNote": "After giving Irasha the feather",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 446,
+      "npc": "Sin *",
+      "topic": "The Black Core",
+      "legacyNote": "After getting Trarthan Powder - Do NOT enter The Belly of the Beast",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 447,
+      "npc": "Sin *",
+      "topic": "Cataclysm",
+      "legacyNote": "After getting Trarthan Powder - Do NOT enter The Belly of the Beast",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 448,
+      "npc": "Weylam Roth *",
+      "topic": "Rescue - QC - (!)",
+      "legacyNote": "After killing Depraved Trinity - Do NOT continue to Act 10",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 449,
+      "npc": "Weylam Roth *",
+      "topic": "Lilly",
+      "legacyNote": "After killing Depraved Trinity - Do NOT continue to Act 10",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    }
+  ]
+}

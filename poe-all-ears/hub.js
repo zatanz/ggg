@@ -113,11 +113,24 @@ function criticalPanel(act){
  const sorted=[...stages]; // Preserve authored stage/source grouping; urgency is a label, never reorders quest timing.
  const riskLeft=sorted.filter(s=>!s.ids.every(id=>already.has(id))).length;
  section.append(el("div","ยังมี "+riskLeft+" / "+stages.length+" กลุ่มที่ทำเครื่องหมายไม่ครบ (บันทึกด้วยมือ)","hubCriticalCount"));
+ const index=Math.max(0,Math.min(stages.length-1,Number(state.focusByAct[act])||0));
+ state.focusByAct[act]=index;
+ const nav=el("div",undefined,"hubStepNavigator");
+ const position=el("div","ขั้นตรวจ "+(index+1)+" / "+stages.length,"hubStepPosition");
+ const select=el("select");select.setAttribute("aria-label","เลือกขั้นตรวจสำคัญ");
+ stages.forEach((stage,i)=>{const option=el("option",(i+1)+". "+stage.heading);option.value=String(i);select.append(option);});
+ select.value=String(index);
+ select.onchange=()=>{state.focusByAct[act]=Number(select.value);renderView();};
+ const previous=el("button","ก่อนหน้า"),next=el("button","ถัดไป");
+ previous.type="button";previous.disabled=index===0;next.type="button";next.disabled=index===stages.length-1;
+ previous.onclick=()=>{state.focusByAct[act]=index-1;renderView();};
+ next.onclick=()=>{state.focusByAct[act]=index+1;renderView();};
+ nav.append(position,select,previous,next);section.append(nav);
  const idToEntry=new Map(E.items.map(x=>[x.id,x]));
- for(const stage of sorted){
+ for(const stage of [sorted[index]]){
   const n=stage.ids.filter(id=>already.has(id)).length;
   const details=el("details",undefined,"hubCheckpoint");details.dataset.stage=stage.id;
-  details.open=criticalOpen.has(stage.id);
+  details.open=true;
   const summary=el("summary"),heading=el("span",undefined,"hubCheckpointTitle");
   heading.append(el("strong",stage.heading),el("small",stage.before));
   const stateText=el("span",n===stage.ids.length?"เก็บครบในเว็บ":"ยังขาด "+(stage.ids.length-n),"hubCheckpointState"+(n===stage.ids.length?" complete":""));

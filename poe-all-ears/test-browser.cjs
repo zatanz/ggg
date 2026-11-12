@@ -173,21 +173,25 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-goal-category="sidequests"]').count(),1,'Act quest checklist is one-tap accessible from 100% guide');
 
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'act route shows All Ears and other achievements');
- assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act 1 displays only one active quest checkpoint instead of three stacked');
- assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),3,'Act 1 retains all three checkpoints in step navigation');
- assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a1-glyphs"]').evaluate(x=>x.open),true,'initial highest-relevance Act 1 checkpoint is directly visible');
- await hub.locator('#hubView .hubStepNavigator select').selectOption('2');
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a1-fairgraves"]').innerText()).includes('Allflame'),true,'Fairgraves checkpoint accessible through focus navigation');
- await hub.locator('#hubView .hubStepNavigator select').selectOption('0');
- const checkpointMark=hub.locator('#hubView .hubCheckpoint [data-checkpoint-id="21"]');
- if(await checkpointMark.isChecked())await checkpointMark.uncheck();
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').count(),1,'Act 1 has source-backed area walkthrough');
+ assert.equal(await hub.locator('#hubView .hubWalkNavigator select option').count(),9,'Act 1 has nine source-ordered player phases');
+ await hub.locator('#hubView .hubWalkNavigator select').selectOption('3');
+ assert.equal(await hub.locator('#hubView [data-phase="mudflats"]').count(),1,'Mud Flats focus is selected');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="mudflats"]').innerText()).includes('ยังไม่ควร'),true,'unsafe quest transition has red stop gate');
+ await hub.locator('#hubView .hubQuestVisual > summary').click();
+ assert.equal(await hub.locator('#hubView .hubQuestVisual img').evaluate(x=>x.complete&&x.naturalWidth>0),true,'illustrative quest journal asset renders');
+ const thisDialog=hub.locator('#hubView [data-phase="mudflats"] .hubItem').filter({hasText:'Undead Rhoas'});
+ if(await thisDialog.locator('input[type="checkbox"]').isChecked())await thisDialog.locator('input[type="checkbox"]').uncheck();
  const statBeforeCheckpoint=await hub.locator('#hubStats .hubStat').first().innerText();
  hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView .hubCheckpoint [data-checkpoint-id="21"]').check();
- assert.equal(await hub.locator('#hubView .hubCheckpoint [data-checkpoint-id="21"]').isChecked(),true,'checkpoint check persists in historical item state');
- assert.notEqual(await hub.locator('#hubStats .hubStat').first().innerText(),statBeforeCheckpoint,'checkpoint check syncs with canonical All Ears character progress');
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a1-glyphs"]').innerText()).includes('ฟังแล้ว'),true,'checkpoint refresh preserves checked state');
-
+ await thisDialog.locator('input[type="checkbox"]').check();
+ assert.equal(await hub.locator('#hubView [data-phase="mudflats"] .hubItem').filter({hasText:'Undead Rhoas'}).locator('input').isChecked(),true,'walkthrough dialogue checkbox persists through canonical All Ears state');
+ assert.notEqual(await hub.locator('#hubStats .hubStat').first().innerText(),statBeforeCheckpoint,'walking checkpoint updates character achievement count');
+ await hub.locator('#hubView .hubWalkNavigator select').selectOption('7');
+ assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'3.29 Fairgraves issue surfaced as current-patch evidence gap');
+ assert.equal((await hub.locator('#hubView [data-phase="fairgraves"] .hubStopGate').innerText()).includes('Allflame'),true,'Fairgraves Allflame quest boundary is prominent');
+ await hub.locator('#hubView .hubWalkNavigator select').selectOption('0');
+ 
  assert.equal(await hub.locator('#hubView details.hubRewards').count(),1,'Act rewards grouped inside same page');
  await hub.locator('#hubView details.hubRewards > summary').click();
  assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),9,'Act 1 has nine historical quest reward categories');
@@ -283,6 +287,10 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView .hubStepNavigator select').inputValue(),'3','focus selector stays on Bandit checkpoint');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"] .hubCheckpointRowTrigger').first().innerText()).includes('Ancient Seal'),true,'Per-dialogue unlock moment is displayed');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('The Darkness'),true,'Bandit checkpoint explains Ancient Seal before killings');
+ assert.equal(await hub.locator('#hubView [data-conflict="steam-vs-wiki"]').count(),1,'Steam versus Wiki Bandits timing contradiction visible in Act 2');
+ assert.equal((await hub.locator('#hubView [data-conflict="steam-vs-wiki"]').innerText()).includes('Steam'),true,'historical source conflict is not silently resolved');
+ assert.equal((await hub.locator('#hubView [data-stop-stage="a2-darkness"]').innerText()).includes('ยังไม่ควร'),true,'Bandit decision is flagged before irreversible change');
+
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('หากเลือกช่วย Bandit'),true,'Act 2 preflight warns against unverified help-bandit path');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('Deal with the Bandits'),true,'Bandit checkpoint associates quest reward source');
 

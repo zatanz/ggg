@@ -148,28 +148,38 @@ if($("patch").value!=="legacy-3.9"&&state.tab!=="review"){
 }
 if(state.tab==="route"){renderRoute(panel);return;}if(state.tab==="review"){if($("patch").value!=="legacy-3.9")panel.append(el("div","หมายเหตุ: ตัวเลขและข้อมูลอ้างอิงยังเป็นชุดประวัติศาสตร์ ไม่รับรองสำหรับแพตช์ที่เลือก แต่สามารถสำรองข้อมูลทั้งหมดได้ตามปกติ","hubNotice"));panel.append(reviewPanel());return;}renderCategory(panel,state.tab);}
 function renderToolbar(){const t=$("hubToolbar");t.replaceChildren();
-if(state.tab==="ears"||state.tab==="review")return;
+if(state.tab==="review")return;
+if(state.tab!=="route"){
+const pick=el("div",undefined,"hubCategoryPicker");pick.setAttribute("role","group");pick.setAttribute("aria-label","เลือกประเภท Achievement ในสมุดสะสม");
+Object.keys(names).forEach(type=>{const button=el("button",uiNames[type]);button.type="button";button.dataset.category=type;button.setAttribute("aria-pressed",String(state.tab===type));button.onclick=()=>openTab(type);pick.append(button);});
+t.append(pick);
+}
+if(state.tab==="ears")return;
 const controls=el("div",undefined,"hubControls"),act=el("select"),status=el("select"),search=el("input");
-act.setAttribute("aria-label","Act หรือหมวดที่แสดง");
+act.setAttribute("aria-label","เลือก Act หรือพื้นที่");
 const acts=[["all","ทุก Act"],...[1,2,3,4,5,6,7,8,9,10].map(a=>[String(a),"Act "+a]),["Labyrinth","Labyrinth"],["Vaal","Vaal Side Areas"],["Epilogue","Epilogue"]];
 acts.filter(([v])=>state.tab!=="route"||(!isNaN(Number(v))&&v!=="all")).forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
 if(state.tab==="route"&&(state.act==="all"||isNaN(Number(state.act))))state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
-act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหา NPC, Lore หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
-[["todo","ยังไม่ติ๊ก"],["all","ทั้งหมด"],["done","ติ๊กแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
+act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหาชื่อ NPC, บทสนทนา หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
+[["todo","ยังไม่ได้เก็บ"],["all","แสดงทั้งหมด"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
 controls.append(act,search,status);t.append(controls);}
-function openTab(tab){state.tab=tab;document.body.dataset.hubTab=tab;[...document.querySelectorAll("#hubNav button")].forEach(btn=>{const yes=btn.dataset.tab===tab;btn.setAttribute("aria-selected",String(yes));btn.tabIndex=yes?0:-1;});
-$("hubView").hidden=tab==="ears";$("hubToolbar").hidden=tab==="ears"||tab==="review";state.limit=40;state.search="";renderToolbar();renderView();renderSummary();
+function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";if(Object.keys(names).includes(tab))state.collectionType=tab;
+state.tab=tab;document.body.dataset.hubTab=tab;
+const group=tab==="route"||tab==="review"?tab:"collection";
+[...document.querySelectorAll("#hubNav button")].forEach(btn=>{const yes=btn.dataset.tab===group;btn.setAttribute("aria-selected",String(yes));});
+$("hubView").hidden=tab==="ears";$("hubToolbar").hidden=tab==="review";state.limit=40;state.search="";renderToolbar();renderView();renderSummary();
 try{history.replaceState(null,"","#"+tab);}catch(e){}
 }
 function refresh(){renderSummary();if(state.tab!=="ears")renderView();}
 function boot(){const wrap=document.querySelector(".wrap"),header=wrap.querySelector("header"),profile=wrap.querySelector('section[aria-label="เลือกตัวละคร"]');if(!header||!profile)return;
-const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เลือกหมวด Achievement");const tabs=[["route","เล่นตาม Act"],["ears","All Ears"],["lore","Lore / Stone"],["waypoints","Waypoints"],["sidequests","Side Quests"],["review","Recheck / Safety"]];
+const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เมนูหลัก");const tabs=[["route","รายการตาม Act"],["collection","สมุดสะสม"],["review","ตรวจยอด / สำรอง"]];
 tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset.tab=id;b.onclick=()=>openTab(id);nav.append(b);});header.after(nav);
-const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","ภาพรวม Achievement · ตัวละครที่เลือก"),el("p","ติ๊กข้อมูลของตัวละครเดียวกันทุกหมวด · ชุดข้อมูลอ้างอิงปี 2025 / 3.9 ยังไม่รับรองแพตช์ 3.30","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
+const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","ความคืบหน้าของตัวละคร"),el("p","เช็กเฉพาะสิ่งที่ทำแล้วในเกม · ตัวเลขเป็นบันทึกของคุณ ไม่ใช่ข้อมูลจากเซิร์ฟเวอร์ PoE","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
 const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
-const status=el("div","สถานะข้อมูล: Wiki 2025 / ตารางเดิม 3.9 · ยังไม่มีหลักฐานรับรองทั้ง 484 บทสนทนาสำหรับแพตช์ 3.30","hubNotice");nav.after(status);
+const status=el("div","ข้อมูลอ้างอิง: PoE Wiki ปี 2025 และเช็กลิสต์ 3.9 · ยังไม่รับรองเส้นทางกับแพตช์ 3.30 เลือกเวอร์ชันข้อมูลด้านล่างก่อนเริ่มเก็บ Achievement","hubNotice hubDataNotice");nav.after(status);
+$("patch").addEventListener("change",()=>{renderView();});
 $("character").addEventListener("change",()=>{setTimeout(refresh,0);});const obs=new MutationObserver(()=>{setTimeout(refresh,0);});obs.observe($("character"),{childList:true});window.addEventListener("storage",e=>{if([MAIN,LORE,EXTRA,HUB].includes(e.key))refresh();});
-const initial=["route","ears","lore","waypoints","sidequests","review"].includes(location.hash.slice(1))?location.hash.slice(1):"route";openTab(initial);
+const initial=["route","ears","lore","waypoints","sidequests","review","collection"].includes(location.hash.slice(1))?location.hash.slice(1):"route";openTab(initial);
 }
 boot();
 })();

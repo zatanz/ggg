@@ -200,6 +200,15 @@ const assert=require('node:assert/strict');
  await hub.reload();
  await hub.locator('#hubToolbar select').first().selectOption('2');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
+ await hub.locator('#hubNav [data-tab="ears"]').click();
+ await hub.locator('#patch').selectOption('3.30');
+ await hub.locator('#hubNav [data-tab="route"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('ยังไม่มีรายการที่ตรวจรับรองสำหรับแพตช์นี้'),true,'unverified patch blocks route preview');
+ assert.equal(await hub.locator('#hubView .hubItem').count(),0,'3.30 must not expose historical rows as certified');
+ await hub.getByRole('button',{name:'ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)'}).click();
+ assert.equal(await hub.locator('#patch').inputValue(),'legacy-3.9','switch back to explicitly historical data');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'historical preview works after deliberate switch');
+
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),false,'unified page mobile overflow');

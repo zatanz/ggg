@@ -80,3 +80,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - validate-data.cjs updated to require both new patch profiles and reject legacy data exposure for unsupported profiles.
 - Added .github/workflows/all-ears-validation.yml to run Node 22 validation on repository changes and manual dispatch. Workflow execution/result is not yet confirmed; code review/readback is not equivalent to CI PASS.
 - Next: confirm GitHub Actions execution, research 3.30 patch changes, reconcile all Act 2 rows and complete patch-specific source audit. No verified-current-patch count increase.
+
+## Continuation update — Act 2 inventory and CI visibility (2026-11-12)
+- Source checked: official PoE 3.30 announcement schedules release Nov 13 PST; 3.30 patch notes are published, but no evidence yet certifies All Ears dialogue behavior in the new patch. Patch remains unsupported.
+- Added act2-inventory.json with 69/69 historical Act 2 records (IDs 42–110), 15 candidate risk records, and explicit null wikiRow/patchEvidence. This is an inventory audit, not row-by-row wiki reconciliation.
+- Updated validate-data.cjs with five inventory consistency and no-false-certification assertions.
+- GitHub connector's fetch_commit_workflow_runs returned no PR-triggered runs for the checkpoint commit; the API is PR-filtered, so this does NOT prove the push workflow failed or never ran. CI result remains unknown.
+- IMPORTANT: Wiki row numbers 101–103 in act2-advisory.js must not be conflated with local legacy IDs 101–103. They are different coordinate systems until mapping is established.
+- Next: obtain source-by-source Wiki row reconciliation for Act 2; inspect 3.30 patch note campaign impacts; execute real Node/CI and browser checks.

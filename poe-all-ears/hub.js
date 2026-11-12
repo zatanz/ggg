@@ -174,6 +174,15 @@ function refresh(){renderSummary();if(state.tab!=="ears")renderView();}
 function boot(){const wrap=document.querySelector(".wrap"),header=wrap.querySelector("header"),profile=wrap.querySelector('section[aria-label="เลือกตัวละคร"]');if(!header||!profile)return;
 const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เมนูหลัก");const tabs=[["route","รายการตาม Act"],["collection","สมุดสะสม"],["review","ตรวจยอด / สำรอง"]];
 tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset.tab=id;b.onclick=()=>openTab(id);nav.append(b);});header.after(nav);
+const profileRows=profile.querySelectorAll(".ctrls");
+if(profileRows.length>=2){
+  const manage=el("details",undefined,"hubManage");manage.id="hubManage";
+  manage.append(el("summary","จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม"));
+  const tools=el("div",undefined,"ctrls");
+  ["renameChar","deleteChar","export","import","reset"].forEach(id=>{const button=$(id);if(button)tools.append(button);});
+  manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);
+  profileRows[1].remove();profileRows[0].after(manage);
+}
 const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","ความคืบหน้าของตัวละคร"),el("p","เช็กเฉพาะสิ่งที่ทำแล้วในเกม · ตัวเลขเป็นบันทึกของคุณ ไม่ใช่ข้อมูลจากเซิร์ฟเวอร์ PoE","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
 const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
 const status=el("div","ข้อมูลอ้างอิง: PoE Wiki ปี 2025 และเช็กลิสต์ 3.9 · ยังไม่รับรองเส้นทางกับแพตช์ 3.30 เลือกเวอร์ชันข้อมูลด้านล่างก่อนเริ่มเก็บ Achievement","hubNotice hubDataNotice");nav.after(status);

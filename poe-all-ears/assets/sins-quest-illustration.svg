@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="Conceptual, not authentic PoE screenshot. ACT 2 INTRUDERS IN BLACK. Stop BEFORE RESCUING HELENA.">
+<title>INTRUDERS IN BLACK — Illustrated Quest and World map guide, NOT an in-game screenshot</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#21262c"/><stop offset="1" stop-color="#111821"/></linearGradient>
+<radialGradient id="paper" cx="50%" cy="45%" r="60%"><stop stop-color="#84745c"/><stop offset="1" stop-color="#38382f"/></radialGradient>
+<pattern id="texture" width="37" height="37" patternUnits="userSpaceOnUse"><path d="M0 0L37 37M37 0L0 37" stroke="#e9c688" opacity=".07" stroke-width="1"/></pattern>
+</defs>
+<rect width="960" height="540" fill="#10151c"/>
+<rect x="14" y="15" width="932" height="507" rx="14" fill="url(#bg)" stroke="#aa8653" stroke-width="3"/>
+<rect x="27" y="27" width="906" height="482" rx="10" fill="url(#texture)" stroke="#715a42"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="480" y="64" text-anchor="middle" fill="#f5ddb1" font-size="25" font-weight="700" letter-spacing="3">WORLD / QUEST JOURNAL</text>
+<path d="M165 76H794" stroke="#aa8551" stroke-width="2"/>
+<rect x="48" y="97" width="176" height="35" rx="4" fill="#6e4c2b" stroke="#d6ad70"/>
+<text x="136" y="122" fill="#fff0d0" font-size="19" text-anchor="middle" font-weight="700">ACT 2</text>
+<text x="252" y="122" fill="#b0b8bd" font-size="16" font-weight="700">WORLD MAP</text>
+<text x="613" y="122" fill="#d5d0c1" font-size="14">QUEST STATE EXAMPLE</text>
+<rect x="46" y="147" width="516" height="295" rx="7" fill="url(#paper)" stroke="#b19a72" stroke-width="2"/>
+<path d="M68 203Q166 171 203 230T342 236T537 213M65 380Q174 317 269 350T533 336" stroke="#3d3d34" stroke-width="21" opacity=".3" fill="none"/>
+<path d="M68 203Q166 171 203 230T342 236T537 213M65 380Q174 317 269 350T533 336" stroke="#d0b68d" stroke-width="2" opacity=".74" stroke-dasharray="6 10" fill="none"/>
+<g stroke="#b0a2a0" fill="#363638" stroke-width="4"><path d="M177 350V222Q177 151 254 151Q330 151 330 222V350Z"/><path d="M202 347V223Q202 184 254 184Q302 184 302 223V347Z" fill="#292831"/><circle cx="254" cy="246" r="27" fill="#504151" stroke="#c39c7d"/><path d="M239 245L269 245M254 230V260" stroke="#ddd1bd" stroke-width="5"/></g>
+<rect x="62" y="159" width="325" height="37" rx="5" fill="#252a2a" opacity=".83"/>
+<text x="74" y="184" fill="#ffe7b9" font-weight="700" font-size="17">CHAMBER OF SINS</text>
+<circle cx="404" cy="312" r="13" fill="#283039" stroke="#e1b66d" stroke-width="4"/><circle cx="404" cy="312" r="5" fill="#f8d58a"/>
+<text x="332" y="378" fill="#f7dec0" font-size="13" font-weight="700">WESTERN FOREST</text>
+<text x="77" y="412" fill="#f7dec0" font-size="13" font-weight="700">CHAMBER OF SINS</text>
+<rect x="579" y="147" width="333" height="295" rx="7" fill="#211f1d" stroke="#947350" stroke-width="2"/>
+<text x="595" y="175" fill="#dfb476" font-size="13" font-weight="700">QUEST TO CHECK</text>
+<text x="595" y="205" fill="#fff0c9" font-size="17" font-weight="700">INTRUDERS IN BLACK</text>
+<path d="M595 217H895" stroke="#7c6650"/>
+<rect x="595" y="230" width="300" height="45" rx="6" fill="#572a24" stroke="#ef9078" stroke-width="2"/>
+<text x="745" y="258" text-anchor="middle" fill="#ffd7c8" font-size="16" font-weight="700">STOP — BEFORE RESCUING HELENA</text>
+<text x="596" y="300" fill="#aea1ba" font-size="13" font-weight="700">DIALOGUE / ITEM CHECKLIST</text>
+<circle cx="606" cy="326" r="7" fill="none" stroke="#dbc08d" stroke-width="2"/><text x="622" y="331" fill="#f0e4d1" font-size="14">Finish Western Forest talks</text>
+<circle cx="606" cy="356" r="7" fill="none" stroke="#dbc08d" stroke-width="2"/><text x="622" y="361" fill="#f0e4d1" font-size="14">Enter Chamber of Sins</text>
+<circle cx="606" cy="386" r="7" fill="none" stroke="#dbc08d" stroke-width="2"/><text x="622" y="391" fill="#f0e4d1" font-size="14">Return to Yeena before Helena</text>
+<text x="47" y="475" fill="#d4c1a0" font-size="15">Quest guide concept · See the current quest state in-game (default key: U)</text>
+<text x="47" y="496" fill="#d4bba1" font-size="12" font-weight="700">ILLUSTRATION ONLY  ·  NOT AN IN-GAME SCREENSHOT  ·  CHECK THE GAME BEFORE PROGRESSING</text>
+</g>
+</svg>

@@ -194,3 +194,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Wired source routes in index.html and walkthrough.html. Updated validators for all 484 source row IDs, unique IDs, stable local IDs, branch options, and UI wiring.
 - **QA limitation:** CI validates internal consistency against historical data, not independent external correctness for every row; PoE Wiki itself is a 2025 guide. Current patch verified 0/484, routeSafe=false. Real browser interaction QA and in-game patch evidence remain outstanding.
 - Intermediate CI failures occurred while route data was added ahead of validators; check latest final CI run before reporting PASS.
+
+## Continuation — Persistence integrity repair and real Chromium QA gate (2026-11-12)
+- Reviewed index.html and found non-atomic state changes for character selection/add/rename/delete/reset and JSON import: in-memory state was changed even when localStorage.setItem failed. Fixed via snapshot() and commit(next) that restores prior state on save failure.
+- JSON import now rejects invalid app/version, empty or oversized character arrays, invalid character names and out-of-range/noninteger dialogue IDs; caps total characters at 100. Valid import adds characters atomically; invalid import does not mutate state. Defined validIds from the actual dialogue catalog. Removed implicit startup save to avoid silently overwriting existing data.
+- Added test-browser.cjs using real Chromium/Playwright: 484 visible checkboxes, persistence across reload, independent characters, JSON export/import, invalid backup rejection, localStorage quota failure rollback, 3.30 patch gate, 375px mobile horizontal overflow, and walkthrough runtime errors.
+- Added browser-smoke job to .github/workflows/all-ears-validation.yml. This downloads Chromium and executes the browser tests in GitHub Actions. Existing data and static UI checks remain.
+- **Do not mark browser QA PASS until the browser-smoke job has completed successfully.** Latest test run: https://github.com/zatanz/ggg/actions/runs/43172151668. Initial browser setup may take several minutes.
+- Wiki mapping remains 484/484 historical 2025 source rows; current patch certified 0/484. In-game patch and quest-state evidence remain outstanding.

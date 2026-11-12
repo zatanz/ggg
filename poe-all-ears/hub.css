@@ -273,3 +273,55 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
  .hubSpecialSteps li{grid-template-columns:54px 1fr;padding:9px;gap:6px}
  .hubLoreNavigation button{width:100%}
 }
+
+/* Goal-directed "four Achievements to 100%" experience: one obvious next action. */
+.hubMissionTotal{grid-column:1/-1;border:1px solid #776446;border-radius:13px;background:#242a2a;padding:16px;display:grid;gap:11px;min-width:0}
+.hubMissionHeading{display:flex;flex-direction:column;gap:4px}
+.hubMissionHeading strong{color:#f1d9a5;font-size:17px;line-height:1.4}
+.hubMissionHeading span{font-size:12px;line-height:1.6}
+.hubMissionScore{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+.hubMissionScore b{font-size:27px;color:#f0e6d3;letter-spacing:-.03em}
+.hubMissionScore span{font-size:12px;color:#a9d4ba}
+.hubMissionTotal progress{height:11px;width:100%;border-radius:999px;accent-color:#93c6aa}
+.hubMissionNext{display:flex;gap:12px;align-items:center;justify-content:space-between;background:#293338;padding:11px 13px;border-radius:9px}
+.hubMissionNext>span{display:flex;flex-direction:column;min-width:0;gap:3px}
+.hubMissionNext strong{font-size:13px;color:#f2e3c4}
+.hubMissionNext small{font-size:11px;color:#bdc4c1;line-height:1.6}
+.hubMissionNext button{flex:0 0 auto;font-weight:700;min-height:41px;background:#59442a;color:#f3e3bf;border:1px solid #987d50;border-radius:8px;padding:8px 12px}
+.hubMissionRoadmap{border-top:1px solid #4c5753;padding-top:10px}
+.hubMissionRoadmap>summary{cursor:pointer;font-size:12px;color:#e5d0a5;padding:5px 1px}
+.hubMissionStages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:8px 0 3px}
+.hubMissionStage{text-align:left;display:flex;justify-content:space-between;gap:6px;align-items:center;background:#2d3334;border:1px solid #4c5855;padding:10px 12px;border-radius:9px;color:#e9e4d9;min-width:0}
+.hubMissionStage strong{font-size:12px;overflow-wrap:anywhere}
+.hubMissionStage span{font-size:11px;white-space:nowrap;color:#c5c7b9}
+.hubActMission{border:1px solid #687b68;border-radius:12px;padding:13px 14px;background:#242e2b;margin:13px 0}
+.hubActMissionHead h3{font-size:16px;color:#e6dfc3;line-height:1.45;margin:0 0 4px}
+.hubActMissionHead p{margin:0 0 9px;font-size:12px;line-height:1.6}
+.hubActMissionList{display:grid;gap:6px;margin:10px 0}
+.hubActMissionItem{display:flex;gap:9px;align-items:center;justify-content:space-between;border:1px solid #42574c;border-radius:8px;background:#29372f;padding:10px;min-width:0}
+.hubActMissionItemText{display:flex;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
+.hubActMissionItemText strong{font-size:12px;color:#ece4d4}
+.hubActMissionItemText small{font-size:11px;color:#b9d7be}
+.hubActMissionExample{font-size:11px;color:#bbc8b9;line-height:1.4}
+.hubActMissionItem button{font-size:11px;min-height:37px;flex:0 0 auto;border:1px solid #698c76;border-radius:8px;padding:8px 9px;color:#d8e8d8}
+.hubActMissionWarning{background:#3e2c23;border:1px solid #95674b;border-radius:8px;color:#ffe0bd;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px}
+.hubActMissionWarning>div{display:flex;flex-direction:column;gap:4px}
+.hubActMissionWarning strong{font-size:12px;line-height:1.5}
+.hubActMissionWarning span{font-size:11px;line-height:1.5}
+.hubActMissionWarning button{min-height:39px;white-space:nowrap;flex:0 0 auto;border:1px solid #af7959;border-radius:8px;color:#ffe4c4;padding:8px 11px}
+.hubActMission>.hubSubtle{margin:8px 0 0;font-size:11px}
+.hubActMissionItem:focus-within,.hubMissionStage:focus-visible{outline:2px solid #eac38a;outline-offset:1px}
+[data-group]{scroll-margin-top:18px}
+[data-critical-act]{scroll-margin-top:18px}
+@media(max-width:720px){
+ .hubMissionTotal{padding:12px;gap:9px}
+ .hubMissionHeading strong{font-size:15px}
+ .hubMissionScore b{font-size:24px}
+ .hubMissionNext,.hubActMissionWarning{align-items:stretch;flex-direction:column}
+ .hubMissionNext button,.hubActMissionWarning button{width:100%}
+ .hubMissionStages{grid-template-columns:1fr}
+ .hubActMission{padding:10px}
+ .hubActMissionItem{align-items:stretch;flex-direction:column}
+ .hubActMissionItem button{width:100%}
+ .hubActMissionExample{max-width:100%}
+}

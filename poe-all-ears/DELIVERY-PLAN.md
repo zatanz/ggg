@@ -351,3 +351,9 @@ The six-sheet `PoE_All_Ears_484_Checklist.xlsx` reference was inspected with wor
 UI revised to focus on one source-risk step at a time (next/previous/jump selector); NPC/lore/waypoint/quest detail chapters collapse by default, with state per Act. Special 3-step guidance for The Labyrinth and random Vaal Side Areas is now visible via the Act strip and Lore shortcut. Vaal name search is preserved across checkbox rerenders. No new achievement counts, schema or character-progress migration. Quest rewards by class remain deferred.
 
 Must retain current-patch uncertified status; 3.30 is scheduled Nov 13 PST and in-game conditions have not been verified. Review [REFERENCE-WORKBOOK-UX-AUDIT.md](./REFERENCE-WORKBOOK-UX-AUDIT.md), [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md) and latest Actions before release.
+
+## Checkpoint — 100% Achievement goal-first experience (2026-11-12)
+
+The main UI now answers "what to do to reach 100% of the **four tracked achievements**" instead of exposing all content by default. A 745-item manual-completion hero and 13-phase roadmap cover Acts 1–10, Labyrinth 10 lore + 1 waypoint, Vaal 16 lore, and Epilogue 2 waypoints, without double-counting. Each Act has four category completion gates and direct access to missing items and the next unresolved historic danger checkpoint. All checkboxes use original per-character IDs and Backup format. Static validation verifies exactly-once partition, Chromium tests verify interactive navigation and responsive behavior.
+
+This is **not** a full quest-state safe walk order or complete PoE-game achievement list. Zero item-level 3.30 certification has been established; completion in UI does not imply the server unlocked an achievement. Still P0: 3.30 in-game proof (especially Bandits and 77 workbook WARNINGS), quest sequencing, special lore availability, reward verification; still P1: human usability QA. See [ROAD-TO-100-PERCENT.md](./ROAD-TO-100-PERCENT.md).

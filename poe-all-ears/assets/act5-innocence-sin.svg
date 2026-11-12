@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Death to Purity — Act 5 quest-state diagram</title>
+<desc id="desc">Original illustration of an NPC conversation stop decision. Not a Path of Exile screenshot.</desc>
+<defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#182940"/><stop offset="1" stop-color="#090e17"/></linearGradient></defs>
+<rect width="960" height="540" fill="url(#bg)"/><rect x="22" y="23" width="916" height="494" rx="16" fill="none" stroke="#aa8a54" stroke-width="2"/>
+<text x="47" y="64" font-family="Georgia,serif" font-size="31" fill="#f1d29c">Death to Purity</text>
+<text x="48" y="94" font-family="Arial,sans-serif" font-size="18" fill="#bbcad9">Act 5 · Chamber of Innocence</text>
+<rect x="50" y="124" width="489" height="327" rx="10" fill="#203144" stroke="#64788c"/>
+<rect x="556" y="124" width="354" height="327" rx="10" fill="#1d2d3b" stroke="#64788c"/>
+<text x="72" y="167" font-family="Georgia,serif" font-size="25" fill="#ead0a3">QUEST DECISION</text>
+<rect x="70" y="190" width="446" height="59" rx="8" fill="#2d4357"/><text x="87" y="227" font-family="Arial,sans-serif" font-size="18" fill="#e9f1f5">Defeat Innocence</text>
+<rect x="70" y="268" width="446" height="68" rx="8" fill="#3d4c3d" stroke="#becc8d"/><text x="86" y="309" font-family="Arial,sans-serif" font-size="19" fill="#f9e7b7" font-weight="bold">Sin: Innocence (#277)</text>
+<rect x="70" y="356" width="446" height="59" rx="8" fill="#2d4357"/><text x="87" y="394" font-family="Arial,sans-serif" font-size="18" fill="#e9f1f5">Only then leave the chamber</text>
+<text x="574" y="165" font-family="Georgia,serif" font-size="26" fill="#f6ce99">DO NOT SKIP</text>
+<rect x="574" y="197" width="318" height="125" rx="8" fill="#523037" stroke="#de9d8b" stroke-width="2"/>
+<text x="592" y="240" font-family="Arial,sans-serif" font-size="20" fill="#ffe4d7" font-weight="bold">STOP before leaving</text>
+<text x="592" y="277" font-family="Arial,sans-serif" font-size="16" fill="#f4cfc1">Confirm dialogue in game</text>
+<text x="574" y="378" font-family="Arial,sans-serif" font-size="18" fill="#d0dce7">Not verified for patch 3.30</text>
+<text x="574" y="414" font-family="Arial,sans-serif" font-size="16" fill="#b0c2d2">Source: Wiki 2025 / Steam 3.28</text>
+<rect x="48" y="468" width="864" height="34" fill="#253a48"/><text x="63" y="491" font-family="Arial,sans-serif" font-size="16" fill="#ffe0a9" font-weight="bold">NOT AN IN-GAME SCREENSHOT · ILLUSTRATION ONLY</text>
+</svg>

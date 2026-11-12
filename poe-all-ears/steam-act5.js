@@ -217,7 +217,15 @@
       277
     ],
     "keyItems": [],
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act5-innocence-sin.svg",
+      "title": "Death to Purity · STOP before leaving",
+      "alt": "ภาพจำลองหน้า Quest Death to Purity ระบุการคุย Sin ก่อนออกจากพื้นที่ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังเอาชนะ Innocence คุย Sin: Innocence (ID 277) ใน Chamber of Innocence ก่อนออกจากพื้นที่",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "vilenta-after",
@@ -387,7 +395,15 @@
     "keyItems": [
       "Sign of Purity"
     ],
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act5-ossuary-sign.svg",
+      "title": "The Ravenous God · STOP before exiting",
+      "alt": "ภาพจำลองหน้า Quest The Ravenous God ระบุการคุย Sin ก่อนออกจากพื้นที่ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังเก็บ Sign of Purity ให้คุย Sin: The Sign of Purity (ID 295) ใน The Ossuary ก่อนออกจากพื้นที่",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "kitava-after",

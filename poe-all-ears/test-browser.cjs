@@ -332,7 +332,7 @@ const assert=require('node:assert/strict');
  assert.equal((await ossuaryArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Ossuary image marked conceptual');
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('The Ossuary'),true,'English route guidance covers actual quest steps');
- assert.equal((await hub.locator('#hubView .hubStopGate').innerText()).includes('Do not leave'),true,'English STOP retains source-specific condition');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="ossuary-sin"]').innerText()).includes('Do not leave'),true,'English STOP retains source-specific condition');
  await hub.locator('#hubGameNames').selectOption('both');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Sign of Purity'),true,'English source term retained in both-name mode');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('สัญลักษณ์'),true,'Thai editorial translation appears in both-name mode');

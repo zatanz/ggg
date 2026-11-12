@@ -301,21 +301,25 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#results').isVisible(),true,'classic list still usable in unified page');
  await hub.locator('#hubNav [data-tab="route"]').click();
  await hub.locator('.hubActStrip [data-act="2"]').click();
- assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act 2 only renders the current checkpoint');
- assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),7,'Act 2 provides seven selectable stages');
- assert.equal(await hub.locator('#hubView .hubCheckpoint').first().getAttribute('data-stage'),'a2-whitebeast','Act 2 starts with first historical checkpoint');
- await hub.locator('#hubView .hubStepNavigator select').selectOption('3');
- assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').evaluate(x=>x.open),true,'Act 2 Bandit preflight opens when selected');
- assert.equal(await hub.locator('#hubView .hubStepNavigator select').inputValue(),'3','focus selector stays on Bandit checkpoint');
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"] .hubCheckpointRowTrigger').first().innerText()).includes('Ancient Seal'),true,'Per-dialogue unlock moment is displayed');
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('The Darkness'),true,'Bandit checkpoint explains Ancient Seal before killings');
- assert.equal(await hub.locator('#hubView [data-conflict="steam-vs-wiki"]').count(),1,'Steam versus Wiki Bandits timing contradiction visible in Act 2');
- assert.equal((await hub.locator('#hubView [data-conflict="steam-vs-wiki"]').innerText()).includes('Steam'),true,'historical source conflict is not silently resolved');
- assert.equal((await hub.locator('#hubView [data-stop-stage="a2-darkness"]').innerText()).includes('ยังไม่ควร'),true,'Bandit decision is flagged before irreversible change');
-
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('หากเลือกช่วย Bandit'),true,'Act 2 preflight warns against unverified help-bandit path');
- assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('Deal with the Bandits'),true,'Bandit checkpoint associates quest reward source');
-
+ assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 opens with zone-based source chronology rather than seven stacked risk groups');
+ assert.equal(await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select option').count(),10,'Act 2 uses ten source-backed chronological phases');
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('2');
+ assert.equal((await hub.locator('#hubView [data-phase="western-forest"] .hubStopGate').innerText()).includes('Chamber of Sins'),true,'Act 2 explicitly stops premature Chamber of Sins progress');
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+ assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubResearchConflict').innerText()).includes('Steam'),true,'Act 2 bandit first-contact timing is flagged as contradictory');
+ assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubStopGate').innerText()).includes('ยังไม่ควร'),true,'Bandit killing must wait for relevant Darkness dialogue');
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks').count(),1,'risk-specific source rows remain available on demand');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),7,'detailed Act 2 wiki danger groups are preserved');
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
+ assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').evaluate(x=>x.open),true,'Act 2 hazard crosswalk opens selected Bandit guard');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"] .hubCheckpointRowTrigger').first().innerText()).includes('Ancient Seal'),true,'row-level unlock conditions remain visible');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('The Darkness'),true,'danger panel explains the Darkness conditions');
+ assert.equal((await hub.locator('#hubView .hubHistoricalRisks [data-conflict="steam-vs-wiki"]').innerText()).includes('Steam'),true,'historical guide inconsistency is not silenced in detailed mode');
+ assert.equal((await hub.locator('#hubView [data-stop-stage="a2-darkness"]').innerText()).includes('ยังไม่ควร'),true,'Bandit irreversible action is protected by a linked stop gate');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('หากเลือกช่วย Bandit'),true,'help-bandit branch remains marked unverified');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('Deal with the Bandits'),true,'Bandit quest reward is still related to the correct quest');
+ 
  assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),5,'Act 2 has five quest rewards');
  await hub.locator('#hubView details.hubRewards > summary').click();
  assert.equal((await hub.locator('#hubView details.hubRewards').innerText()).includes('Deal with the Bandits'),true,'Act 2 bandit reward remains available');
@@ -344,7 +348,8 @@ const assert=require('node:assert/strict');
 
  await hub.reload();
  await hub.locator('.hubActStrip [data-act="2"]').click();
- await hub.locator('#hubView .hubStepNavigator select').selectOption('3');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
  for(const [act,count] of [[4,4],[5,3],[6,6],[7,5],[8,2],[9,4]]){
   await hub.locator('.hubActStrip [data-act="'+act+'"]').click();

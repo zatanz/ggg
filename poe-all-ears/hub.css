@@ -235,3 +235,41 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubPostQuests .hubCheckpoint>summary{background:#263237}
 .hubPostQuests .hubCheckpoint[open]>summary{background:#2d4547;border-bottom-color:#456164}
 .hubPostQuests .hubItem{margin:8px 0 12px}
+
+/* Focused quest walkthrough: one checkpoint visible at a time, optional detail groups remain closed. */
+.hubStepNavigator{display:grid;grid-template-columns:auto minmax(180px,1fr) auto auto;gap:8px;align-items:center;margin:10px 0 12px;padding:10px;background:#191f24;border:1px solid #5a5346;border-radius:10px}
+.hubStepPosition{font-size:12px;font-weight:700;color:#edd4a4;white-space:nowrap}
+.hubStepNavigator select{width:100%;min-width:0;max-width:none;padding:9px 10px;border-radius:8px;background:#292f36;color:#eee6d6;border:1px solid #686252}
+.hubStepNavigator button{font-weight:650;border-radius:8px;padding:8px 13px;min-width:72px}
+.hubStepNavigator button:disabled{opacity:.35;cursor:not-allowed}
+.hubSpecialRoute{max-width:100%}
+.hubSpecialRoute .hubActProgress{margin-bottom:14px}
+.hubSpecialSteps{display:grid;gap:7px;padding:0;margin:10px 0 15px;list-style:none;counter-reset:none}
+.hubSpecialSteps li{display:grid;grid-template-columns:66px 1fr;gap:9px;align-items:start;border:1px solid #484f53;background:#252b30;border-radius:9px;padding:10px 12px;font-size:12px;line-height:1.6;color:#ede4d5}
+.hubSpecialStepNo{font-weight:700;color:#e9c786;white-space:nowrap}
+.hubSpecialGroup{margin-top:9px}
+.hubSpecialGroup>summary{min-height:54px}
+.hubSpecialGroup .hubChapterBody{padding-top:8px}
+.hubSpecialGroup .hubList{gap:6px}
+.hubSpecialRoute>.hubSubtle a{color:#dfc58e}
+.hubVaalGuide{margin:15px 0 10px}
+.hubVaalGuide>summary{font-weight:700}
+.hubVaalGuide>.hubPanel{margin:0;background:transparent;border:0;box-shadow:none}
+.hubExcelWarnings{margin:12px 0 16px;border-color:#655344}
+.hubExcelWarnings>summary{background:#312923}
+.hubExcelWarnings .hubChapterBody{padding:12px}
+.hubWorkbookRisk{font-size:11px;line-height:1.5}
+.hubLoreNavigation{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:#232b2b;border:1px solid #4e6862;border-radius:10px;padding:11px 12px;margin:10px 0}
+.hubLoreNavigation p{flex:1 0 100%;margin:0}
+.hubLoreNavigation button{font-size:12px;min-height:39px;border:1px solid #72907f;border-radius:8px;padding:8px 11px}
+.hubActStrip button[data-act="Labyrinth"],.hubActStrip button[data-act="Vaal"]{min-width:125px;white-space:nowrap}
+@media(max-width:720px){
+ .hubStepNavigator{grid-template-columns:1fr 1fr;gap:7px}
+ .hubStepPosition{grid-column:1;align-self:center}
+ .hubStepNavigator select{grid-column:1 / -1;grid-row:2}
+ .hubStepNavigator button{grid-row:3;min-width:0}
+ .hubStepNavigator button:nth-last-child(2){grid-column:1}
+ .hubStepNavigator button:last-child{grid-column:2}
+ .hubSpecialSteps li{grid-template-columns:54px 1fr;padding:9px;gap:6px}
+ .hubLoreNavigation button{width:100%}
+}

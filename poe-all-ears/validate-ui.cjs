@@ -50,5 +50,11 @@ for(const name of ['index.html','walkthrough.html']){
         check(html.includes('if(!save())o.checked=previousChecked'),name+': localStorage write rollback missing');
   }
 }
+const hubSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+try{new vm.Script(hubSource,{filename:'hub.js'})}catch(e){errors.push('hub.js: '+e.message)}
+const index=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+check(index.includes('src="./lore-data.js"')&&index.includes('src="./extra-data.js"')&&index.includes('src="./hub.js"')&&index.includes('href="./hub.css"'),'unified hub dependencies not loaded');
+check(index.includes('window.POE_HUB_BRIDGE')&&index.includes('mark:function(id,done)'),'legacy progress bridge unavailable');
+check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));
 if(errors.length)process.exitCode=1;

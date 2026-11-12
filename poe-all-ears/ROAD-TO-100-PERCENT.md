@@ -78,3 +78,10 @@
 - Expanded Lore / Waypoint / sidequest disclosures are visible in their relevant phase. Existing Act 4 Wiki risk checkpoints remain accessible separately and source evidence limitations remain visible.
 - Two original 960×540 SVG quest illustrations are added to Act 4 and clearly identified as **not actual game screenshots**. They illustrate dialogue sequence rather than in-game UI accuracy.
 - Site code and CI do not certify game version 3.30. See [Act 4 research and verification ledger](./ACT4-WALKTHROUGH-AUDIT.md). Next: Acts 5–10, source-based route and 3.30 gameplay evidence once a build is available.
+
+## Act 5 / bilingual and UX workflow (November 2026)
+
+- 12 source-led stages with 66 canonical entries: All Ears 44, No Stone 12, Locomancer 8, No Loose Ends 2; original backup and per-character progression preserved.
+- Independent language controls: guidance TH/EN and quest/area/item names EN/TH/both. Canonical English source always recoverable; Thai names are explicitly editorial, not official.
+- Stage-level four-achievement progress, STOP Next confirmation and visible mobile Act grid reduce missing quest information and horizontal-navigation confusion.
+- 2 original conceptual Act 5 images bring total to 11. Project-scoped skill: `../.agents/skills/poe-achievement-ux/SKILL.md`. See [Act 5 bilingual/UX evidence](./ACT5-BILINGUAL-UX-AUDIT.md). Acts 6–10 still need source-led stages; no patch 3.30 in-game certification yet.

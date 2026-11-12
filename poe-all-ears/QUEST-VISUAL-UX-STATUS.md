@@ -53,3 +53,9 @@ Seven total author-created, static source-linked SVG mock illustrations are now 
 ## Act 4 visual checkpoint (2026-11-12)
 
 Two additional source-linked conceptual 960×540 SVGs have been attached: (1) **An Indomitable Spirit** before freeing Deshret, and (2) **The Eternal Nightmare** before handing organs to Piety. Total is now **9 original illustrations** across Acts 1–4. Both are expandable per phase, have Thai ALT, source links, direct full-size source assets and a conspicuous *not a real game screenshot* notice. No PoE 3.30 captured quest-screen art has been verified.
+
+## Act 5 language and visual UX additions (November 2026)
+
+Two new source-linked 960×540 original SVG diagrams illustrate the exact Sin dialogue stops in **Death to Purity** (Act 5, after Innocence and before exiting Chamber) and **The Ravenous God** (after collecting Sign of Purity, before exiting Ossuary). **11 total illustrated quest-state checkpoints**, none claimed to be verified PoE game screenshots. Each new visual has the real quest title, per-phase link, screenshot disclaimer and an explicit action check.
+
+A new independent language panel chooses guidance language and quest/item name language, with mobile-readable labels. Act 5 route steps have authored TH/EN copy. The older Acts retain original Thai detail disclosure in English mode where translation is not yet reviewed; this is a known limitation, not silently omitted content.

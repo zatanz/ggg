@@ -157,10 +157,19 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
  assert.equal(await hub.locator('#hubView').isVisible(),true,'route view is visible');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'act route shows All Ears and other achievements');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubHow').first().innerText()).includes('Dying Exile'),true,'Act 1 guide appears under actual dialogue');
+ await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
+ assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ไม่ได้รับรองแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="lore"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('No Stone Unturned'),true,'Lore tab renders without leaving page');
  assert.equal(await hub.locator('#hubToolbar select').first().inputValue(),'all','full collection defaults to all Acts rather than inherited campaign Act');
+ assert.equal((await hub.locator('#hubView .hubItem .hubHow').first().innerText()).includes('Letters of Exile'),true,'Lore guidance names discoverable objects');
+ await hub.locator('#hubView .hubItemHelp > summary').first().click();
+ assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ชื่อจดหมายอาจออกซ้ำ'),true,'Random Letters of Exile explanation visible');
+
  await hub.locator('#hubView .hubVaal > summary').click();
  await hub.locator('#hubView input[aria-label="ค้นหาชื่อ Vaal Side Area"]').fill('Concealed Caldarium');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Wiki #128'),true,'Vaal area links local ID to Wiki row');
@@ -173,6 +182,10 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Locomancer'),true,'Waypoint panel renders');
  await hub.locator('#hubToolbar [data-category="sidequests"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('No Loose Ends'),true,'sidequest panel renders');
+ assert.equal((await hub.locator('#hubView .hubItem .hubHow').first().innerText()).includes('Quest Log'),true,'Quest instructions explain where to verify');
+ await hub.locator('#hubView .hubItemHelp > summary').first().click();
+ assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
+
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'unified backup section renders');
  await hub.locator('#hubView details.hubChapter > summary').first().click();

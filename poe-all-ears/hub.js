@@ -728,7 +728,39 @@ try{history.replaceState(null,"","#"+tab);}catch(e){}
 function refresh(){renderSummary();if(state.tab!=="ears")renderView();}
 function boot(){const wrap=document.querySelector(".wrap"),header=wrap.querySelector("header"),profile=wrap.querySelector('section[aria-label="เลือกตัวละคร"]');if(!header||!profile)return;
 const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เมนูหลัก");const tabs=[["route","ตาม Act"],["collection","เช็กลิสต์ทั้งหมด"],["review","ตรวจยอด / สำรอง"]];
-tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset.tab=id;b.onclick=()=>openTab(id);nav.append(b);});header.after(nav);
+tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset.tab=id;b.onclick=()=>openTab(id);nav.append(b);});
+ const languagePanel=el("section",undefined,"hubLanguagePanel");languagePanel.id="hubLanguagePanel";
+ const heading=el("div",undefined,"hubLanguageHeading"),languageTitle=el("strong"),languageSubtitle=el("small");heading.append(languageTitle,languageSubtitle);
+ const languageChoices=el("div",undefined,"hubLanguageChoices");
+ function choose(id,options){
+   const wrap=el("label",undefined,"hubLanguageChoice"),title=el("span"),select=el("select");select.id=id;
+   options.forEach(([value,label])=>{const item=el("option",label);item.value=value;select.append(item);});
+   wrap.append(title,select);languageChoices.append(wrap);return {title,select};
+ }
+ const guidance=choose("hubDescriptionLanguage",[["th","ไทย · TH"],["en","English · EN"]]);
+ const namesChoice=choose("hubGameNames",[["en","English · ชื่อในเกม"],["both","ไทย + English"],["th","ไทย · คำแปล"]]);
+ const languageNote=el("p",undefined,"hubLanguageNote");languagePanel.append(heading,languageChoices,languageNote);
+ header.after(languagePanel);languagePanel.after(nav);
+ const updateLanguageLabels=()=>{
+   const locale=LANG.get();document.documentElement.lang=locale.description;document.body.dataset.descriptionLang=locale.description;
+   guidance.select.value=locale.description;namesChoice.select.value=locale.names;
+   languageTitle.textContent=tr("ตั้งค่าภาษาในการเล่น","Language and in-game terminology");
+   languageSubtitle.textContent=tr("แยกคำแนะนำออกจากชื่อเควสต์/ไอเท็ม","Guidance language and game names are independent");
+   guidance.title.textContent=tr("คำอธิบาย / วิธีเก็บ","Guidance / instructions");
+   namesChoice.title.textContent=tr("ชื่อเควสต์ พื้นที่ และไอเท็ม","Quest, area and item names");
+   languageNote.textContent=tr(
+    "ชื่อไทยเป็นคำแปลเพื่อช่วยอ่าน ไม่ใช่ชื่อทางการ · Act 5 มีคำแนะนำสองภาษา ส่วน Act เก่ายังมีรายละเอียดภาษาอังกฤษไม่ครบ",
+    "Thai names are editorial aids, not official localization. Act 5 has full bilingual route steps; older Acts retain Thai source details where English translations are incomplete."
+   );
+   const title=header.querySelector("h1"),intro=header.querySelector("p");
+   if(title)title.textContent=tr("บันทึก Achievement","Achievement Companion");
+   if(intro)intro.textContent=tr("เช็กสิ่งที่ต้องทำทีละช่วงเควสต์ เพื่อเก็บบทสนทนา Lore Waypoint และเควสต์รอง โดยไม่ข้ามจุดเสี่ยง","Follow each quest step, collect NPC dialogue, Lore, Waypoints and side quests, and review missable checkpoints before advancing.");
+   [["route","ตาม Act","By Act"],["collection","เช็กลิสต์ทั้งหมด","All checklists"],["review","ตรวจยอด / สำรอง","Verify / Backup"]].forEach(([id,th,en])=>{const btn=nav.querySelector('[data-tab="'+id+'"]');if(btn)btn.textContent=tr(th,en);});
+ };
+ const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
+ guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
+ namesChoice.select.onchange=()=>changeLanguage("names",namesChoice.select.value);
+ updateLanguageLabels();
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){
   const manage=el("details",undefined,"hubManage");manage.id="hubManage";
@@ -738,9 +770,9 @@ if(profileRows.length>=2){
   manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);
   profileRows[1].remove();profileRows[0].after(manage);
 }
-const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2","เส้นทางสู่ 100%"),el("p","เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
+const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2",tr("เส้นทางสู่ 100%","Path to 100%")),el("p",tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof"),"hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
 const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
-const status=el("div","ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30 เลือกเวอร์ชันข้อมูลด้านล่างก่อนใช้รายการ","hubNotice hubDataNotice");nav.after(status);
+const status=el("div",tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30"),"hubNotice hubDataNotice");nav.after(status);
 $("patch").addEventListener("change",()=>{renderView();});
 $("character").addEventListener("change",()=>{setTimeout(refresh,0);});const obs=new MutationObserver(()=>{setTimeout(refresh,0);});obs.observe($("character"),{childList:true});window.addEventListener("storage",e=>{if([MAIN,LORE,EXTRA,HUB].includes(e.key))refresh();});
 const initial=["route","ears","lore","waypoints","sidequests","review","collection"].includes(location.hash.slice(1))?location.hash.slice(1):"route";openTab(initial);

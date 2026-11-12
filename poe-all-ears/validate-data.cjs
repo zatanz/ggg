@@ -252,7 +252,7 @@ assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
 assert(checkpointData?.schema===1&&checkpointData.routeSafe===false&&checkpointData.patch==='2025-wiki-legacy-unverified','Critical checkpoints must not imply verified patch-safe quest route');
-assert(checkpointData.acts[1].length===3&&checkpointData.acts[2].length===7,'Expected 3 Act 1 and 7 Act 2 risk stages');
+assert(checkpointData.acts[1].length===3&&checkpointData.acts[2].length===7&&checkpointData.acts[3].length===5,'Expected 3 Act 1, 7 Act 2, and 5 Act 3 risk stages');
 let stepRows=0;
 for(const [act,list] of Object.entries(checkpointData.acts)){
  const stageIds=new Set();
@@ -268,7 +268,9 @@ for(const [act,list] of Object.entries(checkpointData.acts)){
   }
  }
 }
-assert(stepRows===28,'Critical checkpoint crosswalk must cover 28 explicit risk item references');
+assert(stepRows===35,'Critical checkpoint crosswalk must cover 35 explicit risk item references');
+assert(checkpointData.acts[3].find(x=>x.id==='a3-clarissa').ids.includes(118),'Clarissa pre-handoff source row missing');
+assert(checkpointData.acts[3].find(x=>x.id==='a3-piety').ids.includes(161),'Piety pre-boss source row missing');
 load('guide-descriptions.js');
 const descriptions=ctx.window.POE_ITEM_DESCRIPTIONS;
 assert(descriptions.schema===1&&descriptions.certifiedFor330===false,'Guide descriptions must remain patch-unverified');

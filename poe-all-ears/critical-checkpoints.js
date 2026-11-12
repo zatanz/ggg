@@ -245,6 +245,367 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "prereq": "The Sarn Encampment",
         "priority": "critical"
       }
+    ],
+    "4": [
+      {
+        "id": "a4-deshret",
+        "act": 4,
+        "quest": "An Indomitable Spirit",
+        "heading": "The Mines · ก่อนปลดปล่อย Deshret",
+        "before": "ก่อนปลดปล่อย Deshret ใน The Mines Level 2",
+        "action": "หลังรับ An Indomitable Spirit ให้กลับไปคุย Kira เรื่อง Deshret ก่อนปลดปล่อยเธอ",
+        "risk": "บทสนทนาของ Kira มีสถานะก่อนและหลังช่วย Deshret",
+        "ids": [
+          220
+        ],
+        "prereq": "The Mines",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      },
+      {
+        "id": "a4-crystal-veins",
+        "act": 4,
+        "quest": "The Eternal Nightmare",
+        "heading": "The Crystal Veins · ก่อนเข้า Belly of the Beast",
+        "before": "ก่อนจบเควสต์ของ Kaom/Daresso และก่อนเข้า The Belly of the Beast",
+        "action": "คุย Lady Dialla ใน The Crystal Veins; หลังจบ The King of Desire และ The King of Fury ตรวจหัวข้อ Petarus and Vanja/Oyun; หลังใช้ Rapture Device ตรวจ Kira ก่อนเดินต่อ",
+        "risk": "อย่าจบทั้งสองเส้นทางของ Kaom และ Daresso หรือเข้า Belly of the Beast ก่อนเก็บบทสนทนาตามสถานะ",
+        "ids": [
+          223,
+          231,
+          237,
+          233
+        ],
+        "prereq": "The Crystal Veins",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      },
+      {
+        "id": "a4-piety",
+        "act": 4,
+        "quest": "The Eternal Nightmare",
+        "heading": "Piety · ก่อนเข้า The Harvest",
+        "before": "หลังเอาชนะ Piety ใน The Belly of the Beast แต่ก่อนเข้า The Harvest",
+        "action": "คุยกับ Piety เรื่อง The Godless Three ก่อนเข้า The Harvest",
+        "risk": "บทสนทนานี้อยู่หลังสู้ Piety แต่ก่อนเดินเข้าพื้นที่ถัดไป",
+        "ids": [
+          241
+        ],
+        "prereq": "The Belly of the Beast",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      },
+      {
+        "id": "a4-malachai",
+        "act": 4,
+        "quest": "The Eternal Nightmare",
+        "heading": "Malachai · ก่อนส่งอวัยวะหรือฆ่าบอส",
+        "before": "ก่อนส่งอวัยวะทั้งหมดให้ Piety และก่อนฆ่า Malachai",
+        "action": "หลังสู้ Piety คุย Tasuni เรื่อง Malachai's Apprentices; ใน The Harvest คุย Piety เรื่อง Malachai ก่อนส่งอวัยวะ; หลังส่งแล้วคุย Dialla ก่อนฆ่า Malachai",
+        "risk": "มีบทสนทนาต่างสถานะกันก่อนและหลังส่งอวัยวะ ห้ามข้ามช่วง",
+        "ids": [
+          245,
+          247,
+          248
+        ],
+        "prereq": "The Harvest",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      }
+    ],
+    "5": [
+      {
+        "id": "a5-utula",
+        "act": 5,
+        "quest": "",
+        "heading": "Utula · ก่อนฆ่า High Templar Avarius",
+        "before": "หลังจัดการ Justicar Casticus แต่ก่อนฆ่า High Templar Avarius",
+        "action": "กลับไปคุย Utula เรื่อง Justicar Casticus ตามเงื่อนไขก่อนเดินเรื่องต่อ",
+        "risk": "หลังฆ่า Avarius อาจไม่พบ Utula ในเมืองเพื่อเก็บหัวข้อนี้",
+        "ids": [
+          275
+        ],
+        "prereq": "Act 5",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      },
+      {
+        "id": "a5-innocence",
+        "act": 5,
+        "quest": "",
+        "heading": "The Chamber of Innocence · ก่อนออกจากห้อง",
+        "before": "หลังฆ่า Innocence แต่ก่อนออกจาก The Chamber of Innocence",
+        "action": "คุย Sin หัวข้อ Innocence ทันทีหลังสู้บอส ก่อนออกจากพื้นที่",
+        "risk": "บทสนทนานี้มีเงื่อนไขว่าต้องอยู่ในห้องหลังสู้บอส",
+        "ids": [
+          277
+        ],
+        "prereq": "The Chamber of Innocence",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      },
+      {
+        "id": "a5-ossuary",
+        "act": 5,
+        "quest": "",
+        "heading": "The Ossuary · ก่อนออกจากพื้นที่",
+        "before": "หลังได้ Sign of Purity แต่ก่อนออกจาก The Ossuary",
+        "action": "คุย Sin เรื่อง The Sign of Purity ขณะที่ยังอยู่ใน The Ossuary",
+        "risk": "อย่าออกจากพื้นที่ก่อนตรวจว่าฟังบทสนทนาแล้ว",
+        "ids": [
+          295
+        ],
+        "prereq": "The Ossuary",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      }
+    ],
+    "6": [
+      {
+        "id": "a6-karui",
+        "act": 6,
+        "quest": "The Father of War",
+        "heading": "The Karui Fortress · Eye of Conquest และ Tukohama",
+        "before": "ก่อนใช้ Eye of Conquest / เข้า Karui Fortress และก่อนฆ่า Tukohama",
+        "action": "หลังรับเควสต์ คุย Tarkleigh / Sin ตามหัวข้อ Eye of Conquest และ Karui Fortress; คุย Bestel เรื่อง Tukohama ก่อนสู้บอส",
+        "risk": "หัวข้อหนึ่งปรากฏหลังใช้ Eye of Conquest แต่ก่อนเข้าป้อม ต้องตรวจตามแต่ละช่วง",
+        "ids": [
+          318,
+          320,
+          321,
+          322
+        ],
+        "prereq": "The Karui Fortress",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      },
+      {
+        "id": "a6-shavronne",
+        "act": 6,
+        "quest": "Essence of Umbra",
+        "heading": "Shavronne · ก่อนสู้และก่อนออกจาก The Prison",
+        "before": "ก่อนฆ่า Shavronne the Returned และหลังฆ่าก่อนออกจาก The Prison",
+        "action": "คุย Bestel เรื่อง Shavronne ก่อนสู้; หลังสู้ให้คุย Sin แล้วจึงออกจาก The Prison",
+        "risk": "ข้อความก่อนฆ่าและหลังฆ่าต้องเก็บคนละช่วง",
+        "ids": [
+          324,
+          326
+        ],
+        "prereq": "The Prison",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      },
+      {
+        "id": "a6-ryslatha",
+        "act": 6,
+        "quest": "The Puppet Mistress",
+        "heading": "Ryslatha · ก่อนฆ่าบอสและก่อนเข้าพื้นที่ถัดไป",
+        "before": "หลังจบ Essence of Umbra แต่ก่อนฆ่า Ryslatha; ก่อนเข้า The Valley of the Fire Drinker",
+        "action": "คุย Sin เรื่อง The Puppet Mistress และ The Cloven One ตามจังหวะเควสต์",
+        "risk": "หัวข้อ The Cloven One ต้องคุยกับ Bestel ก่อน; อย่ารีบเข้าพื้นที่ถัดไป",
+        "ids": [
+          330,
+          328
+        ],
+        "prereq": "Act 6",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      },
+      {
+        "id": "a6-graveyard",
+        "act": 6,
+        "quest": "",
+        "heading": "The Ship Graveyard · ก่อนเข้า The Cavern of Anger",
+        "before": "หลังคุย Nessa แต่ก่อนเดินต่อไป The Cavern of Anger",
+        "action": "กลับมาคุย Tarkleigh เรื่อง The Ship Graveyard ตามเงื่อนไข",
+        "risk": "อย่าเดินเข้า The Cavern of Anger ก่อนตรวจหัวข้อนี้",
+        "ids": [
+          333
+        ],
+        "prereq": "Act 6",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      },
+      {
+        "id": "a6-flag",
+        "act": 6,
+        "quest": "",
+        "heading": "The Black Flag · ก่อนจุดไฟที่ Beacon",
+        "before": "หลังได้ The Black Flag แต่ก่อนใช้ที่ประภาคาร",
+        "action": "คุย Lilly Roth เรื่อง The Black Flag ก่อนเผาธงที่ Beacon",
+        "risk": "การเปลี่ยนสถานะธงอาจทำให้หัวข้อเดิมหาย",
+        "ids": [
+          336
+        ],
+        "prereq": "The Beacon",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      },
+      {
+        "id": "a6-brine",
+        "act": 6,
+        "quest": "",
+        "heading": "The Brine King's Reef · ก่อนฆ่า Tsoagoth",
+        "before": "หลังถึง The Brine King's Reef แต่ก่อนฆ่า Tsoagoth",
+        "action": "คุย Weylam Roth เรื่อง The Brine King's Reef และ The Brine King ก่อนสู้บอส",
+        "risk": "อย่าฆ่า Tsoagoth ก่อนเก็บทั้งสองบทสนทนา",
+        "ids": [
+          338,
+          339
+        ],
+        "prereq": "The Brine King's Reef",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      }
+    ],
+    "7": [
+      {
+        "id": "a7-den",
+        "act": 7,
+        "quest": "",
+        "heading": "The Den · ก่อนเดินต่อจากทางที่ถูกปิด",
+        "before": "หลังพบทางถูกปิด แต่ก่อนเดินต่อไป The Den",
+        "action": "กลับไปคุย Helena หัวข้อ The Den ตามเงื่อนไขก่อนเข้าสู่พื้นที่",
+        "risk": "บทสนทนานี้ผูกกับสถานะของทางที่ถูกปิด",
+        "ids": [
+          365
+        ],
+        "prereq": "Act 7",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+      },
+      {
+        "id": "a7-maligaro",
+        "act": 7,
+        "quest": "",
+        "heading": "Maligaro's Sanctum · ก่อนออกจากพื้นที่",
+        "before": "หลังฆ่า Maligaro แต่ก่อนออกจาก Sanctum",
+        "action": "คุย Sin หัวข้อ Maligaro หลังสู้บอสทันทีตามคำเตือนเดิม",
+        "risk": "คำเตือนเรื่องก่อนออกจากพื้นที่เป็นข้อสังเกตจากข้อมูลเดิม ยังต้องตรวจในเกม",
+        "ids": [
+          369
+        ],
+        "prereq": "Maligaro's Sanctum",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+      },
+      {
+        "id": "a7-gruthkul",
+        "act": 7,
+        "quest": "Queen of Despair",
+        "heading": "Gruthkul · ก่อนฆ่าบอส",
+        "before": "หลังรับ Queen of Despair แต่ก่อนฆ่า Gruthkul",
+        "action": "คุย Eramir เรื่อง Gruthkul ก่อนสู้บอส",
+        "risk": "อาจพลาดหัวข้อ Eramir หากจัดการ Gruthkul ก่อน",
+        "ids": [
+          378
+        ],
+        "prereq": "Act 7",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+      },
+      {
+        "id": "a7-fireflies",
+        "act": 7,
+        "quest": "",
+        "heading": "Fireflies / Yeena · ก่อนพบกันใน The Vaal City",
+        "before": "หลังเก็บ Fireflies ครบ แต่ก่อนพบ Yeena ใน The Vaal City",
+        "action": "คุย Yeena เรื่อง Arakaali's Temple ตามจังหวะเควสต์ก่อนเดินทางต่อ",
+        "risk": "การพบ Yeena เร็วเกินไปอาจเปลี่ยนหัวข้อที่มีให้คุย",
+        "ids": [
+          382
+        ],
+        "prereq": "The Vaal City",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+      },
+      {
+        "id": "a7-arakaali",
+        "act": 7,
+        "quest": "",
+        "heading": "Temple of Decay · ก่อนออกหลังฆ่า Arakaali",
+        "before": "หลังฆ่า Arakaali แต่ก่อนออกจาก Temple of Decay Level 2",
+        "action": "คุย Yeena เรื่อง Arakaali หลังสู้บอสแล้วตรวจว่าฟังครบก่อนออกจากพื้นที่",
+        "risk": "อย่าออกจากพื้นที่หลังฆ่าบอสโดยไม่ตรวจหัวข้อนี้",
+        "ids": [
+          384
+        ],
+        "prereq": "Temple of Decay",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+      }
+    ],
+    "8": [
+      {
+        "id": "a8-love",
+        "act": 8,
+        "quest": "Love is Dead",
+        "heading": "Love is Dead · ก่อนส่งเควสต์และก่อนออกจาก The Quay",
+        "before": "ก่อนทำ Love is Dead เสร็จ และหลังฆ่า Tolman แต่ก่อนออกจาก The Quay",
+        "action": "หลังรับเควสต์คุย Hargan ก่อนทำสำเร็จ; หลังจัดการ Tolman ให้คุย Clarissa ทันที ก่อนออกจาก The Quay",
+        "risk": "บทสนทนาเกิดต่างจังหวะกัน ให้ตรวจทีละช่วงตามสถานะเควสต์",
+        "ids": [
+          407,
+          411
+        ],
+        "prereq": "The Quay",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8"
+      },
+      {
+        "id": "a8-yugul",
+        "act": 8,
+        "quest": "Reflection of Terror",
+        "heading": "Yugul · ก่อนฆ่าบอส",
+        "before": "หลังจบ The Wings of Vastiri แต่ก่อนฆ่า Yugul",
+        "action": "คุย Sin เรื่อง Yugul แล้วคุย Hargan หัวข้อ Yugul ก่อนสู้บอส",
+        "risk": "Sin และ Hargan มีหัวข้อเรียงตามเงื่อนไขก่อนฆ่า Yugul",
+        "ids": [
+          409,
+          410
+        ],
+        "prereq": "Act 8",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8"
+      }
+    ],
+    "9": [
+      {
+        "id": "a9-adus",
+        "act": 9,
+        "quest": "The Storm Blade",
+        "heading": "The Storm Blade · ก่อนเข้า The Foothills",
+        "before": "หลังจบ The Storm Blade แต่ก่อนเข้า The Foothills",
+        "action": "คุย Petarus and Vanja เรื่อง General Adus ก่อนเดินไปพื้นที่ถัดไป",
+        "risk": "อย่าเข้า The Foothills ก่อนตรวจหัวข้อนี้",
+        "ids": [
+          436
+        ],
+        "prereq": "Highgate",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+      },
+      {
+        "id": "a9-garukhan",
+        "act": 9,
+        "quest": "",
+        "heading": "Garukhan · ก่อนคุย Irasha หรือ Tasuni",
+        "before": "หลังฆ่า Garukhan แต่ก่อนคุย Irasha/Tasuni",
+        "action": "คุย Sin หัวข้อ Garukhan ตามจังหวะหลังสู้บอส",
+        "risk": "การคุย NPC อื่นก่อนอาจเปลี่ยนหัวข้อในแหล่งอ้างอิงเก่า",
+        "ids": [
+          439
+        ],
+        "prereq": "Act 9",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+      },
+      {
+        "id": "a9-ember",
+        "act": 9,
+        "quest": "",
+        "heading": "The Dark Ember · ก่อนเข้า Belly of the Beast",
+        "before": "หลังได้ Basilisk Acid และ Trarthan Powder แต่ก่อนเข้าพื้นที่ถัดไป",
+        "action": "คุย Sin ที่ The Quarry และ Highgate ตามเงื่อนไขก่อนเข้า The Belly of the Beast",
+        "risk": "ตรวจทั้งตำแหน่งและสถานะไอเทมก่อนเดินเรื่องต่อ",
+        "ids": [
+          445
+        ],
+        "prereq": "The Quarry / Highgate",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+      },
+      {
+        "id": "a9-rescue",
+        "act": 9,
+        "quest": "",
+        "heading": "The Depraved Trinity · ก่อนเดินไป Act 10",
+        "before": "หลังฆ่า The Depraved Trinity แต่ก่อนเปลี่ยนไป Act 10",
+        "action": "คุย Weylam Roth หัวข้อ Rescue หลังสู้บอสก่อนออกจาก Act 9",
+        "risk": "อย่าเข้า Act 10 ก่อนฟังหัวข้อนี้",
+        "ids": [
+          448
+        ],
+        "prereq": "Act 9",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+      }
     ]
   },
   "sourceStatus": "wiki-2025-quest-state-risk-only",

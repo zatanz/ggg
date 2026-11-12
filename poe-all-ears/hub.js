@@ -181,7 +181,7 @@ try{history.replaceState(null,"","#"+tab);}catch(e){}
 }
 function refresh(){renderSummary();if(state.tab!=="ears")renderView();}
 function boot(){const wrap=document.querySelector(".wrap"),header=wrap.querySelector("header"),profile=wrap.querySelector('section[aria-label="เลือกตัวละคร"]');if(!header||!profile)return;
-const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เมนูหลัก");const tabs=[["route","รายการตาม Act"],["collection","สมุดสะสม"],["review","ตรวจยอด / สำรอง"]];
+const nav=el("nav",undefined);nav.id="hubNav";nav.setAttribute("aria-label","เมนูหลัก");const tabs=[["route","ตาม Act"],["collection","เช็กลิสต์ทั้งหมด"],["review","ตรวจยอด / สำรอง"]];
 tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset.tab=id;b.onclick=()=>openTab(id);nav.append(b);});header.after(nav);
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){

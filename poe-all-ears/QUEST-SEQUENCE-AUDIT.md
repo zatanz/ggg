@@ -9,7 +9,7 @@ The old route grouped dialogues according to 2025 PoE Wiki row order and listed 
 
 ## Priority implementation (P0)
 
-Implemented **15 explicitly scoped checkpoints across Acts 1–3**, referencing **35 dialogue checklist IDs**. Each checkpoint now shows:
+Implemented **39 explicitly scoped checkpoints across Acts 1–9**, referencing **72 dialogue checklist IDs**. Each checkpoint now shows:
 - A named **before** boundary (the action that should not be crossed yet), related quest and location.
 - Short concrete action instructions and a link to the exact Act section in the 2025 Wiki guide.
 - Interactive existing All Ears dialogue checkboxes, reading and writing the same per-character IDs as the master checklist. No duplicate achievement counters.
@@ -48,6 +48,22 @@ The Bandits sequence describes the all-kill route in the historical Wiki and can
 | Sever the Right Hand | Maramoa's Crossing the River after entering Ebony Barracks **before General Gravicius** | 158 |
 | Lunaris Temple / Piety's Pets | Grigor and Maramoa after corresponding Gravicius/quest-reward states **before killing Piety** | 164, 161 |
 
+### Acts 4–9 (24 checkpoints, 37 references)
+
+The source route files already carried 37 **before-action** warnings across Acts 4–9. This pass surfaces **all 37** as accessible manual checkpoints, grouped by the related boss, area or quest state. They are *not* claimed to be a complete quest-by-quest walkthrough. Exact stage/ID relationships are in [critical-checkpoints.js](./critical-checkpoints.js).
+
+| Act | Checkpoints | Source-linked warnings | Critical situations |
+| --- | ---: | ---: | --- |
+| 4 | 4 | 9 | Deshret before rescue, Crystal Veins before Belly of the Beast, Piety before The Harvest, Malachai before/after organs |
+| 5 | 3 | 3 | Utula before Avarius, Sin after Innocence before exiting, Sin/Sign of Purity before leaving Ossuary |
+| 6 | 6 | 12 | Eye of Conquest / Tukohama, Shavronne, Ryslatha, Ship Graveyard, Black Flag, Tsoagoth |
+| 7 | 5 | 5 | The Den, Maligaro, Gruthkul, Yeena before Vaal City, Arakaali |
+| 8 | 2 | 4 | Love is Dead / Clarissa and Tolman, Yugul dialogues before boss |
+| 9 | 4 | 4 | General Adus before Foothills, Garukhan, Dark Ember before Belly of the Beast, Weylam Roth before Act 10 |
+| 10 | 0 | 0 | The 2025 route source contains no before-action marker; **not** evidence of no missable dialogue |
+
+For stages spanning different quest states, multiple dialogue IDs appear under the same disclosure but each **must be collected at its own trigger**, not all at once. The user's checkboxes record hearing dialogue, not merely arriving at a quest boundary.
+
 ### Important limitations
 
 **These are risk checkpoints, not a globally optimal play order.** Within each chain, the source gives clear before/after constraints. Unrelated questlines can be interleaved; the UI intentionally labels the section as "จุดที่อาจพลาด" instead of "verified step-by-step route".
@@ -60,7 +76,7 @@ Original checklist totals remain 484 All Ears, 140 Lore, 91 Waypoints, 30 Side Q
 | --- | --- | --- |
 | P0 | Check each dangerous quest transition in the actual supported game build | Evidence per topic/quest state, client version, NPC, screenshots/video, before and after |
 | P0 | Check bandit choice branches and Eramir first/second/survivor topics | Fresh-character matrix, including help vs kill alternatives |
-| P1 | Extend evidence-led checkpoints to Acts 4–10 | Review route data triggers and missable warnings, create grouped dependencies only when sourced |
+| P1 | Review evidence for Acts 4–9 source-flagged checkpoints; investigate Act 10 missing risk markers | 39 risk groups entered as historical references; each must be verified against current quest states |
 | P1 | Cross-link all applicable side quests and useful passive-point rewards with the correct quest checkpoint | Avoid inferring required campaign steps from item value |
 | P1 | Visual and task usability QA on real browser | Verify find-next-step, time-to-find-reward, checkbox comprehension, accessibility |
 | Deferred | Build-specific and class-specific gem/equipment rewards | Intentionally out of scope until route data and UX are sound |

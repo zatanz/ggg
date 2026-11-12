@@ -134,12 +134,13 @@
 <script src="./route-act3.js"></script>
 <script src="./route-act4.js"></script>
 <script src="./route-act5.js"></script>
+<script src="./route-act6.js"></script>
 <script>
 (function(){
   "use strict";
   var items = window.ALL_EARS_DATA && window.ALL_EARS_DATA.items;
   var wikiMeta=new Map();
-  if(Array.isArray(items)){[window.ALL_EARS_ROUTE_ACT1,window.ALL_EARS_ROUTE_ACT2,window.ALL_EARS_ROUTE_ACT3,window.ALL_EARS_ROUTE_ACT4,window.ALL_EARS_ROUTE_ACT5].forEach(function(route){if(!route||!Array.isArray(route.records))return;var actNumber=route===window.ALL_EARS_ROUTE_ACT1?1:route===window.ALL_EARS_ROUTE_ACT2?2:route===window.ALL_EARS_ROUTE_ACT3?3:route===window.ALL_EARS_ROUTE_ACT4?4:5;var source=items.filter(function(x){return x.act===actNumber});var ids=new Set(source.map(function(x){return x.id}));if(source.length!==route.records.length||new Set(route.records.map(function(r){return r.id})).size!==source.length||!route.records.every(function(r){return ids.has(r.id)}))return;route.records.forEach(function(r){wikiMeta.set(r.id,r)})});items=items.slice().sort(function(a,b){return a.act-b.act||((wikiMeta.get(a.id)?.wikiRow??a.id)-(wikiMeta.get(b.id)?.wikiRow??b.id))})}
+  if(Array.isArray(items)){[window.ALL_EARS_ROUTE_ACT1,window.ALL_EARS_ROUTE_ACT2,window.ALL_EARS_ROUTE_ACT3,window.ALL_EARS_ROUTE_ACT4,window.ALL_EARS_ROUTE_ACT5,window.ALL_EARS_ROUTE_ACT6].forEach(function(route){if(!route||!Array.isArray(route.records))return;var actNumber=route===window.ALL_EARS_ROUTE_ACT1?1:route===window.ALL_EARS_ROUTE_ACT2?2:route===window.ALL_EARS_ROUTE_ACT3?3:route===window.ALL_EARS_ROUTE_ACT4?4:route===window.ALL_EARS_ROUTE_ACT5?5:6;var source=items.filter(function(x){return x.act===actNumber});var ids=new Set(source.map(function(x){return x.id}));if(source.length!==route.records.length||new Set(route.records.map(function(r){return r.id})).size!==source.length||!route.records.every(function(r){return ids.has(r.id)}))return;route.records.forEach(function(r){wikiMeta.set(r.id,r)})});items=items.slice().sort(function(a,b){return a.act-b.act||((wikiMeta.get(a.id)?.wikiRow??a.id)-(wikiMeta.get(b.id)?.wikiRow??b.id))})}
   var guideEntries = (window.ALL_EARS_GUIDE && window.ALL_EARS_GUIDE.entries) || {};
   var questRewards = (window.POE_QUEST_REWARDS && window.POE_QUEST_REWARDS.acts) || [];
   var patchProfiles = (window.POE_PATCH_PROFILES && window.POE_PATCH_PROFILES.profiles) || [];

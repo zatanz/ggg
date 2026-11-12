@@ -112,3 +112,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added 3 CI assertions checking source-note count, text/ID fidelity and no false patch certification.
 - Wiki direct access still cache-missed, so no Act 3 row ordering was guessed. Act 3 remains 71 inventory entries / 0 source-row mappings.
 - GitHub Actions run for the latest changes must be confirmed; do not claim green until readback.
+
+## Continuation — Act 3 Wiki reconciliation completed (2026-11-12)
+- Accessed PoE Wiki All Ears guide directly via public search; its Act 3 section lists 71 numbered rows 111–181. Source: https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3 (last updated 2025-06-30).
+- Reconciled all 71 historical Act 3 IDs to source row numbers, preserving legacy IDs; added route-act3.js and updated act3-inventory.json to wiki-row-matched-patch-unverified.
+- Wired Act 3 source ordering into index.html and walkthrough.html. Added source-derived critical warning: fighting Piety in Crematorium before freeing Clarissa may permanently remove one dialogue; exact one is unknown.
+- Added source-row, unique-ID, quest-risk and UI wiring checks in validate-data.cjs and validate-ui.cjs. The new route remains routeSafe=false; current patch verification remains 0/484.
+- Act 1–3 now have 41+69+71 = 181 source-row-mapped records; Acts 4–10 remain historical-only order.
+- GitHub Actions results need checking after final checkpoint commit. Browser interaction QA and source-versus-patch review remain outstanding.

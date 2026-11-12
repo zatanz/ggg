@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','guide-act1.js','act2-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','guide-act1.js','act2-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -75,6 +75,20 @@ const sourceRisks=act3Items.filter(x=>x.note);
 assert(act3Risks.records.length===sourceRisks.length&&sourceRisks.length===9,'Act 3 legacy-note risk count mismatch');
 assert(act3Risks.records.every((x,i)=>x.id===sourceRisks[i].id&&x.legacyNote===sourceRisks[i].note),'Act 3 risk ledger does not match source notes');
 assert(act3Risks.patchCertified===false&&act3Risks.records.every(x=>x.patchCertified===false&&x.review==='legacy-note-unverified'),'Act 3 risks must not claim patch verification');
+const act4Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act4-inventory.json'),'utf8'));
+const act4Items=d.items.filter(x=>x.act===4);
+const act4Route=ctx.window.ALL_EARS_ROUTE_ACT4;
+assert(act4Items.length===72&&act4Inventory.records.length===72&&act4Route.records.length===72,'Act 4 must have 72 entries (wiki rows 182–253)');
+assert(new Set(act4Route.records.map(x=>x.id)).size===72,'Act 4 route duplicate IDs');
+assert(act4Route.records.every((x,i)=>x.wikiRow===182+i),'Act 4 wiki row range mismatch');
+assert(act4Route.records.every(x=>act4Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 4 route source mismatch');
+assert(act4Inventory.records.every((x,i)=>x.id===act4Items[i].id&&x.npc===act4Items[i].npc&&x.topic===act4Items[i].dialog&&x.legacyNote===act4Items[i].note),'Act 4 inventory source drift');
+const byAct4Id=new Map(act4Route.records.map(x=>[x.id,x]));
+assert(act4Inventory.records.every(x=>x.wikiRow===byAct4Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 4 inventory wiki mapping drift or unsupported patch claim');
+assert(act4Route.routeSafe===false&&act4Inventory.routeSafe===false&&act4Inventory.patchCertified===false,'Act 4 cannot claim certified route');
+assert(act4Route.records.filter(x=>x.before).length===9,'Act 4 risk warnings missing');
+assert(act4Route.records.find(x=>x.wikiRow===233)?.id===237,'Act 4 King of Fury dialogue mapping wrong');
+assert(act4Route.records.find(x=>x.wikiRow===246)?.id===245,'Act 4 Malachai apprentices dialogue mapping wrong');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

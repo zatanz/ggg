@@ -212,6 +212,19 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubWalkNavigator select').selectOption('7');
  assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'3.29 Fairgraves issue surfaced as current-patch evidence gap');
  assert.equal((await hub.locator('#hubView [data-phase="fairgraves"] .hubStopGate').innerText()).includes('Allflame'),true,'Fairgraves Allflame quest boundary is prominent');
+ for(const [index,phase,file] of [["5","prison","brutus-quest-illustration.svg"],["7","fairgraves","fairgraves-quest-illustration.svg"]]){
+   await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption(index);
+   const visual=hub.locator('#hubView [data-visual-phase="'+phase+'"]');
+   assert.equal(await visual.count(),1,'Act 1 visual belongs to its true quest phase: '+phase);
+   assert.equal(await visual.evaluate(x=>x.open),false,'large image remains collapsed until requested');
+   await visual.locator(':scope > summary').click();
+   await hub.waitForFunction(key=>{const img=document.querySelector('[data-visual-phase="'+key+'"] img');return !!img&&img.complete&&img.naturalWidth>0;},phase,{timeout:10000});
+   assert.equal((await visual.locator('img').getAttribute('src')).endsWith(file),true,'phase illustration matches correct quest: '+phase);
+   assert.equal((await visual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'phase illustration is not passed off as a real screenshot');
+   assert.equal((await visual.locator('.hubVisualLinks a').first().getAttribute('target'))==='_blank',true,'full-size image opens independently');
+ }
+ await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('0');
+
  await hub.locator('#hubView .hubWalkNavigator select').selectOption('0');
  
  assert.equal(await hub.locator('#hubView details.hubRewards').count(),1,'Act rewards grouped inside same page');
@@ -310,6 +323,23 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual > summary').click();
  await hub.waitForFunction(()=>{const img=document.querySelector('#hubView [data-phase="bandit-decisions"] .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual').innerText()).includes('ภาพประกอบ'),true,'Act 2 quest image is clearly labelled illustrative, not a game screenshot');
+ for(const [index,phase,file] of [["3","sins-before-helena","sins-quest-illustration.svg"],["6","roots","roots-quest-illustration.svg"]]){
+   await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption(index);
+   const visual=hub.locator('#hubView [data-visual-phase="'+phase+'"]');
+   assert.equal(await visual.count(),1,'Act 2 source-linked quest visual exists: '+phase);
+   await visual.locator(':scope > summary').click();
+   await hub.waitForFunction(key=>{const img=document.querySelector('[data-visual-phase="'+key+'"] img');return !!img&&img.complete&&img.naturalWidth>0;},phase,{timeout:10000});
+   assert.equal((await visual.locator('img').getAttribute('src')).endsWith(file),true,'illustration asset matches phase: '+phase);
+   assert.equal((await visual.locator('.hubVisualCheck').innerText()).includes('จุดที่ต้องตรวจในเกมจริง'),true,'visual identifies real-world in-game follow-up rather than decorative image');
+   assert.equal((await visual.locator('figcaption').innerText()).includes('ตัวอย่างแนวคิด'),true,'figure caption says illustrated concept');
+ }
+ await hub.setViewportSize({width:390,height:844});
+ const lastImage=hub.locator('#hubView [data-visual-phase="roots"] img');
+ const rect=await lastImage.evaluate(img=>({width:img.getBoundingClientRect().width,viewport:window.innerWidth,overflow:document.documentElement.scrollWidth>window.innerWidth+2}));
+ assert.equal(rect.width<=rect.viewport&&rect.overflow===false,true,'quest visual remains readable and does not cause horizontal overflow at 390px');
+ await hub.setViewportSize({width:1280,height:900});
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+
 
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubStopGate').innerText()).includes('ยังไม่ควร'),true,'Bandit killing must wait for relevant Darkness dialogue');
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks').count(),1,'risk-specific source rows remain available on demand');

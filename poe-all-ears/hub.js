@@ -230,6 +230,7 @@ function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.i
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
 try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
 function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนเปิด Ancient Seal / สู้ Bandits"),el("p","ทำเครื่องหมายหลังคุยกับ Alira, Oak และ Kraityn แล้ว เปิด Ancient Seal เพื่อฟัง The Darkness ที่เกี่ยวข้องก่อนฆ่า Bandits (Kraityn ไม่มีหัวข้อนี้ตาม Wiki ปี 2025)","hubSubtle"));
+wrap.append(el("p","สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30","hubCheckpointRisk"));
 const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","คุยกับ Alira แล้ว"],["oak","คุยกับ Oak แล้ว"],["kraityn","คุยกับ Kraityn แล้ว"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
 const s=getSafety();
 checks.forEach(([id,title])=>{const lab=el("label"),inp=el("input");inp.type="checkbox";inp.checked=s[id]===true;inp.dataset.safety=id;inp.onchange=()=>updateSafety(id,inp.checked);lab.append(inp,document.createTextNode(title));grid.append(lab);});

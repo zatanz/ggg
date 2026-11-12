@@ -70,3 +70,11 @@
 - เพิ่มภาพจำลอง Lost in Love สำหรับจุด Hargan–Clarissa (ไม่ใช่ภาพหน้าจอจริง); เปิดเฉพาะเมื่อผู้เล่นขอดู
 - เรียงเป็นช่วงตามคู่มือ Steam/PoE Wiki ปี 2025 ไม่ได้ยืนยันเส้นทางหรือประกัน Achievement ในแพตช์ 3.30 ซึ่งยังไม่เปิด ณ วันที่ทำรายการ
 - ขั้นต่อไป: ทดสอบ P0 กับเกมจริงในแพตช์ 3.30, สาขา Bandits / Fairgraves และต่อ Act 4–10 พร้อมเก็บหลักฐานสถานะเควสต์
+
+## Act 4 delivered: 4-Achievement stage sequence (2026-11-12)
+
+- Act 4 source-guided UI: **13 phases**, exactly **72 All Ears + 12 Lore + 6 Waypoints + 1 No Loose Ends** canonical entries placed in context, with no new ID, local-storage key or backup version. The roadmap still totals 745 records.
+- Prominent irreversible-action cautions from Steam 3.28 / PoE Wiki 2025: Kira before freeing Deshret; Dialla in Crystal Veins; post-Daresso and post-Kaom return-dialogues; Piety before Harvest; the separated pre/post-organ dialogue states; after-Malachai town conversations.
+- Expanded Lore / Waypoint / sidequest disclosures are visible in their relevant phase. Existing Act 4 Wiki risk checkpoints remain accessible separately and source evidence limitations remain visible.
+- Two original 960×540 SVG quest illustrations are added to Act 4 and clearly identified as **not actual game screenshots**. They illustrate dialogue sequence rather than in-game UI accuracy.
+- Site code and CI do not certify game version 3.30. See [Act 4 research and verification ledger](./ACT4-WALKTHROUGH-AUDIT.md). Next: Acts 5–10, source-based route and 3.30 gameplay evidence once a build is available.

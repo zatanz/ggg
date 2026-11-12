@@ -404,14 +404,27 @@ function actSteamGuide(act){
  }
  const actions=el("ol",undefined,"hubWalkActions");
  phase.actions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
- if(phase.id==="mudflats"||phase.id==="bandit-decisions"){
-   const bandits=phase.id==="bandit-decisions";
+ if(phase.visual){
+   const v=phase.visual;
    const visual=el("details",undefined,"hubQuestVisual");
-   visual.append(el("summary","ดูภาพจำลองหน้า World / Quest (ปุ่ม U) และจุดที่ยังไม่ควรผ่าน"));
-   const img=el("img");img.src=bandits?"./assets/bandits-quest-illustration.svg":"./assets/quest-journal-illustration.svg";img.alt=bandits?"ภาพวาดจำลอง World Quest: Deal with the Bandits, Ancient Seal และคำเตือนก่อนเลือกช่วยหรือฆ่า":"ภาพวาดจำลอง Quest Screen: Breaking Some Eggs, The Mud Flats และคำเตือนอย่าใส่ Glyphs ก่อนคุย Tarkleigh";img.loading="lazy";
-   const desc=el("p","ภาพประกอบที่สร้างสำหรับคู่มือ ไม่ใช่ภาพหน้าจอเกมจริง · ในเกมกด U เพื่อดู World / Quest และกด H เพื่อตรวจ Achievement"+(bandits?" · ลำดับการคุย Bandits ยังขัดแย้งระหว่างสองแหล่งอ้างอิง":""),"hubSubtle");
-   const reference=el("a","วิธีเปิด Quest Log และ World Map จาก PoE Wiki");reference.href="https://www.poewiki.net/wiki/Quest";reference.target="_blank";reference.rel="noopener noreferrer";
-   visual.append(img,desc,reference);box.append(visual);
+   visual.dataset.visualPhase=phase.id;
+   visual.append(el("summary","ดูภาพจำลองหน้า Quest · "+v.title));
+   const body=el("div",undefined,"hubQuestVisualBody");
+   const label=el("div",undefined,"hubVisualSourceWarning");
+   label.append(el("strong","ภาพจำลองเพื่ออธิบาย — ไม่ใช่ภาพหน้าจอเกมจริง"),
+     el("span","ตำแหน่งแผนที่และรูปแบบ UI เป็นภาพประกอบ ไม่ใช่หลักฐานยืนยันเควสต์ในแพตช์ 3.30"));
+   body.append(label);
+   const figure=el("figure",undefined,"hubQuestFigure");
+   const img=el("img");img.src=v.asset;img.alt=v.alt;img.loading="lazy";img.decoding="async";
+   figure.append(img,el("figcaption","ตัวอย่างแนวคิดหน้า World / Quest (ปุ่ม U ตามค่าปกติ) · "+v.title));body.append(figure);
+   const check=el("div",undefined,"hubVisualCheck");
+   check.append(el("strong","จุดที่ต้องตรวจในเกมจริง"),el("p",v.check));
+   body.append(check);
+   const links=el("div",undefined,"hubVisualLinks");
+   const full=el("a","เปิดภาพจำลองขนาดเต็ม");full.href=v.asset;full.target="_blank";full.rel="noopener noreferrer";
+   const source=el("a","ตรวจเงื่อนไขเควสต์จาก PoE Wiki");source.href=v.source;source.target="_blank";source.rel="noopener noreferrer";
+   links.append(full,source);body.append(links);
+   visual.append(body);box.append(visual);
  }
  const npc=el("section",undefined,"hubWalkCategory");
  npc.append(el("h4","บทสนทนาที่ต้องเก็บช่วงนี้"),el("p","ติ๊กเฉพาะเมื่อฟังในเกมจริงแล้ว · รายการอื่นยังอยู่ในหมวดหลักด้วย","hubSubtle"));

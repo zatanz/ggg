@@ -386,12 +386,13 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ยังมีชีวิต (Oak)'),true,'Act 2 second-kill description shows survivor Oak');
  await hub.locator('.hubActStrip [data-act="3"]').click();
- assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act 3 shows only one checkpoint at a time');
- assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),5,'Act 3 five source-linked checkpoints are available');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubCheckpoint').count(),1,'Act 3 retains one historic checkpoint at a time');
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),5,'Act 3 five source-linked legacy checkpoints remain accessible');
  assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').evaluate(x=>x.open),true,'Clarissa pre-handoff checkpoint opens by default');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').innerText()).includes("Tolman's Bracelet"),true,'Act 3 warning names quest turn-in prerequisite');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"] .hubCheckpointRowTrigger').first().innerText()).includes("Tolman's Bracelet"),true,'Act 3 dialogue timing is translated and displayed per row');
- await hub.locator('#hubView .hubStepNavigator select').selectOption('4');
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('4');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-piety"]').innerText()).includes('Piety'),true,'Piety warning accessible by step selection');
  await hub.locator('.hubActStrip [data-act="2"]').click();
 

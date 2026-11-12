@@ -177,6 +177,18 @@ const assert=require('node:assert/strict');
  assert.equal(data.schema,2);
  assert.equal(data.characters.length,4,'combined backup captures all imported profiles');
  assert.equal(Array.isArray(data.characters[0].lore),true,'combined backup includes lore');
+ const beforeUnifiedImport=await hub.locator('#character option').count();
+ const reloadPromise=hub.waitForEvent('load');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView input[type="file"]').setInputFiles({name:'combined.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});
+ await reloadPromise;
+ assert.equal(await hub.locator('#character option').count(),beforeUnifiedImport+data.characters.length,'combined import adds profiles without replacing existing ones');
+ const renamedBackup={app:'poe-unified-companion',schema:2,characters:[{name:'bad',ears:[999],lore:[],waypoints:[],sidequests:[]}]};
+ const prevCount=await hub.locator('#character option').count();
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(renamedBackup))});
+ assert.equal(await hub.locator('#character option').count(),prevCount,'invalid combined import must not change profiles');
+
  await hub.locator('#hubNav [data-tab="ears"]').click();
  assert.equal(await hub.locator('#results').isVisible(),true,'classic list still usable in unified page');
  await hub.locator('#hubNav [data-tab="route"]').click();

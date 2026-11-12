@@ -218,6 +218,14 @@ assert(act10Advisory.patchCertified===false&&act10Advisory.routeSafe===false,'Ac
 assert(act10Advisory.milestones.length===3,'Act 10 advisory must contain three checkpoints');
 assert(new Set(act10Advisory.milestones.flatMap(x=>x.ids)).size===11,'Act 10 advisory must cover 11 distinct dialogues');
 assert(act10Advisory.milestones.flatMap(x=>x.ids).every(id=>act10Items.some(x=>x.id===id)),'Act 10 advisory references unknown dialogue');
+load('extra-data.js');
+const extras=ctx.window.POE_EXTRA_TRACKERS;
+assert(extras.verifiedPatch===null,'Extra tracker must not claim current patch certification');
+assert(extras.waypoints.length===91&&extras.sidequests.length===30,'Expected 91 waypoints and 30 sidequests in historical 3.9');
+assert(extras.waypoints.every((x,i)=>x.id===i+1&&x.name&&x.act!==undefined),'Waypoint identifiers/order malformed');
+assert(extras.sidequests.every((x,i)=>x.id===i+1&&x.name&&x.act!==undefined),'Side quest identifiers/order malformed');
+const extrasPage=fs.readFileSync(path.join(dir,'extras.html'),'utf8');
+assert(extrasPage.includes('src="./extra-data.js"')&&extrasPage.includes('poe-companion-extras-v1'),'Extra tracker page or independent persistence missing');
 load('lore-data.js');
 const lore=ctx.window.NO_STONE_DATA;
 const loreCounts={"1":29,"2":11,"3":32,"4":12,"5":12,"6":6,"7":8,"8":1,"10":3,Labyrinth:10,Vaal:16};

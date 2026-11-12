@@ -1,4 +1,4 @@
-/* Source-tied critical dialogue checkpoints; NOT a complete quest walk order or patch 3.30 verification. */
+/* Historical pre-action gates; timing is advisory, NOT certified 3.30 gameplay. */
 window.POE_CRITICAL_CHECKPOINTS = {
   "schema": 1,
   "patch": "2025-wiki-legacy-unverified",
@@ -19,7 +19,17 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "หากเปลี่ยนสถานะ Glyph Wall เร็วเกินไป บทสนทนาตามเงื่อนไขอาจหาย",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
-        "prereq": "The Mud Flats"
+        "prereq": "The Mud Flats",
+        "stopRule": {
+          "action": "เข้าพื้นที่ The Fetid Pool หรือใส่ Glyphs ลง Glyph Wall",
+          "requiredIds": [
+            21,
+            22,
+            23
+          ],
+          "note": "จังหวะย่อยต่างกัน: Bestel/Undead Rhoas ต้องฟังก่อน Fetid Pool ส่วน Tarkleigh/Strange Glyphs และ Glyph Wall ก่อนใส่ Glyphs",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a1-brutus",
@@ -36,7 +46,18 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "อย่าฆ่า Brutus ก่อนเก็บบทสนทนาที่เปิดได้ก่อนสู้บอส",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
-        "prereq": "The Prison / The Upper Prison"
+        "prereq": "The Prison / The Upper Prison",
+        "stopRule": {
+          "action": "ฆ่า Brutus",
+          "requiredIds": [
+            26,
+            27,
+            28,
+            29
+          ],
+          "note": "Tarkleigh/Bestel ต้องคุยก่อนสู้ ส่วน Nessa:Piety และ Bestel:Marceus Lioneye เปิดหลังเงื่อนไขเฉพาะ",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a1-fairgraves",
@@ -54,7 +75,20 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "อย่าเก็บ Allflame ก่อนกลับไปคุย Bestel และ Fairgraves ตามลำดับที่คู่มือระบุ",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
-        "prereq": "The Ship Graveyard"
+        "prereq": "The Ship Graveyard",
+        "stopRule": {
+          "action": "เก็บ Allflame",
+          "requiredIds": [
+            34,
+            35,
+            36,
+            37,
+            38
+          ],
+          "note": "ต้องคุย Fairgraves → Bestel → Fairgraves ตามลำดับ แล้วจึงเก็บ Allflame; Steam แจ้งปัญหา NPC ใน 3.29",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        },
+        "patchAlert": "คู่มือ Steam ระบุ Fairgraves สนทนาไม่ได้ในแพตช์ 3.29 ยังไม่มีผลยืนยันว่าปัญหาหายแล้วใน 3.30"
       }
     ],
     "2": [
@@ -70,7 +104,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "Silk มีหัวข้อก่อนเควสต์เสร็จและอีกหัวข้อหลังเควสต์เสร็จ อย่าสับสนว่าเป็นรายการเดียวกัน",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
-        "prereq": "The Forest Encampment"
+        "prereq": "The Forest Encampment",
+        "stopRule": {
+          "action": "ทำ The Great White Beast สำเร็จ",
+          "requiredIds": [
+            57
+          ],
+          "note": "Silk: The Great White Beast ต้องคุยตอนเควสต์ยังไม่จบ",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a2-sins",
@@ -85,7 +127,16 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "บทสนทนา Yeena ต้องเก็บก่อนจบ Intruders in Black; รายการ Greust มีเงื่อนไขการเปิดทางกลับ",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
-        "prereq": "The Chamber of Sins"
+        "prereq": "The Chamber of Sins",
+        "stopRule": {
+          "action": "ทำ Intruders in Black สำเร็จ / ช่วย Helena",
+          "requiredIds": [
+            69,
+            75
+          ],
+          "note": "ต้องเปิดเงื่อนไข Greust และคุย Yeena: Chamber of Sins ก่อนจบ; Steam เตือน Western Forest ก่อน Chamber of Sins",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a2-baleful",
@@ -101,15 +152,24 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "The Baleful Gem ต้องไม่มี Maligaro's Spike ในกระเป๋า; Maligaro's Creation และ Ancient Gateway ต้องเก็บก่อนกำจัด Lorrata",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
-        "prereq": "The Wetlands"
+        "prereq": "The Wetlands",
+        "stopRule": {
+          "action": "กำจัด Lorrata หรือใช้ไอเทมกับรากไม้",
+          "requiredIds": [
+            91,
+            92
+          ],
+          "note": "ก่อนทำให้ต้นไม้หาย ต้องฟัง Eramir หัวข้อ Maligaro's Creation และ Ancient Gateway ตามสถานะไอเทม",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a2-darkness",
         "act": 2,
         "quest": "Deal with the Bandits",
         "heading": "Ancient Seal / The Darkness · ก่อนฆ่า Bandits",
-        "before": "คุย Bandits ทั้งสามก่อนเปิด Seal จากนั้นเปิด Seal และเก็บ The Darkness ก่อนฆ่า Bandits",
-        "action": "คุย Alira, Oak และ Kraityn ก่อนเปิด Ancient Seal; หลังเปิดใน The Vaal Ruins ให้เก็บบทสนทนา The Darkness ของ NPC ที่เกี่ยวข้อง โดยเฉพาะ Alira และ Oak ขณะที่ยังมีชีวิต",
+        "before": "ยังไม่ควรฆ่าหรือเลือกช่วย Bandits ก่อนเก็บ The Darkness; ลำดับการคุยกับ Bandits ก่อนเปิด Ancient Seal มีคำแนะนำขัดแย้งระหว่าง Steam กับ PoE Wiki",
+        "action": "หลังเปิด Ancient Seal เก็บ The Darkness กับ Eramir, Helena, Silk, Greust, Yeena รวมถึง Alira/Oak ขณะที่ยังมีชีวิต; ห้ามตัดสินใจฆ่าหรือช่วย Bandits ก่อนตรวจหัวข้อที่จำเป็น ส่วนการคุย Bandit ก่อน/หลัง Seal ต้องตรวจเพิ่มเติมเพราะคู่มือขัดแย้ง",
         "ids": [
           95,
           99,
@@ -119,10 +179,30 @@ window.POE_CRITICAL_CHECKPOINTS = {
           100,
           102
         ],
-        "risk": "อย่าฆ่า Alira หรือ Oak ก่อนฟัง The Darkness; Kraityn ไม่มีบทสนทนาหัวข้อนี้ตาม Wiki ปี 2025",
+        "risk": "Steam 3.28 แนะนำไม่คุย Bandits ก่อน Darkness แต่ Wiki 2025 ให้คุยก่อนเปิด Ancient Seal จึงยังไม่สามารถรับรองลำดับที่ปลอดภัยได้",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
         "prereq": "The Vaal Ruins",
-        "priority": "critical"
+        "priority": "critical",
+        "stopRule": {
+          "action": "ฆ่าหรือเลือกช่วย Bandits",
+          "requiredIds": [
+            95,
+            99,
+            98,
+            96,
+            97,
+            100,
+            102
+          ],
+          "note": "ต้องฟัง The Darkness ตามเงื่อนไขกับ NPC ในเมือง และ Alira/Oak ขณะยังมีชีวิต; ยังมีข้อขัดแย้งเรื่องคุยก่อนเปิด Seal",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        },
+        "sourceConflict": {
+          "kind": "steam-vs-wiki",
+          "sourceA": "https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869",
+          "sourceB": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement",
+          "summary": "Steam แนะนำไม่คุยกับ Bandits ก่อน The Darkness; PoE Wiki ให้คุยก่อนเปิด Ancient Seal. ทั้งสองเห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness. จึงต้องตรวจสถานะเกมจริงก่อนชี้ลำดับคุย"
+        }
       },
       {
         "id": "a2-first-kill",
@@ -137,7 +217,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "risk": "อย่าฆ่า Bandit ตัวถัดไปก่อนตรวจหัวข้อ Eramir",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
         "prereq": "The Forest Encampment",
-        "priority": "critical"
+        "priority": "critical",
+        "stopRule": {
+          "action": "ฆ่า Bandit ตัวที่สอง",
+          "requiredIds": [
+            89
+          ],
+          "note": "หลังฆ่าตัวแรกให้คุย Eramir ตามชื่อ Bandit ที่เพิ่งฆ่าก่อน",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a2-second-kill",
@@ -152,7 +240,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "risk": "อย่าฆ่า Bandit ตัวสุดท้ายก่อนเก็บบทสนทนานี้",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
         "prereq": "The Forest Encampment",
-        "priority": "critical"
+        "priority": "critical",
+        "stopRule": {
+          "action": "ฆ่า Bandit ตัวสุดท้าย",
+          "requiredIds": [
+            101
+          ],
+          "note": "หลังฆ่าตัวที่สองให้คุย Eramir หัวข้อของ Bandit ที่ยังมีชีวิตก่อน",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a2-final-kill",
@@ -184,7 +280,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "risk": "การส่งเควสต์ให้ Clarissa ก่อนฟัง Hargan อาจทำให้หัวข้อนี้หาย",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
         "prereq": "The Sarn Encampment",
-        "priority": "critical"
+        "priority": "critical",
+        "stopRule": {
+          "action": "ส่ง Tolman's Bracelet ให้ Clarissa",
+          "requiredIds": [
+            118
+          ],
+          "note": "ก่อนส่งเควสต์ให้กลับคุย Hargan: Introduction ตามเงื่อนไข",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a3-dialla",
@@ -199,7 +303,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "สถานะไอเทมในกระเป๋ามีผลต่อบทสนทนา Lady Dialla; อย่าเดินเควสต์เลยจังหวะก่อนคุย",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
-        "prereq": "The Docks / Lady Dialla"
+        "prereq": "The Docks / Lady Dialla",
+        "stopRule": {
+          "action": "เก็บ Thaumetic Sulphite หรือ Ribbon Spool",
+          "requiredIds": [
+            148
+          ],
+          "note": "คุย Lady Dialla: Introduction ขณะที่ยังไม่มีไอเทมสองชิ้น",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a3-fairgraves",
@@ -213,7 +325,16 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "เงื่อนไขของหัวข้อ Introduction อาจเปลี่ยนหากมี Decanter Spiritus หรือ Chitus' Plum แล้ว",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
-        "prereq": "The Docks"
+        "prereq": "The Docks",
+        "stopRule": {
+          "action": "เก็บ Decanter Spiritus หรือ Chitus' Plum",
+          "requiredIds": [
+            142
+          ],
+          "note": "ฟัง Fairgraves: Introduction ก่อนมีไอเทมเควสต์สองชิ้น",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        },
+        "patchAlert": "คู่มือ Steam ระบุ Fairgraves สนทนาไม่ได้ในแพตช์ 3.29 ยังไม่มีผลยืนยันว่าปัญหาหายแล้วใน 3.30"
       },
       {
         "id": "a3-gravicius",
@@ -227,7 +348,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
         ],
         "risk": "บทสนทนานี้มีเงื่อนไขช่วงก่อนฆ่า General Gravicius",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
-        "prereq": "The Ebony Barracks"
+        "prereq": "The Ebony Barracks",
+        "stopRule": {
+          "action": "ฆ่า General Gravicius",
+          "requiredIds": [
+            158
+          ],
+          "note": "คุย Maramoa: Crossing the River หลังเข้า Ebony Barracks",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a3-piety",
@@ -243,7 +372,16 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "risk": "การฆ่า Piety ก่อนฟังบทสนทนาสองช่วงนี้อาจทำให้รายการ All Ears ขาด",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
         "prereq": "The Sarn Encampment",
-        "priority": "critical"
+        "priority": "critical",
+        "stopRule": {
+          "action": "ฆ่า Piety",
+          "requiredIds": [
+            161,
+            164
+          ],
+          "note": "เก็บหัวข้อของ Maramoa และ Grigor ตามเงื่อนไขหลัง Gravicius และก่อนสู้ Piety",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ],
     "4": [
@@ -259,7 +397,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
           220
         ],
         "prereq": "The Mines",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+        "stopRule": {
+          "action": "ปลดปล่อย Deshret",
+          "requiredIds": [
+            220
+          ],
+          "note": "คุย Kira เรื่อง Deshret ก่อนช่วย",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a4-crystal-veins",
@@ -322,7 +468,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
           275
         ],
         "prereq": "Act 5",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+        "stopRule": {
+          "action": "ฆ่า High Templar Avarius",
+          "requiredIds": [
+            275
+          ],
+          "note": "เก็บบทสนทนา Utula: Justicar Casticus หลังฆ่า Justicar",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a5-innocence",
@@ -336,7 +490,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
           277
         ],
         "prereq": "The Chamber of Innocence",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+        "stopRule": {
+          "action": "ออกจาก The Chamber of Innocence",
+          "requiredIds": [
+            277
+          ],
+          "note": "หลังฆ่า Innocence ให้คุย Sin ก่อนออก",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       },
       {
         "id": "a5-ossuary",
@@ -350,7 +512,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
           295
         ],
         "prereq": "The Ossuary",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+        "stopRule": {
+          "action": "ออกจาก The Ossuary",
+          "requiredIds": [
+            295
+          ],
+          "note": "เมื่อได้ Sign of Purity คุย Sin ทันทีในพื้นที่",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ],
     "6": [
@@ -442,7 +612,16 @@ window.POE_CRITICAL_CHECKPOINTS = {
           339
         ],
         "prereq": "The Brine King's Reef",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6",
+        "stopRule": {
+          "action": "ฆ่า Tsoagoth",
+          "requiredIds": [
+            338,
+            339
+          ],
+          "note": "คุย Weylam Roth ทั้งสองหัวข้อก่อนสู้",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ],
     "7": [
@@ -514,7 +693,15 @@ window.POE_CRITICAL_CHECKPOINTS = {
           384
         ],
         "prereq": "Temple of Decay",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7",
+        "stopRule": {
+          "action": "ออกจาก Temple of Decay",
+          "requiredIds": [
+            384
+          ],
+          "note": "หลังฆ่า Arakaali คุย Yeena ในพื้นที่ก่อนออก",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ],
     "8": [
@@ -546,7 +733,16 @@ window.POE_CRITICAL_CHECKPOINTS = {
           410
         ],
         "prereq": "Act 8",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8",
+        "stopRule": {
+          "action": "ฆ่า Yugul",
+          "requiredIds": [
+            409,
+            410
+          ],
+          "note": "คุย Sin และ Hargan เรื่อง Yugul ตามเงื่อนไขก่อนสู้",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ],
     "9": [
@@ -604,15 +800,53 @@ window.POE_CRITICAL_CHECKPOINTS = {
           448
         ],
         "prereq": "Act 9",
-        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9",
+        "stopRule": {
+          "action": "เข้า Act 10",
+          "requiredIds": [
+            448
+          ],
+          "note": "หลังฆ่า Depraved Trinity กลับคุย Weylam Roth: Rescue ก่อนข้าม Act",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+        }
       }
     ]
   },
   "postQuest": {
     "10": [
-      {"id":"a10-safe-passage","act":10,"quest":"Safe Passage","title":"จบ Safe Passage แล้วกลับไปคุย Lilly Roth","ids":[471],"timing":"หลังจบเควสต์ Safe Passage","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"},
-      {"id":"a10-death-rebirth","act":10,"quest":"Death and Rebirth","title":"จบ Death and Rebirth แล้วคุย Lilly Roth","ids":[481],"timing":"หลังจบเควสต์ Death and Rebirth","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"},
-      {"id":"a10-end-hunger","act":10,"quest":"An End to Hunger","title":"จบ An End to Hunger แล้วคุย Lilly Roth","ids":[482],"timing":"หลังจบเควสต์ An End to Hunger","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"}
+      {
+        "id": "a10-safe-passage",
+        "act": 10,
+        "quest": "Safe Passage",
+        "title": "จบ Safe Passage แล้วกลับไปคุย Lilly Roth",
+        "ids": [
+          471
+        ],
+        "timing": "หลังจบเควสต์ Safe Passage",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
+      },
+      {
+        "id": "a10-death-rebirth",
+        "act": 10,
+        "quest": "Death and Rebirth",
+        "title": "จบ Death and Rebirth แล้วคุย Lilly Roth",
+        "ids": [
+          481
+        ],
+        "timing": "หลังจบเควสต์ Death and Rebirth",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
+      },
+      {
+        "id": "a10-end-hunger",
+        "act": 10,
+        "quest": "An End to Hunger",
+        "title": "จบ An End to Hunger แล้วคุย Lilly Roth",
+        "ids": [
+          482
+        ],
+        "timing": "หลังจบเควสต์ An End to Hunger",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
+      }
     ]
   },
   "sourceStatus": "wiki-2025-quest-state-risk-only",

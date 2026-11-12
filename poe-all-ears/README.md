@@ -1,5 +1,23 @@
 # Path of Exile 1 — All Ears Checklist
 
+## Companion update — 2026-11-12
+Three additional tracker surfaces are now available as historical, manual-use aids:
+
+- **[No Stone Unturned / Act 2 Safety / Vaal search / Recheck](https://zatanz.github.io/ggg/poe-all-ears/companion.html):** 140 lore markers, filter by Act/area, 16 Vaal lore entries (12 letters and 4 journals), manually confirmed Act 2 prerequisites, and a count comparison with an optional previous matching checkpoint.
+- **[Locomancer + No Loose Ends](https://zatanz.github.io/ggg/poe-all-ears/extras.html):** 91 waypoint markers and 30 side quest markers from a historical 3.9 reference. **Not current-patch certified.**
+- **[Classic All Ears](https://zatanz.github.io/ggg/poe-all-ears/):** existing 484 stable dialogue IDs and character data are unchanged; [Guided Preview](https://zatanz.github.io/ggg/poe-all-ears/walkthrough.html) now has Act 2 wiki-based missable confirmation prompts and links to companion tools.
+
+### Data and patch limitations
+
+- All Ears 484 IDs are cross-mapped to PoE Wiki's 2025 guide, but **0/484 are certified for patch 3.30**. The same limitation applies to every supplemental list; labels and area names may be abbreviated or obsolete.
+- These web pages **do not connect to the game**. Recheck compares only the player's manually entered total with manually checked entries. Matching totals do **not** guarantee correct specific items, and mismatches do not identify exact missing items.
+- Vaal Side Area spawns can vary. A small area-name lookup maps only specifically sourced examples; unknown area names are reported as unknown rather than guessed.
+- Patch 3.30 notes remove Vaal Side Areas from Maps and make old Sacrifice/Mortal Fragment farming instructions obsolete. Do not use the legacy Map Device strategy without checking the target patch.
+- **Backup/migration:** existing All Ears backup format and storage key remain unchanged. Lore and Waypoint/Quest trackers use independent localStorage keys and each has its own export/import button. To move progress between devices, export **all three** backup files. Import adds/merges supplemental checked entries; it does not erase existing legacy progress.
+- The historical source spreadsheet supplied by the user marked its prose privately owned; the companion publishes only factual item identifiers/locations, not its commentary or guide text.
+- Current deployment/build and smoke tests check UI and persistence, **not** in-game applicability. See [delivery plan](./DELIVERY-PLAN.md).
+
+
 **แผนส่งมอบและจุดทำงานต่อ:** [DELIVERY-PLAN.md](./DELIVERY-PLAN.md) — แยกงานที่ทำแล้วจากงานที่ยังไม่ผ่าน QA และกำหนด Release Gates
 
 เช็กลิสต์บทสนทนา NPC สำหรับ Achievement **All Ears** จำนวน **484 รายการ / 10 Acts** มีตัวละครแยกกัน บันทึกอัตโนมัติผ่าน localStorage และดาวน์โหลด/นำเข้าข้อมูลสำรองได้

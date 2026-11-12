@@ -155,6 +155,15 @@ Object.keys(names).forEach(type=>{const button=el("button",uiNames[type]);button
 t.append(pick);
 }
 if(state.tab==="ears")return;
+if(state.tab==="route"){
+  const strip=el("div",undefined,"hubActStrip");strip.setAttribute("role","group");strip.setAttribute("aria-label","เลือก Act");
+  for(let i=1;i<=10;i++){
+    const b=el("button","Act "+i);b.type="button";b.dataset.act=String(i);b.setAttribute("aria-pressed",String(state.act===String(i)));
+    b.onclick=()=>{state.act=String(i);state.limit=40;renderToolbar();renderView();};
+    strip.append(b);
+  }
+  t.append(strip);
+}
 const controls=el("div",undefined,"hubControls"),act=el("select"),status=el("select"),search=el("input");
 act.setAttribute("aria-label","เลือก Act หรือพื้นที่");
 const acts=[["all","ทุก Act"],...[1,2,3,4,5,6,7,8,9,10].map(a=>[String(a),"Act "+a]),["Labyrinth","Labyrinth"],["Vaal","Vaal Side Areas"],["Epilogue","Epilogue"]];
@@ -162,7 +171,7 @@ acts.filter(([v])=>state.tab!=="route"||(!isNaN(Number(v))&&v!=="all")).forEach(
 if(state.tab==="route"&&(state.act==="all"||isNaN(Number(state.act))))state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
 act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหาชื่อ NPC, บทสนทนา หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
 [["todo","ยังไม่ได้เก็บ"],["all","แสดงทั้งหมด"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
-controls.append(act,search,status);t.append(controls);}
+if(state.tab==="route")controls.append(search,status);else controls.append(act,search,status);t.append(controls);}
 function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";if(Object.keys(names).includes(tab))state.collectionType=tab;
 state.tab=tab;document.body.dataset.hubTab=tab;
 const group=tab==="route"||tab==="review"?tab:"collection";

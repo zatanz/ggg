@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#15171c">
   <meta name="description" content="เช็กลิสต์ All Ears สำหรับ Path of Exile 1 จำนวน 484 บทสนทนา แยกความคืบหน้าตามตัวละคร ใช้ฟรี ไม่ต้องสมัครสมาชิก">
-  <title>All Ears · PoE 1 | Checklist</title>
+  <title>PoE Achievement Companion | All Ears · Lore · Waypoints · Quests</title>
   <style>
     :root{color-scheme:dark;--bg:#121419;--surface:#1b1e25;--surface2:#252933;--line:#353945;--text:#f2eee6;--muted:#b7b5b1;--gold:#d6b777;--ok:#8bcbad;--risk:#ecb081;--shadow:0 18px 40px #0004}
     *{box-sizing:border-box}
@@ -69,6 +69,7 @@
     @media(max-width:720px){.wrap{padding:20px 13px 60px}.panel{padding:15px}.stats{grid-template-columns:1fr}.toolbar{top:0}.ctrls>*{flex-grow:1}.toolbar select{flex:1}.headlinks{gap:12px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
   </style>
+<link rel="stylesheet" href="./hub.css">
 </head>
 <body>
 <div class="wrap">
@@ -76,7 +77,7 @@
     <div class="kicker">Path of Exile 1 · Achievement Tracker</div>
     <h1>All Ears</h1>
     <p>เช็กบทสนทนา NPC ทั้ง <strong>484 รายการ</strong> ตลอด Act 1–10 แยกตัวละครได้หลายตัว พร้อมคำแนะนำภาษาไทยสำหรับผู้เล่นใหม่ใน Act 1 (41 รายการ) ข้อมูลที่ติ๊กจะบันทึกในเบราว์เซอร์โดยอัตโนมัติ</p>
-    <div class="headlinks"><a href="./companion.html">No Stone Unturned · Lore / Vaal / Recheck</a><a href="./extras.html">Locomancer + No Loose Ends</a><a href="./walkthrough.html">เปิด Step-by-Step Preview (ลำดับยังไม่ผ่าน QA)</a><a href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement" target="_blank" rel="noopener noreferrer">คู่มือ PoE Wiki</a><a href="https://github.com/zatanz/ggg/tree/master/poe-all-ears" target="_blank" rel="noopener noreferrer">ซอร์สโค้ด / แจ้งปัญหา</a></div>
+    <div class="headlinks"><a href="./walkthrough.html">Step-by-Step Preview (แบบเดิม)</a><a href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement" target="_blank" rel="noopener noreferrer">คู่มือ PoE Wiki</a><a href="https://github.com/zatanz/ggg/tree/master/poe-all-ears" target="_blank" rel="noopener noreferrer">ซอร์สโค้ด / แจ้งปัญหา</a></div>
   </header>
   <section class="panel" aria-label="เลือกแพตช์"><h2 class="panel-title">เวอร์ชันเกม / แพตช์</h2><div class="ctrls"><label class="sr" for="patch">เลือกแพตช์</label><select id="patch"></select><span id="patchStatus" class="pill"></span></div><p id="patchNotice" class="minor" role="status"></p></section>
   <section class="panel" aria-label="เลือกตัวละคร">
@@ -137,6 +138,8 @@
 <script src="./route-act6.js"></script>
 <script src="./route-act7.js"></script>
 <script src="./route-act8.js"></script><script src="./route-act9.js"></script><script src="./route-act10.js"></script>
+<script src="./lore-data.js"></script>
+<script src="./extra-data.js"></script>
 <script>
 (function(){
   "use strict";
@@ -184,8 +187,23 @@
   byId("export").addEventListener("click",function(){var data=JSON.stringify({app:"poe-all-ears",exportedAt:new Date().toISOString(),...state},null,2),blob=new Blob([data],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="poe-all-ears-backup.json";a.click();setTimeout(function(){URL.revokeObjectURL(u);},3000);toast("ดาวน์โหลดข้อมูลสำรองแล้ว");});
   byId("import").addEventListener("click",function(){byId("file").click();});
   byId("file").addEventListener("change",function(e){var f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>2000000){toast("ไฟล์ใหญ่เกิน 2 MB");e.target.value="";return;}var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(String(reader.result));if(data.app!=="poe-all-ears"||data.version!==1||!Array.isArray(data.characters)||!data.characters.length||data.characters.length>100||data.characters.some(function(c){return !c||typeof c.name!=="string"||!c.name.trim()||!Array.isArray(c.checked)||c.checked.some(function(id){return !Number.isInteger(id)||!validIds.has(id);});}))throw Error("invalid");var clean=sanitize(data);if(!confirm("นำเข้าตัวละคร "+clean.characters.length+" ตัว? จะเพิ่มเป็นรายการใหม่ ไม่ลบข้อมูลเดิม"))return;var next=snapshot();if(next.characters.length+clean.characters.length>100)throw Error("too-many");var first=null;clean.characters.forEach(function(c){var id=uid();if(first===null)first=id;next.characters.push({id:id,name:c.name,checked:c.checked});});next.active=first;if(commit(next)){render();toast("นำเข้าข้อมูล "+clean.characters.length+" ตัวละครแล้ว");}}catch(err){toast("รูปแบบไฟล์ไม่ถูกต้อง");}finally{e.target.value="";}};reader.onerror=function(){toast("อ่านไฟล์ไม่สำเร็จ");};reader.readAsText(f);});
+  window.POE_HUB_BRIDGE={
+    read:function(){return snapshot()},
+    mark:function(id,done){
+      if(!validIds.has(id))return false;
+      var next=snapshot(),c=next.characters.find(function(x){return x.id===next.active});
+      if(!c)return false;
+      var arr=c.checked.filter(function(n){return n!==id});
+      if(done)arr.push(id);
+      c.checked=[...new Set(arr)].sort(function(a,b){return a-b});
+      if(!commit(next))return false;
+      render();
+      return true;
+    }
+  };
   render();
 })();
 </script>
+<script src="./hub.js"></script>
 </body>
 </html>

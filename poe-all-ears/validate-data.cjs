@@ -275,6 +275,7 @@ assert(sourceWarnings.wikiRows.every(id=>mappedRows.some(r=>r.wikiRow===id)),'Ex
 const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
 load('steam-quest-walkthrough.js');
+load('steam-act4.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -306,6 +307,20 @@ assert(actThree.find(p=>p.id==='bracelet')?.stopIds.includes(ctx.window.ALL_EARS
 assert(actThree.find(p=>p.id==='docks-fairgraves')?.patchProblem.includes('3.29'),'Act 3 Fairgraves patch risk must remain visible');
 assert(steamWalk.patchCertified===false,'Act 3 source chronology does not certify 3.30 gameplay');
 
+const actFour=steamWalk.acts[4],actFourIds=actFour.flatMap(p=>p.dialogueIds),actFourLore=actFour.flatMap(p=>p.loreIds||[]);
+const actFourWp=actFour.flatMap(p=>p.waypointIds||[]),actFourSide=actFour.flatMap(p=>p.sidequestIds||[]);
+const sameExactSet=(items,expected)=>items.length===expected.length&&new Set(items).size===items.length&&expected.every(id=>items.includes(id));
+assert(actFour.length===13,'Act 4 walkthrough must have thirteen player-oriented phases');
+assert(sameExactSet(actFourIds,d.items.filter(x=>x.act===4).map(x=>x.id)),'Act 4 All Ears 72 local IDs must appear exactly once');
+assert(sameExactSet(actFourLore,lore.entries.filter(x=>x.act===4).map(x=>x.id)),'Act 4 twelve Lore local IDs must appear exactly once');
+assert(sameExactSet(actFourWp,extras.waypoints.filter(x=>x.act===4).map(x=>x.id)),'Act 4 six Waypoint local IDs must appear exactly once');
+assert(sameExactSet(actFourSide,extras.sidequests.filter(x=>x.act===4).map(x=>x.id)),'Act 4 one sidequest local ID must appear exactly once');
+assert(actFour.every(p=>p.place&&p.heading&&p.quest&&p.actions.length>0&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 4 quest STOP IDs must belong to real dialogue phase records');
+assert(actFour.find(p=>p.id==='voll-mines')?.stopIds.includes(220),'Kira before freeing Deshret warning missing');
+assert(actFour.find(p=>p.id==='piety-after')?.stopIds.includes(241),'Piety before The Harvest warning missing');
+assert(actFour.find(p=>p.id==='harvest-before')?.stopIds.includes(247)&&actFour.find(p=>p.id==='harvest-after')?.stopIds.includes(248),'Pre/post organ hand-in warning must be split into different phases');
+assert(steamWalk.patchCertified===false,'Act 4 guide cannot certify patch 3.30 gameplay');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -320,9 +335,11 @@ const visualTargets=[
  ["2","sins-before-helena","sins-quest-illustration.svg","Intruders in Black"],
  ["2","roots","roots-quest-illustration.svg","The Root of the Problem"],
  ["2","bandit-decisions","bandits-quest-illustration.svg","Deal with the Bandits"],
- ["3","bracelet","clarissa-quest-illustration.svg","Lost in Love"]
+ ["3","bracelet","clarissa-quest-illustration.svg","Lost in Love"],
+ ["4","voll-mines","deshret-quest-illustration.svg","An Indomitable Spirit"],
+ ["4","harvest-before","piety-organs-quest-illustration.svg","The Eternal Nightmare"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly seven sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly nine sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);
@@ -340,7 +357,7 @@ const guarded=Object.values(checkpointData.acts).flatMap(stages=>stages.filter(s
 assert(guarded.length>=20&&guarded.every(s=>s.stopRule.requiredIds.length&&s.stopRule.requiredIds.every(id=>s.ids.includes(id))),'Stop-before quest rules must tie to real per-stage dialogue IDs');
 assert(checkpointData.acts[1].find(s=>s.id==='a1-fairgraves').patchAlert.includes('3.29'),'Fairgraves historical accessibility issue must not be suppressed');
 const htmlSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
-assert(htmlSource.includes('src="./steam-quest-walkthrough.js"'),'Steam zone walkthrough must load before UI controller');
+assert(htmlSource.includes('src="./steam-quest-walkthrough.js"')&&htmlSource.includes('src="./steam-act4.js"'),'Act 4 route file must load after base Steam guide and before UI controller');
 
 const checkpointMapped=new Set(Object.values(checkpointData.acts).flatMap(stages=>stages.flatMap(s=>s.ids)));
 const ungroupedWarningRows=sourceWarnings.wikiRows.map(row=>mappedRows.find(r=>r.wikiRow===row)).filter(r=>!checkpointMapped.has(r.id));

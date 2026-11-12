@@ -255,6 +255,15 @@ assert(checkpointData?.schema===1&&checkpointData.routeSafe===false&&checkpointD
 const checkpointExpected={1:3,2:7,3:5,4:4,5:3,6:6,7:5,8:2,9:4};
 assert(Object.entries(checkpointExpected).every(([a,n])=>checkpointData.acts[a]?.length===n),'Risk checkpoint count drift across Acts 1–9');
 assert(checkpointData.acts[10]===undefined,'Act 10 must not invent a certified checkpoint without source evidence');
+const act10Post=checkpointData.postQuest?.[10]||[];
+assert(act10Post.length===3,'Act 10 must contain three post-quest source reminders, not missable danger flags');
+assert(act10Post.map(x=>x.ids[0]).join(',')==='471,481,482','Act 10 after-quest dialogue IDs must match the Wiki 2025 source');
+for(const item of act10Post){
+ assert(item.act===10&&item.source.endsWith('#Act_10')&&item.timing.includes('หลังจบเควสต์'),'Invalid Act 10 post-quest reminder source '+item.id);
+ const row=ctx.window.ALL_EARS_ROUTE_ACT10.records.find(r=>r.id===item.ids[0]);
+ assert(row&&row.trigger?.startsWith('หลังจบ'),'Act 10 post-quest should be derived from actual route trigger '+item.id);
+}
+
 let stepRows=0;
 for(const [act,list] of Object.entries(checkpointData.acts)){
  const stageIds=new Set();
@@ -271,6 +280,10 @@ for(const [act,list] of Object.entries(checkpointData.acts)){
  }
 }
 assert(stepRows===72,'Critical checkpoint crosswalk must cover 72 explicit source-linked dialogue references');
+const checkpointSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(checkpointSource.includes('const sorted=[...stages];')&&!checkpointSource.includes('Number(b.priority==="critical")'),'Urgency must not reorder checkpoint progression');
+assert(checkpointSource.includes('hubCheckpointRowTrigger')&&checkpointSource.includes('hubCheckpointRowWarning'),'Per-dialogue unlock timing and warnings must be visible in expanded stage');
+
 for(let act=4;act<=9;act++){
  const covered=new Set(checkpointData.acts[act].flatMap(s=>s.ids));
  const flagged=ctx.window['ALL_EARS_ROUTE_ACT'+act].records.filter(r=>r.before);

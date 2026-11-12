@@ -58,6 +58,11 @@ assert(act3Inventory.records.every((x,i)=>x.npc===act3Items[i].npc&&x.topic===ac
 assert(act3Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 3 inventory makes unsupported wiki/patch claims');
 assert(act3Inventory.patchCertified===false&&act3Inventory.routeSafe===false,'Act 3 inventory must not claim a safe certified route');
 assert(act3Inventory.records.filter(x=>x.riskCandidate).length===21,'Act 3 candidate risk inventory drift');
+const act3Risks=JSON.parse(fs.readFileSync(path.join(dir,'act3-risk-ledger.json'),'utf8'));
+const sourceRisks=act3Items.filter(x=>x.note);
+assert(act3Risks.records.length===sourceRisks.length&&sourceRisks.length===9,'Act 3 legacy-note risk count mismatch');
+assert(act3Risks.records.every((x,i)=>x.id===sourceRisks[i].id&&x.legacyNote===sourceRisks[i].note),'Act 3 risk ledger does not match source notes');
+assert(act3Risks.patchCertified===false&&act3Risks.records.every(x=>x.patchCertified===false&&x.review==='legacy-note-unverified'),'Act 3 risks must not claim patch verification');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

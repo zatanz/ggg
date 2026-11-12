@@ -1,4 +1,4 @@
-/* Zone-oriented source walkthrough; original achievement IDs reused; not patch certified. */
+/* Zone-oriented Steam source walkthrough; original IDs preserved and patch 3.30 unverified. */
 window.POE_STEAM_WALK = {
   "schema": 1,
   "patchCertified": false,
@@ -231,7 +231,286 @@ window.POE_STEAM_WALK = {
         ],
         "confidence": "historical"
       }
+    ],
+    "2": [
+      {
+        "id": "forest-encampment",
+        "place": "The Forest Encampment",
+        "heading": "เข้าค่าย Forest Encampment · คุย NPC ในเมืองให้ครบ",
+        "quest": "Deal with the Bandits / The Great White Beast",
+        "dialogueIds": [
+          42,
+          43,
+          44,
+          49,
+          52,
+          53,
+          45,
+          47,
+          50,
+          54,
+          46,
+          58,
+          55,
+          61,
+          60,
+          63,
+          62,
+          59,
+          51,
+          56,
+          57,
+          48
+        ],
+        "loreIds": [],
+        "actions": [
+          "คุย Eramir, Greust, Yeena, Silk และ Helena ตามหัวข้อที่เปิด แล้วกลับคุยเรื่อง NPC หลังรู้จักกัน",
+          "เมื่อได้รับ The Great White Beast ให้เก็บบทสนทนาของ Silk ก่อนทำเควสต์สำเร็จ",
+          "ยังไม่ตัดสินใจเรื่อง Bandits; ลำดับคุย Bandits ก่อน/หลัง Seal ยังมีข้อขัดแย้งในคู่มือ"
+        ],
+        "stop": "ยังไม่ควรทำ The Great White Beast เสร็จก่อนฟัง Silk และยังไม่ควรฆ่าหรือช่วย Bandit ตัวใด",
+        "stopIds": [
+          57
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "old-fields",
+        "place": "The Old Fields / The Den",
+        "heading": "Old Fields · ตรวจบทสนทนาก่อนและหลัง The Great White Beast",
+        "quest": "The Great White Beast",
+        "dialogueIds": [
+          64,
+          65,
+          66
+        ],
+        "loreIds": [],
+        "actions": [
+          "สำรวจ Old Fields และ The Den ตามเควสต์ พร้อมคุย Greust และ Yeena เรื่อง Elementals",
+          "หากจัดการ Great White Beast แล้วให้กลับฟัง Silk หัวข้อที่เปลี่ยนหลังเควสต์",
+          "อย่าคิดว่า Silk หัวข้อก่อนและหลังเควสต์นับเป็นรายการเดียวกัน"
+        ],
+        "stop": "ก่อนจัดการ The Great White Beast ต้องฟังหัวข้อ Silk ของช่วงแรก (Wiki #62) เสียก่อน",
+        "stopIds": [
+          57
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "western-forest",
+        "place": "The Western Forest / The Riverways",
+        "heading": "Western Forest ก่อน Chamber of Sins · สำรวจและกลับคุย NPC",
+        "quest": "The Way Forward / Intruders in Black",
+        "dialogueIds": [
+          68,
+          67,
+          69,
+          70,
+          71,
+          72,
+          74,
+          73
+        ],
+        "loreIds": [],
+        "actions": [
+          "ไป Western Forest ก่อนเร่งผ่าน Chamber of Sins ตามคำเตือนของคู่มือ Steam",
+          "จัดการ Captain Arteri เพื่อเปิดเส้นทาง แล้วกลับมาคุย Greust, Eramir, Silk, Nessa, Bestel และ Tarkleigh ในหัวข้อที่เปิดใหม่",
+          "ตรวจ Lore ของพื้นที่ในหมวด No Stone Unturned แยกต่างหากก่อนเร่งผ่านเควสต์"
+        ],
+        "stop": "ยังไม่ควรทำ Chamber of Sins หรือช่วย Helena จนกว่าจะตรวจหัวข้อ Western Forest ที่เปิดก่อน",
+        "stopIds": [
+          69,
+          70,
+          71,
+          72,
+          74,
+          73
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "sins-before-helena",
+        "place": "The Chamber of Sins",
+        "heading": "เข้า Chamber of Sins · กลับไปหา Yeena ก่อนช่วย Helena",
+        "quest": "Intruders in Black",
+        "dialogueIds": [
+          75
+        ],
+        "loreIds": [],
+        "actions": [
+          "เมื่อเข้า Chamber of Sins ให้กลับไปคุย Yeena เรื่อง Chamber of Sins",
+          "ฟังหัวข้อให้ครบก่อนดำเนินเควสต์ช่วย Helena"
+        ],
+        "stop": "ห้ามทำ Intruders in Black จบหรือช่วย Helena ก่อนคุย Yeena: Chamber of Sins",
+        "stopIds": [
+          75
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "sins-after-helena",
+        "place": "The Forest Encampment / Chamber of Sins",
+        "heading": "หลังช่วย Helena · เก็บบทสนทนาที่เปิดใหม่",
+        "quest": "Intruders in Black / Sharp and Cruel",
+        "dialogueIds": [
+          76,
+          79,
+          80,
+          78,
+          81,
+          82,
+          83,
+          84,
+          85,
+          77,
+          86,
+          88,
+          87
+        ],
+        "loreIds": [],
+        "actions": [
+          "หลังช่วย Helena กลับคุย NPC ทุกคนเกี่ยวกับ Helena, Fidelitas และ Baleful Gem",
+          "ก่อนถือ Maligaro's Spike ต้องตรวจ Eramir: The Baleful Gem ตามเงื่อนไขของไอเทมในกระเป๋า",
+          "ฟังหัวข้อ Maligaro's Spike ของ Silk / Greust / Yeena ตามลำดับที่คู่มือระบุ"
+        ],
+        "stop": "อย่าเปลี่ยนสถานะ Baleful Gem/Maligaro's Spike เร็วเกินไปก่อนฟัง Eramir: The Baleful Gem",
+        "stopIds": [
+          77
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "crypt",
+        "place": "The Fellshrine Ruins / The Crypt",
+        "heading": "The Crypt · กลับคุย Eramir หลังเข้าพื้นที่",
+        "quest": "Through Sacred Ground",
+        "dialogueIds": [
+          90
+        ],
+        "loreIds": [],
+        "actions": [
+          "สำรวจ Fellshrine Ruins และ The Crypt ตามเส้นทาง",
+          "กลับคุย Eramir: Fellshrine Ruins หลังเข้าพื้นที่ตามเงื่อนไขของคู่มือ Steam"
+        ],
+        "stop": null,
+        "stopIds": [],
+        "confidence": "historical"
+      },
+      {
+        "id": "roots",
+        "place": "The Wetlands / Vaal Ruins entrance",
+        "heading": "Baleful Gem / Tree Roots · ต้องคุย Eramir ก่อนทำลายรากไม้",
+        "quest": "Sharp and Cruel",
+        "dialogueIds": [
+          91,
+          92,
+          94,
+          93
+        ],
+        "loreIds": [],
+        "actions": [
+          "เมื่อมี Baleful Gem และ Maligaro's Spike ให้คุย Eramir เรื่อง Maligaro's Creation",
+          "เมื่อพบ Tree Roots ที่ขวางทางกลับคุย Eramir: Ancient Gateway ก่อนกำจัด Lorrata",
+          "หลังทำลายรากไม้แล้วจึงกลับคุย Eramir และ Yeena เรื่อง Lorrata"
+        ],
+        "stop": "อย่าทำลายรากไม้หรือจัดการ Lorrata ก่อนฟัง Eramir: Maligaro's Creation และ Ancient Gateway",
+        "stopIds": [
+          91,
+          92
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "ancient-seal",
+        "place": "The Vaal Ruins / The Forest Encampment",
+        "heading": "เปิด Ancient Seal · เก็บ The Darkness ของ NPC ในเมือง",
+        "quest": "Deal with the Bandits",
+        "dialogueIds": [
+          95,
+          99,
+          98,
+          96,
+          97
+        ],
+        "loreIds": [],
+        "actions": [
+          "เปิด Ancient Seal เพื่อปลดหัวข้อ The Darkness ตามคำแนะนำที่ทั้งสองคู่มือเห็นตรงกัน",
+          "กลับเมืองคุย Eramir, Helena, Silk, Greust และ Yeena เกี่ยวกับ The Darkness",
+          "ยังไม่ฆ่าหรือช่วย Bandits; ลำดับเริ่มคุยกับ Bandits ก่อนหรือหลัง Seal ยังต้องพิสูจน์ในเกม"
+        ],
+        "stop": "อย่าฆ่าหรือช่วย Bandits ก่อนเก็บ The Darkness ของ NPC ที่เกี่ยวข้อง",
+        "stopIds": [
+          95,
+          99,
+          98,
+          96,
+          97
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "bandit-decisions",
+        "place": "Western Forest / Wetlands / Broken Bridge",
+        "heading": "Bandits · คุย The Darkness และกลับ Eramir หลังฆ่าทีละตัว",
+        "quest": "Deal with the Bandits",
+        "dialogueIds": [
+          100,
+          102,
+          89,
+          101,
+          103,
+          104,
+          105
+        ],
+        "loreIds": [],
+        "actions": [
+          "ตรวจบทสนทนา The Darkness ของ Alira และ Oak ขณะที่ยังมีชีวิต; Kraityn ไม่มีหัวข้อนี้ตาม Wiki 2025",
+          "ถ้าติดตามสายฆ่าทั้งสาม ให้กลับ Eramir หลังฆ่าตัวแรก แล้วกลับอีกครั้งหลังตัวที่สอง ก่อนฆ่าตัวสุดท้าย",
+          "หลังฆ่าครบให้กลับคุย Eramir เรื่อง Bandit Lords และตรวจหัวข้อ Greust / Helena ที่เปิดเพิ่มเติม",
+          "ระวัง: คำแนะนำเรื่องเวลาที่ควรคุย Bandits ครั้งแรกของ Steam และ PoE Wiki ขัดแย้งกัน ไม่ใช่เส้นทางที่รับรองแล้ว"
+        ],
+        "stop": "ยังไม่ควรฆ่าหรือช่วย Bandits จนกว่าจะเก็บ The Darkness ของเมืองและ Alira/Oak ครบ; และต้องกลับ Eramir ระหว่างการฆ่า",
+        "stopIds": [
+          95,
+          99,
+          98,
+          96,
+          97,
+          100,
+          102
+        ],
+        "confidence": "conflict",
+        "sourceConflict": "ข้อขัดแย้งยังไม่คลี่คลาย: Steam ให้รอคุย Bandits หลังเปิด The Darkness แต่ PoE Wiki แนะนำคุยก่อนเปิด Ancient Seal จึงต้องตรวจในเกมก่อนทำขั้นที่เปลี่ยนสถานะ Bandits"
+      },
+      {
+        "id": "vaal-oversoul",
+        "place": "The Vaal Ruins / The Forest Encampment",
+        "heading": "หลัง Vaal Oversoul · ตรวจบทสนทนา The Light ก่อนเข้า Act 3",
+        "quest": "Shadow of the Vaal",
+        "dialogueIds": [
+          106,
+          108,
+          110,
+          109,
+          107
+        ],
+        "loreIds": [],
+        "actions": [
+          "หลังฆ่า Vaal Oversoul กลับเมือง",
+          "คุย Eramir, Greust, Yeena, Silk และ Helena เรื่อง The Light ที่เปิดหลังจบเนื้อเรื่อง",
+          "ตรวจยอด All Ears ใน Act 2 รวมถึง Lore, Waypoint และ Side Quest ก่อนย้าย Act"
+        ],
+        "stop": "ก่อนออก Act 2 ให้ตรวจ The Light ทั้งห้าหัวข้อ",
+        "stopIds": [
+          106,
+          108,
+          110,
+          109,
+          107
+        ],
+        "confidence": "historical"
+      }
     ]
   },
-  "note": "The 9 steps cover all 41 Act 1 All Ears dialogue IDs and only 15 explicitly mapped Letters of Exile Lore IDs; 14 other Act 1 Lore, Waypoints and sidequests are checked through the existing Act gate. Not a certified 3.30 walkthrough."
+  "note": "Act 1: 9 phases 41/41 dialogues and 15/29 lore explicitly placed. Act 2: 10 historical zone phases cover wiki rows 42–110 exactly once; source disagreement before Ancient Seal/Bandits remains unresolved, so cannot certify a safe play order. Both Acts still require separate Lore, Waypoint and Side Quest gates."
 };

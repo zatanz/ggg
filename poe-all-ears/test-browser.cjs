@@ -42,7 +42,7 @@ const assert=require('node:assert/strict');
  await page.locator('#addChar').click();
  assert.equal(await page.locator('#character option').count(),beforeCount,'failed localStorage write must roll back character addition');
  const beforeProgress=await page.locator('#progress').innerText();
- const firstBox=page.locator('#results input[type="checkbox"]').first();if(await firstBox.isChecked())await firstBox.uncheck();else await firstBox.check();
+ await page.evaluate(()=>{document.querySelector('#results input[type="checkbox"]').click();});
  assert.equal(await page.locator('#progress').innerText(),beforeProgress,'failed localStorage write must roll back checkbox change');
  await page.evaluate(()=>{Storage.prototype.setItem=window.__originalSetItem;});
  await page.locator('#patch').selectOption('3.30');

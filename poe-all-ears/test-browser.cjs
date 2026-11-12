@@ -266,6 +266,13 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView details[data-group="ears"] .hubItem').count(),69,'Act 2 expanded list shows all 69 source-matched dialogues');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ยังมีชีวิต (Oak)'),true,'Act 2 second-kill description shows survivor Oak');
+ await hub.locator('.hubActStrip [data-act="3"]').click();
+ assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),5,'Act 3 exposes five source-linked quest risks');
+ assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').evaluate(x=>x.open),true,'Clarissa pre-handoff checkpoint opens by default');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').innerText()).includes("Tolman's Bracelet"),true,'Act 3 warning names quest turn-in prerequisite');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-piety"]').innerText()).includes('Piety'),true,'Piety missable warning present');
+ await hub.locator('.hubActStrip [data-act="2"]').click();
+
 
  await hub.reload();
  await hub.locator('.hubActStrip [data-act="2"]').click();

@@ -229,3 +229,9 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubCheckpointRowWarning{color:#edba95}
 .hubCheckpointRowUnknown{color:#b4aaa0;font-style:italic}
 .hubCheckpointRow>.hubCheckpointRowState{flex:0 0 auto;margin-top:1px}
+
+.hubPostQuests{background:#222b2d;border-color:#456064}
+.hubPostQuests .hubCriticalTitle h3{color:#c6e5e8}
+.hubPostQuests .hubCheckpoint>summary{background:#263237}
+.hubPostQuests .hubCheckpoint[open]>summary{background:#2d4547;border-bottom-color:#456164}
+.hubPostQuests .hubItem{margin:8px 0 12px}

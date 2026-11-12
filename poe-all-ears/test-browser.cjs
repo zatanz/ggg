@@ -253,6 +253,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView .hubCheckpoint').first().getAttribute('data-stage'),'a2-whitebeast','Source checkpoint groups stay in original sequence rather than prioritizing danger first');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"] .hubCheckpointRowTrigger').first().innerText()).includes('Ancient Seal'),true,'Per-dialogue unlock moment is displayed');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('The Darkness'),true,'Bandit checkpoint explains Ancient Seal before killings');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('หากเลือกช่วย Bandit'),true,'Act 2 preflight warns against unverified help-bandit path');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('Deal with the Bandits'),true,'Bandit checkpoint associates quest reward source');
 
  assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),5,'Act 2 has five quest rewards');

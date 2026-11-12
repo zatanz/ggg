@@ -38,6 +38,7 @@ const assert=require('node:assert/strict');
  assert.equal(await page.locator('#character option').count(),2,'invalid backup must not create characters');
  page.once('dialog',d=>d.accept());
  await page.locator('#file').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+ await page.locator('#character option').nth(3).waitFor({state:'attached',timeout:10000});
  assert.equal(await page.locator('#character option').count(),4,'valid import adds characters');
  await page.evaluate(()=>{window.__originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(){throw Error('QuotaExceededError')};});
  const beforeCount=await page.locator('#character option').count();

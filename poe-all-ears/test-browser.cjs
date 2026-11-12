@@ -183,6 +183,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubToolbar select').first().selectOption('2');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Bandits'),true,'Act 2 preflight visible in integrated Act view');
  await hub.reload();
+ await hub.locator('#hubToolbar select').first().selectOption('2');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();

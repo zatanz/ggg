@@ -152,3 +152,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Wired Act 6 wiki ordering and warnings into index.html and walkthrough.html; retained historical act6-advisory.js as explicitly unverified legacy milestone notes.
 - Updated validate-data.cjs and validate-ui.cjs for Act 6 source order and 12 cautions. Intermediate CI failed while validators still expected unverified wikiRow=null; updated checks now require the new source mapping. Latest run status must be checked before claiming pass.
 - Wiki source-row mapped: 341/484 (Acts 1–6; 70.45%). Acts 7–10 remain historical order. Current patch verified: 0/484. routeSafe=false. Browser QA outstanding.
+
+## Continuation — Act 7 source reconciliation and discrepancy preservation (2026-11-12)
+- Read PoE Wiki All Ears guide Act 7 (https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7, last updated 2025-06-30). Source rows 342–386 = 45 dialogues.
+- Added route-act7.js and act7-inventory.json, mapping all 45 source rows to stable local IDs. Explicitly disambiguated two Eramir/Gruthkul entries: Wiki row 380 = local ID 378 (before kill), row 381 = ID 381 (after kill).
+- Preserved 3 conflicts between 3.9 legacy notes and Wiki conditions (IDs 365, 376, 382) in inventory.discrepancies. The Wiki condition takes precedence for provisional route annotations; do not silently overwrite historical notes. ID 369 retains a legacy-specific caution, explicitly labeled.
+- Added five cautions around The Den, Maligaro, Gruthkul, Fireflies/Yeena, and Arakaali; wired route into index.html and walkthrough.html.
+- Added 45-record, unique-ID, wiki-row, discrepancy, duplicate-topic and UI-wiring assertions. GitHub Actions status must be checked after latest commit.
+- Wiki source-row mapped total Acts 1–7: 386/484 (79.75%); Acts 8–10 remain legacy order. Current patch certified 0/484, routeSafe=false. Browser interaction QA still outstanding.

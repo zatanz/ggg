@@ -40,6 +40,13 @@ Main URL: https://zatanz.github.io/ggg/poe-all-ears/
 - The game total and checklist total are manually compared. Baselines store both total and manually checked IDs per character. Differences provide a **candidate list for rechecking**, not reliable identification of missing dialogue/Stone.
 - Preserved all previous per-character progress keys. Added a unified v2 export/import (add-only profiles), while original v1 All Ears backup remains supported.
 
+## Pre-release Wiki rule review — November 12, 2026
+
+- The [PoE Wiki All Ears guide](https://www.poewiki.net/wiki/Guide:All_Ears_achievement), last updated June 30, 2025, documents three branch-dependent Eramir topics (#101–103). The all-killed version cannot be presumed to work after helping a Bandit; no 3.30 character-level test is present.
+- Act 10's guide lists Lilly Roth after Safe Passage (#471), after Death and Rebirth (#481), and after An End to Hunger (#482). These are **unlock-after** conditions, not proof of a permanently missable dialogue. They are displayed separately from source-marked irreversible warnings.
+- The current UI displays row-level prerequisites and before-action constraints, and preserves the authored checkpoint grouping instead of sorting it by risk label. This is source-level clarification, **not** current-patch gameplay verification.
+- Do not raise zero certified 3.30 counts based on the prior 2025 Wiki route, patch note text, or passing UI CI.
+
 ## Remaining game-dependent release gates
 
 - [ ] Check the actual running 3.30 build on/after November 13 PST; record client version, date, and platform.

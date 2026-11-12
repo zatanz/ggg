@@ -26,7 +26,8 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('act===6?window.ALL_EARS_ROUTE_ACT6'),name+': Act 6 source ordering not wired');
     check(html.includes('act===7?window.ALL_EARS_ROUTE_ACT7'),name+': Act 7 source ordering not wired');
     check(html.includes('act===8?window.ALL_EARS_ROUTE_ACT8'),name+': Act 8 source ordering not wired');
-    check(html.includes('act!==2&&act!==3&&act!==6&&act!==9')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
+    check(html.includes('act!==2&&act!==3&&act!==6&&act!==9&&act!==10')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
+    check(html.includes('src="./act10-advisory.js"')&&html.includes('window.ALL_EARS_ACT10_ADVISORY.milestones.forEach'),name+': Act 10 historical checkpoints not displayed');
     check(html.includes('src="./act9-advisory.js"')&&html.includes('window.ALL_EARS_ACT9_ADVISORY.milestones.forEach'),name+': Act 9 historical warnings not displayed');
     check(html.includes('src="./act6-advisory.js"')&&html.includes('window.ALL_EARS_ACT6_ADVISORY.milestones.forEach'),name+': Act 6 historical warning not displayed');
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');

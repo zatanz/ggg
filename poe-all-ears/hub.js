@@ -7,9 +7,12 @@ const MAIN="poe-all-ears-user-data-v1",LORE="poe-companion-lore-v1",EXTRA="poe-c
 const collections={ears:E.items,lore:L.entries,waypoints:X.waypoints,sidequests:X.sidequests};
 const totals={ears:484,lore:140,waypoints:91,sidequests:30};
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
+const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
+const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
+const routeOpen=new Set(["ears"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",act:"1",status:"todo",search:"",limit:40,reviewType:"lore",gameCount:""};
+const state={tab:"route",collectionType:"ears",act:"1",status:"todo",search:"",limit:40,reviewType:"lore",gameCount:""};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -31,44 +34,62 @@ const byId=new Map(base.map(x=>[x.id,x]));return r.map(x=>byId.get(x.id)).filter
 function records(type,act){if(type==="ears"){if(act==="all")return E.items;return sortedAllEars(act);}return collections[type].filter(x=>act==="all"||String(x.act)===String(act));}
 function label(x,type){return type==="ears"?x.npc+" — "+x.dialog:x.name;}
 function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.act,type})?.area?" · "+getRisk({id:x.id,act:x.act,type}).area:""):type==="lore"?x.area:type==="waypoints"?"Waypoint · "+x.act:"Side Quest · Act "+x.act;}
-function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"รายการมีความสุ่ม: อาจต้องสร้างพื้นที่ใหม่หรือเปิดอ่านซ้ำ":"";}
+function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
 function renderSummary(){const target=$("hubStats");target.replaceChildren();Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
-card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"ติ๊กครบในเว็บ — ยังต้องยืนยันกับเกม":"ยังขาด "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
+card.append(el("span",names[k]+" · "+uiNames[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบในเว็บ · ยังต้องเทียบเกม":"เหลือ "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
 function itemCard(type,x){const done=entries(type).includes(x.id),row=el("label",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
-box.type="checkbox";box.checked=done;box.setAttribute("aria-label",label(x,type));box.addEventListener("change",()=>{
-if(type==="ears"&&box.checked){const r=getRisk({type,id:x.id,act:x.act});if(r&&r.before&&!confirm("จุดเสี่ยงจาก PoE Wiki ปี 2025 (ยังไม่รับรองแพตช์ใหม่):\n"+r.before+"\n\nตรวจเงื่อนไขในเกมแล้วใช่หรือไม่?")){box.checked=false;return;}}
+box.type="checkbox";box.checked=done;box.setAttribute("aria-label",verbs[type]+" — "+label(x,type));box.addEventListener("change",()=>{
+if(type==="ears"&&box.checked){const r=getRisk({type,id:x.id,act:x.act});if(r&&r.before&&!confirm("ระวังพลาดบทสนทนา! อ้างอิง PoE Wiki ปี 2025 (ยังไม่รับรองแพตช์ใหม่):\n"+r.before+"\n\nฟังบทสนทนานี้ในเกมและตรวจเงื่อนไขแล้วใช่หรือไม่?")){box.checked=false;return;}}
 writeMarks(type,x.id,box.checked);
-});const name=el("div",undefined,"hubName"),tag=el("span",names[type],"hubTag");name.append(tag,document.createTextNode(label(x,type)));
+});const name=el("div",undefined,"hubName"),tag=el("span",uiNames[type],"hubTag");name.append(tag,document.createTextNode(label(x,type)));
 info.append(name,el("div",(type==="ears"?"Wiki "+(getRisk({type,id:x.id,act:x.act})?.wikiRow||"?")+" · ":type==="lore"&&x.wikiRow?"Wiki #"+x.wikiRow+" / ID เดิม #"+x.id+" · ":"")+area(x,type),"hubMeta"));
 const warn=warning(x,type);if(warn)info.append(el("div",warn,"hubRisk"));
 if(type==="ears"&&x.act){const link=el("a","ตรวจแหล่งอ้างอิง Wiki");link.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+x.act;link.target="_blank";link.rel="noopener noreferrer";link.className="hubMeta";info.append(link);}
 row.append(box,info);return row;}
 function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(warning(x,type)||"")).toLowerCase().includes(query)));}
-function addList(target,type,act,max){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
-const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",names[type]),el("span",list.length+" รายการตามตัวกรอง","hubSubtle"));target.append(heading);
+function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
+if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",uiNames[type]),el("span",list.length+" รายการที่แสดง","hubSubtle"));target.append(heading);}
 if(!list.length){target.append(el("div","ไม่มีรายการตามตัวกรอง","hubEmpty"));return;}
 const container=el("div",undefined,"hubList");let oldArea="";
 shown.forEach(x=>{
 if(state.tab==="route"&&type!=="ears"&&type!=="sidequests"){const group=area(x,type);if(oldArea!==group){container.append(el("div",group,"hubGroup"));oldArea=group;}}
 container.append(itemCard(type,x));});target.append(container);
-if(shown.length<list.length){const more=el("button","แสดงรายการที่เหลือ "+(list.length-shown.length)+" รายการ","hubShowMore");more.onclick=()=>{state.limit=1000;renderView();};target.append(more);}}
+if(shown.length<list.length){const more=el("button","ดูเพิ่มอีก "+(list.length-shown.length)+" รายการ","hubShowMore");more.onclick=()=>{state.limit=1000;renderView();};target.append(more);}}
 function section(title){const d=el("section",undefined,"hubSection");d.append(el("h2",title));return d;}
-function renderRoute(target){const act=state.act==="all"?"1":state.act;const panel=section("เดินเกมตาม Act "+act);
-panel.append(el("p","รวมบทสนทนา Lore, Waypoint และ Side Quest ไว้ในหน้าเดียว โดยจัดหมวดแยกเพื่ออ่านง่าย ลำดับระหว่างหมวดไม่ได้ผ่านการยืนยันเป็นเส้นทางที่ปลอดภัย","hubSubtle"));
-if(act==="2")panel.append(safetyPanel());
-if(act==="3"){panel.append(el("div","Act 3: คู่มือ Wiki ระบุความเสี่ยงเกี่ยวกับ Clarissa และ Piety ควรตรวจรายการที่มีเงื่อนไขก่อนสู้บอส","hubNotice"));}
-["ears","lore","waypoints","sidequests"].forEach(type=>{const sec=el("div",undefined,"hubSection");addList(sec,type,act,type==="ears"?state.limit:40);panel.append(sec);});target.append(panel);}
-function renderCategory(target,type){const panel=section(names[type]);
+function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการที่ต้องเก็บ");
+panel.append(el("p","เลือกหัวข้อด้านล่างเพื่อดูสิ่งที่ยังไม่ได้ทำใน Act นี้ · รายการ All Ears เรียงตาม PoE Wiki ปี 2025 แต่ยังไม่ใช่เส้นทางที่ยืนยันว่าปลอดภัยในแพตช์ 3.30","hubSubtle"));
+if(act==="2"){
+const guard=el("details",undefined,"hubChapter hubSafety");guard.open=true;
+guard.append(el("summary","ก่อนจัดการ Bandits · ตรวจจุดพลาด Act 2"));guard.append(safetyPanel());panel.append(guard);
+}
+if(act==="3")panel.append(el("div","ระวัง Act 3: ตรวจหัวข้อ Clarissa / Piety ที่มีเงื่อนไขก่อนส่งเควสต์หรือสู้บอส (ข้อมูล Wiki ปี 2025)","hubNotice"));
+["ears","lore","waypoints","sidequests"].forEach(type=>{
+const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
+const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;
+chapter.open=routeOpen.has(type)||!!state.search.trim();
+const summary=el("summary"),left=el("span",undefined,"hubChapterTitle");
+left.append(el("strong",uiNames[type]),el("small",names[type]));summary.append(left,el("span",count+" / "+rows.length,"hubChapterCount"));
+chapter.append(summary);
+const content=el("div",undefined,"hubChapterBody");addList(content,type,act,40,true);chapter.append(content);
+chapter.addEventListener("toggle",()=>{if(!state.search.trim()){if(chapter.open)routeOpen.add(type);else routeOpen.delete(type);}});
+panel.append(chapter);
+});target.append(panel);}
+function renderCategory(target,type){const panel=section(uiNames[type]+" · "+names[type]);
 const desc={lore:"Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่",
 waypoints:"รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด",
 sidequests:"Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง",
 ears:"All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)"};
-panel.append(el("p",desc[type],"hubSubtle"));if(type==="lore")panel.append(vaalPanel());addList(panel,type,state.act,state.limit);target.append(panel);}
+panel.append(el("p",desc[type],"hubSubtle"));
+if(type==="lore"){
+const tips=el("p","สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","hubNotice");panel.append(tips);
+const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary","ค้นหา Vaal Letter ตามชื่อ Vaal Side Area"),vaalPanel());panel.append(vaal);
+}
+addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
 try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
-function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","Act 2 · ตรวจเงื่อนไขก่อนลงมือ"),el("p","บันทึกด้วยมือเท่านั้น: ต้องคุยกับ Bandits ก่อนเปิด Ancient Seal และเก็บ The Darkness ก่อนฆ่า Bandits ตาม Wiki ปี 2025","hubSubtle"));
-const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","คุยกับ Alira แล้ว"],["oak","คุยกับ Oak แล้ว"],["kraityn","คุยกับ Kraityn แล้ว"],["seal","เปิด Ancient Seal แล้ว"],["darkness","คุย The Darkness แล้ว"]];
+function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนเปิด Ancient Seal / สู้ Bandits"),el("p","ทำเครื่องหมายหลังคุยกับ Alira, Oak และ Kraityn แล้ว เปิด Ancient Seal เพื่อฟัง The Darkness ที่เกี่ยวข้องก่อนฆ่า Bandits (Kraityn ไม่มีหัวข้อนี้ตาม Wiki ปี 2025)","hubSubtle"));
+const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","คุยกับ Alira แล้ว"],["oak","คุยกับ Oak แล้ว"],["kraityn","คุยกับ Kraityn แล้ว"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
 const s=getSafety();
 checks.forEach(([id,title])=>{const lab=el("label"),inp=el("input");inp.type="checkbox";inp.checked=s[id]===true;inp.dataset.safety=id;inp.onchange=()=>updateSafety(id,inp.checked);lab.append(inp,document.createTextNode(title));grid.append(lab);});
 wrap.append(grid);
@@ -91,24 +112,25 @@ const vaalMap=[
 ["Secret Laboratory","There Was No","Chamber of Sins"],["Shifting Sands","I Had Nothing","The Vastiri Desert"],["Side Chapel","My Beautiful Queen","Cathedral Rooftop"],["Stagnant Canal","There Was No","The Docks"],["Strange Sinkhole","Atziri Promises Us","Cavern of Wrath / Coast"],["Sunken Shingle","I Had Nothing","The Ship Graveyard / Reef"],["Twisted Inquisitorium","I Have Been","Chamber of Innocence"],["Walled-off Ducts","I Had Nothing","The Sewers / Toxic Conduits"]
 ];
 function vaalPanel(){const box=el("div",undefined,"hubPanel");box.append(el("h3","Vaal Letter / Research Journal · ค้นหาตามชื่อ Side Area"),el("p","การเกิด Vaal Side Area เป็นแบบสุ่ม แต่ชนิดข้อความสัมพันธ์กับชื่อพื้นที่ในคู่มือ Wiki ปี 2025 ตารางนี้ยังไม่ผ่านการตรวจแพตช์ 3.30","hubSubtle"));
-box.append(el("div","ข้อควรระวัง 3.30: Vaal Side Areas จะไม่ปรากฏใน Maps ตาม Patch Notes แต่ยังมีใน Campaign; การสุ่มในพื้นที่เก่าอาจเปลี่ยนแปลง จึงไม่ควรใช้วิธีฟาร์มจาก Map Device ในคู่มือเก่า","hubNotice"));
+box.append(el("div","แพตช์ 3.30: วิธีเปิด Vaal Side Area ด้วย Map Device ในคู่มือเก่าใช้เป็นแนวทางไม่ได้ ให้ตามหาใน Campaign และตรวจเวอร์ชันเกมอีกครั้ง","hubNotice"));
 const input=el("input");input.type="search";input.placeholder="พิมพ์ชื่อ เช่น Concealed Caldarium";input.setAttribute("aria-label","ค้นหาชื่อ Vaal Side Area");const result=el("div",undefined,"hubList");box.append(input,result);
-const show=()=>{result.replaceChildren();const q=input.value.trim().toLowerCase();const entries=vaalMap.filter(x=>(x[0]+" "+x[2]).toLowerCase().includes(q)).slice(0,25);
+const show=()=>{result.replaceChildren();const q=input.value.trim().toLowerCase();if(q.length<2){result.append(el("p","พิมพ์อย่างน้อย 2 ตัวอักษรเพื่อหาชื่อ Vaal Side Area","hubSubtle"));return;}const entries=vaalMap.filter(x=>(x[0]+" "+x[2]).toLowerCase().includes(q)).slice(0,10);
 entries.forEach(m=>{const lore=L.entries.find(x=>x.act==="Vaal"&&x.name.toLowerCase().includes(m[1].toLowerCase()));const r=el("div",undefined,"hubItem"),info=el("div",undefined,"hubText");info.append(el("div",m[0],"hubName"),el("div",m[2]+" · "+(lore?lore.name+" · Wiki #"+(lore.wikiRow||"?"):"ยังไม่พบรายการตรงกัน"),"hubMeta"));if(lore){const b=el("button",entriesForVaal(lore)?"ติ๊กแล้ว — กดเพื่อยกเลิก":"ทำเครื่องหมายว่าอ่านแล้ว");b.onclick=()=>writeMarks("lore",lore.id,!entriesForVaal(lore));r.append(b);}r.prepend(info);result.append(r)});
 if(!entries.length)result.append(el("div","ไม่พบพื้นที่นี้ในตารางที่ตรวจชื่อไว้ อย่าเดา Lore จากชื่อที่คล้ายกัน","hubNotice"));};input.oninput=show;show();const ref=el("a","ที่มา: PoE Wiki — Vaal side area");ref.href="https://www.poewiki.net/wiki/Vaal_side_area";ref.target="_blank";ref.rel="noopener noreferrer";box.append(ref);return box;}
 function entriesForVaal(lore){return entries("lore").includes(lore.id);}
 function currentReview(){const c=active(),s=safeParse(HUB);return s&&s.schema===2&&s.byCharacter&&s.byCharacter[c.id]||{};}
 function saveReview(review){const c=active(),raw=safeParse(HUB),s=raw&&raw.schema===2&&raw.byCharacter?raw:{schema:2,byCharacter:{}};s.byCharacter[c.id]=review;try{localStorage.setItem(HUB,JSON.stringify(s));return true;}catch(e){alert("บันทึกจุดตรวจสอบไม่ได้");return false;}}
-function reviewPanel(){const panel=section("Recheck · ตรวจความคืบหน้ากับเกม");
-panel.append(el("p","การนับในเกมไม่บอกรายการที่ขาด การตรวจยอดนี้ใช้ตัวเลขที่ผู้เล่นกรอก ไม่สามารถรู้สถานะเกมอัตโนมัติ","hubSubtle"));
+function reviewPanel(){const panel=section("ตรวจยอด Achievement กับเกม");
+panel.append(el("p","กรอกยอด Achievement ที่เห็นในเกม แล้วเทียบกับที่ทำเครื่องหมายไว้ · เว็บนี้อ่านข้อมูลจากเกมไม่ได้และบอกชิ้นที่ขาดแน่นอนไม่ได้","hubSubtle"));
 const controls=el("div",undefined,"hubControls"),select=el("select"),input=el("input"),cmp=el("button","เปรียบเทียบยอด");
 select.setAttribute("aria-label","เลือก Achievement ที่จะตรวจ");Object.entries(names).forEach(([k,v])=>{const o=el("option",v);o.value=k;select.append(o)});select.value=state.reviewType;select.onchange=()=>{state.reviewType=select.value;state.gameCount="";renderView();};input.type="number";input.min="0";input.max=String(totals[state.reviewType]);input.step="1";input.value=state.gameCount;input.placeholder="จำนวนที่เกมแสดง";input.setAttribute("aria-label","กรอกจำนวนที่เกมแสดง");input.oninput=()=>state.gameCount=input.value;
 cmp.className="primary";const out=el("div");cmp.onclick=()=>{const n=Number(input.value);out.replaceChildren();if(input.value.trim()===""||!Number.isInteger(n)||n<0||n>totals[state.reviewType]){out.append(el("div","กรอกจำนวนเต็ม 0–"+totals[state.reviewType],"hubNotice"));return;}const checked=progress(state.reviewType),diff=checked-n;const summary=el("div","Checklist "+checked+" / เกม "+n+". "+(diff===0?"ยอดตรงกัน แต่ไม่ได้รับรองว่าติ๊กถูกชิ้นทั้งหมด":diff>0?"Checklist มากกว่าเกม "+diff+" รายการ":"เกมมากกว่า Checklist "+(-diff)+" รายการ"),diff===0?"hubGood":"hubNotice");out.append(summary);const baseline=currentReview()?.baselines?.[state.reviewType];if(diff!==0&&baseline){const added=entries(state.reviewType).filter(id=>!baseline.ids.includes(id)),t=el("div",undefined,"hubSection");t.append(el("p","รายการที่ติ๊กเพิ่มหลังจุดตรวจยอดตรงกันครั้งล่าสุด (เป็นเพียงจุดให้ย้อนตรวจ ไม่ใช่หลักฐานว่าเกมไม่นับ):","hubSubtle"));const ul=el("ul");added.slice(0,45).forEach(id=>{const x=collections[state.reviewType].find(z=>z.id===id);if(x)ul.append(el("li",label(x,state.reviewType)))});if(!added.length)ul.append(el("li","ไม่มีรายการติ๊กเพิ่ม กรุณาตรวจช่วงก่อนหน้าหรือรายการที่ไม่ได้ติ๊ก"));t.append(ul);out.append(t);}};
-const checkpoint=el("button","บันทึกจุดยอดตรงกัน");checkpoint.onclick=()=>{const n=Number(input.value),type=state.reviewType;if(input.value.trim()===""||!Number.isInteger(n)||n!==progress(type)){alert("บันทึกจุดเทียบได้เมื่อยอดในเกมตรงกับจำนวนที่ติ๊กในเว็บเท่านั้น");return;}const s=currentReview();if(!s.baselines)s.baselines={};s.baselines[type]={count:n,ids:entries(type),at:new Date().toISOString()};if(saveReview(s)){out.replaceChildren();out.append(el("div","บันทึกจุดเทียบยอดแล้ว (ยืนยันเฉพาะจำนวน)","hubGood"));}};
+const checkpoint=el("button","บันทึกยอดที่ตรงกัน");checkpoint.onclick=()=>{const n=Number(input.value),type=state.reviewType;if(input.value.trim()===""||!Number.isInteger(n)||n!==progress(type)){alert("บันทึกจุดเทียบได้เมื่อยอดในเกมตรงกับจำนวนที่ติ๊กในเว็บเท่านั้น");return;}const s=currentReview();if(!s.baselines)s.baselines={};s.baselines[type]={count:n,ids:entries(type),at:new Date().toISOString()};if(saveReview(s)){out.replaceChildren();out.append(el("div","บันทึกจุดเทียบยอดแล้ว (ยืนยันเฉพาะจำนวน)","hubGood"));}};
 controls.append(select,input,cmp,checkpoint);panel.append(controls,out);
 const old=currentReview()?.baselines?.[state.reviewType];if(old)panel.append(el("p","จุดเทียบยอดล่าสุด: "+old.count+" รายการ · "+old.at,"hubSubtle"));
-panel.append(safetyPanel());panel.append(exportPanel());panel.append(vaalPanel());return panel;}
-function exportPanel(){const panel=el("div",undefined,"hubPanel");panel.append(el("h3","Backup รวมทั้ง 4 Achievement"),el("p","ส่งออกไฟล์เดียวทุกตัวละครโดยไม่แก้ Backup รุ่นเดิม และนำเข้าแบบเพิ่มเป็นตัวละครใหม่ ไม่ทับข้อมูลที่มีอยู่","hubSubtle"));
+const safety=el("details",undefined,"hubChapter");safety.append(el("summary","ตรวจจุดเสี่ยง Act 2 · Bandits / Ancient Seal"),safetyPanel());
+panel.append(safety,exportPanel());return panel;}
+function exportPanel(){const panel=el("div",undefined,"hubPanel");panel.append(el("h3","สำรองข้อมูลทุก Achievement"),el("p","ส่งออกไฟล์เดียวเก็บความคืบหน้าทุกตัวละครไว้ · นำเข้าเป็นตัวละครใหม่ ไม่ทับข้อมูลเดิม","hubSubtle"));
 const row=el("div",undefined,"hubInlineRow"),exp=el("button","ดาวน์โหลด Backup รวม"),imp=el("button","นำเข้า Backup รวม"),file=el("input");file.type="file";file.accept="application/json,.json";file.hidden=true;
 exp.className="primary";exp.onclick=()=>{const s=B.read(),l=getBackupState(LORE),x=getBackupState(EXTRA),h=safeParse(HUB)||{};const characters=s.characters.map(c=>{const lr=l.byCharacter[c.id]||{},ex=x.byCharacter[c.id]||{},rv=h.byCharacter&&h.byCharacter[c.id]||{};return {name:c.name,ears:validIDs("ears",c.checked),lore:validIDs("lore",lr.lore),waypoints:validIDs("waypoints",ex.waypoints),sidequests:validIDs("sidequests",ex.sidequests),safety:lr.safety||{},baselines:rv.baselines||{}};});const blob=new Blob([JSON.stringify({app:"poe-unified-companion",schema:2,exportedAt:new Date().toISOString(),characters},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download="poe-achievements-all-characters.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);};
 imp.onclick=()=>file.click();file.onchange=async()=>{const f=file.files[0];file.value="";if(!f||f.size>4e6){alert("ไฟล์ไม่ถูกต้องหรือใหญ่เกิน 4 MB");return;}try{const obj=JSON.parse(await f.text()),records=obj.characters;if(obj.app!=="poe-unified-companion"||obj.schema!==2||!Array.isArray(records)||!records.length||records.length>100)throw Error("invalid");

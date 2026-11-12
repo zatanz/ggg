@@ -161,6 +161,11 @@ const assert=require('node:assert/strict');
  const coverage=await hub.locator('#hubStats .hubMissionStage span').allTextContents();
  assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),745,'goal journey covers all 745 items exactly once');
  assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('จุดค้างแรก'),true,'goal dashboard identifies earliest uncompleted scope');
+ await hub.locator('#hubStats .hubMissionRoadmap > summary').click();
+ await hub.locator('#hubStats [data-scope="Epilogue"]').click();
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"]').count(),1,'journey roadmap opens selected milestone and its matching view');
+ await hub.locator('.hubActStrip [data-act="1"]').click();
+
 
  assert.equal(await hub.locator('#hubView').isVisible(),true,'route view is visible');
  assert.equal(await hub.locator('#hubView [data-goal-act="1"] .hubActMissionItem').count(),4,'Act 1 100% checklist covers four achievement categories');
@@ -198,6 +203,10 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่ยืนยันกับแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+ await hub.locator('#hubView [data-goal-category="sidequests"]').click();
+ assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
+ assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'todo','goal shortcut filters to uncompleted entries');
+
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="lore"]').click();

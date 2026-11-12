@@ -41,7 +41,7 @@ A successful GitHub Actions browser smoke test means key flows execute in Chromi
 
 ## Update — 2026-11-12: quest sequence P0 implementation
 
-- The primary Act screen now begins with **15 source-referenced danger checkpoints / 35 dialogue IDs** across Acts 1–3. These are before/after barriers for irreversible quest states, not a claim of fully ordered campaign routing.
+- The primary Act screen now begins with **39 source-referenced danger checkpoints / 72 dialogue IDs** across Acts 1–9. These are before/after barriers for irreversible quest states, not a claim of fully ordered campaign routing.
 - Each checkpoint has its own status from the **canonical All Ears character progress**; checkboxes have no separate storage or item IDs. A linked reward is displayed under the relevant quest to avoid an unrelated reward hunt.
 - Act 2 manual Alira/Oak/Kraityn, Seal and Darkness preflight now lives inside the highest-risk Bandit checkpoint, avoiding two competing Act 2 safety panels. Eramir's first/second-kill alternatives still use those manual choices.
 - The 2025 Wiki is the cited source. Patch 3.30 in-game proof, complete ordering and independent user usability validation remain incomplete; do not label the result certified.
@@ -50,3 +50,10 @@ A successful GitHub Actions browser smoke test means key flows execute in Chromi
 - **Still deferred:** rewards by class, gem choice catalogs, equipment options and build optimization. This does not block manual Achievement tracking.
 
 Detailed stage ledger: [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
+
+## P0 update — Expanded to Acts 4–9 (2026-11-12)
+
+- All 37 existing source-flagged before-action dialogue rows from Acts 4–9 now appear in the Act screens as 24 grouped checkpoints. Earlier Act 1–3 work remains unchanged. Browser and static checks cover every Act. Act 10 is explicitly source-incomplete.
+- **Not completed:** actual quest-dependency verification with game evidence; safe cross-quest routing, branch alternatives, and current 3.30 item-by-item certification. All are the next P0 truthfulness gates, not cosmetic refinements.
+- Keep class-based Skill Gem and equipment choices deferred until the checklist and risk order are proven usable.
+

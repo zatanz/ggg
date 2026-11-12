@@ -169,6 +169,82 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "prereq": "The Forest Encampment",
         "priority": "critical"
       }
+    ],
+    "3": [
+      {
+        "id": "a3-clarissa",
+        "act": 3,
+        "quest": "Lost in Love",
+        "heading": "Tolman's Bracelet · ก่อนส่งเควสต์ให้ Clarissa",
+        "before": "หลังได้ Tolman's Bracelet แต่ก่อนส่งเควสต์",
+        "action": "เมื่อมี Tolman's Bracelet แล้ว ให้กลับไปคุย Hargan หัวข้อ Introduction ตามช่วงเควสต์ก่อนส่งให้ Clarissa",
+        "ids": [
+          118
+        ],
+        "risk": "การส่งเควสต์ให้ Clarissa ก่อนฟัง Hargan อาจทำให้หัวข้อนี้หาย",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+        "prereq": "The Sarn Encampment",
+        "priority": "critical"
+      },
+      {
+        "id": "a3-dialla",
+        "act": 3,
+        "quest": "The Ribbon Spool",
+        "heading": "Lady Dialla · ก่อนถือ Thaumetic Sulphite / Ribbon Spool",
+        "before": "ก่อนรับ Thaumetic Sulphite หรือ Ribbon Spool (ช่วงแนะนำตัว) และก่อนถือ Ribbon Spool ในช่วงถัดไป",
+        "action": "คุย Introduction กับ Lady Dialla ขณะที่ยังไม่มีไอเทมทั้งสอง ต่อมาเมื่อมี Thaumetic Sulphite ให้เก็บหัวข้อนั้นก่อนมี Ribbon Spool",
+        "ids": [
+          148,
+          153
+        ],
+        "risk": "สถานะไอเทมในกระเป๋ามีผลต่อบทสนทนา Lady Dialla; อย่าเดินเควสต์เลยจังหวะก่อนคุย",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+        "prereq": "The Docks / Lady Dialla"
+      },
+      {
+        "id": "a3-fairgraves",
+        "act": 3,
+        "quest": "A Swig of Hope",
+        "heading": "The Docks · คุย Fairgraves ก่อนถือไอเทมเควสต์",
+        "before": "ก่อนมี Decanter Spiritus หรือ Chitus' Plum อยู่ในกระเป๋า",
+        "action": "คุย Introduction กับ Fairgraves เมื่อพบครั้งแรกใน The Docks และยังไม่มีไอเทมเควสต์ทั้งสองในกระเป๋า",
+        "ids": [
+          142
+        ],
+        "risk": "เงื่อนไขของหัวข้อ Introduction อาจเปลี่ยนหากมี Decanter Spiritus หรือ Chitus' Plum แล้ว",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+        "prereq": "The Docks"
+      },
+      {
+        "id": "a3-gravicius",
+        "act": 3,
+        "quest": "Sever the Right Hand",
+        "heading": "The Ebony Barracks · ก่อนฆ่า General Gravicius",
+        "before": "หลังเข้า The Ebony Barracks แต่ก่อนฆ่า General Gravicius",
+        "action": "กลับไปคุย Maramoa เรื่อง Crossing the River หลังเข้าพื้นที่ตามเงื่อนไข ก่อนจัดการ General Gravicius",
+        "ids": [
+          158
+        ],
+        "risk": "บทสนทนานี้มีเงื่อนไขช่วงก่อนฆ่า General Gravicius",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+        "prereq": "The Ebony Barracks"
+      },
+      {
+        "id": "a3-piety",
+        "act": 3,
+        "quest": "Piety's Pets",
+        "heading": "The Lunaris Temple · ก่อนฆ่า Piety",
+        "before": "หลังฆ่า General Gravicius และหลังส่งรางวัล Sever the Right Hand แต่ก่อนฆ่า Piety",
+        "action": "ตรวจบทสนทนา Grigor เรื่อง The Lunaris Temple และ Maramoa เรื่อง Piety หลังผ่านเงื่อนไขที่ระบุใน Wiki ก่อนฆ่า Piety",
+        "ids": [
+          164,
+          161
+        ],
+        "risk": "การฆ่า Piety ก่อนฟังบทสนทนาสองช่วงนี้อาจทำให้รายการ All Ears ขาด",
+        "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+        "prereq": "The Sarn Encampment",
+        "priority": "critical"
+      }
     ]
   },
   "sourceStatus": "wiki-2025-quest-state-risk-only",

@@ -18,6 +18,7 @@ const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",way
 const routeOpen=new Set(); // Detailed category lists start collapsed; the next-step guide is the primary surface.
 const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa","a4-deshret","a5-utula","a6-karui","a7-den","a8-love","a9-adus"]);
 const postQuestOpen=new Set(["a10-safe-passage"]);
+const specialOpen=new Set(["lab-plaza"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:""};
@@ -206,7 +207,66 @@ function postQuestPanel(act){
  }
  return section;
 }
-function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
+
+function specialLoreRoute(target,scope){
+ const guide=window.POE_SPECIAL_LORE,info=scope==="Labyrinth"?guide?.labyrinth:guide?.vaal;
+ if(!info)return;
+ const items=records("lore",scope),checked=new Set(entries("lore")),done=items.filter(x=>checked.has(x.id)).length;
+ const title=scope==="Labyrinth"?"The Labyrinth · สำรวจ Lore 10 ชิ้น":"Vaal Letter · สำรวจ Lore 16 ชิ้น";
+ const panel=section(title);panel.classList.add("hubSpecialRoute");
+ const metric=el("div",undefined,"hubActProgress");
+ metric.append(el("strong","เก็บแล้ว "+done+" / "+items.length+" รายการ"),el("span","นับรวมใน No Stone Unturned 140 ชิ้น · ไม่ใช่ Achievement ใหม่","hubSubtle"));panel.append(metric);
+ const note=el("p",scope==="Labyrinth"?"จัดตามบริเวณที่พบ ไม่ใช่ผังห้องตายตัว Labyrinth เปลี่ยนผังเป็นระยะ จึงต้องเก็บตามพื้นที่ที่พบจริง":"Vaal Side Area เกิดแบบสุ่ม ไม่ควรฝืนเก็บตามลำดับตัวเลข รายการด้านล่างมีทั้ง Vaal Letter และ Research Journal","hubSubtle");panel.append(note);
+ const steps=el("ol",undefined,"hubSpecialSteps");
+ info.steps.forEach((value,i)=>{const li=el("li");li.append(el("span","ขั้น "+(i+1),"hubSpecialStepNo"),el("span",value));steps.append(li);});panel.append(steps);
+ panel.append(el("div",info.caveat,"hubNotice"));
+ const source=el("a","คู่มือ No Stone Unturned (PoE Wiki)");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
+ const refs=el("p",undefined,"hubSubtle");refs.append("ข้อมูลอ้างอิงปี 2025 · ยังไม่รับรองแพตช์ 3.30 · ",source);panel.append(refs);
+ function group(id,name,hint,ids,defaultOpen){
+  const filtered=ids.map(id=>L.entries.find(x=>x.id===id)).filter(Boolean);
+  const n=filtered.filter(x=>checked.has(x.id)).length;
+  const chapter=el("details",undefined,"hubChapter hubSpecialGroup");chapter.dataset.specialGroup=id;
+  chapter.open=specialOpen.has(id)||(!specialOpen.has(id)&&defaultOpen);
+  const sum=el("summary"),labelNode=el("span",undefined,"hubChapterTitle");labelNode.append(el("strong",name),el("small",hint));
+  sum.append(labelNode,el("span",n+" / "+filtered.length,"hubChapterCount"));chapter.append(sum);
+  const body=el("div",undefined,"hubChapterBody");
+  const rows=filtered.filter(x=>state.status==="all"||(state.status==="done"?checked.has(x.id):!checked.has(x.id)))
+    .filter(x=>!state.search.trim()||(label(x,"lore")+" "+x.area).toLowerCase().includes(state.search.trim().toLowerCase()));
+  if(!rows.length)body.append(el("p","ไม่มีรายการตามตัวกรอง","hubEmpty"));
+  else{const list=el("div",undefined,"hubList");rows.forEach(x=>list.append(itemCard("lore",x)));body.append(list);}
+  chapter.append(body);
+  chapter.addEventListener("toggle",()=>{if(chapter.open)specialOpen.add(id);else specialOpen.delete(id);});
+  panel.append(chapter);
+ }
+ if(scope==="Labyrinth"){
+  const groups=info.groups;
+  groups.forEach((g,i)=>group("lab-"+g.id,(i+1)+". "+g.name,g.note,g.ids,i===0));
+  const lnk=el("a","ข้อมูลผังและ Trials — The Lord's Labyrinth");lnk.href=info.layoutSource;lnk.target="_blank";lnk.rel="noopener noreferrer";panel.append(lnk);
+ }else{
+  const finder=el("details",undefined,"hubChapter hubVaalGuide");finder.open=true;
+  finder.append(el("summary","1. ค้นหาชื่อ Vaal Side Area ที่พบ"),vaalPanel());panel.append(finder);
+  group("vaal-letters","2. Vaal Letter","12 ข้อความ · เช็กเฉพาะชิ้นที่พบจริง",info.letters,false);
+  group("vaal-journals","3. Research Journal","4 ข้อความ · นับใน No Stone Unturned เดียวกัน",info.journals,false);
+ }
+ target.append(panel);
+}
+function supplementalWarnings(act){
+ const rows=window.POE_WORKBOOK_WARNINGS?.wikiRows||[];
+ const linked=new Set((window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[]).flatMap(step=>step.ids));
+ const unmatched=(routes[Number(act)]||[]).filter(r=>rows.includes(r.wikiRow)&&!linked.has(r.id));
+ if(!unmatched.length)return null;
+ const chapter=el("details",undefined,"hubChapter hubExcelWarnings");
+ chapter.dataset.excelAct=String(act);
+ const sum=el("summary"),label=el("span",undefined,"hubChapterTitle");
+ label.append(el("strong","คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม"),el("small","อีก "+unmatched.length+" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"));
+ sum.append(label,el("span",unmatched.filter(r=>entries("ears").includes(r.id)).length+" / "+unmatched.length,"hubChapterCount"));chapter.append(sum);
+ const body=el("div",undefined,"hubChapterBody");
+ body.append(el("p","ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","hubSubtle"));
+ const items=new Map(E.items.map(x=>[x.id,x])),list=el("div",undefined,"hubList");
+ unmatched.forEach(r=>{const item=items.get(r.id);if(item)list.append(itemCard("ears",item));});
+ body.append(list);chapter.append(body);return chapter;
+}
+function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
 panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
 const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).filter(x=>entries(type).includes(x.id)).length,0);
@@ -214,6 +274,7 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
 const critical=criticalPanel(act);if(critical)panel.append(critical);
+const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;

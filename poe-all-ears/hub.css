@@ -1,0 +1,50 @@
+/* Single-page Achievement Companion, progressive enhancement over stable All Ears v1 */
+#hubNav{position:sticky;top:0;z-index:12;display:flex;gap:6px;flex-wrap:wrap;padding:10px;background:#14171df5;border:1px solid var(--line);border-radius:14px;margin:16px 0 13px;backdrop-filter:blur(12px)}
+#hubNav button{flex:1 1 auto;white-space:nowrap;padding:10px 12px;font-size:13px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:600}
+#hubNav button[aria-selected=true]{background:var(--gold);color:#252016;border-color:var(--gold)}
+#hubNav button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hubPanel{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:20px;margin:13px 0}
+.hubPanel h2{font-size:clamp(18px,3vw,25px);margin:0 0 7px;font-weight:650}
+.hubPanel h3{font-size:17px;margin:0 0 6px}
+.hubPanel p{margin:6px 0}
+.hubSubtle{font-size:12px;color:var(--muted);line-height:1.6}
+.hubStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.hubStat{display:block;background:var(--surface2);padding:14px;border:1px solid var(--line);border-radius:11px;text-align:left;color:var(--text);min-width:0}
+.hubStat b{display:block;font-size:26px;font-weight:750;letter-spacing:-.03em}
+.hubStat span{font-size:12px;color:var(--muted)}
+.hubControls{display:flex;flex-wrap:wrap;gap:9px;margin:13px 0}
+.hubControls>*{flex:1 1 170px;min-width:140px;max-width:100%}
+.hubControls label{font-size:12px;color:var(--muted)}
+.hubControls select,.hubControls input[type=search],.hubControls input[type=number]{width:100%;max-width:100%}
+.hubSection{margin:18px 0 5px;border-top:1px solid var(--line);padding-top:15px}
+.hubGroup{font-size:13px;color:var(--gold);margin:14px 0 6px;font-weight:700}
+.hubList{display:grid;gap:7px}
+.hubItem{display:flex;align-items:flex-start;gap:11px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);cursor:pointer}
+.hubItem:hover{border-color:#736346}
+.hubItem.done{background:#1c2c25;border-color:#426451}
+.hubItem input[type=checkbox]{width:21px;height:21px;flex:0 0 21px;min-height:21px;margin:3px 0 0;accent-color:#87c6a6}
+.hubItem .hubText{flex:1;min-width:0}
+.hubItem .hubName{font-weight:650;overflow-wrap:anywhere}
+.hubItem .hubMeta{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.hubItem .hubRisk{font-size:12px;color:#ffce9f;margin-top:5px;overflow-wrap:anywhere}
+.hubTag{color:var(--gold);font-size:11px;border:1px solid #67593d;border-radius:12px;padding:2px 7px;display:inline-block;margin-right:6px}
+.hubNotice{border-left:4px solid #e7a67d;background:#34281f;padding:11px 13px;margin:12px 0;color:#ffdec2;border-radius:6px}
+.hubGood{border-left:4px solid #8dbf9f;background:#20332b;padding:11px 13px;margin:12px 0;color:#d6eedf;border-radius:6px}
+.hubCheckGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:9px;margin:11px 0}
+.hubCheckGrid label{display:flex;gap:9px;align-items:flex-start;padding:10px;background:var(--surface2);border-radius:9px}
+.hubCheckGrid input{accent-color:#8bcba9;flex:none;width:18px;height:18px;margin-top:3px}
+.hubBox{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px}
+.hubBox>div{border:1px solid var(--line);padding:12px;border-radius:9px}
+.hubEmpty{color:var(--muted);text-align:center;padding:25px}
+.hubInlineRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hubInlineRow button{flex:0 1 auto}
+.hubUnverified{display:inline-block;font-size:11px;color:#ecc99f;border:1px solid #74573b;border-radius:20px;padding:2px 8px}
+.hubShowMore{margin:10px 0}
+body[data-hub-tab="route"] > * {} /* state handled via body scoped attributes */
+body:not([data-hub-tab="ears"]) .toolbar,body:not([data-hub-tab="ears"]) #results,body:not([data-hub-tab="ears"]) #rewardSection{display:none!important}
+body:not([data-hub-tab="ears"]) .wrap>section[aria-label="เวอร์ชันเกม / แพตช์"],body:not([data-hub-tab="ears"]) .wrap>section[aria-label="ความคืบหน้า"]{display:none!important}
+body:not([data-hub-tab="ears"]) .wrap>header .headlinks{display:none}
+body:not([data-hub-tab="ears"]) .wrap>footer{margin-top:20px}
+#hubNav button:disabled{opacity:.4}
+@media(max-width:720px){#hubNav{position:relative;top:auto;gap:5px;padding:7px}#hubNav button{font-size:12px;flex:1 1 28%;padding:9px 7px;white-space:normal;line-height:1.3}.hubPanel{padding:14px}.hubStats{grid-template-columns:repeat(2,minmax(0,1fr))}.hubControls>*{flex:1 1 140px}.hubStat b{font-size:24px}}
+@media(prefers-reduced-motion:reduce){#hubNav{scroll-behavior:auto}}

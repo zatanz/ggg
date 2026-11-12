@@ -106,10 +106,10 @@ function criticalPanel(act){
  const section=el("section",undefined,"hubCritical");
  section.dataset.criticalAct=act;
  const title=el("div",undefined,"hubCriticalTitle");
- title.append(el("h3","ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด"),el("p","เรียงเฉพาะเงื่อนไขสำคัญที่มีในคู่มือ All Ears ปี 2025 ไม่ใช่เส้นทางเดินครบทุกเควสต์หรือข้อมูลรับรอง 3.30","hubSubtle"));
+ title.append(el("h3","ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด"),el("p","กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.30","hubSubtle"));
  section.append(title);
  const already=new Set(entries("ears"));
- const sorted=[...stages].sort((a,b)=>Number(b.priority==="critical")-Number(a.priority==="critical"));
+ const sorted=[...stages]; // Preserve authored stage/source grouping; urgency is a label, never reorders quest timing.
  const riskLeft=sorted.filter(s=>!s.ids.every(id=>already.has(id))).length;
  section.append(el("div","ยังมี "+riskLeft+" / "+stages.length+" กลุ่มที่ทำเครื่องหมายไม่ครบ (บันทึกด้วยมือ)","hubCriticalCount"));
  const idToEntry=new Map(E.items.map(x=>[x.id,x]));
@@ -135,7 +135,15 @@ function criticalPanel(act){
   for(const id of stage.ids){
     const item=idToEntry.get(id);
     if(!item)continue;
-    const line=el("label",undefined,"hubCheckpointRow"),check=el("input"),name=el("span",label(item,"ears")),marked=el("span",already.has(id)?"ฟังแล้ว":"ยังไม่ฟัง","hubCheckpointRowState");
+    const line=el("label",undefined,"hubCheckpointRow"),check=el("input"),info=el("span",undefined,"hubCheckpointItemInfo"),name=el("span",label(item,"ears"),"hubCheckpointItemName"),marked=el("span",already.has(id)?"ฟังแล้ว":"ยังไม่ฟัง","hubCheckpointRowState");
+    const guide=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
+    const fromSource=getRisk({type:"ears",id,act:Number(act)});
+    const condition=guide?.unlock||fromSource?.trigger||"";
+    const caution=guide?.caution||fromSource?.before||"";
+    info.append(name);
+    if(condition)info.append(el("small","เปิดเมื่อ: "+condition,"hubCheckpointRowTrigger"));
+    if(caution)info.append(el("small","ต้องตรวจ: "+caution,"hubCheckpointRowWarning"));
+    if(!condition&&!caution)info.append(el("small","ยังไม่มีเงื่อนไขรายบรรทัดในไฟล์ต้นทาง · ตรวจคู่มือก่อนเดินต่อ","hubCheckpointRowUnknown"));
     check.type="checkbox";check.checked=already.has(id);check.dataset.checkpointId=String(id);
     check.setAttribute("aria-label","ฟังบทสนทนาแล้ว — "+label(item,"ears"));
     check.addEventListener("change",()=>{
@@ -143,7 +151,7 @@ function criticalPanel(act){
       if(check.checked&&hint?.caution&&!confirm("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n"+hint.caution+"\n\nฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?")){check.checked=false;return;}
       writeMarks("ears",id,check.checked);
     });
-    line.append(check,name,marked);req.append(line);
+    line.append(check,info,marked);req.append(line);
   }
   inside.append(req);
   const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);

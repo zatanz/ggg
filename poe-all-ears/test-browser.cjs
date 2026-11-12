@@ -54,7 +54,7 @@ const assert=require('node:assert/strict');
  await page.reload();
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
  assert.equal(overflow,false,'mobile horizontal overflow');
- const walk=await browser.newPage({viewport:{width:375,height:812}});
+ const walk=await page.context().newPage();await walk.setViewportSize({width:375,height:812});
  const walkErrors=[];walk.on('pageerror',e=>walkErrors.push(e.message));
  await walk.goto('file://'+path.resolve(__dirname,'walkthrough.html'));
  assert.equal(await walk.locator('#guide').isVisible(),true,'walkthrough loads saved character');

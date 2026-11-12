@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "act": 10,
   "sourceVersion": "3.9 legacy spreadsheet",
   "source": "https://docs.google.com/spreadsheets/d/1RWPN_NO3wcl7QRTHP6iTONG-T47VForpQgZ-eN2IQzc/edit",
@@ -7,7 +7,7 @@
   "reviewedAt": "2026-11-12",
   "patchCertified": false,
   "routeSafe": false,
-  "ordering": "legacy spreadsheet only; Wiki source-row mapping not independently verified",
+  "ordering": "PoE Wiki 2025-06-30 rows 453–484; patch and route safety unverified",
   "records": [
     {
       "id": 453,
@@ -15,10 +15,11 @@
       "npc": "Sin",
       "topic": "Welcome Back - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 453,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 454,
@@ -26,10 +27,11 @@
       "npc": "Sin",
       "topic": "The Dark Ember",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 454,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 455,
@@ -37,10 +39,11 @@
       "npc": "Sin",
       "topic": "Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 455,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 456,
@@ -48,10 +51,11 @@
       "npc": "Sin",
       "topic": "The Gods",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 456,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 457,
@@ -59,10 +63,11 @@
       "npc": "Lilly Roth",
       "topic": "Welcome - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 457,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 458,
@@ -70,10 +75,11 @@
       "npc": "Lilly Roth",
       "topic": "Bannon",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 458,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 459,
@@ -81,10 +87,11 @@
       "npc": "Lilly Roth",
       "topic": "Kitava",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 459,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 460,
@@ -92,10 +99,11 @@
       "npc": "Weylam Roth",
       "topic": "Welcome - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 460,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 461,
@@ -103,10 +111,11 @@
       "npc": "Weylam Roth",
       "topic": "Trading - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 461,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 462,
@@ -114,10 +123,11 @@
       "npc": "Weylam Roth",
       "topic": "Lani",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 462,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 463,
@@ -125,10 +135,11 @@
       "npc": "Weylam Roth",
       "topic": "Bannon",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 463,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 464,
@@ -136,10 +147,11 @@
       "npc": "Weylam Roth",
       "topic": "Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 464,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 465,
@@ -147,10 +159,11 @@
       "npc": "Lani",
       "topic": "Greetings - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 465,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 466,
@@ -158,10 +171,11 @@
       "npc": "Lani",
       "topic": "Vilenta",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 466,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 467,
@@ -169,10 +183,11 @@
       "npc": "Lani",
       "topic": "Lilly",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 469,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 468,
@@ -180,10 +195,11 @@
       "npc": "Lani",
       "topic": "Weylam",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 470,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 469,
@@ -191,10 +207,11 @@
       "npc": "Lani",
       "topic": "Sin",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 467,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 470,
@@ -202,10 +219,11 @@
       "npc": "Lani",
       "topic": "Kitava",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 468,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 471,
@@ -213,10 +231,11 @@
       "npc": "Lilly Roth",
       "topic": "Tsoatha",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 471,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 472,
@@ -224,10 +243,11 @@
       "npc": "Lilly Roth",
       "topic": "The Teardrop",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 472,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 473,
@@ -235,10 +255,11 @@
       "npc": "Bannon",
       "topic": "Welcome Back - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 473,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 474,
@@ -246,10 +267,11 @@
       "npc": "Bannon",
       "topic": "Kitava's Cultists",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 474,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 475,
@@ -257,10 +279,11 @@
       "npc": "Bannon",
       "topic": "Kitava",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 475,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 476,
@@ -268,10 +291,11 @@
       "npc": "Bannon",
       "topic": "Innocence",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 476,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 477,
@@ -279,10 +303,11 @@
       "npc": "Bannon",
       "topic": "Chamber of Innocence",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 477,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 478,
@@ -290,10 +315,11 @@
       "npc": "Bannon",
       "topic": "Kitava's Horns",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 478,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 479,
@@ -301,10 +327,11 @@
       "npc": "Sin",
       "topic": "Kitava - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 479,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 480,
@@ -312,10 +339,11 @@
       "npc": "Sin",
       "topic": "Bannon - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 480,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 481,
@@ -323,10 +351,11 @@
       "npc": "Lilly Roth",
       "topic": "Innocence - Talk to Bannon first",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 481,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 482,
@@ -334,10 +363,11 @@
       "npc": "Lilly Roth",
       "topic": "Kitava - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 482,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 483,
@@ -345,10 +375,11 @@
       "npc": "Innocence",
       "topic": "Exile",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 483,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     },
     {
       "id": 484,
@@ -356,10 +387,11 @@
       "npc": "Sin",
       "topic": "Innocence - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 484,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"
     }
   ]
 }

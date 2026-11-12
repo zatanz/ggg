@@ -243,3 +243,31 @@ Hard limits:
 - The same commit's GitHub Pages build and deployment run 43177423626 succeeded. The hosting action confirms deployment; there is not yet an independent live URL/browser QA report.
 - Release classification: functional historical-data companion (preview), NOT patch-3.30 gameplay certified. No change to the 0/484 current-patch certification count.
 - Resumption priorities: patch-3.30 quest/lore audit after release; Act 2 route-state review with actual game evidence; expand Vaal lookup only with sourced locations; consider unified multi-tracker backup with migration tests. Do not roll back any tests or rewrite the stable 484-item data absent evidence.
+
+
+## Checkpoint — Unified single-page rebuild and reference verification (2026-11-12 Asia/Bangkok)
+Scope: Implement player-feedback improvements in the existing public repository without deleting old profiles or asserting gameplay certification.
+
+### Implemented and pushed to master
+- The **index.html** page is now the one-page Achievement Companion. Modes: Act route containing all four checklists, classic All Ears, Lore, Waypoints, Side Quests, and Recheck/Safety. The old other pages remain for backward compatibility; primary navigation no longer requires separate pages.
+- New **hub.js / hub.css** progressively enhance the original index instead of rewriting 484 stable IDs or changing the canonical old localStorage schema. Original v1 backup and data remain usable.
+- Act 2 Wiki order (69 historical rows) and manual quest-state preflight are visible in the same Act view; marking risk rows requires a source-warning acknowledgement. The route is **not current-patch certified**.
+- Lore 140, Waypoints 91, Side Quests 30: the ID/name tuples match the 3.9 workbook exactly, verified directly against the uploaded .xlsx. Lore locations also match after intentionally normalizing the 16 Vaal group area values from "Random Vaal Area" to "Vaal Side Area". These are historical reference fidelity checks, not live game verification.
+- Vaal lookup includes 47 named areas from 2025 Wiki descriptions and uses 16 stable original local Lore IDs plus 16 distinct Wiki row crosswalks (125–140) so historical progress does not break.
+- Recheck compares manual totals and stores per-character baselines; combined Backup v2 exports all four checklists for every character and imports add-only as new profiles. It preserves v1 data and handles invalid input.
+- Unsupported patch profiles remain gated across tabs: 3.29/3.30 do not expose historical route/checklist as certified. Backup and Recheck remain accessible to avoid trapping player data.
+- Added [CHANGELOG.md](./CHANGELOG.md), [PATCH-330-AUDIT.md](./PATCH-330-AUDIT.md), and updated README to link the one-page version first.
+
+### Verified vs open
+- GitHub Actions includes Node data checks, UI script syntax, and Chromium browser checks (old checklist plus unified Act/Lore/Waypoint/Quest views, persistence, cross-character isolation, Vaal lookup, combined backup export/import and invalid input, unsupported-patch gating, 375px viewport).
+- GitHub Pages CI deployment has succeeded for the previous unified build. Re-check the latest commit's actions before declaring current HEAD green.
+- **Still blocked by external evidence:** the 3.30 playable build launches 2026-11-13 PST; no real in-game campaign and Achievement proof has been supplied. Current-patch certified All Ears remains 0/484. Do not change this count without recorded evidence.
+- Human visual QA on live GitHub Pages and quest-state exact in-game validation remain outstanding. A successful Pages action is not a human visual test.
+
+### Next precise handoff
+1. Check the latest GitHub Actions on master (validate, browser-smoke, Pages).
+2. On/after release, verify fresh 3.30 game version and Act 2 quest-state alternatives using exact NPC/dialogue screenshot evidence and a fresh character; attach results per row to the evidence ledger.
+3. Extend campaign risk/branch checks to Acts 1, 3–10; verify all 140 environmental lore (including randomized Vaal/Library) and 91/30 extra lists in the live build.
+4. Run independent desktop/mobile usability sessions on the live URL, document any friction, then release a certified version only if G1–G7 are genuinely satisfied.
+
+**STOP RULE:** Do not present any historical route as a 3.30 safe route or invent in-game results.

@@ -1,37 +1,47 @@
-# Quest visuals and mock Quest UI — implementation and outstanding work
-Updated 2026-11-12 Asia/Bangkok.
+# Quest UI illustrations — current implementation and evidence boundaries
+Updated: 2026-11-12 Asia/Bangkok
 
-## Goal
-Players must immediately see where they are, whom to talk to, which quest screen/status to check, what NOT to do yet, and when to continue. Illustrations must support a step, not decorate it.
+## Purpose
+Each high-risk walkthrough step should show (1) real quest name and area, (2) the decision to postpone, (3) the NPC/item/dialogue that must be checked, and (4) the next action. The image is an optional aid, **not proof of in-game state**.
 
-## Already implemented
-- Act 1, Breaking Some Eggs, The Mud Flats: original 960 x 540 SVG diagram of World / Quest U and the Glyph Wall stop warning. [See SVG](./assets/quest-journal-illustration.svg). Expand image in Mud Flats walkthrough.
-- Act 2, Deal with the Bandits, Ancient Seal: original 960 x 540 SVG diagram of World / Quest U and before-Bandits reminder. [See SVG](./assets/bandits-quest-illustration.svg). Expand image in Bandit-decision walkthrough.
-- Both are labeled ILLUSTRATION ONLY / NOT AN IN-GAME SCREENSHOT, have ALT descriptions and are optional disclosures to avoid a crowded screen.
-- 2026-11-12 QA repair: fixed duplicate Act tab, stale Act 1 description and vague Eramir wording in the Act 2 asset; added regression checks.
+## Implemented: 6 illustrations (4 newly added)
 
-## Not completed
-1. No real captured PoE 3.30 Quest/World/NPC UI screenshots with a verified game build and quest state.
-2. No pixel-faithful game UI mock: existing diagrams are conceptual, static and non-interactive.
-3. No image for most risky decisions: Act 1 (Brutus, Fairgraves) and Act 2 (Chamber of Sins, Maligaro roots) are missing, and Acts 3–10 have no stage-specific visuals.
-4. No source/build metadata or source screenshots to verify image-to-quest alignment.
-5. No human readability acceptance testing on real mobile and desktop screens.
+| Act | Step and actual quest | Original mock SVG | Check before proceeding |
+| --- | --- | --- | --- |
+| 1 | The Mud Flats / Breaking Some Eggs | [Glyph Wall](./assets/quest-journal-illustration.svg) | Tarkleigh's Strange Glyphs and Glyph Wall before insertion |
+| 1 | The Prison / The Caged Brute | [Brutus](./assets/brutus-quest-illustration.svg) | Tarkleigh then Bestel's Brutus dialogue, Piety and journal prerequisites before boss |
+| 1 | Ship Graveyard / The Marooned Mariner | [Fairgraves](./assets/fairgraves-quest-illustration.svg) | Fairgraves → Bestel → Fairgraves before Allflame; 3.29 NPC issue still not confirmed fixed |
+| 2 | Chamber of Sins / Intruders in Black | [Before Helena](./assets/sins-quest-illustration.svg) | Yeena's Chamber of Sins dialogue before completing quest / rescuing Helena |
+| 2 | Wetlands / The Root of the Problem | [Before roots](./assets/roots-quest-illustration.svg) | With Baleful Gem and Maligaro's Spike, see Eramir's Maligaro's Creations then Ancient Gateway before Lorrata |
+| 2 | Ancient Seal / Deal with the Bandits | [Bandits](./assets/bandits-quest-illustration.svg) | The Darkness before permanent Bandit choice; re-check disputed first-contact timing |
 
-## Visual pattern for each stop-before-quest stage
-- 1. Where you are: precise zone and correct in-game quest name.
-- 2. What to inspect: actual Quest screen (default U, configurable) when verified, preferably a source screenshot; annotate only one relevant objective or NPC.
-- 3. What NOT to do yet: warning with specific before-action gate sourced to Wiki/in-game proof; red for verified risk, amber for conflicting/unverified reference.
-- 4. What confirms progress: exact dialogue/lore/quest checkbox ID in the existing tracker, then next step.
-- A generated/mock image must say in Thai that it is a conceptual illustration, not a game screenshot. Authenticated screenshots must show patch/build, source, and captured quest state.
-- Keep the visual collapsed until requested; one image per active step, legible zoom/fullscreen and accessible ALT.
+Images are author-created static SVG source assets. Each is loaded only when expanding **ดูภาพจำลองหน้า Quest**, includes Thai ALT text, a clearly visible statement **ภาพจำลองเพื่ออธิบาย — ไม่ใช่ภาพหน้าจอเกมจริง**, a separate plain-language action, direct full-resolution SVG link and the exact supporting Wiki source. They appear **in the relevant phase**, not in a separate gallery, and are never counted toward Achievement completion.
 
-## Priority and acceptance
-P0: validate actual 3.30 Quest/World layout and collect screenshots with build and quest state.
-P0: build faithful, source-mapped visual references for Act 1 Glyph Wall, Brutus, Fairgraves; Act 2 Chamber of Sins, roots, Ancient Seal/Bandits.
-P1: add targeted screenshots/illustrations to Acts 3–10 as each verified walking stage is produced. Do not create generic visuals without a source-linked gameplay purpose.
-P1: desktop/mobile usability test for image legibility, captions, contrast, disclosure navigation, and keyboard.
-Defer: full interactive pixel-perfect game UI simulation (not necessary to manually track 100%).
+The 4 new assets use a 960×540 original fantasy-inspired interface concept. They deliberately do not claim to reproduce PoE's quest panel pixel-for-pixel. Their text and visual geography are conceptual diagrams, not source screenshots. The original two diagrams remain at 960×540 as well.
 
-Sources: [Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869), [research audit](./STEAM-QUEST-ORDER-UX-RESEARCH.md), [PoE Wiki](https://www.poewiki.net/wiki/Guide:All_Ears_achievement).
+## External actual UI references (context only — not copied into the repository)
+- [PoE Vault beginner guide: real Act 1 World screen](https://www.poe-vault.com/guides/path-of-exile-beginner-guide-welcome-to-wraeclast-fresh-exiles-start-here)
+- [PoE Wiki All Ears](https://www.poewiki.net/wiki/Guide:All_Ears_achievement)
+- [PoE Wiki The Marooned Mariner](https://www.poewiki.net/wiki/The_Marooned_Mariner)
+- [PoE Wiki Intruders in Black](https://www.poewiki.net/wiki/Intruders_in_Black)
+- [PoE Wiki The Root of the Problem](https://www.poewiki.net/wiki/The_Root_of_the_Problem)
 
-Passing frontend CI does not demonstrate the screenshot represents real in-game Quest UI, or certify 3.30 achievement completeness.
+## Acceptance checks
+- Six exact phase ID → image asset associations, quest name, provenance flag and source URL are validated statically.
+- Browser regression verifies all six SVGs load, captions and ALT information are present, image disclosure works, full-size links open independently, and an Act 2 roots illustration fits a narrow 390px viewport without horizontal overflow.
+- The same 745 existing Achievement IDs and single character-progress store are used; mock images never mark tasks automatically.
+
+## Still not finished
+- No verified actual 3.30 client screenshot for these quests; in-game UI cannot be certified from SVG diagrams.
+- No faithfully rebuilt, interactive 1:1 PoE Quest interface; it is optional and not essential to a 100% manual checklist.
+- Act 3–10 do not yet have walkthrough-integrated quest illustrations; their prerequisite walk order must be sourced first.
+- No user acceptance testing across real devices or confirmation that screenshots accurately match a current client build; font size on narrow screens still needs human review.
+- No in-game proof that 3.29 Fairgraves failures, Act 2 Bandit ordering or current-patch Vaal Side Area behavior are resolved.
+
+## Next priorities
+P0: source-act and game-state verification (Fairgraves, Bandit branches, Maligaro inventory, rescue quest timing); capture patch version + quest-state evidence rather than assuming historic data is current.
+P1: add images to Acts 3–10 only as reliable, phase-specific steps are built, and validate UI against legitimate current screenshots.
+P1: human visual testing (mobile readability, visual attention, colors, accessibility and navigation time).
+Defer: fully interactive Quest UI simulation and class-specific rewards.
+
+References: [Steam source guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869), [Steam/Wiki research](./STEAM-QUEST-ORDER-UX-RESEARCH.md), [Road to 100%](./ROAD-TO-100-PERCENT.md).

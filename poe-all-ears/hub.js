@@ -181,9 +181,29 @@ function criticalPanel(act){
   const stateText=el("span",n===stage.ids.length?"เก็บครบในเว็บ":"ยังขาด "+(stage.ids.length-n),"hubCheckpointState"+(n===stage.ids.length?" complete":""));
   summary.append(heading,stateText);details.append(summary);
   const inside=el("div",undefined,"hubCheckpointBody");
-  if(stage.priority==="critical")inside.append(el("p","จุดเสี่ยงสูง · ตรวจเงื่อนไขก่อนเปลี่ยนสถานะเควสต์","hubCriticalWarning"));
+  const rule=stage.stopRule;
+  if(rule){
+    const missing=rule.requiredIds.filter(id=>!already.has(id));
+    const guard=el("div",undefined,"hubStopGate"+(missing.length?" blocked":" reviewed"));
+    guard.dataset.stopStage=stage.id;guard.dataset.stopState=missing.length?"hold":"review";
+    guard.append(el("strong",missing.length?"ยังไม่ควรทำ: "+rule.action:"รายการก่อนผ่านจุดนี้บันทึกครบแล้ว — ตรวจในเกมอีกครั้ง"));
+    guard.append(el("p",rule.note));
+    guard.append(el("div",missing.length?"ขาดอีก "+missing.length+" บทสนทนาก่อนผ่านจุดนี้":"การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.30","hubStopPending"));
+    inside.append(guard);
+  }
+  if(stage.sourceConflict){
+    const conflict=el("div",undefined,"hubResearchConflict");
+    conflict.dataset.conflict=stage.sourceConflict.kind;
+    conflict.append(el("strong","ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย"),el("p",stage.sourceConflict.summary));
+    const steam=el("a","คู่มือ Steam");steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
+    const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
+    const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
+  }
+  if(stage.patchAlert)inside.append(el("div",stage.patchAlert,"hubResearchConflict"));
   inside.append(el("p",stage.action,"hubCheckpointAction"));
-  inside.append(el("p","ก่อนดำเนินเรื่อง: "+stage.risk,"hubCheckpointRisk"));
+  const detailsWhy=el("details",undefined,"hubCheckpointWhy");
+  detailsWhy.append(el("summary","ทำไมต้องระวัง / เงื่อนไขเพิ่มเติม"),el("p",stage.risk,"hubCheckpointRisk"));
+  inside.append(detailsWhy);
   if(act==="2"&&stage.id==="a2-darkness"){
     const safety=el("details",undefined,"hubCheckpointSafety");
     safety.open=true;
@@ -503,17 +523,17 @@ addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
 try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
-function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนเปิด Ancient Seal / สู้ Bandits"),el("p","ทำเครื่องหมายหลังคุยกับ Alira, Oak และ Kraityn แล้ว เปิด Ancient Seal เพื่อฟัง The Darkness ที่เกี่ยวข้องก่อนฆ่า Bandits (Kraityn ไม่มีหัวข้อนี้ตาม Wiki ปี 2025)","hubSubtle"));
+function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness"),el("p","แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์","hubSubtle"));
 wrap.append(el("p","สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30","hubCheckpointRisk"));
-const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","คุยกับ Alira แล้ว"],["oak","คุยกับ Oak แล้ว"],["kraityn","คุยกับ Kraityn แล้ว"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
+const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","เคยคุย Alira (ยังไม่รับรองเวลา)"],["oak","เคยคุย Oak (ยังไม่รับรองเวลา)"],["kraityn","เคยคุย Kraityn (ยังไม่รับรองเวลา)"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
 const s=getSafety();
 checks.forEach(([id,title])=>{const lab=el("label"),inp=el("input");inp.type="checkbox";inp.checked=s[id]===true;inp.dataset.safety=id;inp.onchange=()=>updateSafety(id,inp.checked);lab.append(inp,document.createTextNode(title));grid.append(lab);});
 wrap.append(grid);
 const choices=el("div",undefined,"hubControls");[["first","Bandit ที่ฆ่าคนแรก"],["second","Bandit ที่ฆ่าคนที่สอง"]].forEach(([k,l])=>{const div=el("div");const labelNode=el("label",l),sel=el("select");sel.dataset.kill=k;[["","ยังไม่ได้ฆ่า / ไม่แน่ใจ"],["Alira","Alira"],["Oak","Oak"],["Kraityn","Kraityn"]].forEach(([v,t])=>{const o=el("option",t);o.value=v;sel.append(o);});sel.value=s[k]||"";sel.onchange=()=>{const v=sel.value,other=k==="first"?"second":"first";if(v&&v===getSafety()[other]){alert("Bandits ที่ฆ่าคนแรกและคนที่สองต้องต่างกัน");sel.value=s[k]||"";return;}updateSafety(k,v);};div.append(labelNode,sel);choices.append(div);});wrap.append(choices);
 const status=el("div",undefined,"hubNotice"),ss=getSafety(),intro=["alira","oak","kraityn"].every(k=>ss[k]),before=ss.seal&&ss.darkness;
-let text=!intro?"ยังไม่ได้ยืนยันว่าคุยกับ Bandits ทั้งสามก่อนเปิด Ancient Seal":!before?"คุย Bandits แล้ว แต่ยังไม่ได้ยืนยันทั้ง Ancient Seal และ The Darkness":"ตรวจเงื่อนไขเบื้องต้นครบตามที่คุณทำเครื่องหมายแล้ว แต่ยังไม่รับรองเส้นทางในเกม";
-if((ss.first||ss.second)&&!before)text="ระวัง: มีการฆ่า Bandit แล้วโดยยังไม่ยืนยัน Ancient Seal / The Darkness — อาจพลาดบทสนทนา";
-status.className=before&&intro?"hubGood":"hubNotice";status.textContent=text;wrap.append(status);
+let text=!before?"ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ — อย่าเพิ่งฆ่าหรือช่วย Bandits":"บันทึก Ancient Seal และ The Darkness แล้ว แต่ยังมีข้อขัดแย้งเรื่องลำดับคุย Bandits; ตรวจในเกมก่อนเลือกเส้นทาง";
+if((ss.first||ss.second)&&!before)text="ระวัง: บันทึกว่าฆ่า Bandit แล้วแต่ยังไม่ยืนยัน Ancient Seal / The Darkness — อาจพลาดบทสนทนา";
+status.className="hubNotice";status.textContent=text;wrap.append(status);
 if(ss.first||ss.second){const remaining=["Alira","Oak","Kraityn"].filter(k=>k!==ss.first&&k!==ss.second);wrap.append(el("p","หลังฆ่า Bandit ตัวแรก หัวข้อ Eramir จะเปลี่ยนตามตัวที่ฆ่า; หลังตัวที่สองขึ้นกับตัวที่รอด ("+(remaining.join(", ")||"ไม่มี")+") ตรวจหัวข้อจริงในเกม (Wiki แถว 101–103)","hubSubtle"));}
 const ref=el("a","อ่านเงื่อนไข Act 2 จาก PoE Wiki");ref.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2";ref.target="_blank";ref.rel="noopener noreferrer";wrap.append(ref);return wrap;}
 const vaalMap=[

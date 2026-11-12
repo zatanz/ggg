@@ -295,6 +295,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView details[data-group="lore"]').evaluate(e=>e.open),false,'Lore group collapsed by default');
  await hub.locator('#hubView [data-kill="first"]').selectOption('Alira');
  await hub.locator('#hubView [data-kill="second"]').selectOption('Kraityn');
+ assert.equal(await hub.locator('#hubView details[data-group="ears"]').evaluate(x=>x.open),true,'Act NPC list remains expanded after editing Bandit safety options');
  await hub.locator('#hubView details[data-group="ears"] .hubShowMore').click();
  assert.equal(await hub.locator('#hubView details[data-group="ears"] .hubItem').count(),69,'Act 2 expanded list shows all 69 source-matched dialogues');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');

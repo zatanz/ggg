@@ -177,3 +177,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Integrated Act 9 warnings into walkthrough.html; Act 9 remains in legacy order in both pages. Also corrected Act 6 advisory heading to distinguish historical notes from its now Wiki-matched order.
 - Added Act 9 inventory/source fidelity, nine-risk coverage and UI warning assertions. GitHub Actions must be checked after latest commit.
 - Source-row matched remains 416/484 (Acts 1–8). Act 9 inventoried 36/36 but source-row unverified. Act 10 32 records still awaiting review. Current-patch verified 0/484. Browser interaction QA outstanding.
+
+## Continuation — Act 10 complete legacy inventory (2026-11-12)
+- Direct PoE Wiki All Ears Act 10 guide was not accessible in this turn; no independently checked wiki row-by-row order. **Do not claim Act 10 wiki mapping or fabricate a route.**
+- Added act10-inventory.json with 32/32 legacy records (IDs 453–484), 11 risk candidates, wikiRow=null and patchEvidence=null.
+- Added act10-advisory.js with three explicitly unverified historical dialogue checkpoints: returning to Oriath; Bannon/Innocence conversation ordering; before Kitava. No source claims of a certified missable condition.
+- Wired Act 10 advisory into walkthrough.html and added integrity and UI tests. The UI still uses legacy order for Acts 9–10.
+- All ten acts are now inventoried as historical 3.9 records, 484/484. Wiki source-row mappings remain 416/484 (Acts 1–8). Act 9 (36) and Act 10 (32) remain unverified. Current-patch certified 0/484; browser interaction QA still outstanding.
+- Latest GitHub Actions result must be checked before reporting PASS.

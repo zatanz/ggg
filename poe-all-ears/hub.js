@@ -60,6 +60,8 @@ if(reward)meta.append(el("span","รางวัล: "+reward.reward,"hubRewardP
 }
 info.append(meta);
 if(type==="ears"&&guide?.caution)info.append(el("div","ก่อนทำต่อ: "+guide.caution,"hubRisk"));
+else if(type==="ears"&&(window.POE_WORKBOOK_WARNINGS?.wikiRows||[]).includes(getRisk({type:"ears",id:x.id,act:x.act})?.wikiRow))
+ info.append(el("div","ไฟล์ Excel ติด WARNING ให้หัวข้อนี้ แต่ยังต้องตรวจเงื่อนไขจากต้นทางก่อนเปลี่ยนสถานะเควสต์","hubRisk hubWorkbookRisk"));
 if(guide){
  const detail=el("details",undefined,"hubItemHelp"),head=el("summary","วิธีเก็บ · เงื่อนไข · ที่มา"),body=el("div",undefined,"hubItemHelpBody");detail.append(head);
  function fact(label,value){if(!value)return;const line=el("div",undefined,"hubFact");line.append(el("strong",label),el("span",value));body.append(line);}
@@ -296,6 +298,12 @@ sidequests:"Side Quest 30 รายการจากชุดอ้างอิ
 ears:"All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)"};
 panel.append(el("p",desc[type],"hubSubtle"));
 if(type==="lore"){
+ const specialPick=el("div",undefined,"hubLoreNavigation");
+ specialPick.append(el("p","No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (รวม 140 ชิ้น)","hubSubtle"));
+ [["Labyrinth","เปิดขั้นตอน The Labyrinth · 10"],["Vaal","เปิดคู่มือ Vaal Letter · 16"]].forEach(([scope,txt])=>{
+  const btn=el("button",txt);btn.type="button";btn.onclick=()=>{state.routeAct=scope;openTab("route");};specialPick.append(btn);
+ });
+ panel.append(specialPick);
 const tips=el("p","สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","hubNotice");panel.append(tips);
 const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary","ค้นหา Vaal Letter ตามชื่อ Vaal Side Area"),vaalPanel());panel.append(vaal);
 }

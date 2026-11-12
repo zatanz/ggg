@@ -37,16 +37,34 @@ function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.
 function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
 function renderSummary(){const target=$("hubStats");target.replaceChildren();Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
 card.append(el("span",names[k]+" · "+uiNames[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบในเว็บ · ยังต้องเทียบเกม":"เหลือ "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
-function itemCard(type,x){const done=entries(type).includes(x.id),row=el("label",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
-box.type="checkbox";box.checked=done;box.setAttribute("aria-label",verbs[type]+" — "+label(x,type));box.addEventListener("change",()=>{
-if(type==="ears"&&box.checked){const r=getRisk({type,id:x.id,act:x.act});if(r&&r.before&&!confirm("ระวังพลาดบทสนทนา! อ้างอิง PoE Wiki ปี 2025 (ยังไม่รับรองแพตช์ใหม่):\n"+r.before+"\n\nฟังบทสนทนานี้ในเกมและตรวจเงื่อนไขแล้วใช่หรือไม่?")){box.checked=false;return;}}
+function itemCard(type,x){
+const done=entries(type).includes(x.id),guide=window.POE_ITEM_DESCRIPTIONS?.get(type,x),row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
+box.type="checkbox";box.checked=done;box.setAttribute("aria-label",verbs[type]+" — "+label(x,type));
+box.addEventListener("change",()=>{
+if(type==="ears"&&box.checked&&guide?.caution&&!confirm("ตรวจจุดที่อาจพลาด (อ้างอิงคู่มือเก่า ยังไม่ยืนยัน 3.30):\n"+guide.caution+"\n\nฟังหัวข้อนี้ในเกมแล้วและตรวจเงื่อนไขก่อนทำเครื่องหมายใช่หรือไม่?")){box.checked=false;return;}
 writeMarks(type,x.id,box.checked);
-});const name=el("div",undefined,"hubName"),tag=el("span",uiNames[type],"hubTag");name.append(tag,document.createTextNode(label(x,type)));
-info.append(name,el("div",(type==="ears"?"Wiki "+(getRisk({type,id:x.id,act:x.act})?.wikiRow||"?")+" · ":type==="lore"&&x.wikiRow?"Wiki #"+x.wikiRow+" / ID เดิม #"+x.id+" · ":"")+area(x,type),"hubMeta"));
-const warn=warning(x,type);if(warn)info.append(el("div",warn,"hubRisk"));
-if(type==="ears"&&x.act&&warn){const link=el("a","ดูเงื่อนไขต้นทางบน PoE Wiki");link.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+x.act;link.target="_blank";link.rel="noopener noreferrer";link.className="hubMeta";info.append(link);}
+});
+const name=el("div",undefined,"hubName"),tag=el("span",uiNames[type],"hubTag");
+name.append(tag,document.createTextNode(label(x,type)));info.append(name);
+info.append(el("div",(type==="ears"?"Wiki "+(getRisk({type,id:x.id,act:x.act})?.wikiRow||"?")+" · ":type==="lore"&&x.wikiRow?"Wiki #"+x.wikiRow+" / ID เดิม #"+x.id+" · ":"")+area(x,type),"hubMeta"));
+if(guide){
+  info.append(el("div",guide.action,"hubHow"));
+  if(guide.caution)info.append(el("div","ระวังก่อนทำต่อ: "+guide.caution,"hubRisk"));
+  const details=el("details",undefined,"hubItemHelp"),summary=el("summary",guide.detailsKnown?"ดูวิธีเก็บและเงื่อนไข":"ดูรายละเอียด / สถานะข้อมูล");
+  details.append(summary);
+  const body=el("div",undefined,"hubItemHelpBody");
+  function fact(label,value){if(!value)return;const line=el("div",undefined,"hubFact");line.append(el("strong",label),el("span",value));body.append(line);}
+  fact("วิธีเก็บ",guide.action);
+  fact("พื้นที่ / NPC",guide.location);
+  fact("เงื่อนไขที่ต้องทำก่อน",guide.unlock);
+  fact("จุดที่ห้ามพลาด",guide.caution);
+  fact("หมายเหตุ",guide.tip);
+  if(!guide.detailsKnown)body.append(el("p","ยังไม่มีเงื่อนไขรายรายการที่ตรวจยืนยันจากเกม; ควรเทียบกับแหล่งอ้างอิงก่อนผ่านจุดเปลี่ยนเควสต์","hubUnverifiedText"));
+  const source=el("a","เปิดแหล่งอ้างอิง");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";body.append(el("p","แหล่งข้อมูล: "+guide.sourceLabel+" · ไม่ได้รับรองแพตช์ 3.30","hubSubtle"),source);
+  details.append(body);info.append(details);
+}
 row.append(box,info);return row;}
-function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(warning(x,type)||"")).toLowerCase().includes(query)));}
+function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.action||"")+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.caution||"")).toLowerCase().includes(query)));}
 function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
 if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",uiNames[type]),el("span",list.length+" รายการที่แสดง","hubSubtle"));target.append(heading);}
 if(!list.length){target.append(el("div","ไม่มีรายการตามตัวกรอง","hubEmpty"));return;}

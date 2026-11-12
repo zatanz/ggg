@@ -221,6 +221,13 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView details[data-group]').count(),4,'Act view offers four collapsible achievement groups');
  assert.equal(await hub.locator('#hubView details[data-group="ears"]').evaluate(e=>e.open),true,'NPC dialogue group opens by default');
  assert.equal(await hub.locator('#hubView details[data-group="lore"]').evaluate(e=>e.open),false,'Lore group collapsed by default');
+ await hub.locator('#hubView [data-kill="first"]').selectOption('Alira');
+ await hub.locator('#hubView [data-kill="second"]').selectOption('Kraityn');
+ await hub.locator('#hubView details[data-group="ears"] .hubShowMore').click();
+ assert.equal(await hub.locator('#hubView details[data-group="ears"] .hubItem').count(),69,'Act 2 expanded list shows all 69 source-matched dialogues');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ยังมีชีวิต (Oak)'),true,'Act 2 second-kill description shows survivor Oak');
+
  await hub.reload();
  await hub.locator('.hubActStrip [data-act="2"]').click();
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');

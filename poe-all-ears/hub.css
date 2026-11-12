@@ -161,3 +161,27 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubRewardKind{display:inline-block;border:1px solid #635c40;color:#dcc790;border-radius:999px;font-size:10px;padding:2px 7px}
 .hubRewardText{margin:6px 0 0!important;font-size:12px;line-height:1.6;color:#ddd8c9;overflow-wrap:anywhere}
 .hubRewards .hubChapterBody>a{display:inline-block;font-size:12px;color:#edcc83;margin:5px 0 2px}
+
+/* Usability pass: one-line checklist first; detailed instructions on demand. */
+.hubActProgress{display:flex;align-items:center;justify-content:space-between;gap:8px 15px;flex-wrap:wrap;padding:11px 14px;background:#262a30;border:1px solid #514d42;border-radius:10px;margin:12px 0}
+.hubActProgress strong{font-size:15px;color:#f4e0af}
+.hubActProgress .hubSubtle{margin:0}
+.hubList{gap:7px}
+.hubItem{position:relative;gap:11px;padding:11px;align-items:flex-start;min-width:0}
+.hubItem .hubText{min-width:0}
+.hubItem .hubName{font-size:14px;line-height:1.4;max-width:100%;margin:0 0 5px}
+.hubItem .hubHow,.hubItem>.hubTag{display:none}
+.hubCompactMeta{display:flex;gap:6px 10px;flex-wrap:wrap;align-items:center}
+.hubPriority{display:inline-block;font-size:11px;color:#c5bdac;border:1px solid #5a564e;border-radius:7px;padding:3px 7px;background:#302f2c;line-height:1.4}
+.hubPriority.hubUrgent{color:#ffd8aa;background:#4a3327;border-color:#a97753;font-weight:650}
+.hubRewardPreview{color:#b9d3ad;font-size:12px;line-height:1.5}
+.hubItemState{white-space:nowrap;flex:0 0 auto;font-size:11px;color:#d4c6ac;background:#3a3c40;border:1px solid #5f5d53;border-radius:100px;padding:3px 8px}
+.hubItem.done{border-color:#43644f;background:#213329}
+.hubItem.done .hubItemState{color:#c6e7cf;border-color:#487a5c;background:#274835}
+.hubItem input[type=checkbox]{flex:0 0 21px}
+.hubItemHelp{margin-top:5px}
+.hubItemHelp>summary{padding:5px 0 0;color:#d5b980;font-size:12px}
+.hubItem .hubRisk{margin:7px 0;padding:6px 9px}
+.hubRewardKind{max-width:100%;line-height:1.45}
+.hubRewardRow .hubSubtle{margin-top:5px;font-size:11px}
+@media(max-width:720px){.hubItem{gap:8px;padding:10px 8px}.hubItemState{font-size:10px;padding:2px 6px}.hubActProgress{padding:10px}.hubItem .hubName{font-size:13px}.hubPriority{font-size:10px}}

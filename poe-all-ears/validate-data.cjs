@@ -244,6 +244,11 @@ assert(lore.entries.find(x=>x.id===130).wikiRow===128,'Concealed Caldarium histo
 const companion=fs.readFileSync(path.join(dir,'companion.html'),'utf8');
 assert(companion.includes('src="./lore-data.js"')&&companion.includes('poe-companion-lore-v1'),'Companion lore data or isolated persistence missing');
 assert(companion.includes('data-safety="alira"')&&companion.includes('id="gameCount"')&&companion.includes('id="vaalArea"'),'Companion safety/recheck/Vaal UI missing');
+load('quest-rewards.js');
+const allRewards=ctx.window.POE_QUEST_REWARDS?.acts||[];
+assert(allRewards.length===10&&allRewards.reduce((sum,a)=>sum+a.quests.length,0)===58,'Quest rewards must cover 58 historical quest entries across 10 Acts');
+assert(allRewards.every(a=>a.quests.length>0&&a.quests.every(q=>q.name&&q.reward&&['passive','refund','gem','item','choice'].includes(q.type))),'Quest reward descriptions/types missing');
+assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23,'Quest passive reward reference drift');
 load('guide-descriptions.js');
 const descriptions=ctx.window.POE_ITEM_DESCRIPTIONS;
 assert(descriptions.schema===1&&descriptions.certifiedFor330===false,'Guide descriptions must remain patch-unverified');

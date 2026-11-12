@@ -60,4 +60,4 @@ const assert=require('node:assert/strict');
  assert.deepEqual(walkErrors,[],'walkthrough browser JavaScript errors');
  await browser.close();
  console.log('Browser smoke: PASS — 484 rows, persistence, multi-character, export/import, invalid JSON, patch gate, mobile width, walkthrough');
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{console.error(e);process.exit(1)});

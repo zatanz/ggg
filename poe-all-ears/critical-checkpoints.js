@@ -608,6 +608,13 @@ window.POE_CRITICAL_CHECKPOINTS = {
       }
     ]
   },
+  "postQuest": {
+    "10": [
+      {"id":"a10-safe-passage","act":10,"quest":"Safe Passage","title":"จบ Safe Passage แล้วกลับไปคุย Lilly Roth","ids":[471],"timing":"หลังจบเควสต์ Safe Passage","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"},
+      {"id":"a10-death-rebirth","act":10,"quest":"Death and Rebirth","title":"จบ Death and Rebirth แล้วคุย Lilly Roth","ids":[481],"timing":"หลังจบเควสต์ Death and Rebirth","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"},
+      {"id":"a10-end-hunger","act":10,"quest":"An End to Hunger","title":"จบ An End to Hunger แล้วคุย Lilly Roth","ids":[482],"timing":"หลังจบเควสต์ An End to Hunger","source":"https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10"}
+    ]
+  },
   "sourceStatus": "wiki-2025-quest-state-risk-only",
   "routeSafe": false
 };

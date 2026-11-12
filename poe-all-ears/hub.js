@@ -524,13 +524,13 @@ function journeyActGuide(act){
  }).filter(x=>x.total>0);
  const complete=summaries.every(x=>x.done===x.total);
  const h=el("div",undefined,"hubActMissionHead");
- h.append(el("h3",complete?"Act "+act+" · Checklist บันทึกครบแล้ว":"Act "+act+" · ทำอย่างไรให้เก็บครบ"),el("p",complete?"ตรวจยอดที่เกมนับจริงก่อนออกจาก Act; การติ๊กครบไม่ยืนยัน Achievement จากเกม":"ก่อนเดินเรื่องต่อ ให้ตรวจบทสนทนาที่เสี่ยงพลาด แล้วเก็บ Lore, Waypoint และเควสต์รองที่พบใน Act นี้","hubSubtle"));
+ h.append(el("h3",complete?"Act "+act+" · "+tr("Checklist บันทึกครบแล้ว","All checklist entries marked"):"Act "+act+" · "+tr("ทำอย่างไรให้เก็บครบ","What to collect")),el("p",tr(complete?"ตรวจยอดที่เกมนับจริงก่อนออกจาก Act; การติ๊กครบไม่ยืนยัน Achievement จากเกม":"ก่อนเดินเรื่องต่อ ให้ตรวจบทสนทนาที่เสี่ยงพลาด แล้วเก็บ Lore, Waypoint และเควสต์รองที่พบใน Act นี้",complete?"Check actual in-game counters before leaving the Act; manual marks are not proof of an unlock.":"Review missable NPC dialogue before story transitions, plus the Act’s Lore, Waypoints and optional quests."),"hubSubtle"));
  card.append(h);
  const risk=(window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[]).filter(s=>s.ids.some(id=>!entries("ears").includes(id)));
  if(risk.length){
    const top=el("div",undefined,"hubActMissionWarning");
-   const text=el("div",undefined);text.append(el("strong","จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: "+risk.length+" กลุ่ม"),el("span","ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง"));
-   const jump=el("button","ดูจุดตรวจที่ยังขาด");jump.type="button";jump.onclick=()=>{
+   const text=el("div",undefined);text.append(el("strong",tr("จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: ","Unchecked historical risk groups: ")+risk.length),el("span",tr("ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง","Review quest transitions before acting. This is not a certified safe route.")));
+   const jump=el("button",tr("ดูจุดตรวจที่ยังขาด","Open next risk checkpoint"));jump.type="button";jump.onclick=()=>{
       if(["1","2","3","4","5"].includes(act)){const phases=window.POE_STEAM_WALK?.acts?.[act]||[];const found=phases.findIndex(p=>p.dialogueIds.some(id=>risk[0].ids.includes(id)));state.steamFocusByAct[act]=Math.max(0,found);renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});return;}
       const stages=window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[];
       state.focusByAct[act]=stages.findIndex(s=>s.id===risk[0].id);renderView();
@@ -542,12 +542,12 @@ function journeyActGuide(act){
  for(const s of summaries){
    const row=el("div",undefined,"hubActMissionItem");
    const left=el("div",undefined,"hubActMissionItemText");
-   left.append(el("strong",uiNames[s.type]),el("small",s.done+" / "+s.total+(s.done===s.total?" · บันทึกครบ":" · ขาด "+(s.total-s.done))));
+   left.append(el("strong",categoryName(s.type)),el("small",s.done+" / "+s.total+(s.done===s.total?tr(" · บันทึกครบ"," · done"):tr(" · ขาด "," · remaining ")+(s.total-s.done))));
    if(s.left.length){
-      const example=el("span","รายการที่ยังขาด: "+label(s.left[0],s.type),"hubActMissionExample");
+      const example=el("span",tr("รายการที่ยังขาด: ","Next unchecked: ")+label(s.left[0],s.type),"hubActMissionExample");
       left.append(example);
    }
-   const btn=el("button",s.done===s.total?"เปิดตรวจซ้ำ":"ดูรายการที่ยังขาด");btn.type="button";
+   const btn=el("button",s.done===s.total?tr("เปิดตรวจซ้ำ","Review"):tr("ดูรายการที่ยังขาด","Show remaining"));btn.type="button";
    btn.dataset.goalCategory=s.type;
    btn.onclick=()=>{
      for(const type of types)routeOpen.delete(act+":"+type);
@@ -560,9 +560,9 @@ function journeyActGuide(act){
  const gate=el("details",undefined,"hubActMissionGate");
  const gateHead=el("summary",undefined);
  const missing=summaries.reduce((sum,x)=>sum+x.total-x.done,0);
- gateHead.append(el("strong","ก่อนออกจาก Act นี้ · ตรวจ "+summaries.length+" หมวด"),el("span",missing===0?"บันทึกครบทุกหมวดแล้ว":"ยังขาด "+missing+" รายการ"));
+ gateHead.append(el("strong",tr("ก่อนออกจาก Act นี้ · ตรวจ ","Before leaving this Act · Review ")+summaries.length+tr(" หมวด"," groups")),el("span",missing===0?tr("บันทึกครบทุกหมวดแล้ว","All groups checked"):tr("ยังขาด ","Remaining: ")+missing+tr(" รายการ"," entries")));
  gate.append(gateHead,list);card.append(gate);
- const bottom=el("p","ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.30","hubSubtle");
+ const bottom=el("p",tr("ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.30","Check entries only after actual gameplay. Verify each achievement counter in-game; quest guidance is not certified for patch 3.30."),"hubSubtle");
  card.append(bottom);return card;
 }
 function epilogueRoute(target){
@@ -573,17 +573,17 @@ function epilogueRoute(target){
  const list=el("div",undefined,"hubList");
  all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
 }
-function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
-panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
+function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · "+tr("รายการเก็บ Achievement","Achievement route"));
+panel.append(el("p",tr("ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","Check only after collecting in-game. Completed entries remain in place; important STOP warnings appear before details."),"hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
 const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).filter(x=>entries(type).includes(x.id)).length,0);
 const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
 const quick=el("div",undefined,"hubActProgress");
-quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
+quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
 panel.append(journeyActGuide(act));
 if(["1","2","3","4","5"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
- if(["2","3","4","5"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary","ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki");summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
+ if(["2","3","4","5"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
@@ -592,10 +592,10 @@ const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;
 chapter.open=routeOpen.has(act+":"+type)||!!state.search.trim();
 const summary=el("summary"),left=el("span",undefined,"hubChapterTitle");
-left.append(el("strong",uiNames[type]),el("small",names[type]));summary.append(left,el("span",count+" / "+rows.length,"hubChapterCount"));
+left.append(el("strong",categoryName(type)),el("small",names[type]));summary.append(left,el("span",count+" / "+rows.length,"hubChapterCount"));
 chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
-if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","PoE Wiki · All Ears / Act "+act);source.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;source.target="_blank";source.rel="noopener noreferrer";note.append("เรียงตามแถว Wiki 2025 · ",source);content.append(note);}
+if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","PoE Wiki · All Ears / Act "+act);source.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;source.target="_blank";source.rel="noopener noreferrer";note.append(tr("เรียงตามแถว Wiki 2025 · ","Ordered by 2025 Wiki rows · "),source);content.append(note);}
 addList(content,type,act,state.limit,true);chapter.append(content);
 summary.addEventListener("click",()=>{if(state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.delete(key);else routeOpen.add(key);});
 chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.add(key);else routeOpen.delete(key);});

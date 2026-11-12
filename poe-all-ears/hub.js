@@ -281,14 +281,14 @@ if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเต
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;
-chapter.open=routeOpen.has(type)||!!state.search.trim();
+chapter.open=routeOpen.has(act+":"+type)||!!state.search.trim();
 const summary=el("summary"),left=el("span",undefined,"hubChapterTitle");
 left.append(el("strong",uiNames[type]),el("small",names[type]));summary.append(left,el("span",count+" / "+rows.length,"hubChapterCount"));
 chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
 if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","PoE Wiki · All Ears / Act "+act);source.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;source.target="_blank";source.rel="noopener noreferrer";note.append("เรียงตามแถว Wiki 2025 · ",source);content.append(note);}
 addList(content,type,act,state.limit,true);chapter.append(content);
-chapter.addEventListener("toggle",()=>{if(!state.search.trim()){if(chapter.open)routeOpen.add(type);else routeOpen.delete(type);}});
+chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.add(key);else routeOpen.delete(key);});
 panel.append(chapter);
 });const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
 function renderCategory(target,type){const panel=section(uiNames[type]+" · "+names[type]);

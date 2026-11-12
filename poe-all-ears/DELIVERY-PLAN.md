@@ -202,3 +202,8 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added browser-smoke job to .github/workflows/all-ears-validation.yml. This downloads Chromium and executes the browser tests in GitHub Actions. Existing data and static UI checks remain.
 - **Do not mark browser QA PASS until the browser-smoke job has completed successfully.** Latest test run: https://github.com/zatanz/ggg/actions/runs/43172151668. Initial browser setup may take several minutes.
 - Wiki mapping remains 484/484 historical 2025 source rows; current patch certified 0/484. In-game patch and quest-state evidence remain outstanding.
+
+## QA repair — browser quota-failure test (2026-11-12)
+- Investigated failed GitHub Actions run https://github.com/zatanz/ggg/actions/runs/43172294583. Static data/UI checks PASS; Chromium smoke failed at test-browser.cjs:45 because Playwright locator.uncheck() auto-retried for 30 seconds after the application rerendered and replaced the checkbox DOM node. This was a test-harness synchronization failure, not evidence that storage rollback itself failed.
+- Changed the test to invoke a single DOM click in page.evaluate(), then assert the persisted progress remains unchanged while Storage.prototype.setItem throws. No production checklist changes in this repair.
+- Follow-up CI run https://github.com/zatanz/ggg/actions/runs/43172444966. Await successful browser-smoke conclusion before marking the rollback QA PASS.

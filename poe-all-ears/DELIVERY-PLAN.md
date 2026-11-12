@@ -98,3 +98,10 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added validate-ui.cjs and included it in GitHub Actions. The job validates inline script syntax, script references, patch gating, and UI route integration. GitHub Actions run 43169342999 succeeded with both data and UI checks. Newer runs should also be checked after this checkpoint.
 - This is SOURCE-ROW RECONCILIATION only. It does not establish safe in-game quest progression or certify PoE 3.29/3.30. Current patch certification remains 0/484. Browser interaction testing still outstanding.
 - Next: validate real browser interactions, review Act 2 per-row quest trigger evidence, verify Act 3 source-order mapping, examine current patch's NPC changes and quest-state behavior.
+
+## Continuation — Act 3 legacy audit (2026-11-12)
+- Added act3-inventory.json with all 71 Act 3 legacy records, IDs 111–181. Identified 21 candidate missable/quest-state entries from existing dialogue markers and notes, of which 9 carry explicit legacy notes. These are triage flags, not verified game mechanics.
+- Added seven Act 3 integrity assertions to validate-data.cjs: count, unique IDs, order, content fidelity, no false wiki/patch verification, routeSafe=false, and candidate risk count.
+- Attempted to fetch the PoE Wiki source directly but the public web fetch returned cache miss; therefore Act 3 wikiRow remains null for all 71 records and no new wiki-ordered route was published. This avoids presenting guessed order as sourced.
+- All Ears GitHub Actions was successful on the previous checkpoint. The run for the new validator commit should be confirmed before claiming this update passed.
+- Continue by obtaining authoritative Act 3 source rows and 3.30 patch evidence, then reconcile order and check missable prerequisites. Do not treat 3.9 notes as current-patch truth.

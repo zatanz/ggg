@@ -344,3 +344,75 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
  #hubStats .hubStat b{font-size:17px}
  .hubActMissionGate>summary{flex-wrap:wrap;padding:11px}
 }
+
+/* Research-led contrast system: neutral navigation, gold = current view, red = do not progress,
+   amber = source uncertainty, green = item explicitly checked by the player. */
+#hubNav{border-radius:12px;background:#111820;border:1px solid #4a5663;padding:5px;gap:5px}
+#hubNav button{background:#27313c;color:#f1ede4;border:1px solid #5b6975;min-height:49px;border-radius:9px;font-weight:700}
+#hubNav button[aria-selected=true]{background:#72502c;color:#fff5d6;border:2px solid #f6c77b;box-shadow:inset 0 -2px 0 #e6b46a}
+#hubNav button:focus-visible,.hubActStrip button:focus-visible,.hubStepNavigator button:focus-visible,
+.hubStopGate button:focus-visible,.hubWalkNavigator button:focus-visible{outline:3px solid #ffdb86;outline-offset:3px}
+.hubActStrip button{background:#27303b;color:#e9e7e1;border-color:#586572}
+.hubActStrip button[aria-pressed=true]{background:#74552f;color:#fff6dc;border:2px solid #f2cc82;box-shadow:inset 0 -2px 0 #f2cc82}
+.hubStepNavigator{background:#1b2530;border-color:#5d6d79}
+.hubStepNavigator select{background:#263441;color:#f5f0e4;border-color:#8495a2;font-weight:650}
+.hubStepPosition{color:#ffe0a0}
+.hubChapter:not([open])>summary{border-left:3px solid #566a75}
+.hubChapter[open]>summary{background:#3d3023;border-left:3px solid #edba6e}
+.hubCheckpoint>summary{background:#2a323b}
+.hubCheckpoint[open]>summary{background:#3c3227}
+.hubCriticalTitle h3,.hubWalkHeader h3{color:#ffe1a7}
+.hubStopGate{padding:12px 14px;border-radius:9px;border:2px solid #b76852;background:#38231e;margin:10px 0;color:#fff2e9}
+.hubStopGate.blocked{background:#48241f;border-color:#fb987d}
+.hubStopGate.reviewed{border-color:#bf985c;background:#342e23}
+.hubStopGate strong{display:block;color:#ffe0d1;font-size:15px;line-height:1.45}
+.hubStopGate.reviewed strong{color:#f7db9c}
+.hubStopGate p{font-size:12px;line-height:1.65;margin:6px 0}
+.hubStopPending{font-size:11px;font-weight:650;color:#ffdbba;line-height:1.5}
+.hubResearchConflict{border:2px solid #d49e51;background:#342c20;border-radius:9px;margin:10px 0;padding:12px 14px;color:#ffdfaf;line-height:1.65;font-size:12px}
+.hubResearchConflict strong{color:#ffe6b0;font-size:13px}
+.hubResearchConflict p{margin:7px 0 2px}
+.hubConflictLinks{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
+.hubConflictLinks a{color:#ffe7a8;font-weight:700;text-decoration:underline}
+.hubCheckpointWhy{margin:10px 0;border-top:1px solid #5b4e3e;padding-top:8px;font-size:12px;color:#cfc8bc}
+.hubCheckpointWhy>summary{cursor:pointer;color:#f2d9a4;font-weight:650}
+.hubCheckpointWhy .hubCheckpointRisk{margin-top:8px}
+/* Walk-by-area Act 1 player mode; only a single phase visible. */
+.hubWalkthrough{background:#17212b;border:1px solid #7f6746;border-radius:14px;padding:14px;margin:17px 0;scroll-margin-top:14px}
+.hubWalkEyebrow{display:inline-block;font-size:11px;color:#ffdb9b;font-weight:800;letter-spacing:.07em}
+.hubWalkHeader h3{margin:7px 0 5px;font-size:18px;line-height:1.4}
+.hubWalkHeader .hubSubtle{font-size:12px;line-height:1.6}
+.hubWalkNavigator{margin:11px 0}
+.hubWalkFocus{padding:11px 13px;border:1px solid #536678;border-radius:9px;background:#253240}
+.hubWalkFocus h4{font-size:15px;color:#fff0cb;margin:0 0 4px;line-height:1.5}
+.hubWalkFocus p{font-size:12px;color:#cdd6dd;margin:0 0 7px;line-height:1.5}
+.hubWalkCount{font-size:11px;display:inline-block;background:#3b4f54;border:1px solid #768d8b;padding:3px 9px;border-radius:20px;color:#e1f7e8}
+.hubWalkActions{counter-reset:poe-actions;list-style:none;display:grid;gap:6px;margin:11px 0;padding:0}
+.hubWalkActions li{padding:9px 11px 9px 40px;border:1px solid #45596a;border-radius:8px;background:#263440;color:#f0efe9;font-size:12px;line-height:1.65;position:relative}
+.hubWalkActions li::before{counter-increment:poe-actions;content:counter(poe-actions);position:absolute;top:9px;left:10px;background:#a57d43;color:#12171d;font-weight:850;border-radius:20px;min-width:21px;line-height:21px;text-align:center}
+.hubWalkCategory{margin-top:13px}
+.hubWalkCategory h4{font-size:14px;color:#f1dbaf;margin:0 0 6px}
+.hubWalkCategory .hubSubtle{margin:0 0 9px;font-size:11px}
+.hubWalkCategory .hubList{gap:5px}
+.hubWalkCategory .hubItem{padding:8px 9px;background:#25313a}
+.hubWalkCategory .hubItemState{color:#f5dcc1}
+.hubWalkMore{background:#222c34;border:1px solid #53606b;border-radius:8px;margin-top:7px;padding:8px 10px}
+.hubWalkMore>summary,.hubWalkLore>summary{cursor:pointer;color:#ffda99;font-size:12px;font-weight:750;padding:5px}
+.hubWalkMore .hubList{margin-top:8px}
+.hubWalkLore{margin-top:12px;border:1px solid #465f53;background:#25352c;border-radius:8px;padding:9px 11px}
+.hubWalkLore .hubList{padding:8px 0 0}
+.hubWalkFooter{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid #4d5964;padding-top:11px;margin-top:14px;font-size:11px;line-height:1.5;color:#c9c7bf}
+.hubWalkFooter a{color:#f9d89b;font-weight:700;text-decoration:underline}
+.hubQuestVisual{margin:10px 0;border:1px solid #625742;background:#1c2228;border-radius:8px;padding:10px}
+.hubQuestVisual>summary{cursor:pointer;font-size:12px;font-weight:750;color:#ffdfa6}
+.hubQuestVisual img{display:block;width:100%;height:auto;max-width:960px;margin:12px auto;border:1px solid #ad8353;border-radius:8px}
+.hubQuestVisual p{font-size:11px;line-height:1.6}
+.hubQuestVisual a{color:#f9d99a;text-decoration:underline;font-size:12px}
+@media(max-width:720px){
+ #hubNav button{min-height:49px;font-size:12px;padding:8px}
+ .hubWalkthrough{padding:10px;margin:12px 0}
+ .hubWalkHeader h3{font-size:16px}
+ .hubWalkActions li{font-size:12px}
+ .hubResearchConflict{padding:10px}
+ .hubStopGate{padding:10px}
+}

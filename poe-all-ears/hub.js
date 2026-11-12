@@ -44,7 +44,7 @@ writeMarks(type,x.id,box.checked);
 });const name=el("div",undefined,"hubName"),tag=el("span",uiNames[type],"hubTag");name.append(tag,document.createTextNode(label(x,type)));
 info.append(name,el("div",(type==="ears"?"Wiki "+(getRisk({type,id:x.id,act:x.act})?.wikiRow||"?")+" · ":type==="lore"&&x.wikiRow?"Wiki #"+x.wikiRow+" / ID เดิม #"+x.id+" · ":"")+area(x,type),"hubMeta"));
 const warn=warning(x,type);if(warn)info.append(el("div",warn,"hubRisk"));
-if(type==="ears"&&x.act){const link=el("a","ตรวจแหล่งอ้างอิง Wiki");link.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+x.act;link.target="_blank";link.rel="noopener noreferrer";link.className="hubMeta";info.append(link);}
+if(type==="ears"&&x.act&&warn){const link=el("a","ดูเงื่อนไขต้นทางบน PoE Wiki");link.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+x.act;link.target="_blank";link.rel="noopener noreferrer";link.className="hubMeta";info.append(link);}
 row.append(box,info);return row;}
 function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(warning(x,type)||"")).toLowerCase().includes(query)));}
 function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
@@ -70,7 +70,9 @@ chapter.open=routeOpen.has(type)||!!state.search.trim();
 const summary=el("summary"),left=el("span",undefined,"hubChapterTitle");
 left.append(el("strong",uiNames[type]),el("small",names[type]));summary.append(left,el("span",count+" / "+rows.length,"hubChapterCount"));
 chapter.append(summary);
-const content=el("div",undefined,"hubChapterBody");addList(content,type,act,40,true);chapter.append(content);
+const content=el("div",undefined,"hubChapterBody");
+if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","PoE Wiki · All Ears / Act "+act);source.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;source.target="_blank";source.rel="noopener noreferrer";note.append("เรียงตามแถว Wiki 2025 · ",source);content.append(note);}
+addList(content,type,act,40,true);chapter.append(content);
 chapter.addEventListener("toggle",()=>{if(!state.search.trim()){if(chapter.open)routeOpen.add(type);else routeOpen.delete(type);}});
 panel.append(chapter);
 });target.append(panel);}

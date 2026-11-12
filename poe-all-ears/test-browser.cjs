@@ -250,6 +250,8 @@ const assert=require('node:assert/strict');
  await hub.locator('.hubActStrip [data-act="2"]').click();
  assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),7,'Act 2 shows seven important quest-state checkpoints');
  assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').evaluate(x=>x.open),true,'Act 2 Bandit preflight is visible by default');
+ assert.equal(await hub.locator('#hubView .hubCheckpoint').first().getAttribute('data-stage'),'a2-whitebeast','Source checkpoint groups stay in original sequence rather than prioritizing danger first');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"] .hubCheckpointRowTrigger').first().innerText()).includes('Ancient Seal'),true,'Per-dialogue unlock moment is displayed');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('The Darkness'),true,'Bandit checkpoint explains Ancient Seal before killings');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]').innerText()).includes('Deal with the Bandits'),true,'Bandit checkpoint associates quest reward source');
 
@@ -270,6 +272,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),5,'Act 3 exposes five source-linked quest risks');
  assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').evaluate(x=>x.open),true,'Clarissa pre-handoff checkpoint opens by default');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').innerText()).includes("Tolman's Bracelet"),true,'Act 3 warning names quest turn-in prerequisite');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"] .hubCheckpointRowTrigger').first().innerText()).includes("Tolman's Bracelet"),true,'Act 3 dialogue timing is translated and displayed per row');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-piety"]').innerText()).includes('Piety'),true,'Piety missable warning present');
  await hub.locator('.hubActStrip [data-act="2"]').click();
 
@@ -283,7 +286,10 @@ const assert=require('node:assert/strict');
  }
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a9-rescue"]').innerText()).includes('Act 10'),true,'Act 9 rescue warns before moving to Act 10');
  await hub.locator('.hubActStrip [data-act="10"]').click();
- assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),0,'Act 10 does not invent unsourced quest dependencies');
+ assert.equal(await hub.locator('#hubView .hubCritical:not(.hubPostQuests) .hubCheckpoint').count(),0,'Act 10 does not invent unsourced irreversible quest checkpoints');
+ assert.equal(await hub.locator('#hubView .hubPostQuests .hubPostQuest').count(),3,'Act 10 has three post-quest reminders sourced from Wiki');
+ assert.equal(await hub.locator('#hubView .hubPostQuests [data-post-stage="a10-safe-passage"]').evaluate(x=>x.open),true,'Act 10 post-quest reminder opens by default');
+ assert.equal((await hub.locator('#hubView .hubPostQuests').innerText()).includes('Safe Passage'),true,'Act 10 Safe Passage dialogue reminder visible');
  assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่า Act 10 ปลอดภัย'),true,'Act 10 missing historic warning markers is explicitly disclosed');
  await hub.locator('.hubActStrip [data-act="2"]').click();
 

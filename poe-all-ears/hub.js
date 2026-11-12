@@ -20,6 +20,7 @@ const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa","a4-deshret"
 const postQuestOpen=new Set(["a10-safe-passage"]);
 const specialOpen=new Set(["lab-plaza"]);
 const steamExpanded=new Set();
+const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{}};
@@ -507,7 +508,7 @@ quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" �
 panel.append(journeyActGuide(act));
 if(act==="1"||act==="2"){
  const route=actSteamGuide(act);if(route)panel.append(route);
- if(act==="2"){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.append(el("summary","ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki"));const critical=criticalPanel(act);if(critical)more.append(critical);panel.append(more);}
+ if(act==="2"){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary","ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki");summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}

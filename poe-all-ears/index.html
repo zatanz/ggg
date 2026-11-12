@@ -58,6 +58,7 @@
     .guide{margin-top:10px;padding:10px 12px;border:1px solid #4b493f;background:#24251f;border-radius:9px;font-size:13px;line-height:1.65}
     .guide strong{color:var(--gold)}.guide p{margin:5px 0}.guide .caution{color:var(--risk)}
     .guide summary{cursor:pointer;color:var(--gold);font-weight:650;list-style-position:inside}.guide summary:focus-visible{outline:2px solid var(--gold)}
+    .reward-panel{margin-top:16px}.reward-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:9px}.reward-card{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px}.reward-card strong{display:block;margin-bottom:5px}.reward-card p{margin:0;font-size:13px;color:var(--muted)}.reward-card .reward-kind{font-size:11px;color:var(--gold);margin-bottom:4px}
     .entry.done .npc,.entry.done .topic{color:#9baea1}
     .empty{padding:40px 10px;text-align:center;color:var(--muted)}
     .foot{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:12px}
@@ -116,6 +117,7 @@
     </div>
   </div>
   <main id="results" aria-live="polite"></main>
+  <section class="panel reward-panel" aria-label="รางวัลเควสต์" id="rewardSection"><h2 class="panel-title">รางวัลเควสต์ Act 1–10</h2><p class="minor">ข้อมูลรางวัลแยกจากบทสนทนา All Ears โดยแสดงตาม Act ที่เลือกด้านบน รายการ Gem/อุปกรณ์เป็นประเภทของรางวัล ไม่ใช่รายการตัวเลือกครบทุกคลาส โปรดตรวจเงื่อนไขบทสนทนาก่อนส่งเควสต์</p><div id="rewardResults"></div><p class="minor">อ้างอิง: <a href="https://www.poewiki.net/wiki/List_of_quest_rewards" target="_blank" rel="noopener noreferrer">PoE Wiki — List of quest rewards</a> · <a href="https://www.poewiki.net/wiki/Passive_skill" target="_blank" rel="noopener noreferrer">Passive skill quest rewards</a> · ข้อมูลอาจเปลี่ยนตามแพตช์/ลีก</p></section>
   <footer class="foot">
     <p>แหล่งข้อมูล: <a href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement" target="_blank" rel="noopener noreferrer">PoE Wiki · All Ears</a> (484 คะแนน ณ วันที่ตรวจ) และเช็กลิสต์เก่าของ MysticalChill เวอร์ชัน 3.9 ซึ่งใช้สำหรับรายละเอียดบทสนทนา/เงื่อนไขบางรายการ ชุดนี้ปรับจำนวนและ Act ให้ตรงกับ Wiki หลังนำบทสนทนา Navali ออก แต่ <strong>ลำดับบางบรรทัดเป็นลำดับจากรายการเก่า ไม่ใช่เส้นทางแนะนำที่ตรวจยืนยันตาม Wiki ปัจจุบันครบทุกขั้น</strong> ตรวจคู่มือต้นทางสำหรับจุดที่พลาดแล้วแก้ไขไม่ได้</p>
     <p>ข้อมูลความคืบหน้าจะอยู่ใน localStorage ของเบราว์เซอร์นี้เท่านั้น หากล้างข้อมูลเว็บไซต์หรือเปิดในอุปกรณ์อื่น ให้ใช้ปุ่มสำรอง/นำเข้าข้อมูล ไม่มีการส่งชื่อตัวละครหรือสถานะการติ๊กไปยังเซิร์ฟเวอร์</p>
@@ -124,11 +126,13 @@
 <div id="toast" class="toast" role="status"></div>
 <script src="./data.js"></script>
 <script src="./guide-act1.js"></script>
+<script src="./quest-rewards.js"></script>
 <script>
 (function(){
   "use strict";
   var items = window.ALL_EARS_DATA && window.ALL_EARS_DATA.items;
   var guideEntries = (window.ALL_EARS_GUIDE && window.ALL_EARS_GUIDE.entries) || {};
+  var questRewards = (window.POE_QUEST_REWARDS && window.POE_QUEST_REWARDS.acts) || [];
   var root=document.getElementById("results");
   if(!Array.isArray(items)||items.length!==484){root.innerHTML='<div class="empty">โหลดข้อมูล 484 รายการไม่สำเร็จ กรุณารีเฟรชหน้าเว็บ</div>';return;}
   var KEY="poe-all-ears-user-data-v1";
@@ -146,7 +150,8 @@
   function renderChar(){var s=byId("character"),c=current();s.replaceChildren();state.characters.forEach(function(p){var o=el("option",null,p.name);o.value=p.id;s.appendChild(o);});s.value=c.id;byId("currentName").textContent=c.name;}
   function renderProgress(){var count=current().checked.length;byId("progress").textContent=count;byId("pct").textContent=(count*100/484).toFixed(1)+"%";byId("bar").style.width=(count/484*100)+"%";byId("progressBar").setAttribute("aria-valuenow",String(count));}
   function renderItems(){var c=current(),checked=new Set(c.checked),q=searchText.toLowerCase(),selected=items.filter(function(x){if(actFilter!=="all"&&String(x.act)!==actFilter)return false;if(status==="pending"&&checked.has(x.id))return false;if(status==="done"&&!checked.has(x.id))return false;if(status==="warning"&&!isWarning(x))return false;if(q&&[String(x.id),x.npc,x.dialog,x.note].join(" ").toLowerCase().indexOf(q)<0)return false;return true;});var acts=new Map();selected.forEach(function(x){if(!acts.has(x.act))acts.set(x.act,[]);acts.get(x.act).push(x);});root.replaceChildren();if(!selected.length){root.appendChild(el("div","empty","ไม่พบรายการที่ตรงกับการค้นหา / ตัวกรอง"));return;}acts.forEach(function(rows,a){var head=el("div","actline");head.appendChild(el("h2",null,"Act "+a));var total=items.filter(function(x){return x.act===a;}).length;var done=items.filter(function(x){return x.act===a&&checked.has(x.id);}).length;head.appendChild(el("span","pill",done+" / "+total+" · แสดง "+rows.length));root.appendChild(head);var list=el("div","list");rows.forEach(function(x){var done=checked.has(x.id), card=el("label","entry"+(done?" done":"")),check=el("input");check.type="checkbox";check.checked=done;check.setAttribute("aria-label","บทสนทนา "+x.id+" "+x.npc+" "+x.dialog);check.addEventListener("change",function(){var o=current();if(check.checked&&!o.checked.includes(x.id))o.checked.push(x.id);if(!check.checked)o.checked=o.checked.filter(function(n){return n!==x.id;});o.checked.sort(function(a,b){return a-b;});save();renderProgress();renderItems();});var content=el("div","content"),line=el("div");line.appendChild(el("span","id","#"+x.id));line.appendChild(el("span","npc",x.npc));content.appendChild(line);content.appendChild(el("div","topic",x.dialog.replace(/\s*-\s*\(!\)/g," [!]")));if(x.note)content.appendChild(el("div","note"+(isWarning(x)?" alert":""),x.note));var g=guideEntries[x.id];if(g){var detail=el("details","guide"),summary=el("summary",null,"คำแนะนำเบื้องต้น (ยังไม่ผ่าน QA ครบ)");detail.appendChild(summary);var gp=el("p",null,g.steps);detail.appendChild(gp);if(g.warning){var warn=el("p","caution","ข้อควรระวัง: "+g.warning);detail.appendChild(warn);}content.appendChild(detail);}card.appendChild(check);card.appendChild(content);list.appendChild(card);});root.appendChild(list);});}
-  function render(){renderChar();renderProgress();renderItems();}
+  function renderRewards(){var target=byId("rewardResults");target.replaceChildren();questRewards.forEach(function(group){if(actFilter!=="all"&&String(group.act)!==actFilter)return;var title=el("h3",null,"Act "+group.act+" · "+group.quests.length+" เควสต์");title.style.margin="18px 0 10px";target.appendChild(title);var list=el("div","reward-list");group.quests.forEach(function(q){var card=el("div","reward-card");var labels={passive:"Passive Skill",refund:"Passive Refund",gem:"Skill / Support Gem",item:"อุปกรณ์ / ไอเทม",choice:"รางวัลตามตัวเลือก"};card.appendChild(el("div","reward-kind",labels[q.type]||"รางวัล"));card.appendChild(el("strong",null,q.name));card.appendChild(el("p",null,q.reward));list.appendChild(card);});target.appendChild(list);});}
+  function render(){renderChar();renderProgress();renderItems();renderRewards();}
   for(var a=1;a<=10;a++){var opt=el("option",null,"Act "+a);opt.value=String(a);byId("act").appendChild(opt);}
   byId("character").addEventListener("change",function(e){state.active=e.target.value;save();render();});
   byId("addChar").addEventListener("click",function(){var name=prompt("ชื่อตัวละครใหม่:","ตัวละคร "+(state.characters.length+1));if(name===null)return;name=name.trim().slice(0,60);if(!name)return toast("กรุณาระบุชื่อตัวละคร");var c={id:uid(),name:name,checked:[]};state.characters.push(c);state.active=c.id;save();render();toast("เพิ่มตัวละคร "+name+" แล้ว");});
@@ -154,7 +159,7 @@
   byId("deleteChar").addEventListener("click",function(){var c=current();if(!confirm('ลบตัวละคร "'+c.name+'" และข้อมูลที่ติ๊กทั้งหมด?'))return;state.characters=state.characters.filter(function(x){return x.id!==c.id;});if(!state.characters.length){state=blank();}else{state.active=state.characters[0].id;}save();render();toast("ลบตัวละครแล้ว");});
   byId("reset").addEventListener("click",function(){var c=current();if(!confirm('ล้างเครื่องหมายทั้งหมดของ "'+c.name+'" ?'))return;c.checked=[];save();render();toast("ล้างรายการที่ติ๊กแล้ว");});
   byId("search").addEventListener("input",function(e){searchText=e.target.value.trim();renderItems();});
-  byId("act").addEventListener("change",function(e){actFilter=e.target.value;renderItems();});
+  byId("act").addEventListener("change",function(e){actFilter=e.target.value;renderItems();renderRewards();});
   document.querySelectorAll("[data-status]").forEach(function(b){b.addEventListener("click",function(){status=b.dataset.status;document.querySelectorAll("[data-status]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});renderItems();});});
   byId("export").addEventListener("click",function(){var data=JSON.stringify({app:"poe-all-ears",exportedAt:new Date().toISOString(),...state},null,2),blob=new Blob([data],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="poe-all-ears-backup.json";a.click();setTimeout(function(){URL.revokeObjectURL(u);},3000);toast("ดาวน์โหลดข้อมูลสำรองแล้ว");});
   byId("import").addEventListener("click",function(){byId("file").click();});

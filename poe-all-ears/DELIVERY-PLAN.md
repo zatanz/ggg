@@ -207,3 +207,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Investigated failed GitHub Actions run https://github.com/zatanz/ggg/actions/runs/43172294583. Static data/UI checks PASS; Chromium smoke failed at test-browser.cjs:45 because Playwright locator.uncheck() auto-retried for 30 seconds after the application rerendered and replaced the checkbox DOM node. This was a test-harness synchronization failure, not evidence that storage rollback itself failed.
 - Changed the test to invoke a single DOM click in page.evaluate(), then assert the persisted progress remains unchanged while Storage.prototype.setItem throws. No production checklist changes in this repair.
 - Follow-up CI run https://github.com/zatanz/ggg/actions/runs/43172444966. Await successful browser-smoke conclusion before marking the rollback QA PASS.
+
+## Continuation — Cross-page walkthrough QA and storage integrity (2026-11-12)
+- Hardened walkthrough.html persisted state loading: require version 1, active character in collection, valid character shape, valid dialogue IDs from 484-item catalog. Reject malformed storage instead of using invalid state.
+- Fixed walkthrough character switching to restore previous active character and select control when localStorage.setItem fails.
+- Expanded Playwright Chromium smoke to verify Act 9 36 steps, mutually exclusive Highgate warning, Act 10 32 steps, shared checklist/walkthrough checkbox state, walkthrough mark rollback on storage failure, and runtime errors.
+- First extended CI failed because the test opened two isolated browser contexts; next failed because browser.newPage() implicit context cannot open a second page. Fixed test to explicitly create one BrowserContext and two pages sharing localStorage. These were test harness issues, not product failures.
+- **Verified PASS:** GitHub Actions https://github.com/zatanz/ggg/actions/runs/43172952037, both validate and browser-smoke jobs successful.
+- Remaining: independent in-game/current-patch verification of quest conditions and branch alternatives; patch 3.30 certified 0/484. 484/484 historical Wiki row mappings do not establish current-patch correctness.

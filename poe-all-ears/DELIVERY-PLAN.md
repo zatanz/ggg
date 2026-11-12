@@ -136,3 +136,12 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added Act 5 source-integrity and warning tests in validate-data.cjs and UI wiring checks in validate-ui.cjs.
 - Source-row-mapped total: Acts 1–5 = 297/484 (61.36%). Acts 6–10 still use legacy order. Current-patch verified: 0/484; routeSafe remains false.
 - Browser QA and current-patch evidence still pending; source-row ordering alone is not a certified safe playthrough.
+
+## Continuation — Act 6 inventory and historical quest-state cautions (2026-11-12)
+- Source guide direct web fetch returned cache miss; no independent Act 6 wiki row-by-row verification was possible. **Do not fabricate an Act 6 wiki route.** Act 6 remains in historical spreadsheet order, with 0/44 source-row mappings verified.
+- Added act6-inventory.json: 44/44 legacy records, 16 candidate risks, all wikiRow=null and patchEvidence=null.
+- Added act6-risk-ledger.json: 8 exact 3.9 source notes, IDs 318,321,322,326,332,336,338,339; all patch-unverified.
+- Added act6-advisory.js grouping those eight notes into five cautionary milestones (Eye of Conquest, Shavronne, Nessa, Black Flag, Brine King) and displayed warnings in walkthrough.html without claiming safe route.
+- Added Act 6 integrity and advisory coverage checks to validate-data.cjs and display assertions to validate-ui.cjs. Intermediate commit e91d0dca6f828311a763d6ce6dd1b1fe020d72be failed CI because the advisory JS had not yet been added; follow-up commit 98b63155914b21b46e37034441e21e3478a7a88c restored CI PASS. Check latest runs before reporting.
+- Wiki source-row mappings remain 297/484 (Acts 1–5); 44 additional Act 6 rows inventoried but not source-row verified. Current patch certified remains 0/484.
+- Next: independently access Act 6 wiki table and map 44 rows; audit current patch against live game; browser interaction QA.

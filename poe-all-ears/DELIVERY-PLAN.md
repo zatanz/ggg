@@ -169,3 +169,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Source-row mapped total Acts 1–8: 416/484 (85.95%); Acts 9–10 remain historical order. Current patch certified 0/484; routeSafe=false. Browser interaction QA still outstanding.
 - PoE Wiki Act 4 prose says 73 points but its actual numbered rows 182–253 are 72 and the historical dataset has 72. Treat this as a source inconsistency, not an additional invented row.
 - Check final GitHub Actions status before claiming all checks passed.
+
+## Continuation — Act 9 inventory and historical risk warnings (2026-11-12)
+- PoE Wiki All Ears Act 9 source could not be fetched in this turn (web cache miss and container network DNS failure). No independently verified Wiki row mapping was available. **Do not invent Act 9 Wiki order.**
+- Added act9-inventory.json: all 36 legacy Act 9 dialogue records, 15 risk candidates, wikiRow=null and patchEvidence=null. Added act9-risk-ledger.json preserving all nine historical 3.9 notes (IDs 436,437,439,440,441,446,447,448,449).
+- Added act9-advisory.js: four historical caution stages for Storm Blade/Foothills, Garukhan/Feather of Sekhema/Irasha or Tasuni, Trarthan Powder/Belly of the Beast, and Depraved Trinity/Act 10. Explicitly not a certified safe route.
+- Integrated Act 9 warnings into walkthrough.html; Act 9 remains in legacy order in both pages. Also corrected Act 6 advisory heading to distinguish historical notes from its now Wiki-matched order.
+- Added Act 9 inventory/source fidelity, nine-risk coverage and UI warning assertions. GitHub Actions must be checked after latest commit.
+- Source-row matched remains 416/484 (Acts 1–8). Act 9 inventoried 36/36 but source-row unverified. Act 10 32 records still awaiting review. Current-patch verified 0/484. Browser interaction QA outstanding.

@@ -38,3 +38,15 @@ Status: SINGLE-PAGE HISTORICAL PREVIEW. Not patch-3.30 gameplay certified.
 
 ## Verification caveat
 A successful GitHub Actions browser smoke test means key flows execute in Chromium, not that a human gamer found the interface easy or that every PoE 3.30 line is accurate. Do not label the product final until evidence gates are met.
+
+## Update — 2026-11-12: quest sequence P0 implementation
+
+- The primary Act screen now begins with **15 source-referenced danger checkpoints / 35 dialogue IDs** across Acts 1–3. These are before/after barriers for irreversible quest states, not a claim of fully ordered campaign routing.
+- Each checkpoint has its own status from the **canonical All Ears character progress**; checkboxes have no separate storage or item IDs. A linked reward is displayed under the relevant quest to avoid an unrelated reward hunt.
+- Act 2 manual Alira/Oak/Kraityn, Seal and Darkness preflight now lives inside the highest-risk Bandit checkpoint, avoiding two competing Act 2 safety panels. Eramir's first/second-kill alternatives still use those manual choices.
+- The 2025 Wiki is the cited source. Patch 3.30 in-game proof, complete ordering and independent user usability validation remain incomplete; do not label the result certified.
+- **Next P0:** fresh-character quest-state verification, especially all Bandit variants and Act 3 Clarissa/Dialla/Piety timing, then revise source record by record.
+- **Next P1:** inspect Acts 4–10 one by one for sourced irreversible prerequisites; preserve safe warnings and postpone generic location-by-location roadmapping until supported by game evidence.
+- **Still deferred:** rewards by class, gem choice catalogs, equipment options and build optimization. This does not block manual Achievement tracking.
+
+Detailed stage ledger: [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).

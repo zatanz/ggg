@@ -52,3 +52,9 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added route-act1.js mapping all 41 local Act 1 IDs to PoE Wiki row order, including six documented risk conditions. Source date: 2025-06-30; current patch still unverified.
 - Walkthrough Preview now uses wiki order for Act 1; Acts 2–10 still use legacy order with warnings. This is source-order reconciliation, not full verification of prerequisites or a current-patch release.
 - Next: independently review each Act 1 precondition and cross-check against latest patch, then reconcile Act 2 branch model and remaining Acts.
+
+## Continuation update — integrity checks
+- Added validate-data.cjs to assert 484 unique entries, 10 Act counts, 41 Act 1 route rows, draft-only guide and unsupported current patch. Cross-file equivalent checks were executed against GitHub readback and passed 11/11. Node CLI execution itself is not yet confirmed.
+- Fixed walkthrough checkbox rollback if localStorage write fails; browser interaction still needs testing.
+- Current patch verified: 0/484. Act 1 order mapped: 41/41, but not patch-certified. Source audit and patch verification remain critical path.
+- Next: obtain source row evidence and confirm live patch, reconcile Act 1 risk notes and Act 2 branches; run browser and Node tests before release.

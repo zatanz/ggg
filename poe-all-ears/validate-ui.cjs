@@ -24,7 +24,12 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{
     check(html.includes('p.id!=="legacy-3.9"'),name+': unverified patches not blocked');
-    check(html.includes('if(!save())o.checked=previousChecked'),name+': localStorage write rollback missing');
+    for(const ref of ['./route-act1.js','./route-act2.js']){
+      check(html.includes('src="'+ref+'"'),name+': missing wiki route script '+ref)
+    }
+    check(html.includes('var wikiMeta=new Map()'),name+': source row mapping missing');
+    check(html.includes('wikiMeta.get(x.id)?.before'),name+': wiki missable warnings omitted');
+        check(html.includes('if(!save())o.checked=previousChecked'),name+': localStorage write rollback missing');
   }
 }
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));

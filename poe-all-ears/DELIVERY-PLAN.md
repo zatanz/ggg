@@ -293,3 +293,23 @@ User feedback: the unified six-tab interface was still difficult to use, and Tha
 - The last source-data inventories and certification status remain unchanged; this change is UI/editorial, **not a claim that PoE 3.30 content is verified**.
 - Current-patch in-game certified counts remain All Ears 0/484, Lore 0/140, Waypoints 0/91 and Side Quests 0/30. Do not change without item-level game evidence.
 - GitHub Actions and Pages must pass on final HEAD after these edits. Live human visual QA and a complete current-patch playthrough are separate incomplete release gates.
+
+
+## Checkpoint — Thai per-item descriptions and Act 2 branches (2026-11-12)
+Feedback: player-facing labels and navigation were improved but explanations had not surfaced concrete collection steps, prerequisites, location, randomized lore notes, or irreversible-quest warnings.
+
+### Implemented in master
+- New guide-descriptions.js is loaded by the unified index before hub.js. Returns context help for 484 All Ears rows, 140 Lore, 91 Waypoints and 30 Side Quests without mutating any source IDs or progress data.
+- Each entry now shows a compact action line under its title. An accessible per-item disclosure shows **วิธีเก็บ / พื้นที่ / เงื่อนไขก่อน / ห้ามพลาด / หมายเหตุ / ที่มา** where source evidence exists.
+- Preserved 41 existing Act 1 draft Thai instructions, source-annotated route preconditions where available, and translated 62 historical spreadsheet note rows into Thai. Unverified entries are explicitly labelled rather than given invented precise quest steps or NPC locations.
+- Environment lore notes now distinguish ordinary click-to-discover from random Letters of Exile, The Library book rotations (new Instance for duplicates), Labyrinth changes, and Vaal Side Area availability. The old Sacrifice Fragment/Map Device farming advice is not reused as valid for 3.30.
+- Act 2 Eramir historic Wiki row #101 now matches the **first** killed bandit (Alira/Oak/Kraityn), while #102 matches the **remaining alive** bandit after the second kill. Unknown manual choices show conditional descriptions, not fixed old-topic strings. #103 remains Bandit Lords after killing all three.
+- Fixed route-list pagination: **ดูเพิ่ม** now reveals the remaining 29 All Ears entries in Act 2 after the first 40, rather than remaining stuck at 40.
+- The website keeps patch gating and original per-character progress / v1 and unified v2 backup behavior. No automatic game telemetry added.
+- Tests: new validator covers 745 source-labelled description records, Act 1/Act 3 danger warnings, random Letters/Library/Vaal, and Eramir branch permutations. Chromium smoke opens contextual help, verifies randomized Lore details, unverified quest content, all Act 2 rows and dynamic bandit prompts.
+
+### Critical limits / next actions
+- "745 descriptions" means 745 **action hints with honest gaps**, not 745 individually verified/current-patch walkthroughs. Act 1 41 are drafts; other source notes are from 3.9/2025. Certified for 3.30 remains 0/484 All Ears, 0/140 Lore, 0/91 Waypoints, 0/30 Side Quests pending proof in the released game.
+- The 3.30 release is scheduled 2026-11-13 PST, after this checkpoint. Current conditions and every branch must be verified once the build is actually available. Do not raise certification based on green CI.
+- Next: verify in-game Act 2 on a fresh character; then revise individual instructions, source locations, quest prerequisites and branches with screenshots/video, including Bandit choice effects. Audit all Acts and randomized Lore before enabling patchSafe.
+- Read final GitHub Actions and Pages status for the final commit. A deployment success does not replace live human usability testing or in-game route evidence.

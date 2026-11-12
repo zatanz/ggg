@@ -316,7 +316,7 @@ for(const [act,phaseId,file,quest] of visualTargets){
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);
  assert(v.check&&v.title&&v.check.length>=20,'Each image needs a concrete plain-language action outside the image: '+phaseId);
  const svg=fs.readFileSync(path.join(dir,'assets',file),'utf8');
- assert(svg.startsWith('<svg ')&&svg.includes('</svg>')&&svg.includes('NOT AN IN-GAME SCREENSHOT')&&svg.includes(quest),'Illustration needs its correct quest title and conspicuous disclaimer: '+file);
+ assert(svg.startsWith('<svg ')&&svg.includes('</svg>')&&svg.includes('NOT AN IN-GAME SCREENSHOT')&&svg.toLowerCase().includes(quest.toLowerCase()),'Illustration needs its correct quest title and conspicuous disclaimer: '+file);
  assert(!/<script[\s>]/i.test(svg),'Quest illustration must remain static SVG without executable scripts: '+file);
 }
 

@@ -151,3 +151,13 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubItemHelpBody a{display:inline-flex;color:#ead095;font-size:12px;margin-top:2px;min-height:26px;align-items:center}
 .hubUnverifiedText{font-size:12px;color:#eebc8c;background:#332b24;padding:8px 10px;border-radius:7px;line-height:1.5}
 @media(max-width:720px){.hubFact{grid-template-columns:1fr;gap:1px;margin-bottom:11px}.hubItemHelpBody{padding:10px}.hubHow{font-size:13px}}
+
+/* Quest reward reference: separate from achievements, no completion checkbox. */
+.hubRewards>summary{background:linear-gradient(90deg,#243029,#23272e)}
+.hubRewardList{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:9px;margin:13px 0 14px}
+.hubRewardRow{background:#262b30;border:1px solid #454d51;border-radius:10px;padding:12px 14px;min-width:0}
+.hubRewardName{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:5px 9px}
+.hubRewardName strong{font-size:13px;color:#f0e6d7;overflow-wrap:anywhere}
+.hubRewardKind{display:inline-block;border:1px solid #635c40;color:#dcc790;border-radius:999px;font-size:10px;padding:2px 7px}
+.hubRewardText{margin:6px 0 0!important;font-size:12px;line-height:1.6;color:#ddd8c9;overflow-wrap:anywhere}
+.hubRewards .hubChapterBody>a{display:inline-block;font-size:12px;color:#edcc83;margin:5px 0 2px}

@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','guide-act1.js','act2-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -119,6 +119,11 @@ assert(act6Inventory.records.filter(x=>x.riskCandidate).length===16,'Act 6 risk 
 assert(act6Risks.records.length===act6Notes.length&&act6Notes.length===8,'Act 6 legacy risk note count mismatch');
 assert(act6Risks.records.every((x,i)=>x.id===act6Notes[i].id&&x.legacyNote===act6Notes[i].note),'Act 6 risk note fidelity mismatch');
 assert(act6Risks.patchCertified===false&&act6Risks.records.every(x=>x.patchCertified===false&&x.review==='legacy-note-unverified'),'Act 6 risk notes falsely certified');
+const act6Advisory=ctx.window.ALL_EARS_ACT6_ADVISORY;
+assert(act6Advisory.patchCertified===false&&act6Advisory.routeSafe===false,'Act 6 advisory falsely certified');
+assert(act6Advisory.milestones.length===5,'Act 6 advisory must include five quest milestones');
+assert(act6Advisory.milestones.flatMap(x=>x.ids).length===8,'Act 6 advisory must cover all eight legacy notes');
+assert(act6Advisory.milestones.flatMap(x=>x.ids).every(id=>act6Notes.some(x=>x.id===id)),'Act 6 advisory references non-risk dialogue');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

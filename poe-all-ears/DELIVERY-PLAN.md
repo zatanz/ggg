@@ -65,3 +65,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Rechecked walkthrough inline JavaScript syntax via new Function: PASS; GitHub readback confirms both changes. Browser test still pending.
 - PoE Wiki live fetch in this session failed (cache miss); do not claim new patch/source verification. Current patch verified remains 0/484.
 - Next: obtain independently accessible latest patch notes and source table, resolve Act 1 exact row mapping and Act 2 branches; execute browser/Node regression suite.
+
+## Continuation update — Act 2 conditional model
+- Re-accessed PoE Wiki All Ears guide (last updated 2025-06-30). It documents Eramir rows 101–103 as conditional, with first-killed/surviving bandit alternatives; also describes Ancient Seal/The Darkness order.
+- act2-advisory.js schema 2 now models 3 branch rows with 3/3/1 topic variants and 3 quest-state dependencies; explicitly patchCertified=false.
+- walkthrough.html now renders Act 2 Eramir variants with a patch-unverified label. Inline JavaScript syntax PASS; GitHub readback confirmed.
+- validate-data.cjs includes Act 2 model assertions; CLI execution not yet independently confirmed.
+- Current patch verification still 0/484. Act 2 has a branch model, NOT a fully verified 69-dialogue route.
+- Next: reconcile all Act 2 IDs to Wiki rows; obtain current PoE 1 patch evidence, verify Act 1 conditions and branch validity, execute Node/browser tests.

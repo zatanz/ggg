@@ -21,6 +21,7 @@ for(const name of ['index.html','walkthrough.html']){
     }
     check(html.includes('rec.id===item.id'),name+': route evidence is not tied to displayed ID');
     check(html.includes('act===3?window.ALL_EARS_ROUTE_ACT3'),name+': Act 3 source ordering not wired');
+    check(html.includes('act!==2&&act!==3')&&html.includes('window.ALL_EARS_ROUTE_ACT3.notes.forEach'),name+': Act 3 critical warning not visible');
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{

@@ -231,6 +231,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubNav [data-tab="route"]').click();
  await hub.locator('.hubActStrip [data-act="2"]').click();
  assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),5,'Act 2 has five quest rewards');
+ await hub.locator('#hubView details.hubRewards > summary').click();
  assert.equal((await hub.locator('#hubView details.hubRewards').innerText()).includes('Deal with the Bandits'),true,'Act 2 bandit reward remains available');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Bandits'),true,'Act 2 preflight visible in integrated Act view');
  assert.equal(await hub.locator('#hubView details[data-group]').count(),4,'Act view offers four collapsible achievement groups');

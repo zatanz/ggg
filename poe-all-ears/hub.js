@@ -16,6 +16,7 @@ const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sid
 const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
 const routeOpen=new Set(["ears"]);
+const criticalOpen=new Set(["a1-glyphs","a2-darkness"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:40,reviewType:"lore",gameCount:""};
@@ -98,6 +99,63 @@ list.append(card);}
 content.append(list);
 const source=el("a","ตรวจรางวัลตามแพตช์จาก PoE Wiki");source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
 }
+function criticalPanel(act){
+ const all=window.POE_CRITICAL_CHECKPOINTS;
+ const stages=all?.acts?.[act]||[];
+ if(!stages.length)return null;
+ const section=el("section",undefined,"hubCritical");
+ section.dataset.criticalAct=act;
+ const title=el("div",undefined,"hubCriticalTitle");
+ title.append(el("h3","ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด"),el("p","เรียงเฉพาะเงื่อนไขสำคัญที่มีในคู่มือ All Ears ปี 2025 ไม่ใช่เส้นทางเดินครบทุกเควสต์หรือข้อมูลรับรอง 3.30","hubSubtle"));
+ section.append(title);
+ const already=new Set(entries("ears"));
+ const sorted=[...stages].sort((a,b)=>Number(b.priority==="critical")-Number(a.priority==="critical"));
+ const riskLeft=sorted.filter(s=>!s.ids.every(id=>already.has(id))).length;
+ section.append(el("div","ยังมี "+riskLeft+" / "+stages.length+" กลุ่มที่ทำเครื่องหมายไม่ครบ (บันทึกด้วยมือ)","hubCriticalCount"));
+ const idToEntry=new Map(E.items.map(x=>[x.id,x]));
+ for(const stage of sorted){
+  const n=stage.ids.filter(id=>already.has(id)).length;
+  const details=el("details",undefined,"hubCheckpoint");details.dataset.stage=stage.id;
+  details.open=criticalOpen.has(stage.id);
+  const summary=el("summary"),heading=el("span",undefined,"hubCheckpointTitle");
+  heading.append(el("strong",stage.heading),el("small",stage.before));
+  const stateText=el("span",n===stage.ids.length?"เก็บครบในเว็บ":"ยังขาด "+(stage.ids.length-n),"hubCheckpointState"+(n===stage.ids.length?" complete":""));
+  summary.append(heading,stateText);details.append(summary);
+  const inside=el("div",undefined,"hubCheckpointBody");
+  if(stage.priority==="critical")inside.append(el("p","จุดเสี่ยงสูง · ตรวจเงื่อนไขก่อนเปลี่ยนสถานะเควสต์","hubCriticalWarning"));
+  inside.append(el("p",stage.action,"hubCheckpointAction"));
+  inside.append(el("p","ก่อนดำเนินเรื่อง: "+stage.risk,"hubCheckpointRisk"));
+  if(act==="2"&&stage.id==="a2-darkness"){
+    const safety=el("details",undefined,"hubCheckpointSafety");
+    safety.open=true;
+    safety.append(el("summary","บันทึกว่าคุยกับ Bandits / เปิด Ancient Seal แล้ว"),safetyPanel());
+    inside.append(safety);
+  }
+  const req=el("div",undefined,"hubCheckpointRows");
+  for(const id of stage.ids){
+    const item=idToEntry.get(id);
+    if(!item)continue;
+    const line=el("label",undefined,"hubCheckpointRow"),check=el("input"),name=el("span",label(item,"ears")),marked=el("span",already.has(id)?"ฟังแล้ว":"ยังไม่ฟัง","hubCheckpointRowState");
+    check.type="checkbox";check.checked=already.has(id);check.dataset.checkpointId=String(id);
+    check.setAttribute("aria-label","ฟังบทสนทนาแล้ว — "+label(item,"ears"));
+    check.addEventListener("change",()=>{
+      const hint=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
+      if(check.checked&&hint?.caution&&!confirm("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n"+hint.caution+"\n\nฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?")){check.checked=false;return;}
+      writeMarks("ears",id,check.checked);
+    });
+    line.append(check,name,marked);req.append(line);
+  }
+  inside.append(req);
+  const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
+  if(reward){inside.append(el("div","เควสต์ที่เกี่ยวข้อง: "+stage.quest+" · รางวัลอ้างอิง: "+reward.reward,"hubCheckpointReward"));}
+  const ref=el("a","ตรวจเงื่อนไขกับ PoE Wiki");ref.href=stage.source;ref.target="_blank";ref.rel="noopener noreferrer";
+  inside.append(el("p","ข้อมูลปี 2025 · ต้องตรวจซ้ำในเกมตามแพตช์ที่เล่น","hubSubtle"),ref);
+  details.append(inside);
+  details.addEventListener("toggle",()=>{if(details.open)criticalOpen.add(stage.id);else criticalOpen.delete(stage.id);});
+  section.append(details);
+ }
+ return section;
+}
 function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
 panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
@@ -105,10 +163,7 @@ const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+re
 const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
-if(act==="2"){
-const guard=el("details",undefined,"hubChapter hubSafety");guard.open=true;
-guard.append(el("summary","ก่อนจัดการ Bandits · ตรวจจุดพลาด Act 2"));guard.append(safetyPanel());panel.append(guard);
-}
+const critical=criticalPanel(act);if(critical)panel.append(critical);
 if(act==="3")panel.append(el("div","ระวัง Act 3: ตรวจหัวข้อ Clarissa / Piety ที่มีเงื่อนไขก่อนส่งเควสต์หรือสู้บอส (ข้อมูล Wiki ปี 2025)","hubNotice"));
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;

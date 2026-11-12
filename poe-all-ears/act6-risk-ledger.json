@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "act": 6,
+  "source": "legacy-3.9",
+  "sourceGuide": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6",
+  "patchCertified": false,
+  "warning": "ข้อควรระวังจากข้อมูลเก่า 3.9 เท่านั้น ยังไม่ยืนยันตามแพตช์ปัจจุบัน",
+  "records": [
+    {
+      "id": 318,
+      "npc": "Sin",
+      "topic": "The Father of War - Talk to Tarkleigh first",
+      "legacyNote": "After entering the area - Do NOT use the Eye of Conquest",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 321,
+      "npc": "Tarkleigh",
+      "topic": "The Eye of Conquest - (!)",
+      "legacyNote": "After getting Eye of Conquest - Do NOT use in door",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 322,
+      "npc": "Tarkleigh",
+      "topic": "The Karui Fortress - (!)",
+      "legacyNote": "After using Eye of Conquest - Do NOT enter The Karui Fortress",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 326,
+      "npc": "Sin *",
+      "topic": "Shavronne - QC - (!)",
+      "legacyNote": "After killing Shavronne - Do NOT leave The Prison",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 332,
+      "npc": "Bestel",
+      "topic": "The Ship Graveyard",
+      "legacyNote": "After talking to Nessa - Do NOT enter The Western Forest",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 336,
+      "npc": "Lily Roth",
+      "topic": "The Black Flag",
+      "legacyNote": "After getting The Black Flag - Do NOT enter The Beacon",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 338,
+      "npc": "Weylam Roth *",
+      "topic": "The Brine King's Reef - (!)",
+      "legacyNote": "After arriving at The Brine King's Reef - Do NOT kill Tsoagoth",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 339,
+      "npc": "Weylam Roth *",
+      "topic": "The Brine King",
+      "legacyNote": "After arriving at The Brine King's Reef - Do NOT kill Tsoagoth",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    }
+  ]
+}

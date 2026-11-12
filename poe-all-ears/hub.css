@@ -220,3 +220,12 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubCheckpointSafety>.hubPanel{padding:9px 12px;background:transparent;border:0;box-shadow:none}
 .hubCheckpointSafety .hubCheckGrid{margin-bottom:9px}
 @media(max-width:720px){.hubCritical{padding:9px}.hubCheckpoint>summary{padding:10px;gap:6px;flex-wrap:wrap}.hubCheckpointBody{padding:10px}.hubCheckpointState{font-size:10px}.hubCheckpointRow{padding:9px 7px}}
+
+/* Sourced timing is displayed per dialogue; each row may belong to a different quest state. */
+.hubCheckpointItemInfo{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
+.hubCheckpointItemName{font-weight:600;line-height:1.45}
+.hubCheckpointRowTrigger,.hubCheckpointRowWarning,.hubCheckpointRowUnknown{font-weight:400;font-size:11px;line-height:1.52;white-space:normal}
+.hubCheckpointRowTrigger{color:#d9c59f}
+.hubCheckpointRowWarning{color:#edba95}
+.hubCheckpointRowUnknown{color:#b4aaa0;font-style:italic}
+.hubCheckpointRow>.hubCheckpointRowState{flex:0 0 auto;margin-top:1px}

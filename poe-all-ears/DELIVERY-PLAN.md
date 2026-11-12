@@ -73,3 +73,10 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - validate-data.cjs includes Act 2 model assertions; CLI execution not yet independently confirmed.
 - Current patch verification still 0/484. Act 2 has a branch model, NOT a fully verified 69-dialogue route.
 - Next: reconcile all Act 2 IDs to Wiki rows; obtain current PoE 1 patch evidence, verify Act 1 conditions and branch validity, execute Node/browser tests.
+
+## Continuation update — patch version and CI gate
+- Public official announcement states PoE 1 expansion 3.30 Covens of Umbra scheduled for 2026-11-13 PST (source: https://steamcommunity.com/app/238960/announcements/). At this 2026-11-12 checkpoint, no 3.30 All Ears verification is claimed.
+- patches.js now has separate legacy-3.9, unsupported 3.29, and announced-unverified 3.30 profiles. All 3.29/3.30 dialogue pointers are null and UI blocks their walkthrough.
+- validate-data.cjs updated to require both new patch profiles and reject legacy data exposure for unsupported profiles.
+- Added .github/workflows/all-ears-validation.yml to run Node 22 validation on repository changes and manual dispatch. Workflow execution/result is not yet confirmed; code review/readback is not equivalent to CI PASS.
+- Next: confirm GitHub Actions execution, research 3.30 patch changes, reconcile all Act 2 rows and complete patch-specific source audit. No verified-current-patch count increase.

@@ -202,6 +202,8 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
  await hub.locator('#hubNav [data-tab="ears"]').click();
  await hub.locator('#patch').selectOption('3.30');
+ await hub.locator('#hubNav [data-tab="review"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'backup always accessible when a patch is unverified');
  await hub.locator('#hubNav [data-tab="route"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('ยังไม่มีรายการที่ตรวจรับรองสำหรับแพตช์นี้'),true,'unverified patch blocks route preview');
  assert.equal(await hub.locator('#hubView .hubItem').count(),0,'3.30 must not expose historical rows as certified');

@@ -157,6 +157,13 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
  assert.equal(await hub.locator('#hubView').isVisible(),true,'route view is visible');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'act route shows All Ears and other achievements');
+ assert.equal(await hub.locator('#hubView details.hubRewards').count(),1,'Act rewards grouped inside same page');
+ await hub.locator('#hubView details.hubRewards > summary').click();
+ assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),9,'Act 1 has nine historical quest reward categories');
+ assert.equal((await hub.locator('#hubView details.hubRewards').innerText()).includes('The Marooned Mariner'),true,'passive reward quest is shown');
+ assert.equal((await hub.locator('#hubView details.hubRewards').innerText()).includes('Passive Skill Point'),true,'passive reward type visible');
+ assert.equal(await hub.locator('#hubView details.hubRewards input[type="checkbox"]').count(),0,'quest rewards do not count toward Achievement progress');
+
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubHow').first().innerText()).includes('Dying Exile'),true,'Act 1 guide appears under actual dialogue');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
@@ -185,6 +192,9 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView .hubItem .hubHow').first().innerText()).includes('Quest Log'),true,'Quest instructions explain where to verify');
  await hub.locator('#hubView .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
+ assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('รางวัลเควสต์'),true,'matching side quest shows reward reference');
+ assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('Passive Refund'),true,'A Dirty Job sidequest reward shown');
+
 
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'unified backup section renders');
@@ -217,6 +227,8 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#results').isVisible(),true,'classic list still usable in unified page');
  await hub.locator('#hubNav [data-tab="route"]').click();
  await hub.locator('.hubActStrip [data-act="2"]').click();
+ assert.equal(await hub.locator('#hubView details.hubRewards .hubRewardRow').count(),5,'Act 2 has five quest rewards');
+ assert.equal((await hub.locator('#hubView details.hubRewards').innerText()).includes('Deal with the Bandits'),true,'Act 2 bandit reward remains available');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Bandits'),true,'Act 2 preflight visible in integrated Act view');
  assert.equal(await hub.locator('#hubView details[data-group]').count(),4,'Act view offers four collapsible achievement groups');
  assert.equal(await hub.locator('#hubView details[data-group="ears"]').evaluate(e=>e.open),true,'NPC dialogue group opens by default');

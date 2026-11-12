@@ -185,3 +185,38 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubRewardKind{max-width:100%;line-height:1.45}
 .hubRewardRow .hubSubtle{margin-top:5px;font-size:11px}
 @media(max-width:720px){.hubItem{gap:8px;padding:10px 8px}.hubItemState{font-size:10px;padding:2px 6px}.hubActProgress{padding:10px}.hubItem .hubName{font-size:13px}.hubPriority{font-size:10px}}
+
+/* Act 1–2 source-linked critical quest checkpoints: always before the long checklist. */
+.hubCritical{margin:14px 0 21px;border:1px solid #66503a;border-radius:12px;padding:12px;background:#26231f}
+.hubCriticalTitle{padding:0 4px 8px}
+.hubCriticalTitle h3{margin:0 0 6px;font-size:17px;color:#f2d8a5}
+.hubCriticalTitle p{margin:0;line-height:1.6}
+.hubCriticalCount{font-size:12px;color:#edcea0;margin:0 4px 13px}
+.hubCheckpoint{background:#262a30;border:1px solid #555056;border-radius:9px;margin:7px 0;overflow:hidden}
+.hubCheckpoint>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;padding:12px 14px;min-height:58px;list-style:none}
+.hubCheckpoint>summary::-webkit-details-marker{display:none}
+.hubCheckpoint>summary:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
+.hubCheckpoint[open]>summary{background:#393229;border-bottom:1px solid #635342}
+.hubCheckpointTitle{display:flex;flex-direction:column;gap:4px;min-width:0}
+.hubCheckpointTitle strong{font-size:13px;color:#f0e5d0;line-height:1.45}
+.hubCheckpointTitle small{font-size:11px;font-weight:400;color:#c9bcaa;line-height:1.45}
+.hubCheckpointState{font-size:11px;color:#e6c6a0;background:#463427;padding:4px 9px;border:1px solid #75563e;border-radius:20px;white-space:nowrap;flex:0 0 auto}
+.hubCheckpointState.complete{color:#c5e5cc;background:#294c36;border-color:#487e55}
+.hubCheckpointBody{padding:10px 14px 14px}
+.hubCheckpointAction{font-size:13px;line-height:1.65;color:#f0e6d8;margin:5px 0 10px}
+.hubCheckpointRisk{border-left:3px solid #d7a36f;background:#3c2e25;color:#ffdbac;border-radius:0 7px 7px 0;padding:9px;font-size:12px;line-height:1.65;margin:9px 0 11px}
+.hubCriticalWarning{font-weight:600;color:#ffd39a;font-size:12px;margin:2px 0 9px}
+.hubCheckpointRows{display:flex;flex-direction:column;gap:5px;margin:8px 0 10px}
+.hubCheckpointRow{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;background:#222830;border:1px solid #46474c;border-radius:7px;font-size:12px;line-height:1.5;cursor:pointer;min-width:0}
+.hubCheckpointRow input{margin-top:2px;flex:0 0 17px;accent-color:#88b9a3}
+.hubCheckpointRow>span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}
+.hubCheckpointRowState{font-size:11px;color:#d8c39c;white-space:nowrap}
+.hubCheckpointRow:has(input:checked){background:#263e30;border-color:#4a6c52}
+.hubCheckpointRow:has(input:checked) .hubCheckpointRowState{color:#a7ddbd}
+.hubCheckpointReward{background:#26342a;border:1px solid #455947;padding:9px 11px;border-radius:8px;color:#cce5bd;font-size:12px;line-height:1.55;margin:11px 0}
+.hubCheckpointBody>a{font-size:12px;color:#edd295}
+.hubCheckpointSafety{margin:10px 0;border:1px solid #6a573b;border-radius:8px;background:#2e2d2a}
+.hubCheckpointSafety>summary{cursor:pointer;padding:11px 12px;font-size:12px;color:#e9d2a7}
+.hubCheckpointSafety>.hubPanel{padding:9px 12px;background:transparent;border:0;box-shadow:none}
+.hubCheckpointSafety .hubCheckGrid{margin-bottom:9px}
+@media(max-width:720px){.hubCritical{padding:9px}.hubCheckpoint>summary{padding:10px;gap:6px;flex-wrap:wrap}.hubCheckpointBody{padding:10px}.hubCheckpointState{font-size:10px}.hubCheckpointRow{padding:9px 7px}}

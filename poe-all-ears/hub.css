@@ -130,3 +130,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubActStrip button[aria-pressed=true]{background:#4b3822;border-color:#deb96f;color:#ffebc2;box-shadow:inset 0 -2px 0 #c39a56}
 .hubActStrip button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media(max-width:720px){.hubActStrip{margin:0 -3px 0;padding-bottom:9px}.hubActStrip button{min-width:64px;min-height:46px}}
+
+/* Keep all four Achievement category choices visible without horizontal scrolling on phones. */
+@media(max-width:720px){.hubCategoryPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;scroll-snap-type:none}.hubCategoryPicker button{width:100%;white-space:normal;min-height:47px;line-height:1.4}}

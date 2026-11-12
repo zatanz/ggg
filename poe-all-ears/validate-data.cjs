@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -113,9 +113,19 @@ const act6Notes=act6Items.filter(x=>x.note);
 assert(act6Items.length===44&&act6Inventory.records.length===44,'Act 6 inventory must contain 44 dialogues');
 assert(new Set(act6Inventory.records.map(x=>x.id)).size===44,'Act 6 inventory duplicate IDs');
 assert(act6Inventory.records.every((x,i)=>x.id===act6Items[i].id&&x.npc===act6Items[i].npc&&x.topic===act6Items[i].dialog&&x.legacyNote===act6Items[i].note),'Act 6 inventory content drift');
-assert(act6Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 6 inventory must not claim wiki/patch verification');
+const act6Route=ctx.window.ALL_EARS_ROUTE_ACT6;
+assert(act6Route.records.length===44&&new Set(act6Route.records.map(x=>x.id)).size===44,'Act 6 route must cover 44 unique dialogues');
+assert(act6Route.records.every((x,i)=>x.wikiRow===298+i),'Act 6 wiki rows must be 298–341');
+assert(act6Route.records.every(x=>act6Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 6 route source mismatch');
+const byAct6Id=new Map(act6Route.records.map(x=>[x.id,x]));
+assert(act6Inventory.records.every(x=>x.wikiRow===byAct6Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 6 inventory wiki mapping drift or unsupported patch claim');
+assert(act6Route.routeSafe===false&&act6Route.patch==='unverified','Act 6 wiki ordering is not certified safe');
+assert(act6Route.records.filter(x=>x.before).length===12,'Act 6 source risk warnings incomplete');
+assert(act6Route.records.find(x=>x.wikiRow===298)?.id===302,'Act 6 Lilly introduction mapping wrong');
+assert(act6Route.records.find(x=>x.wikiRow===302)?.id===298,'Act 6 Sin Essence mapping wrong');
+assert(act6Route.records.find(x=>x.wikiRow===330)?.id===328,'Act 6 Cloven One mapping wrong');
 assert(act6Inventory.patchCertified===false&&act6Inventory.routeSafe===false,'Act 6 route is not certified');
-assert(act6Inventory.records.filter(x=>x.riskCandidate).length===16,'Act 6 risk candidate count drift');
+assert(act6Inventory.records.filter(x=>x.riskCandidate).length===20,'Act 6 risk candidate count drift');
 assert(act6Risks.records.length===act6Notes.length&&act6Notes.length===8,'Act 6 legacy risk note count mismatch');
 assert(act6Risks.records.every((x,i)=>x.id===act6Notes[i].id&&x.legacyNote===act6Notes[i].note),'Act 6 risk note fidelity mismatch');
 assert(act6Risks.patchCertified===false&&act6Risks.records.every(x=>x.patchCertified===false&&x.review==='legacy-note-unverified'),'Act 6 risk notes falsely certified');

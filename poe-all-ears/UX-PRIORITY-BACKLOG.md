@@ -51,6 +51,15 @@ A successful GitHub Actions browser smoke test means key flows execute in Chromi
 
 Detailed stage ledger: [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
 
+## P0 update — Workbook + navigation redesign (2026-11-12)
+
+- Uploaded workbook readback verified 484 All Ears, 140 No Stone and 91 Waypoint IDs. Its Labyrinth 10 and Vaal 16 are **subsets** of No Stone, not new achievements.
+- New Act focus mode shows one checkpoint and optional next/previous navigation. Long category lists are collapsed, with special guides for Labyrinth and Vaal Areas.
+- Crosswalked all 77 workbook WARNING Wiki rows; 22 are not currently part of the 39 prominent checkpoint groups and are now discoverable separately, not inserted into guessed walking order.
+- **Still required:** visual/human usability QA and 3.30 live-game verification, especially the availability of Vaal Side Area lore after Map/Fragment removal.
+- Deferred: per-class rewards, full build guides, dynamic map pathfinding and speculative quest ordering.
+- Details: [REFERENCE-WORKBOOK-UX-AUDIT.md](./REFERENCE-WORKBOOK-UX-AUDIT.md).
+
 ## P0 update — Expanded to Acts 4–9 (2026-11-12)
 
 - All 37 existing source-flagged before-action dialogue rows from Acts 4–9 now appear in the Act screens as 24 grouped checkpoints. Earlier Act 1–3 work remains unchanged. Browser and static checks cover every Act. Act 10 is explicitly source-incomplete.

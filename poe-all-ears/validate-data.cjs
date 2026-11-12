@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','guide-act1.js','act2-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','guide-act1.js','act2-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -35,7 +35,19 @@ const act2Ids=d.items.filter(x=>x.act===2).map(x=>x.id);
 assert(act2Inventory.records.length===69,'Act 2 inventory must cover all 69 items');
 assert(new Set(act2Inventory.records.map(x=>x.id)).size===69,'Duplicate Act 2 inventory ID');
 assert(act2Inventory.records.every((x,i)=>x.id===act2Ids[i]),'Act 2 inventory order/IDs do not match legacy data');
-assert(act2Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 2 inventory claims unsupported verification');
+const act2Route=ctx.window.ALL_EARS_ROUTE_ACT2;
+assert(act2Route.records.length===69,'Act 2 wiki route must have 69 rows');
+assert(act2Route.records.every((x,i)=>x.wikiRow===42+i),'Act 2 wiki row numbering must be 42–110');
+assert(new Set(act2Route.records.map(x=>x.id)).size===69,'Act 2 wiki route contains duplicate ID');
+assert(act2Route.records.every(x=>act2Ids.includes(x.id)),'Act 2 wiki route ID absent from legacy data');
+assert(act2Route.records.every(x=>x.review==='wiki-row-matched-patch-unverified'),'Act 2 route claims unapproved review');
+assert(act2Route.routeSafe===false,'Act 2 wiki ordering is not a certified safe route');
+const byAct2Id=new Map(act2Route.records.map(x=>[x.id,x]));
+assert(act2Inventory.records.every(x=>byAct2Id.get(x.id)?.wikiRow===x.wikiRow),'Act 2 inventory / route wiki mapping drift');
+assert(act2Inventory.records.every(x=>x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 2 inventory claims unsupported patch verification');
+assert(act2Route.records.find(x=>x.wikiRow===101)?.id===89,'Act 2 bandit first-kill mapping mismatch');
+assert(act2Route.records.find(x=>x.wikiRow===102)?.id===101,'Act 2 bandit survivor mapping mismatch');
+assert(act2Route.records.find(x=>x.wikiRow===103)?.id===103,'Act 2 bandit completion mapping mismatch');
 assert(act2Inventory.routeSafe===false&&act2Inventory.patchCertified===false,'Act 2 inventory cannot claim safe route or patch certification');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));

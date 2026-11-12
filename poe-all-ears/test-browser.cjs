@@ -169,7 +169,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'all','default filter must show both completed and incomplete rows');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
- assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ไม่ได้รับรองแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่ยืนยันกับแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="lore"]').click();

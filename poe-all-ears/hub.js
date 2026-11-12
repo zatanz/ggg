@@ -161,10 +161,11 @@ if(state.tab==="route"){
   const strip=el("div",undefined,"hubActStrip");strip.setAttribute("role","group");strip.setAttribute("aria-label","เลือก Act");
   for(let i=1;i<=10;i++){
     const b=el("button","Act "+i);b.type="button";b.dataset.act=String(i);b.setAttribute("aria-pressed",String(state.act===String(i)));
-    b.onclick=()=>{state.act=String(i);state.limit=40;renderToolbar();renderView();};
+    b.onclick=()=>{state.act=String(i);state.limit=40;strip.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));renderView();};
     strip.append(b);
   }
   t.append(strip);
+  requestAnimationFrame(()=>{const chosen=strip.querySelector('[aria-pressed="true"]');if(chosen){strip.scrollLeft=Math.max(0,chosen.offsetLeft-strip.offsetLeft-16);}});
 }
 const controls=el("div",undefined,"hubControls"),act=el("select"),status=el("select"),search=el("input");
 act.setAttribute("aria-label","เลือก Act หรือพื้นที่");

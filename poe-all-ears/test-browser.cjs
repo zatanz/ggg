@@ -197,7 +197,7 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView').innerText()).includes('No Loose Ends'),true,'sidequest panel renders');
  assert.equal((await hub.locator('#hubView .hubItem .hubName').first().innerText()).includes('A Dirty Job'),true,'Quest name is visible in compact card');
  await hub.locator('#hubView .hubItemHelp > summary').first().click();
- assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
+ assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีรายละเอียดเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
  await hub.locator('#hubToolbar select').nth(1).selectOption('all');
  const dirtyJob=hub.locator('#hubView .hubItem').filter({hasText:'A Dirty Job'});
  await dirtyJob.locator('.hubItemHelp > summary').click();

@@ -156,6 +156,9 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'act route shows All Ears and other achievements');
  await hub.locator('#hubNav [data-tab="lore"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('No Stone Unturned'),true,'Lore tab renders without leaving page');
+ await hub.locator('#hubView input[aria-label="ค้นหาชื่อ Vaal Side Area"]').fill('Concealed Caldarium');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Wiki #128'),true,'Vaal area links local ID to Wiki row');
+
  const prev=await hub.locator('#hubStats .hubStat').nth(1).innerText();
  await hub.locator('#hubView .hubItem input[type="checkbox"]').first().click();
  const next=await hub.locator('#hubStats .hubStat').nth(1).innerText();

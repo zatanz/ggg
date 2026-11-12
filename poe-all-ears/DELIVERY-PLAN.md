@@ -58,3 +58,10 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Fixed walkthrough checkbox rollback if localStorage write fails; browser interaction still needs testing.
 - Current patch verified: 0/484. Act 1 order mapped: 41/41, but not patch-certified. Source audit and patch verification remain critical path.
 - Next: obtain source row evidence and confirm live patch, reconcile Act 1 risk notes and Act 2 branches; run browser and Node tests before release.
+
+## Continuation update — Act 2 branching and persistence safety
+- Added act2-advisory.js with three conditional/unknown quest-state advisories; integrated warning in walkthrough Act 2 preview. No branch route certified.
+- Main checklist now rolls back checkbox state if localStorage persistence fails, matching walkthrough safety fix.
+- Rechecked walkthrough inline JavaScript syntax via new Function: PASS; GitHub readback confirms both changes. Browser test still pending.
+- PoE Wiki live fetch in this session failed (cache miss); do not claim new patch/source verification. Current patch verified remains 0/484.
+- Next: obtain independently accessible latest patch notes and source table, resolve Act 1 exact row mapping and Act 2 branches; execute browser/Node regression suite.

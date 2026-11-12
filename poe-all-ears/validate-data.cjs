@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','route-act8.js','guide-act1.js','act2-advisory.js','act6-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','route-act8.js','guide-act1.js','act2-advisory.js','act6-advisory.js','act9-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -168,6 +168,25 @@ assert(act8Inventory.discrepancies.length===1&&act8Inventory.discrepancies[0].id
 assert(act8Route.records.find(x=>x.wikiRow===402)?.id===391,'Act 8 Doedre Hargan mapping wrong');
 assert(act8Route.records.find(x=>x.wikiRow===412)?.id===413,'Act 8 post-Tolman Clarissa mapping wrong');
 assert(act8Route.records.find(x=>x.wikiRow===413)?.id===412,'Act 8 post-Tolman Maramoa mapping wrong');
+const act9Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act9-inventory.json'),'utf8'));
+const act9Items=d.items.filter(x=>x.act===9);
+const act9Risks=JSON.parse(fs.readFileSync(path.join(dir,'act9-risk-ledger.json'),'utf8'));
+const act9Notes=act9Items.filter(x=>x.note);
+const act9Advisory=ctx.window.ALL_EARS_ACT9_ADVISORY;
+assert(act9Items.length===36&&act9Inventory.records.length===36,'Act 9 inventory must contain 36 dialogues');
+assert(new Set(act9Inventory.records.map(x=>x.id)).size===36,'Act 9 inventory duplicate IDs');
+assert(act9Inventory.records.every((x,i)=>x.id===act9Items[i].id&&x.npc===act9Items[i].npc&&x.topic===act9Items[i].dialog&&x.legacyNote===act9Items[i].note),'Act 9 inventory source drift');
+assert(act9Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 9 must not claim unverified Wiki mapping');
+assert(act9Inventory.patchCertified===false&&act9Inventory.routeSafe===false,'Act 9 cannot claim safe certified route');
+assert(act9Inventory.records.filter(x=>x.riskCandidate).length===15,'Act 9 risk candidate count drift');
+assert(act9Notes.length===9&&act9Risks.records.length===9,'Act 9 legacy risk note count mismatch');
+assert(act9Risks.records.every((x,i)=>x.id===act9Notes[i].id&&x.legacyNote===act9Notes[i].note),'Act 9 risk note fidelity mismatch');
+assert(act9Risks.patchCertified===false&&act9Risks.records.every(x=>x.patchCertified===false&&x.review==='legacy-note-unverified'),'Act 9 risks falsely certified');
+assert(act9Advisory.patchCertified===false&&act9Advisory.routeSafe===false,'Act 9 advisory falsely certified');
+assert(act9Advisory.milestones.length===4,'Act 9 advisory must contain four milestones');
+assert(act9Advisory.milestones.flatMap(x=>x.ids).length===9,'Act 9 advisory must cover all nine legacy notes');
+assert(new Set(act9Advisory.milestones.flatMap(x=>x.ids)).size===9,'Act 9 advisory duplicate risk IDs');
+assert(act9Advisory.milestones.flatMap(x=>x.ids).every(id=>act9Notes.some(x=>x.id===id)),'Act 9 advisory references unsupported risk');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

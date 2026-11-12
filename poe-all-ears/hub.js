@@ -32,13 +32,13 @@ function getRisk(x){if(x.type!=="ears")return null;return (routes[x.act]||[]).fi
 function sortedAllEars(act){const base=E.items.filter(x=>String(x.act)===String(act)),r=routes[Number(act)]||[];if(!r.length)return base;
 const byId=new Map(base.map(x=>[x.id,x]));return r.map(x=>byId.get(x.id)).filter(Boolean);}
 function records(type,act){if(type==="ears"){if(act==="all")return E.items;return sortedAllEars(act);}return collections[type].filter(x=>act==="all"||String(x.act)===String(act));}
-function label(x,type){return type==="ears"?x.npc+" — "+x.dialog:x.name;}
+function label(x,type){if(type==="ears"&&x.act===2){const hint=window.POE_ITEM_DESCRIPTIONS?.get(type,x,getSafety());if(hint?.displayLabel)return hint.displayLabel;}return type==="ears"?x.npc+" — "+x.dialog:x.name;}
 function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.act,type})?.area?" · "+getRisk({id:x.id,act:x.act,type}).area:""):type==="lore"?x.area:type==="waypoints"?"Waypoint · "+x.act:"Side Quest · Act "+x.act;}
 function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
 function renderSummary(){const target=$("hubStats");target.replaceChildren();Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
 card.append(el("span",names[k]+" · "+uiNames[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบในเว็บ · ยังต้องเทียบเกม":"เหลือ "+(totals[k]-count)+" รายการ"));card.onclick=()=>openTab(k);target.append(card);});}
 function itemCard(type,x){
-const done=entries(type).includes(x.id),guide=window.POE_ITEM_DESCRIPTIONS?.get(type,x),row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
+const done=entries(type).includes(x.id),guide=window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined),row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
 box.type="checkbox";box.checked=done;box.setAttribute("aria-label",verbs[type]+" — "+label(x,type));
 box.addEventListener("change",()=>{
 if(type==="ears"&&box.checked&&guide?.caution&&!confirm("ตรวจจุดที่อาจพลาด (อ้างอิงคู่มือเก่า ยังไม่ยืนยัน 3.30):\n"+guide.caution+"\n\nฟังหัวข้อนี้ในเกมแล้วและตรวจเงื่อนไขก่อนทำเครื่องหมายใช่หรือไม่?")){box.checked=false;return;}
@@ -64,7 +64,7 @@ if(guide){
   details.append(body);info.append(details);
 }
 row.append(box,info);return row;}
-function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.action||"")+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.caution||"")).toLowerCase().includes(query)));}
+function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(label(x,type)+" "+area(x,type)+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined)?.action||"")+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.caution||"")).toLowerCase().includes(query)));}
 function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
 if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",uiNames[type]),el("span",list.length+" รายการที่แสดง","hubSubtle"));target.append(heading);}
 if(!list.length){target.append(el("div","ไม่มีรายการตามตัวกรอง","hubEmpty"));return;}

@@ -295,6 +295,17 @@ assert(actTwo.every(p=>p.actions.length>0&&p.place&&(!p.stopIds||p.stopIds.every
 assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('ขัดแย้ง'),'Act 2 Steam/Wiki disputed Ancient Seal timing must not be claimed as safe');
 assert(actTwo.find(p=>p.id==='western-forest').stop.includes('Chamber of Sins'),'West Forest must precede the relevant Chamber of Sins quest transition in source-oriented Act 2');
 
+const actThree=steamWalk.acts[3],actThreeIds=actThree.flatMap(p=>p.dialogueIds),actThreeLore=actThree.flatMap(p=>p.loreIds);
+assert(actThree.length===12,'Act 3 must show 12 historic source phases');
+assert(actThreeIds.length===71&&new Set(actThreeIds).size===71,'Act 3 71 NPC dialogues must each appear once');
+assert(actThreeIds.every(id=>d.items.some(x=>x.id===id&&x.act===3)),'Act 3 guide must use existing canonical All Ears IDs');
+assert(ctx.window.ALL_EARS_ROUTE_ACT3.records.every(r=>actThreeIds.includes(r.id)),'Act 3 guide must cover every Wiki 2025 mapped NPC row');
+assert(actThreeLore.length===32&&new Set(actThreeLore).size===32&&actThreeLore.every(id=>lore.entries.some(x=>x.id===id&&x.act===3)),'Act 3 must interleave all 32 historical lore IDs exactly once');
+assert(actThree.every(p=>p.heading&&p.place&&p.actions.length>0&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 3 quest-stop gates must remain inside their source phase');
+assert(actThree.find(p=>p.id==='bracelet')?.stopIds.includes(ctx.window.ALL_EARS_ROUTE_ACT3.records.find(r=>r.wikiRow===115).id),'Bracelet hand-in stop must use Wiki row #115 canonical ID');
+assert(actThree.find(p=>p.id==='docks-fairgraves')?.patchProblem.includes('3.29'),'Act 3 Fairgraves patch risk must remain visible');
+assert(steamWalk.patchCertified===false,'Act 3 source chronology does not certify 3.30 gameplay');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -308,9 +319,10 @@ const visualTargets=[
  ["1","fairgraves","fairgraves-quest-illustration.svg","The Marooned Mariner"],
  ["2","sins-before-helena","sins-quest-illustration.svg","Intruders in Black"],
  ["2","roots","roots-quest-illustration.svg","The Root of the Problem"],
- ["2","bandit-decisions","bandits-quest-illustration.svg","Deal with the Bandits"]
+ ["2","bandit-decisions","bandits-quest-illustration.svg","Deal with the Bandits"],
+ ["3","bracelet","clarissa-quest-illustration.svg","Lost in Love"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly six sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly seven sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

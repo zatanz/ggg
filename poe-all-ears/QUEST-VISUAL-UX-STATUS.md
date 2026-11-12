@@ -45,3 +45,7 @@ P1: human visual testing (mobile readability, visual attention, colors, accessib
 Defer: fully interactive Quest UI simulation and class-specific rewards.
 
 References: [Steam source guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869), [Steam/Wiki research](./STEAM-QUEST-ORDER-UX-RESEARCH.md), [Road to 100%](./ROAD-TO-100-PERCENT.md).
+
+## Progress update — Act 3 (2026-11-12)
+
+Seven total author-created, static source-linked SVG mock illustrations are now implemented: the previous six plus **Act 3 / Lost in Love / Tolman's Bracelet**, a clearly labeled non-screenshot phase visual. Acts 4–10 still have no in-context quest illustrations. Act 3's 71 dialogue IDs and 32 lore IDs are interleaved in twelve historical zone phases, but source chronology and the graphics are **not** gameplay proof for patch 3.30. Update the implementation roster to seven; preserve the original six associations.

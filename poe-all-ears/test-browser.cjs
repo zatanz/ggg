@@ -247,6 +247,22 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'todo','goal shortcut filters to uncompleted entries');
  await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').selectOption('all');
+ await hub.locator('.hubActStrip [data-act="3"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="3"]').count(),1,'Act 3 source-linked walkthrough renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select option').count(),12,'Act 3 has twelve phase navigation steps');
+ assert.equal((await hub.locator('#hubView [data-steam-act="3"]').innerText()).includes('71 รายการ'),true,'Act 3 uses real dialogue count rather than hard-coded Act 2 total');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Tolman'),true,'Bracelet quest stop is explicit');
+ const clarissaVisual=hub.locator('#hubView [data-visual-phase="bracelet"]');
+ await clarissaVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const img=document.querySelector('[data-visual-phase="bracelet"] img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await clarissaVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act 3 mock image labelled conceptual');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'Act 3 Fairgraves historical patch caution shown');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('10');
+ assert.equal((await hub.locator('#hubView .hubWalkLore > summary').innerText()).includes('/ 18'),true,'Library phase contains 18 historical lore references including Imperial Gardens');
+ await hub.locator('.hubActStrip [data-act="1"]').click();
+
 
 
  await hub.locator('#hubNav [data-tab="collection"]').click();

@@ -62,3 +62,11 @@
 - [Delivery Plan](./DELIVERY-PLAN.md)
 - [PoE Wiki: All Ears](https://www.poewiki.net/wiki/Guide:All_Ears_achievement)
 - [PoE Wiki: No Stone Unturned](https://www.poewiki.net/wiki/Guide:No_Stone_Unturned_achievement)
+
+## ชุดดำเนินงานต่อ — Act 3 source-guided walkthrough (12 พฤศจิกายน 2026)
+
+- เพิ่ม Act 3 **12 ช่วง** ครอบคลุม All Ears 71/71 local IDs แบบไม่ซ้ำ และ Lore No Stone Unturned 32/32 local IDs (41–72) ตามพื้นที่ โดยยังรักษา IDs เดิมและเซฟผู้เล่นทั้งหมด
+- แสดงจุดหยุดก่อนส่ง Tolman's Bracelet ให้ Clarissa, ก่อนพบ Lady Dialla พร้อม Sulphite/Spool, ก่อนถือ Decanter Spiritus/Chitus' Plum, ก่อนฆ่า Gravicius/Piety และก่อนเข้า Marketplace หลัง Undying Blockage; บางหัวข้อในกลุ่มจะเปิดหลังเหตุการณ์นั้น ไม่ได้แปลว่าต้องครบทั้งกลุ่มก่อนผ่าน
+- เพิ่มภาพจำลอง Lost in Love สำหรับจุด Hargan–Clarissa (ไม่ใช่ภาพหน้าจอจริง); เปิดเฉพาะเมื่อผู้เล่นขอดู
+- เรียงเป็นช่วงตามคู่มือ Steam/PoE Wiki ปี 2025 ไม่ได้ยืนยันเส้นทางหรือประกัน Achievement ในแพตช์ 3.30 ซึ่งยังไม่เปิด ณ วันที่ทำรายการ
+- ขั้นต่อไป: ทดสอบ P0 กับเกมจริงในแพตช์ 3.30, สาขา Bandits / Fairgraves และต่อ Act 4–10 พร้อมเก็บหลักฐานสถานะเควสต์

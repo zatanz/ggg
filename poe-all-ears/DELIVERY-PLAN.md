@@ -105,3 +105,10 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Attempted to fetch the PoE Wiki source directly but the public web fetch returned cache miss; therefore Act 3 wikiRow remains null for all 71 records and no new wiki-ordered route was published. This avoids presenting guessed order as sourced.
 - All Ears GitHub Actions was successful on the previous checkpoint. The run for the new validator commit should be confirmed before claiming this update passed.
 - Continue by obtaining authoritative Act 3 source rows and 3.30 patch evidence, then reconcile order and check missable prerequisites. Do not treat 3.9 notes as current-patch truth.
+
+## Continuation — Act 3 risk audit and renamed URLs (2026-11-12)
+- Fixed stale Test repository and GitHub Pages links in README.md; canonical links now use zatanz/ggg. Pages action previously succeeded, but end-user browser verification remains pending.
+- Added act3-risk-ledger.json: 9 exact legacy 3.9 source-note risks (IDs 140,142,146,148,149,153,154,158,161), all marked patch-unverified. Distinct from 21 broadly flagged candidates.
+- Added 3 CI assertions checking source-note count, text/ID fidelity and no false patch certification.
+- Wiki direct access still cache-missed, so no Act 3 row ordering was guessed. Act 3 remains 71 inventory entries / 0 source-row mappings.
+- GitHub Actions run for the latest changes must be confirmed; do not claim green until readback.

@@ -249,6 +249,16 @@ const allRewards=ctx.window.POE_QUEST_REWARDS?.acts||[];
 assert(allRewards.length===10&&allRewards.reduce((sum,a)=>sum+a.quests.length,0)===58,'Quest rewards must cover 58 historical quest entries across 10 Acts');
 assert(allRewards.every(a=>a.quests.length>0&&a.quests.every(q=>q.name&&q.reward&&['passive','refund','gem','item','choice'].includes(q.type))),'Quest reward descriptions/types missing');
 assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23,'Quest passive reward reference drift');
+// Every tracked Achievement item must belong to exactly one 100% journey scope.
+const missionScopes=[...Array.from({length:10},(_,i)=>String(i+1)),"Labyrinth","Vaal","Epilogue"];
+const missionCategories={ears:d.items,lore:lore.entries,waypoints:extras.waypoints,sidequests:extras.sidequests};
+for(const [type,items] of Object.entries(missionCategories)){
+ const scopeIds=missionScopes.flatMap(scope=>items.filter(item=>String(item.act)===scope).map(item=>item.id));
+ assert(scopeIds.length===items.length&&new Set(scopeIds).size===items.length,'100% goal scope must cover every '+type+' ID once');
+}
+assert(Object.values(missionCategories).reduce((sum,items)=>sum+items.length,0)===745,'Four-Achievement mission total must be 745');
+assert(missionCategories.waypoints.filter(x=>x.act==='Labyrinth').length===1,'Labyrinth waypoint must count for Locomancer');
+assert(missionCategories.waypoints.filter(x=>x.act==='Epilogue').length===2,'Epilogue waypoints cannot disappear from 100% roadmap');
 load('special-lore-guide.js');
 load('workbook-warnings.js');
 const specialLore=ctx.window.POE_SPECIAL_LORE,sourceWarnings=ctx.window.POE_WORKBOOK_WARNINGS;

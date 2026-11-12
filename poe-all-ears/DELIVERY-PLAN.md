@@ -185,3 +185,12 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Wired Act 10 advisory into walkthrough.html and added integrity and UI tests. The UI still uses legacy order for Acts 9–10.
 - All ten acts are now inventoried as historical 3.9 records, 484/484. Wiki source-row mappings remain 416/484 (Acts 1–8). Act 9 (36) and Act 10 (32) remain unverified. Current-patch certified 0/484; browser interaction QA still outstanding.
 - Latest GitHub Actions result must be checked before reporting PASS.
+
+## Continuation — All 484 Wiki source rows reconciled (2026-11-12)
+- Retrieved complete PoE Wiki Guide:All Ears achievement (last updated 2025-06-30), including Act 9 rows 417–452 and Act 10 rows 453–484.
+- Added route-act9.js and route-act10.js; updated act9-inventory.json (36) and act10-inventory.json (32) with source-row IDs. Source-row mapping now 484/484 across Acts 1–10; still not current-patch verified.
+- Act 9 reordered Petarus/Tasuni/Irasha introductory topics (e.g. Wiki 421=ID 422, Wiki 422=ID 431). Explicitly preserved mutually exclusive Highgate ruler branches: 441–442 can be Tasuni/Irasha or Irasha/Tasuni depending on Feather choice. The historical 3.9 dataset only contains one branch's local IDs 443/444; alternate branch ID=null and must not be counted as an additional mandatory dialogue. Added branch guidance in walkthrough.
+- Act 10 reordered Lani topics: Wiki 467=local ID 469 (Sin), Wiki 468=ID 470 (Kitava), Wiki 469=ID 467 (Lilly), Wiki 470=ID 468 (Weylam). Wiki 471, 481 and 482 retain source quest state triggers.
+- Wired source routes in index.html and walkthrough.html. Updated validators for all 484 source row IDs, unique IDs, stable local IDs, branch options, and UI wiring.
+- **QA limitation:** CI validates internal consistency against historical data, not independent external correctness for every row; PoE Wiki itself is a 2025 guide. Current patch verified 0/484, routeSafe=false. Real browser interaction QA and in-game patch evidence remain outstanding.
+- Intermediate CI failures occurred while route data was added ahead of validators; check latest final CI run before reporting PASS.

@@ -274,8 +274,28 @@ const mappedRows=Object.keys(ctx.window).filter(x=>/^ALL_EARS_ROUTE_ACT\d+$/.tes
 assert(sourceWarnings.wikiRows.every(id=>mappedRows.some(r=>r.wikiRow===id)),'Excel warning Wiki row missing from route crosswalk');
 const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
+load('steam-quest-walkthrough.js');
+const steamWalk=ctx.window.POE_STEAM_WALK;
+assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
+const actOne=steamWalk.acts[1];
+assert(actOne.length===9,'Act 1 source timeline must expose nine player-oriented steps');
+const actOneIds=actOne.flatMap(p=>p.dialogueIds),actOneLore=actOne.flatMap(p=>p.loreIds);
+assert(actOneIds.length===41&&new Set(actOneIds).size===41,'Act 1 nine-step guide must cover 41 dialogue IDs exactly once');
+assert(actOneIds.every(id=>d.items.some(i=>i.id===id&&i.act===1)),'Act 1 Steam timeline has invalid dialogue ID');
+assert(actOneLore.length===15&&new Set(actOneLore).size===15&&actOneLore.every(id=>lore.entries.some(x=>x.id===id&&x.act===1)),'Act 1 Letters of Exile lore must use 15 existing No Stone IDs');
+assert(actOne.every(p=>p.actions.length>0&&p.place&&p.heading&&(!p.stopIds||p.stopIds.every(id=>p.dialogueIds.includes(id)))),'Act 1 guide boundary must reference only items within its source phase');
+assert(actOne.find(p=>p.id==='fairgraves').patchProblem.includes('3.29'),'Historical source must warn of Fairgraves reported breakage in 3.29');
+const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
+assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
+assert(checkpointData.acts[2].find(x=>x.id==='a2-darkness')?.sourceConflict?.kind==='steam-vs-wiki','Bandit timing contradiction must remain prominently visible');
+const guarded=Object.values(checkpointData.acts).flatMap(stages=>stages.filter(s=>s.stopRule));
+assert(guarded.length>=20&&guarded.every(s=>s.stopRule.requiredIds.length&&s.stopRule.requiredIds.every(id=>s.ids.includes(id))),'Stop-before quest rules must tie to real per-stage dialogue IDs');
+assert(checkpointData.acts[1].find(s=>s.id==='a1-fairgraves').patchAlert.includes('3.29'),'Fairgraves historical accessibility issue must not be suppressed');
+const htmlSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+assert(htmlSource.includes('src="./steam-quest-walkthrough.js"'),'Steam zone walkthrough must load before UI controller');
+
 const checkpointMapped=new Set(Object.values(checkpointData.acts).flatMap(stages=>stages.flatMap(s=>s.ids)));
 const ungroupedWarningRows=sourceWarnings.wikiRows.map(row=>mappedRows.find(r=>r.wikiRow===row)).filter(r=>!checkpointMapped.has(r.id));
 assert(ungroupedWarningRows.length===22,'Workbook currently has 22 flagged Wiki rows not yet placed in core quest checkpoints');

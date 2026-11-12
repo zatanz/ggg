@@ -152,10 +152,21 @@ const assert=require('node:assert/strict');
  await hub.goto('file://'+path.resolve(__dirname,'index.html')+'#route');
  await hub.locator('#hubNav button').first().waitFor();
  assert.equal(await hub.locator('#hubNav button').count(),3,'primary navigation has three clear modes');
- assert.equal(await hub.locator('.hubActStrip button').count(),12,'quick picker exposes all Acts plus Labyrinth and Vaal Side Areas');
+ assert.equal(await hub.locator('.hubActStrip button').count(),13,'quick picker exposes campaign Acts, Labyrinth, Vaal and Epilogue');
  
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
+ assert.equal(await hub.locator('#hubStats .hubMissionTotal').count(),1,'four-achievement 100% mission dashboard is prominent');
+ assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('100%'),true,'100% scope is four tracked achievements');
+ assert.equal(await hub.locator('#hubStats .hubMissionStage').count(),13,'full journey has 10 Acts plus Labyrinth, Vaal and Epilogue');
+ const coverage=await hub.locator('#hubStats .hubMissionStage span').allTextContents();
+ assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),745,'goal journey covers all 745 items exactly once');
+ assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('จุดค้างแรก'),true,'goal dashboard identifies earliest uncompleted scope');
+
  assert.equal(await hub.locator('#hubView').isVisible(),true,'route view is visible');
+ assert.equal(await hub.locator('#hubView [data-goal-act="1"] .hubActMissionItem').count(),4,'Act 1 100% checklist covers four achievement categories');
+ assert.equal(await hub.locator('#hubView [data-goal-act="1"] .hubActMissionWarning').count(),1,'missable checkpoint is exposed above generic lists');
+ assert.equal(await hub.locator('#hubView [data-goal-category="sidequests"]').count(),1,'Act quest checklist is one-tap accessible from 100% guide');
+
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'act route shows All Ears and other achievements');
  assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act 1 displays only one active quest checkpoint instead of three stacked');
  assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),3,'Act 1 retains all three checkpoints in step navigation');
@@ -306,8 +317,12 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView .hubPostQuests [data-post-stage="a10-safe-passage"]').evaluate(x=>x.open),true,'Act 10 post-quest reminder opens by default');
  assert.equal((await hub.locator('#hubView .hubPostQuests').innerText()).includes('Safe Passage'),true,'Act 10 Safe Passage dialogue reminder visible');
  assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่า Act 10 ปลอดภัย'),true,'Act 10 missing historic warning markers is explicitly disclosed');
+ await hub.locator('.hubActStrip [data-act="Epilogue"]').click();
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'two Epilogue waypoints included for Locomancer');
+ assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Locomancer 91'),true,'Epilogue waypoints are part of same achievement');
  await hub.locator('.hubActStrip [data-act="Labyrinth"]').click();
- assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),3,'Labyrinth has three location-based groups, no new achievement totals');
+ assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),4,'Labyrinth has three Lore groups plus its one separate Waypoint');
+ assert.equal(await hub.locator('#hubView [data-special-group="lab-waypoint"] .hubItem').count(),1,'Labyrinth Locomancer waypoint is not omitted from 100% roadmap');
  assert.equal((await hub.locator('#hubView .hubActProgress').innerText()).includes('/ 10'),true,'Labyrinth count uses its ten existing No Stone IDs');
  assert.equal((await hub.locator('#hubView [data-special-group="lab-plaza"]').innerText()).includes('The Just Goddess'),true,'Labyrinth plaza plaque has readable corrected name');
  await hub.locator('.hubActStrip [data-act="Vaal"]').click();

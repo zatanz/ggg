@@ -19,3 +19,5 @@ jobs:
           node-version: '22'
       - name: Validate dialogue and patch data
         run: node poe-all-ears/validate-data.cjs
+      - name: Validate interface scripts and route wiring
+        run: node poe-all-ears/validate-ui.cjs

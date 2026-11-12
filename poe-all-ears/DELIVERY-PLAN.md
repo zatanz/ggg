@@ -357,3 +357,11 @@ Must retain current-patch uncertified status; 3.30 is scheduled Nov 13 PST and i
 The main UI now answers "what to do to reach 100% of the **four tracked achievements**" instead of exposing all content by default. A 745-item manual-completion hero and 13-phase roadmap cover Acts 1–10, Labyrinth 10 lore + 1 waypoint, Vaal 16 lore, and Epilogue 2 waypoints, without double-counting. Each Act has four category completion gates and direct access to missing items and the next unresolved historic danger checkpoint. All checkboxes use original per-character IDs and Backup format. Static validation verifies exactly-once partition, Chromium tests verify interactive navigation and responsive behavior.
 
 This is **not** a full quest-state safe walk order or complete PoE-game achievement list. Zero item-level 3.30 certification has been established; completion in UI does not imply the server unlocked an achievement. Still P0: 3.30 in-game proof (especially Bandits and 77 workbook WARNINGS), quest sequencing, special lore availability, reward verification; still P1: human usability QA. See [ROAD-TO-100-PERCENT.md](./ROAD-TO-100-PERCENT.md).
+
+## Checkpoint — six source-linked in-context Quest UI mock illustrations (2026-11-12)
+
+**Implemented in code:** 4 new 960×540 original conceptual SVGs (Act 1 Brutus + Fairgraves, Act 2 Chamber of Sins + Lorrata roots) and 2 existing corrected SVGs (Mud Flats Glyph Wall, Act 2 Bandits), totaling **6** data-backed images. Each is rendered only in the matching current Steam walkthrough phase, with a prominent non-screenshot warning, exact linked quest source, Thai ALT, actionable check text, and independent full-size link. Static asset coverage and Chromium tests protect phase-to-image association, decode and mobile overflow.
+
+**Scope remaining:** authenticated real PoE client screenshots, user visual QA, additional Act 3–10 walkthrough phase visualizations and current-patch quest-state proof; these are not interchangeable with a passing site build. Do not claim 3.30-safe routes or visual fidelity to the game's UI.
+
+See [QUEST-VISUAL-UX-STATUS.md](./QUEST-VISUAL-UX-STATUS.md).

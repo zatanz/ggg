@@ -337,3 +337,9 @@ Feedback: player-facing labels and navigation were improved but explanations had
 
 **Continue with evidence-first work:** verify critical quest branches in a fresh running game, preserve proof of timing/availability, then reconcile the global quest order; investigate unsupported Act 10 and side-quest reward cross-links. Do not use CI green as substitute for in-game confirmation. See [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
 
+
+## Checkpoint — source timing, Act 10 follow-ups and Bandit branch caution (2026-11-12)
+
+**Verified in code/source (not in 3.30 gameplay):** removed danger-priority sorting from historical quest checkpoint display; each checkpoint dialogue now shows its own Thai unlock trigger and caution when source-supported, with missing evidence labeled instead of inferred. Translated all seven Act 3 route-level English trigger/caution pairs. Preserved the 39 historical danger groups/72 source-linked All Ears IDs in Acts 1–9. Added three source-derived Act 10 **post-quest** reminders tied to original All Ears IDs 471/481/482 (not irreversible warning stages); no new achievement counters. Strengthened Act 2 help-vs-kill Bandit caveat. Source gate remains 2025 Wiki. Do not promote any 3.30 verification. Browser and static validation required at final HEAD.
+
+**Next:** capture game-versioned proof of individual quest-state transitions once the 3.30 build is live; investigate whether the Wiki's kill-all branch and recovery methods remain valid and validate each route across fresh characters. Keep rewards-by-class and other low-value detail deferred.

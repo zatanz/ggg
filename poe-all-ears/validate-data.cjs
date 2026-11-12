@@ -285,6 +285,16 @@ assert(actOneIds.every(id=>d.items.some(i=>i.id===id&&i.act===1)),'Act 1 Steam t
 assert(actOneLore.length===15&&new Set(actOneLore).size===15&&actOneLore.every(id=>lore.entries.some(x=>x.id===id&&x.act===1)),'Act 1 Letters of Exile lore must use 15 existing No Stone IDs');
 assert(actOne.every(p=>p.actions.length>0&&p.place&&p.heading&&(!p.stopIds||p.stopIds.every(id=>p.dialogueIds.includes(id)))),'Act 1 guide boundary must reference only items within its source phase');
 assert(actOne.find(p=>p.id==='fairgraves').patchProblem.includes('3.29'),'Historical source must warn of Fairgraves reported breakage in 3.29');
+const actTwo=steamWalk.acts[2],actTwoIds=actTwo.flatMap(p=>p.dialogueIds);
+assert(actTwo.length===10,'Act 2 source chronology must have ten explicit zone phases');
+assert(actTwoIds.length===69&&new Set(actTwoIds).size===69,'Act 2 ten-phase guide must cover 69 dialogue IDs exactly once');
+assert(actTwoIds.every(id=>d.items.some(x=>x.id===id&&x.act===2)),'Act 2 zone guide must use canonical local IDs for the right Act');
+const steamRouteRows=ctx.window.ALL_EARS_ROUTE_ACT2.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(x=>x.id);
+assert(actTwoIds.join(',')===steamRouteRows.join(','),'Act 2 sequence must be derived from Wiki row numbers, not incorrectly using local ID order');
+assert(actTwo.every(p=>p.actions.length>0&&p.place&&(!p.stopIds||p.stopIds.every(id=>actTwoIds.includes(id)))),'Act 2 do-not-progress guards must refer to existing source-linked Act 2 dialogue IDs');
+assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('ขัดแย้ง'),'Act 2 Steam/Wiki disputed Ancient Seal timing must not be claimed as safe');
+assert(actTwo.find(p=>p.id==='western-forest').stop.includes('Chamber of Sins'),'West Forest must precede the relevant Chamber of Sins quest transition in source-oriented Act 2');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 load('critical-checkpoints.js');

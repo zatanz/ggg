@@ -10,12 +10,28 @@ const loreSource="https://www.poewiki.net/wiki/Guide:No_Stone_Unturned_achieveme
 const routeByAct={};
 for(let a=1;a<=10;a++){const route=window["ALL_EARS_ROUTE_ACT"+a];routeByAct[a]=new Map((route&&route.records||[]).map(r=>[r.id,r]));}
 const draft=window.ALL_EARS_GUIDE?.entries||{};
-function forEars(item){
+function forEars(item,context){
 const r=routeByAct[item.act]?.get(item.id)||{},extra=legacy[item.id]||[],g=item.act===1?draft[String(item.id)]:null;
 const topic=stripTopic(item.dialog),npc=stripNpc(item.npc);
 let action;
 if(/Introduction/i.test(topic)){action="คุยกับ "+npc+" และฟังบทสนทนาแรก (Introduction)";}else{action="คุยกับ "+npc+" แล้วเลือกหัวข้อ “"+topic+"” ให้บทสนทนาแสดงในเกม";}
 if(g?.steps)action=g.steps;
+let displayLabel="";
+const bandits=["Alira","Oak","Kraityn"],first=bandits.includes(context?.first)?context.first:"",second=bandits.includes(context?.second)&&context.second!==first?context.second:"";
+if(item.act===2&&r.wikiRow===101){
+ displayLabel="Eramir — หัวข้อ Bandit ที่ฆ่าคนแรก"+(first?" ("+first+")":"");
+ action=first?"หลังฆ่า "+first+" เป็น Bandit คนแรก ให้กลับมาคุยกับ Eramir แล้วเลือกหัวข้อ “"+first+"” ก่อนฆ่าคนที่สอง":"หลังฆ่า Bandit คนแรก ให้กลับมาคุยกับ Eramir แล้วเลือกหัวข้อชื่อ Bandit ตัวที่ฆ่า (Alira / Oak / Kraityn) ก่อนฆ่าคนถัดไป";
+}
+if(item.act===2&&r.wikiRow===102){
+ const survivor=first&&second?bandits.find(n=>n!==first&&n!==second):"";
+ displayLabel="Eramir — หัวข้อ Bandit ที่ยังมีชีวิต"+(survivor?" ("+survivor+")":"");
+ action=survivor?"หลังฆ่า Bandit ตัวที่สอง ให้คุยกับ Eramir หัวข้อ “"+survivor+"” เพราะ "+survivor+" ยังมีชีวิตอยู่ ก่อนฆ่าคนสุดท้าย":"หลังฆ่า Bandit ตัวที่สอง ให้คุย Eramir หัวข้อชื่อ Bandit ที่ยังมีชีวิตอยู่ (Alira / Oak / Kraityn) ก่อนฆ่าคนสุดท้าย";
+}
+if(item.act===2&&r.wikiRow===103){
+ displayLabel="Eramir — Bandit Lords (หลังฆ่าทั้งสาม)";
+ action="หลังฆ่า Alira, Oak และ Kraityn ครบทั้งสาม ให้กลับไปคุย Eramir หัวข้อ “Bandit Lords”";
+}
+
 const translate=routeAct3Thai[item.id]||[];
 const unlock=(r.trigger&&/^[A-Za-z]/.test(r.trigger)?extra[0]||translate[0]||"":r.trigger)||extra[0]||translate[0]||"";
 const caution=(r.before&&/^[A-Za-z]/.test(r.before)?extra[1]||translate[1]||"":r.before)||g?.warning||extra[1]||translate[1]||"";
@@ -26,7 +42,7 @@ if(item.dialog.includes("QC"))tags.push("QC: ตามตารางเก่�
 if(item.dialog.includes("(!)"))tags.push("(!): ตารางเก่าระบุสัญลักษณ์ ! ของบทสนทนานี้");
 if(item.npc.includes("*"))tags.push("*: ต้นทางระบุ NPC อยู่นอกเมืองในช่วงนี้");
 if(!r.before&&!g?.warning&&!extra[1]&&item.note)tags.push("มีคำเตือนจากตาราง 3.9 ที่ยังไม่ได้เกลาและตรวจแยก ให้เปิด Wiki ก่อนเปลี่ยนสถานะเควสต์");
-return {action,location,unlock,caution,tip:tags.join(" · "),source:r.source||source+"#Act_"+item.act,sourceLabel:g||r.trigger||r.before?"PoE Wiki ปี 2025 + ร่างคำแนะนำ":"ชื่อหัวข้อจาก Wiki 2025 / เช็กลิสต์เก่า",status:g?.review_status||r.review||"historical-wiki-2025",patchCertified:false,detailsKnown:!!(g?.steps||r.trigger||r.before||extra[0]||extra[1])};
+return {action,displayLabel,location,unlock,caution,tip:tags.join(" · "),source:r.source||source+"#Act_"+item.act,sourceLabel:g||r.trigger||r.before?"PoE Wiki ปี 2025 + ร่างคำแนะนำ":"ชื่อหัวข้อจาก Wiki 2025 / เช็กลิสต์เก่า",status:g?.review_status||r.review||"historical-wiki-2025",patchCertified:false,detailsKnown:!!(g?.steps||r.trigger||r.before||extra[0]||extra[1])};
 }
 function forLore(item){
 let action="ไปที่ "+item.area+" และโต้ตอบกับวัตถุ “"+item.name+"” เพื่อบันทึก Lore";
@@ -44,5 +60,5 @@ return {action:"เดินทางเข้า "+item.name+" แล้วค�
 function forQuest(item){
 return {action:"เปิด Quest Log และทำเควสต์รอง “"+item.name+"” ใน Act "+item.act+" ให้จบ",location:"Act "+item.act+" (ยังไม่ยืนยัน NPC เริ่มเควสต์และเส้นทางตามแพตช์)",unlock:"",caution:"ยังไม่มีขั้นตอนหรือ NPC ที่รับเควสต์ซึ่งตรวจยืนยันรายรายการ อย่าสันนิษฐานว่าเพียงรับเควสต์แล้วนับว่าสำเร็จ",tip:"เมื่อตรวจว่าเควสต์สำเร็จแล้วจึงทำเครื่องหมาย แนะนำตรวจ Quest Log และยอด Achievement ในเกม",source:"https://www.poewiki.net/wiki/Quest",sourceLabel:"ชื่อเควสต์จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
 }
-window.POE_ITEM_DESCRIPTIONS={schema:1,sourcePatch:"2025-wiki-and-3.9-legacy",certifiedFor330:false,get:function(type,item){if(!item)return null;return type==="ears"?forEars(item):type==="lore"?forLore(item):type==="waypoints"?forWaypoint(item):type==="sidequests"?forQuest(item):null}};
+window.POE_ITEM_DESCRIPTIONS={schema:1,sourcePatch:"2025-wiki-and-3.9-legacy",certifiedFor330:false,get:function(type,item,context){if(!item)return null;return type==="ears"?forEars(item,context):type==="lore"?forLore(item):type==="waypoints"?forWaypoint(item):type==="sidequests"?forQuest(item):null}};
 })();

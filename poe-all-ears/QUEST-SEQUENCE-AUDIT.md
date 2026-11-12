@@ -70,6 +70,18 @@ For stages spanning different quest states, multiple dialogue IDs appear under t
 
 Original checklist totals remain 484 All Ears, 140 Lore, 91 Waypoints, 30 Side Quests; reward index remains 58 quests. No independent source authorizes adding more rows or automatically marking items complete.
 
+## Audit increment — source-row timing and Act 10 after-quest checks (2026-11-12)
+
+**Problem repaired:** Earlier the UI sorted any high-risk checkpoint ahead of prior checkpoints. This ordering was based on severity, not quest chronology. Now checkpoints retain authored source grouping, and the header explicitly says they are **not** a complete route. Every dialogue row in an expanded stage displays its own *unlock trigger* and *before-action caution* (or an explicit evidence gap). This prevents one stage summary from implying every topic unlocks simultaneously.
+
+**Act 3:** All seven previously English-language route triggers and before-conditions are now translated into Thai from the old route records (IDs 118, 142, 148, 153, 158, 161, 164). These remain 2025-source conditions, unverified with 3.30 gameplay.
+
+**Act 10:** New separate **post-quest reminders**, **not** irreversible-risk checkpoints: Lilly Roth/Tsoatha after Safe Passage (#471), Lilly Roth/Innocence after Death and Rebirth (#481), Lilly Roth/Kitava after An End to Hunger (#482). These three conditions are explicit in the [2025 PoE Wiki Act 10](https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10) and the repository's route-act10.js. No additional achievement IDs are created, and the absence of 'before' flags in Act 10 remains a source-data limitation.
+
+**Bandit choice:** Added a prominent note that the Eramir first-kill, second-kill, all-killed series is based on the legacy *kill-all* branch; helping a Bandit must not be treated as an equivalent route. No current-patch Book of Reform recovery has been tested.
+
+**Remaining verification:** 3.30 game client unavailable for proof at this checkpoint (launch scheduled Nov 13 PST), so do not publish a 3.30-safe or fully proven route. All 39 irreversible-risk groups in Acts 1–9 remain historical; the three Act 10 post-quest reminders are separately tagged. Human route playtesting and visual usability review remain open.
+
 ## Release gates and next work
 
 | Priority | Remaining work | Requirement |

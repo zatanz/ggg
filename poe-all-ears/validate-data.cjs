@@ -302,6 +302,24 @@ assert(banditAsset.includes('ILLUSTRATION ONLY')&&banditAsset.includes('Deal wit
 assert(!banditAsset.includes('ก่อนใส่ Strange Glyphs'),'Act 2 mock must not inherit Act 1 alt text');
 assert(banditAsset.includes('Check Eramir between kills.'),'Bandits mock must remind players to return to Eramir between kills');
 assert((banditAsset.match(/>Act 2<\/text>/g)||[]).length===1,'Act 2 mock must not repeat its active Act tab');
+const visualTargets=[
+ ["1","mudflats","quest-journal-illustration.svg","Breaking Some Eggs"],
+ ["1","prison","brutus-quest-illustration.svg","The Caged Brute"],
+ ["1","fairgraves","fairgraves-quest-illustration.svg","The Marooned Mariner"],
+ ["2","sins-before-helena","sins-quest-illustration.svg","Intruders in Black"],
+ ["2","roots","roots-quest-illustration.svg","The Root of the Problem"],
+ ["2","bandit-decisions","bandits-quest-illustration.svg","Deal with the Bandits"]
+];
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly six sourced high-risk phases');
+for(const [act,phaseId,file,quest] of visualTargets){
+ const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
+ assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);
+ assert(v.check&&v.title&&v.check.length>=20,'Each image needs a concrete plain-language action outside the image: '+phaseId);
+ const svg=fs.readFileSync(path.join(dir,'assets',file),'utf8');
+ assert(svg.startsWith('<svg ')&&svg.includes('</svg>')&&svg.includes('NOT AN IN-GAME SCREENSHOT')&&svg.includes(quest),'Illustration needs its correct quest title and conspicuous disclaimer: '+file);
+ assert(!/<script[\s>]/i.test(svg),'Quest illustration must remain static SVG without executable scripts: '+file);
+}
+
 
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;

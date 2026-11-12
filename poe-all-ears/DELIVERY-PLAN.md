@@ -160,3 +160,12 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added five cautions around The Den, Maligaro, Gruthkul, Fireflies/Yeena, and Arakaali; wired route into index.html and walkthrough.html.
 - Added 45-record, unique-ID, wiki-row, discrepancy, duplicate-topic and UI-wiring assertions. GitHub Actions status must be checked after latest commit.
 - Wiki source-row mapped total Acts 1–7: 386/484 (79.75%); Acts 8–10 remain legacy order. Current patch certified 0/484, routeSafe=false. Browser interaction QA still outstanding.
+
+## Continuation — Act 8 wiki reconciliation (2026-11-12)
+- Read PoE Wiki All Ears guide, updated 2025-06-30: Act 8 rows 387–416 = 30 dialogues. Source: https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8.
+- Added route-act8.js and act8-inventory.json with all 30 stable local IDs mapped to source rows. Important non-identity mappings: Wiki row 402 = local ID 391 (Hargan/Doedre); Wiki row 412 = local ID 413 (Clarissa/Tolman); Wiki row 413 = local ID 412 (Maramoa/Clarissa and Tolman).
+- Four explicit source-derived missable warnings: Love is Dead completion (row 407), Yugul before killing (rows 409–410), and Clarissa in The Quay after Tolman (row 411). The 3.9 Doedre's Cesspool warning for ID 403 is retained as a legacy-only discrepancy; the Wiki row does not say to remain in the area.
+- Wired Act 8 source order into index.html and walkthrough.html, preserved stable localStorage IDs and unsupported-patch gating. Added data integrity and UI script checks.
+- Source-row mapped total Acts 1–8: 416/484 (85.95%); Acts 9–10 remain historical order. Current patch certified 0/484; routeSafe=false. Browser interaction QA still outstanding.
+- PoE Wiki Act 4 prose says 73 points but its actual numbered rows 182–253 are 72 and the historical dataset has 72. Treat this as a source inconsistency, not an additional invented row.
+- Check final GitHub Actions status before claiming all checks passed.

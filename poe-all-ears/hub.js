@@ -12,7 +12,7 @@ const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",way
 const routeOpen=new Set(["ears"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",status:"todo",search:"",limit:40,reviewType:"lore",gameCount:""};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"todo",search:"",limit:40,reviewType:"lore",gameCount:""};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -175,9 +175,15 @@ if(state.tab==="route"&&(state.act==="all"||isNaN(Number(state.act))))state.act=
 act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder="ค้นหาชื่อ NPC, บทสนทนา หรือพื้นที่";search.setAttribute("aria-label","ค้นหา");search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
 [["todo","ยังไม่ได้เก็บ"],["all","แสดงทั้งหมด"],["done","เก็บแล้ว"]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label","ตัวกรองสถานะ");status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
 if(state.tab==="route")controls.append(search,status);else controls.append(act,search,status);t.append(controls);}
-function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";if(Object.keys(names).includes(tab))state.collectionType=tab;
+function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";
+const previous=state.tab==="route"?"route":state.tab==="review"?"review":"collection";
+if(previous==="route")state.routeAct=state.act;
+if(previous==="collection")state.collectionAct=state.act;
+if(Object.keys(names).includes(tab))state.collectionType=tab;
 state.tab=tab;document.body.dataset.hubTab=tab;
 const group=tab==="route"||tab==="review"?tab:"collection";
+if(group==="route")state.act=state.routeAct;
+if(group==="collection")state.act=state.collectionAct;
 [...document.querySelectorAll("#hubNav button")].forEach(btn=>{const yes=btn.dataset.tab===group;btn.setAttribute("aria-selected",String(yes));});
 $("hubView").hidden=tab==="ears";$("hubToolbar").hidden=tab==="review";state.limit=40;state.search="";renderToolbar();renderView();renderSummary();
 try{history.replaceState(null,"","#"+tab);}catch(e){}

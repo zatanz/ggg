@@ -120,6 +120,10 @@ try{localStorage.setItem(MAIN,JSON.stringify(newMain));localStorage.setItem(LORE
 }catch(e){alert("ไฟล์ Backup ไม่ถูกต้องหรือเกินขีดจำกัดตัวละคร");}};
 row.append(exp,imp,file);panel.append(row);return panel;}
 function renderView(){const panel=$("hubView");panel.replaceChildren();if(state.tab==="ears")return;
+if($("patch").value!=="legacy-3.9"){
+  const warning=el("div",undefined,"hubPanel");warning.append(el("h2","ยังไม่มีรายการที่ตรวจรับรองสำหรับแพตช์นี้"),el("p","ข้อมูลในเว็บไซต์มาจากคู่มือ 2025 / ตาราง 3.9 เท่านั้น ไม่แสดงเส้นทางเก่าโดยอ้างว่าใช้กับ 3.29 หรือ 3.30 ได้","hubNotice"));
+  const button=el("button","ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)");button.onclick=()=>{$("patch").value="legacy-3.9";$("patch").dispatchEvent(new Event("change",{bubbles:true}));renderView();};warning.append(button);panel.append(warning);return;
+}
 if(state.tab==="route"){renderRoute(panel);return;}if(state.tab==="review"){panel.append(reviewPanel());return;}renderCategory(panel,state.tab);}
 function renderToolbar(){const t=$("hubToolbar");t.replaceChildren();
 if(state.tab==="ears"||state.tab==="review")return;

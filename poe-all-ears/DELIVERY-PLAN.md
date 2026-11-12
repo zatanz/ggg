@@ -271,3 +271,25 @@ Scope: Implement player-feedback improvements in the existing public repository 
 4. Run independent desktop/mobile usability sessions on the live URL, document any friction, then release a certified version only if G1–G7 are genuinely satisfied.
 
 **STOP RULE:** Do not present any historical route as a 3.30 safe route or invent in-game results.
+
+
+## Checkpoint — Act-first UX and gameplay language refinement (2026-11-12 Asia/Bangkok)
+User feedback: the unified six-tab interface was still difficult to use, and Thai copy was not aligned with Path of Exile terminology. The task was to improve usability directly, not invent current-patch-certified route steps.
+
+### Code delivered
+- Replaced six top-level tabs with **ตาม Act**, **เช็กลิสต์ทั้งหมด**, **ตรวจยอด / สำรอง**. All four historical Achievement trackers remain reachable on one URL.
+- Added thumb-friendly ten-Act horizontal picker; fixed scroll retention/visibility for Act 8–10 on mobile. Distinct campaign Act and full-collection Act filters prevent accidentally showing only one Act in the full collection.
+- Within each Act, four disclosure rows replace four fully expanded sections: NPC dialogues open by default, Lore/Waypoint/Side Quest collapsed until selected. Each chapter displays marked/total count.
+- The full collection keeps its category switcher: all four choices are visibly available in a 2x2 grid on mobile instead of requiring hidden horizontal navigation. Existing All Ears legacy list remains available.
+- Grouped advanced character controls and legacy backup inside a disclosure; global character selector and new character button stay visible. Unified v2 backup remains under review.
+- Mapped UI actions to in-game language: listen to NPC dialogues, interact with environmental Lore, activate Waypoints, finish optional quests, check actual in-game Achievement totals. English proper nouns (NPC/quest/location names) remain unchanged to match the client.
+- Simplified Vaal lookup (collapsed until requested; search requires >=2 characters); reduced repeated Wiki link clutter while preserving source links on risky dialogue rows and once per Act.
+- Kept Act 2 Bandits/Ancient Seal/The Darkness preflight. Legacy Wiki route order and PoE 3.30 patch status are still explicitly unverified.
+
+### Evidence and QA
+- [UX-REDESIGN.md](./UX-REDESIGN.md) describes alternatives, chosen IA, wordings and limitations.
+- [CHANGELOG.md](./CHANGELOG.md) and [README.md](./README.md) document the new default experience.
+- Browser smoke now checks 3-button navigation, 10 Act shortcuts, Act 2 warnings, hidden/expanded groups, mobile Act10 scroll visibility, full collection across all Acts, historical backup preservation, unified backup import/export and patch gating.
+- The last source-data inventories and certification status remain unchanged; this change is UI/editorial, **not a claim that PoE 3.30 content is verified**.
+- Current-patch in-game certified counts remain All Ears 0/484, Lore 0/140, Waypoints 0/91 and Side Quests 0/30. Do not change without item-level game evidence.
+- GitHub Actions and Pages must pass on final HEAD after these edits. Live human visual QA and a complete current-patch playthrough are separate incomplete release gates.

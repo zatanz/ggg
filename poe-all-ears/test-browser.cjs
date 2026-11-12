@@ -307,6 +307,10 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView [data-phase="western-forest"] .hubStopGate').innerText()).includes('Chamber of Sins'),true,'Act 2 explicitly stops premature Chamber of Sins progress');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubResearchConflict').innerText()).includes('Steam'),true,'Act 2 bandit first-contact timing is flagged as contradictory');
+ await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual > summary').click();
+ await hub.waitForFunction(()=>{const img=document.querySelector('#hubView [data-phase="bandit-decisions"] .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual').innerText()).includes('ภาพประกอบ'),true,'Act 2 quest image is clearly labelled illustrative, not a game screenshot');
+
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubStopGate').innerText()).includes('ยังไม่ควร'),true,'Bandit killing must wait for relevant Darkness dialogue');
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks').count(),1,'risk-specific source rows remain available on demand');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();

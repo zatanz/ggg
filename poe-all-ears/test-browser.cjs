@@ -206,6 +206,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView [data-goal-category="sidequests"]').click();
  assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'todo','goal shortcut filters to uncompleted entries');
+ await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').selectOption('all');
 
 
  await hub.locator('#hubNav [data-tab="collection"]').click();

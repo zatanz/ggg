@@ -249,6 +249,26 @@ const allRewards=ctx.window.POE_QUEST_REWARDS?.acts||[];
 assert(allRewards.length===10&&allRewards.reduce((sum,a)=>sum+a.quests.length,0)===58,'Quest rewards must cover 58 historical quest entries across 10 Acts');
 assert(allRewards.every(a=>a.quests.length>0&&a.quests.every(q=>q.name&&q.reward&&['passive','refund','gem','item','choice'].includes(q.type))),'Quest reward descriptions/types missing');
 assert(allRewards.flatMap(a=>a.quests.filter(q=>q.type==='passive')).length===23,'Quest passive reward reference drift');
+load('critical-checkpoints.js');
+const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
+assert(checkpointData?.schema===1&&checkpointData.routeSafe===false&&checkpointData.patch==='2025-wiki-legacy-unverified','Critical checkpoints must not imply verified patch-safe quest route');
+assert(checkpointData.acts[1].length===3&&checkpointData.acts[2].length===7,'Expected 3 Act 1 and 7 Act 2 risk stages');
+let stepRows=0;
+for(const [act,list] of Object.entries(checkpointData.acts)){
+ const stageIds=new Set();
+ for(const stage of list){
+  assert(!stageIds.has(stage.id),'Repeated stage identifier '+stage.id);stageIds.add(stage.id);
+  assert(stage.act===Number(act)&&stage.before&&stage.action&&stage.risk&&stage.source.includes('Guide:All_Ears_achievement'),'Incomplete critical risk source '+stage.id);
+  assert(stage.ids.length>0,'Empty checkpoint '+stage.id);
+  for(const id of stage.ids){stepRows++;
+   const item=d.items.find(x=>x.id===id);
+   assert(!!item&&item.act===Number(act),'Checkpoint ID not in Act '+stage.id+' #'+id);
+   const route=ctx.window['ALL_EARS_ROUTE_ACT'+act];
+   assert(route.records.some(x=>x.id===id),'Checkpoint not linked to wiki row '+stage.id+' #'+id);
+  }
+ }
+}
+assert(stepRows===28,'Critical checkpoint crosswalk must cover 28 explicit risk item references');
 load('guide-descriptions.js');
 const descriptions=ctx.window.POE_ITEM_DESCRIPTIONS;
 assert(descriptions.schema===1&&descriptions.certifiedFor330===false,'Guide descriptions must remain patch-unverified');

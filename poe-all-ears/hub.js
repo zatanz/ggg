@@ -90,7 +90,7 @@ left.append(el("strong",uiNames[type]),el("small",names[type]));summary.append(l
 chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
 if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","PoE Wiki · All Ears / Act "+act);source.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;source.target="_blank";source.rel="noopener noreferrer";note.append("เรียงตามแถว Wiki 2025 · ",source);content.append(note);}
-addList(content,type,act,40,true);chapter.append(content);
+addList(content,type,act,state.limit,true);chapter.append(content);
 chapter.addEventListener("toggle",()=>{if(!state.search.trim()){if(chapter.open)routeOpen.add(type);else routeOpen.delete(type);}});
 panel.append(chapter);
 });target.append(panel);}

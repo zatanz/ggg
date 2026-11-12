@@ -128,3 +128,11 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - Added Act 4 integrity assertions and UI wiring checks to validate-data.cjs and validate-ui.cjs.
 - Wiki source-order mapped total: Acts 1–4 = 41+69+71+72 = 253/484 (52.27%). Acts 5–10 remain historical-only. Current-patch verified 0/484; no certified safe route.
 - GitHub Actions validation on final commit should be checked before claiming PASS. Browser interaction QA remains outstanding.
+
+## Continuation — Act 5 wiki reconciliation (2026-11-12)
+- Matched all 44 Act 5 legacy records to PoE Wiki numbered rows 254–297, using https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5 (guide last updated 2025-06-30). Note distinct first and post-Innocence Vilenta/Utula dialogue: Wiki row 270 = local ID 267; row 278 = local ID 278.
+- Added route-act5.js and act5-inventory.json with 44 stable IDs and source-row mappings. Three critical missable warnings: Utula disappears after killing High Templar Avarius (row 275), Sin must be spoken to before leaving Chamber of Innocence (row 277), Sin must be spoken to before leaving Ossuary with Sign of Purity (row 295).
+- Integrated Act 5 source ordering and warnings into index.html and walkthrough.html, retaining localStorage IDs and patch gating.
+- Added Act 5 source-integrity and warning tests in validate-data.cjs and UI wiring checks in validate-ui.cjs.
+- Source-row-mapped total: Acts 1–5 = 297/484 (61.36%). Acts 6–10 still use legacy order. Current-patch verified: 0/484; routeSafe remains false.
+- Browser QA and current-patch evidence still pending; source-row ordering alone is not a certified safe playthrough.

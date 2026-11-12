@@ -109,7 +109,15 @@ window.POE_STEAM_WALK = {
           22,
           23
         ],
-        "confidence": "historical"
+        "confidence": "historical",
+        "visual": {
+          "asset": "./assets/quest-journal-illustration.svg",
+          "title": "Breaking Some Eggs · Strange Glyphs",
+          "alt": "ภาพจำลองหน้า Quest ใน The Mud Flats และจุดที่ต้องตรวจ Strange Glyphs ก่อนใช้ Glyph Wall",
+          "check": "ดู Breaking Some Eggs และตรวจหัวข้อ Strange Glyphs / Glyph Wall กับ Tarkleigh ก่อนใส่ Glyphs",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "pool",
@@ -153,7 +161,15 @@ window.POE_STEAM_WALK = {
           28,
           29
         ],
-        "confidence": "historical"
+        "confidence": "historical",
+        "visual": {
+          "asset": "./assets/brutus-quest-illustration.svg",
+          "title": "The Caged Brute · ก่อนฆ่า Brutus",
+          "alt": "ภาพวาดจำลอง The Prison และ The Caged Brute เน้นตรวจบทสนทนา Brutus ก่อนฆ่าบอส",
+          "check": "กลับคุย Tarkleigh แล้ว Bestel: Brutus; ตรวจเงื่อนไข Piety และ Shavronne's Journal ก่อนสู้",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "prisoners-gate",
@@ -205,7 +221,15 @@ window.POE_STEAM_WALK = {
           38
         ],
         "confidence": "conflict",
-        "patchProblem": "ผู้เขียนคู่มือ Steam รายงานว่า Fairgraves คุยไม่ได้ในแพตช์ 3.29 และยังไม่มีหลักฐานยืนยันการแก้ไขใน 3.30"
+        "patchProblem": "ผู้เขียนคู่มือ Steam รายงานว่า Fairgraves คุยไม่ได้ในแพตช์ 3.29 และยังไม่มีหลักฐานยืนยันการแก้ไขใน 3.30",
+        "visual": {
+          "asset": "./assets/fairgraves-quest-illustration.svg",
+          "title": "The Marooned Mariner · ก่อนเก็บ Allflame",
+          "alt": "ภาพวาดจำลอง Ship Graveyard และ The Marooned Mariner เน้นจุดที่ยังไม่ควรหยิบ Allflame",
+          "check": "คุย Fairgraves → Bestel → Fairgraves ตามลำดับ และตรวจว่าคุยได้จริงก่อนเก็บ Allflame",
+          "source": "https://www.poewiki.net/wiki/The_Marooned_Mariner",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "merveil",
@@ -345,7 +369,15 @@ window.POE_STEAM_WALK = {
         "stopIds": [
           75
         ],
-        "confidence": "historical"
+        "confidence": "historical",
+        "visual": {
+          "asset": "./assets/sins-quest-illustration.svg",
+          "title": "Intruders in Black · ก่อนช่วย Helena",
+          "alt": "ภาพวาดจำลอง Chamber of Sins และ Intruders in Black เน้นการกลับไปคุย Yeena ก่อนช่วย Helena",
+          "check": "หลังเข้าห้อง Chamber of Sins ให้กลับ Yeena ฟังหัวข้อ Chamber of Sins ก่อนจบ Intruders in Black",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "sins-after-helena",
@@ -418,7 +450,15 @@ window.POE_STEAM_WALK = {
           91,
           92
         ],
-        "confidence": "historical"
+        "confidence": "historical",
+        "visual": {
+          "asset": "./assets/roots-quest-illustration.svg",
+          "title": "The Root of the Problem · ก่อนวางยารากไม้",
+          "alt": "ภาพวาดจำลอง The Wetlands และ The Root of the Problem ระบุการถือ Baleful Gem กับ Maligaro's Spike ก่อนจัดการ Lorrata",
+          "check": "ถือ Baleful Gem และ Maligaro's Spike คุย Eramir: Maligaro's Creations แล้วพบ Lorrata และกลับคุย Ancient Gateway ก่อนทำลายรากไม้",
+          "source": "https://www.poewiki.net/wiki/The_Root_of_the_Problem",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "ancient-seal",
@@ -480,7 +520,15 @@ window.POE_STEAM_WALK = {
           102
         ],
         "confidence": "conflict",
-        "sourceConflict": "ข้อขัดแย้งยังไม่คลี่คลาย: Steam ให้รอคุย Bandits หลังเปิด The Darkness แต่ PoE Wiki แนะนำคุยก่อนเปิด Ancient Seal จึงต้องตรวจในเกมก่อนทำขั้นที่เปลี่ยนสถานะ Bandits"
+        "sourceConflict": "ข้อขัดแย้งยังไม่คลี่คลาย: Steam ให้รอคุย Bandits หลังเปิด The Darkness แต่ PoE Wiki แนะนำคุยก่อนเปิด Ancient Seal จึงต้องตรวจในเกมก่อนทำขั้นที่เปลี่ยนสถานะ Bandits",
+        "visual": {
+          "asset": "./assets/bandits-quest-illustration.svg",
+          "title": "Deal with the Bandits · ก่อนตัดสินใจ",
+          "alt": "ภาพวาดจำลอง Quest ของ Bandits ใน Vaal Ruins และคำเตือนให้เก็บ The Darkness ก่อนตัดสินใจ",
+          "check": "ตรวจ The Darkness ให้ครบ และกลับ Eramir ระหว่างฆ่า Bandits ทีละตัว เงื่อนไขการคุย Bandits ครั้งแรกยังมีข้อขัดแย้ง",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
+          "status": "mock-not-in-game"
+        }
       },
       {
         "id": "vaal-oversoul",

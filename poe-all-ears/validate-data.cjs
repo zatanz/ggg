@@ -236,6 +236,11 @@ assert(lore.entries.every(x=>typeof x.name==='string'&&x.name.trim()&&typeof x.a
 assert(Object.entries(loreCounts).every(([a,n])=>lore.entries.filter(x=>String(x.act)===a).length===n),'Lore category counts drift');
 assert(lore.entries.filter(x=>x.act==='Vaal'&&x.name.startsWith('Vaal Letter')).length===12,'Vaal Letter total must be 12');
 assert(lore.entries.filter(x=>x.act==='Vaal'&&x.name.startsWith('Research Journal')).length===4,'Vaal Research Journal total must be 4');
+const vaalLore=lore.entries.filter(x=>x.act==='Vaal');
+assert(vaalLore.length===16&&new Set(vaalLore.map(x=>x.wikiRow)).size===16,'Vaal Wiki crosswalk must contain 16 unique rows');
+assert(vaalLore.every(x=>x.wikiRow>=125&&x.wikiRow<=140),'Vaal Wiki rows must be 125–140');
+assert(lore.entries.find(x=>x.id===130).wikiRow===128,'Concealed Caldarium historical ID / Wiki row mapping mismatch');
+
 const companion=fs.readFileSync(path.join(dir,'companion.html'),'utf8');
 assert(companion.includes('src="./lore-data.js"')&&companion.includes('poe-companion-lore-v1'),'Companion lore data or isolated persistence missing');
 assert(companion.includes('data-safety="alira"')&&companion.includes('id="gameCount"')&&companion.includes('id="vaalArea"'),'Companion safety/recheck/Vaal UI missing');

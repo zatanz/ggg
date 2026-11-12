@@ -6,6 +6,9 @@ if(!E||!L||!X||!B){return;}
 const MAIN="poe-all-ears-user-data-v1",LORE="poe-companion-lore-v1",EXTRA="poe-companion-extras-v1",HUB="poe-unified-review-v2";
 const collections={ears:E.items,lore:L.entries,waypoints:X.waypoints,sidequests:X.sidequests};
 const totals={ears:484,lore:140,waypoints:91,sidequests:30};
+const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
+const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
+const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
 const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",waypoints:"จุดวาร์ป (Waypoint)",sidequests:"เควสต์รอง"};
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
@@ -59,6 +62,10 @@ if(guide){
   fact("เงื่อนไขที่ต้องทำก่อน",guide.unlock);
   fact("จุดที่ห้ามพลาด",guide.caution);
   fact("หมายเหตุ",guide.tip);
+  if(type==="sidequests"){
+    const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);
+    if(reward)fact("รางวัลเควสต์ (ข้อมูลอ้างอิง)",reward.reward+" · ไม่ใช่รางวัลจากการทำ Achievement");
+  }
   if(!guide.detailsKnown)body.append(el("p","ยังไม่มีเงื่อนไขรายรายการที่ตรวจยืนยันจากเกม; ควรเทียบกับแหล่งอ้างอิงก่อนผ่านจุดเปลี่ยนเควสต์","hubUnverifiedText"));
   const source=el("a","เปิดแหล่งอ้างอิง");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";body.append(el("p","แหล่งข้อมูล: "+guide.sourceLabel+" · ไม่ได้รับรองแพตช์ 3.30","hubSubtle"),source);
   details.append(body);info.append(details);
@@ -74,6 +81,29 @@ if(state.tab==="route"&&type!=="ears"&&type!=="sidequests"){const group=area(x,t
 container.append(itemCard(type,x));});target.append(container);
 if(shown.length<list.length){const more=el("button","ดูเพิ่มอีก "+(list.length-shown.length)+" รายการ","hubShowMore");more.onclick=()=>{state.limit=1000;renderView();};target.append(more);}}
 function section(title){const d=el("section",undefined,"hubSection");d.append(el("h2",title));return d;}
+function renderActRewards(act){
+const group=rewardIndex.find(x=>String(x.act)===String(act));
+if(!group||!group.quests.length)return null;
+const chapter=el("details",undefined,"hubChapter hubRewards");chapter.dataset.extra="rewards";
+const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
+heading.append(el("strong","รางวัลเควสต์"),el("small","ข้อมูลอ้างอิง · ไม่ใช่รายการเก็บ Achievement"));
+summary.append(heading,el("span",group.quests.length+" เควสต์","hubChapterCount"));
+chapter.append(summary);
+const content=el("div",undefined,"hubChapterBody");
+content.append(el("p","รางวัลที่อาจได้รับจากการส่งเควสต์ใน Act นี้ · Skill Gem และอุปกรณ์ขึ้นกับคลาส/ตัวเลือก ข้อมูลยังไม่ได้รับรองกับแพตช์ 3.30 และไม่ใช่รางวัลสำหรับการปลด All Ears","hubSubtle"));
+const list=el("div",undefined,"hubRewardList");
+for(const quest of group.quests){
+  const card=el("div",undefined,"hubRewardRow");
+  const title=el("div",undefined,"hubRewardName");
+  title.append(el("strong",quest.name),el("span",rewardTypes[quest.type]||"รางวัล","hubRewardKind"));
+  card.append(title,el("p",quest.reward,"hubRewardText"));
+  list.append(card);
+}
+content.append(list);
+const source=el("a","ดูรายการรางวัลและตัวเลือกตามคลาสบน PoE Wiki");
+source.href=window.POE_QUEST_REWARDS.source||"https://www.poewiki.net/wiki/List_of_quest_rewards";source.target="_blank";source.rel="noopener noreferrer";content.append(source);
+chapter.append(content);return chapter;
+}
 function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการที่ต้องเก็บ");
 panel.append(el("p","เลือกหัวข้อด้านล่างเพื่อดูสิ่งที่ยังไม่ได้ทำใน Act นี้ · รายการ All Ears เรียงตาม PoE Wiki ปี 2025 แต่ยังไม่ใช่เส้นทางที่ยืนยันว่าปลอดภัยในแพตช์ 3.30","hubSubtle"));
 if(act==="2"){
@@ -93,7 +123,7 @@ if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","
 addList(content,type,act,state.limit,true);chapter.append(content);
 chapter.addEventListener("toggle",()=>{if(!state.search.trim()){if(chapter.open)routeOpen.add(type);else routeOpen.delete(type);}});
 panel.append(chapter);
-});target.append(panel);}
+});const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
 function renderCategory(target,type){const panel=section(uiNames[type]+" · "+names[type]);
 const desc={lore:"Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่",
 waypoints:"รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด",

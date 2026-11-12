@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','route-act8.js','guide-act1.js','act2-advisory.js','act6-advisory.js','act9-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','route-act4.js','route-act5.js','route-act6.js','route-act7.js','route-act8.js','guide-act1.js','act2-advisory.js','act6-advisory.js','act9-advisory.js','act10-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -187,6 +187,19 @@ assert(act9Advisory.milestones.length===4,'Act 9 advisory must contain four mile
 assert(act9Advisory.milestones.flatMap(x=>x.ids).length===9,'Act 9 advisory must cover all nine legacy notes');
 assert(new Set(act9Advisory.milestones.flatMap(x=>x.ids)).size===9,'Act 9 advisory duplicate risk IDs');
 assert(act9Advisory.milestones.flatMap(x=>x.ids).every(id=>act9Notes.some(x=>x.id===id)),'Act 9 advisory references unsupported risk');
+const act10Inventory=JSON.parse(fs.readFileSync(path.join(dir,'act10-inventory.json'),'utf8'));
+const act10Items=d.items.filter(x=>x.act===10);
+const act10Advisory=ctx.window.ALL_EARS_ACT10_ADVISORY;
+assert(act10Items.length===32&&act10Inventory.records.length===32,'Act 10 inventory must contain 32 dialogues');
+assert(new Set(act10Inventory.records.map(x=>x.id)).size===32,'Act 10 inventory duplicate IDs');
+assert(act10Inventory.records.every((x,i)=>x.id===act10Items[i].id&&x.npc===act10Items[i].npc&&x.topic===act10Items[i].dialog&&x.legacyNote===act10Items[i].note),'Act 10 inventory source drift');
+assert(act10Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 10 must not claim unverified Wiki or patch mapping');
+assert(act10Inventory.patchCertified===false&&act10Inventory.routeSafe===false,'Act 10 route not certified');
+assert(act10Inventory.records.filter(x=>x.riskCandidate).length===11,'Act 10 risk candidate count drift');
+assert(act10Advisory.patchCertified===false&&act10Advisory.routeSafe===false,'Act 10 advisory falsely certified');
+assert(act10Advisory.milestones.length===3,'Act 10 advisory must contain three checkpoints');
+assert(new Set(act10Advisory.milestones.flatMap(x=>x.ids)).size===11,'Act 10 advisory must cover 11 distinct dialogues');
+assert(act10Advisory.milestones.flatMap(x=>x.ids).every(id=>act10Items.some(x=>x.id===id)),'Act 10 advisory references unknown dialogue');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

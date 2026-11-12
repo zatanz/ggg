@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15171c">
+  <meta name="description" content="เช็กลิสต์ All Ears สำหรับ Path of Exile 1 จำนวน 484 บทสนทนา แยกความคืบหน้าตามตัวละคร ใช้ฟรี ไม่ต้องสมัครสมาชิก">
+  <title>All Ears · PoE 1 | Checklist</title>
+  <style>
+    :root{color-scheme:dark;--bg:#121419;--surface:#1b1e25;--surface2:#252933;--line:#353945;--text:#f2eee6;--muted:#b7b5b1;--gold:#d6b777;--ok:#8bcbad;--risk:#ecb081;--shadow:0 18px 40px #0004}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse at 25% -14%,#3b3428 0,transparent 45%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;font-size:15px;line-height:1.55}
+    a{color:var(--gold)} a:hover{color:#f2d39a}
+    button,select,input{font:inherit} button,select,input[type="search"],input[type="text"]{color:var(--text);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:42px}
+    button{cursor:pointer}button:hover{border-color:var(--gold)}button:disabled{opacity:.45;cursor:not-allowed}
+    input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+    .wrap{max-width:1140px;margin:auto;padding:25px 20px 70px}
+    .kicker{text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;font-size:11px}
+    header h1{font-family:Georgia,serif;font-weight:500;letter-spacing:.02em;font-size:clamp(36px,6vw,55px);margin:5px 0 8px}
+    header p{max-width:780px;color:var(--muted);margin:0 0 22px}
+    .headlinks{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;margin-bottom:20px}
+    .panel{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:20px;box-shadow:var(--shadow)}
+    .panel+ .panel{margin-top:14px}
+    .panel-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin:0 0 10px}
+    .ctrls{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+    .ctrls select{flex:1;min-width:180px;max-width:390px}
+    .minor{font-size:12px;color:var(--muted)}
+    .mutebtn{background:transparent;color:var(--muted)}
+    .danger:hover{color:#ffb7a5;border-color:#c78f87}
+    .stats{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:22px}
+    .big{font-size:38px;line-height:1.05;color:var(--text);font-weight:700;letter-spacing:-.04em}
+    .big small{font-size:16px;color:var(--muted);font-weight:400;letter-spacing:0}
+    .track{margin-top:11px;height:9px;background:var(--surface2);border-radius:10px;overflow:hidden}
+    .fill{height:100%;width:0;background:linear-gradient(90deg,#8b713e,var(--gold));border-radius:10px;transition:width .2s}
+    .pill{border:1px solid var(--line);border-radius:20px;padding:5px 11px;font-size:12px;color:var(--muted)}
+    .tips{margin-top:12px;border-left:3px solid var(--risk);background:#30271f;padding:12px 15px;border-radius:0 9px 9px 0;color:#efded0}
+    .toolbar{position:sticky;top:0;z-index:5;background:#121419f2;backdrop-filter:blur(12px);padding:12px 0;margin-top:13px}
+    .toolbar-inner{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .toolbar input[type="search"]{flex:1;min-width:165px}
+    .toolbar select{min-width:120px}
+    .seg{display:flex;gap:5px;flex-wrap:wrap}
+    .seg button[aria-pressed="true"]{color:#17150f;background:var(--gold);border-color:var(--gold);font-weight:700}
+    .actline{margin:18px 0 10px;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+    .actline h2{font-family:Georgia,serif;font-size:25px;font-weight:500;margin:0}
+    .list{display:grid;gap:9px}
+    .entry{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:var(--surface);cursor:pointer;transition:background .15s,border .15s}
+    .entry:hover{background:#252832;border-color:#6c6151}
+    .entry.done{border-color:#335246;background:#192720}
+    .entry input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 22px;height:22px;margin:3px 0 0;border:2px solid #858681;border-radius:6px;cursor:pointer;display:grid;place-content:center}
+    .entry input[type=checkbox]:checked{background:var(--ok);border-color:var(--ok)}
+    .entry input[type=checkbox]:checked:after{content:"✓";font-size:17px;line-height:1;color:#112117;font-weight:800}
+    .entry .content{flex:1;min-width:0}
+    .id{font-variant-numeric:tabular-nums;color:var(--gold);font-size:12px;margin-right:9px}
+    .npc{font-weight:700}.topic{margin-top:1px;color:#ddd6c9}
+    .note{margin-top:5px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+    .note.alert{color:var(--risk);font-weight:600}
+    .entry.done .npc,.entry.done .topic{color:#9baea1}
+    .empty{padding:40px 10px;text-align:center;color:var(--muted)}
+    .foot{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:12px}
+    .foot p{max-width:900px}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#364137;border:1px solid #759d7f;border-radius:10px;padding:12px 18px;z-index:20;transition:all .2s;max-width:calc(100vw - 24px)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    @media(max-width:720px){.wrap{padding:20px 13px 60px}.panel{padding:15px}.stats{grid-template-columns:1fr}.toolbar{top:0}.ctrls>*{flex-grow:1}.toolbar select{flex:1}.headlinks{gap:12px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Path of Exile 1 · Achievement Tracker</div>
+    <h1>All Ears</h1>
+    <p>เช็กบทสนทนา NPC ทั้ง <strong>484 รายการ</strong> ตลอด Act 1–10 แยกตัวละครได้หลายตัว ข้อมูลที่ติ๊กจะบันทึกในเบราว์เซอร์ของคุณโดยอัตโนมัติ ไม่ต้องสมัครสมาชิก</p>
+    <div class="headlinks"><a href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement" target="_blank" rel="noopener noreferrer">คู่มือ PoE Wiki</a><a href="https://github.com/zatanz/Test/tree/master/poe-all-ears" target="_blank" rel="noopener noreferrer">ซอร์สโค้ด / แจ้งปัญหา</a></div>
+  </header>
+  <section class="panel" aria-label="เลือกตัวละคร">
+    <h2 class="panel-title">ตัวละครที่กำลังเล่น</h2>
+    <div class="ctrls">
+      <label class="sr" for="character">เลือกตัวละคร</label>
+      <select id="character"></select>
+      <button id="addChar">+ เพิ่มตัวละคร</button>
+      <button id="renameChar" class="mutebtn">เปลี่ยนชื่อ</button>
+      <button id="deleteChar" class="mutebtn danger">ลบตัวละคร</button>
+    </div>
+    <p class="minor">แต่ละตัวละครมีรายการที่ติ๊กแยกกัน · รายการจะไม่ซิงก์ระหว่างมือถือหรือคอมพิวเตอร์โดยอัตโนมัติ</p>
+    <div class="ctrls">
+      <button id="export" class="mutebtn">สำรองข้อมูล JSON</button>
+      <button id="import" class="mutebtn">นำเข้าข้อมูล</button>
+      <button id="reset" class="mutebtn danger">ล้างรายการที่ติ๊กของตัวละครนี้</button>
+      <input type="file" id="file" accept="application/json,.json" hidden>
+    </div>
+  </section>
+  <section class="panel" style="margin-top:13px" aria-label="ความคืบหน้า">
+    <div class="stats">
+      <div><div class="panel-title">ความคืบหน้า · <span id="currentName"></span></div><div class="big"><span id="progress">0</span> <small>/ 484</small></div><div class="track" role="progressbar" aria-label="ความคืบหน้าทั้งหมด" aria-valuemin="0" aria-valuemax="484" aria-valuenow="0" id="progressBar"><div id="bar" class="fill"></div></div></div>
+      <div><span id="pct" class="pill">0%</span></div>
+    </div>
+    <div class="tips"><strong>สำคัญ:</strong> All Ears ต้องทำกับตัวละครเดียวเพื่อให้ Achievement สำเร็จ บางบทสนทนาหายเมื่อฆ่าบอส ส่งเควสต์ หรือข้ามพื้นที่ อ่านเงื่อนไขก่อนเดินเรื่อง โดยเฉพาะ <strong>Act 2: Bandits / Ancient Seal</strong>, <strong>Act 3: Clarissa / Piety</strong> และ <strong>Act 9: Sekhema Feather</strong></div>
+  </section>
+  <div class="toolbar" aria-label="ค้นหาและกรอง">
+    <div class="toolbar-inner">
+      <label class="sr" for="act">เลือก Act</label>
+      <select id="act"><option value="all">ทุก Act</option></select>
+      <label class="sr" for="search">ค้นหาบทสนทนา</label>
+      <input type="search" id="search" placeholder="ค้นหา NPC, หัวข้อ หรือเงื่อนไข…" autocomplete="off">
+      <div class="seg" aria-label="กรองสถานะ">
+        <button data-status="all" aria-pressed="true">ทั้งหมด</button>
+        <button data-status="pending" aria-pressed="false">ยังไม่ติ๊ก</button>
+        <button data-status="done" aria-pressed="false">ติ๊กแล้ว</button>
+        <button data-status="warning" aria-pressed="false">มีเงื่อนไข</button>
+      </div>
+    </div>
+  </div>
+  <main id="results" aria-live="polite"></main>
+  <footer class="foot">
+    <p>แหล่งข้อมูล: <a href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement" target="_blank" rel="noopener noreferrer">PoE Wiki · All Ears</a> (484 คะแนน ณ วันที่ตรวจ) และเช็กลิสต์เก่าของ MysticalChill เวอร์ชัน 3.9 ซึ่งใช้สำหรับรายละเอียดบทสนทนา/เงื่อนไขบางรายการ ชุดนี้ปรับจำนวนและ Act ให้ตรงกับ Wiki หลังนำบทสนทนา Navali ออก แต่ <strong>ลำดับบางบรรทัดเป็นลำดับจากรายการเก่า ไม่ใช่เส้นทางแนะนำที่ตรวจยืนยันตาม Wiki ปัจจุบันครบทุกขั้น</strong> ตรวจคู่มือต้นทางสำหรับจุดที่พลาดแล้วแก้ไขไม่ได้</p>
+    <p>ข้อมูลความคืบหน้าจะอยู่ใน localStorage ของเบราว์เซอร์นี้เท่านั้น หากล้างข้อมูลเว็บไซต์หรือเปิดในอุปกรณ์อื่น ให้ใช้ปุ่มสำรอง/นำเข้าข้อมูล ไม่มีการส่งชื่อตัวละครหรือสถานะการติ๊กไปยังเซิร์ฟเวอร์</p>
+  </footer>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="./data.js"></script>
+<script>
+(function(){
+  "use strict";
+  var items = window.ALL_EARS_DATA && window.ALL_EARS_DATA.items;
+  var root=document.getElementById("results");
+  if(!Array.isArray(items)||items.length!==484){root.innerHTML='<div class="empty">โหลดข้อมูล 484 รายการไม่สำเร็จ กรุณารีเฟรชหน้าเว็บ</div>';return;}
+  var KEY="poe-all-ears-user-data-v1";
+  var state, status="all", actFilter="all", searchText="";
+  function uid(){return "c-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9);}
+  function blank(){var id=uid();return {version:1,active:id,characters:[{id:id,name:"ตัวละคร 1",checked:[]}]};}
+  function sanitize(raw){if(!raw||!Array.isArray(raw.characters))return blank();var chars=[];var ids=new Set();raw.characters.slice(0,150).forEach(function(c){if(!c||typeof c.name!=="string")return;var id=(typeof c.id==="string"&&c.id.length<100&&!ids.has(c.id))?c.id:uid();ids.add(id);var chk=Array.isArray(c.checked)?c.checked.filter(function(v){return Number.isInteger(v)&&v>=1&&v<=484;}):[];chars.push({id:id,name:c.name.trim().slice(0,60)||"ตัวละคร",checked:Array.from(new Set(chk))});});if(!chars.length)return blank();return {version:1,active:chars.some(function(c){return c.id===raw.active;})?raw.active:chars[0].id,characters:chars};}
+  try{state=sanitize(JSON.parse(localStorage.getItem(KEY)));}catch(e){state=blank();}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast("บันทึกไม่ได้: พื้นที่เก็บข้อมูลเบราว์เซอร์ถูกปิดหรือเต็ม");}}
+  function current(){return state.characters.find(function(c){return c.id===state.active;})||state.characters[0];}
+  function byId(id){return document.getElementById(id);}
+  function el(tag,cls,text){var n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
+  function toast(msg){var t=byId("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("show");},3300);}
+  function isWarning(x){return /DO NOT|BEFORE|WITHOUT|After killing|After getting|After completing|After first|quest|first talking|After giving/i.test(x.note)||/\(!\)|\[!\]/.test(x.dialog);}
+  function renderChar(){var s=byId("character"),c=current();s.replaceChildren();state.characters.forEach(function(p){var o=el("option",null,p.name);o.value=p.id;s.appendChild(o);});s.value=c.id;byId("currentName").textContent=c.name;}
+  function renderProgress(){var count=current().checked.length;byId("progress").textContent=count;byId("pct").textContent=(count*100/484).toFixed(1)+"%";byId("bar").style.width=(count/484*100)+"%";byId("progressBar").setAttribute("aria-valuenow",String(count));}
+  function renderItems(){var c=current(),checked=new Set(c.checked),q=searchText.toLowerCase(),selected=items.filter(function(x){if(actFilter!=="all"&&String(x.act)!==actFilter)return false;if(status==="pending"&&checked.has(x.id))return false;if(status==="done"&&!checked.has(x.id))return false;if(status==="warning"&&!isWarning(x))return false;if(q&&[String(x.id),x.npc,x.dialog,x.note].join(" ").toLowerCase().indexOf(q)<0)return false;return true;});var acts=new Map();selected.forEach(function(x){if(!acts.has(x.act))acts.set(x.act,[]);acts.get(x.act).push(x);});root.replaceChildren();if(!selected.length){root.appendChild(el("div","empty","ไม่พบรายการที่ตรงกับการค้นหา / ตัวกรอง"));return;}acts.forEach(function(rows,a){var head=el("div","actline");head.appendChild(el("h2",null,"Act "+a));var total=items.filter(function(x){return x.act===a;}).length;var done=items.filter(function(x){return x.act===a&&checked.has(x.id);}).length;head.appendChild(el("span","pill",done+" / "+total+" · แสดง "+rows.length));root.appendChild(head);var list=el("div","list");rows.forEach(function(x){var done=checked.has(x.id), card=el("label","entry"+(done?" done":"")),check=el("input");check.type="checkbox";check.checked=done;check.setAttribute("aria-label","บทสนทนา "+x.id+" "+x.npc+" "+x.dialog);check.addEventListener("change",function(){var o=current();if(check.checked&&!o.checked.includes(x.id))o.checked.push(x.id);if(!check.checked)o.checked=o.checked.filter(function(n){return n!==x.id;});o.checked.sort(function(a,b){return a-b;});save();renderProgress();renderItems();});var content=el("div","content"),line=el("div");line.appendChild(el("span","id","#"+x.id));line.appendChild(el("span","npc",x.npc));content.appendChild(line);content.appendChild(el("div","topic",x.dialog.replace(/\s*-\s*\(!\)/g," [!]")));if(x.note)content.appendChild(el("div","note"+(isWarning(x)?" alert":""),x.note));card.appendChild(check);card.appendChild(content);list.appendChild(card);});root.appendChild(list);});}
+  function render(){renderChar();renderProgress();renderItems();}
+  for(var a=1;a<=10;a++){var opt=el("option",null,"Act "+a);opt.value=String(a);byId("act").appendChild(opt);}
+  byId("character").addEventListener("change",function(e){state.active=e.target.value;save();render();});
+  byId("addChar").addEventListener("click",function(){var name=prompt("ชื่อตัวละครใหม่:","ตัวละคร "+(state.characters.length+1));if(name===null)return;name=name.trim().slice(0,60);if(!name)return toast("กรุณาระบุชื่อตัวละคร");var c={id:uid(),name:name,checked:[]};state.characters.push(c);state.active=c.id;save();render();toast("เพิ่มตัวละคร "+name+" แล้ว");});
+  byId("renameChar").addEventListener("click",function(){var c=current(),name=prompt("แก้ชื่อ",c.name);if(name===null)return;name=name.trim().slice(0,60);if(!name)return toast("ชื่อว่างไม่ได้");c.name=name;save();render();});
+  byId("deleteChar").addEventListener("click",function(){var c=current();if(!confirm('ลบตัวละคร "'+c.name+'" และข้อมูลที่ติ๊กทั้งหมด?'))return;state.characters=state.characters.filter(function(x){return x.id!==c.id;});if(!state.characters.length){state=blank();}else{state.active=state.characters[0].id;}save();render();toast("ลบตัวละครแล้ว");});
+  byId("reset").addEventListener("click",function(){var c=current();if(!confirm('ล้างเครื่องหมายทั้งหมดของ "'+c.name+'" ?'))return;c.checked=[];save();render();toast("ล้างรายการที่ติ๊กแล้ว");});
+  byId("search").addEventListener("input",function(e){searchText=e.target.value.trim();renderItems();});
+  byId("act").addEventListener("change",function(e){actFilter=e.target.value;renderItems();});
+  document.querySelectorAll("[data-status]").forEach(function(b){b.addEventListener("click",function(){status=b.dataset.status;document.querySelectorAll("[data-status]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});renderItems();});});
+  byId("export").addEventListener("click",function(){var data=JSON.stringify({app:"poe-all-ears",exportedAt:new Date().toISOString(),...state},null,2),blob=new Blob([data],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="poe-all-ears-backup.json";a.click();setTimeout(function(){URL.revokeObjectURL(u);},3000);toast("ดาวน์โหลดข้อมูลสำรองแล้ว");});
+  byId("import").addEventListener("click",function(){byId("file").click();});
+  byId("file").addEventListener("change",function(e){var f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>2000000){toast("ไฟล์ใหญ่เกิน 2 MB");e.target.value="";return;}var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(String(reader.result)),clean=sanitize(data);if(data.app!=="poe-all-ears"||!Array.isArray(data.characters))throw Error("invalid");if(!confirm("นำเข้าตัวละคร "+clean.characters.length+" ตัว? จะเพิ่มเป็นรายการใหม่ ไม่ลบข้อมูลเดิม"))return;clean.characters.forEach(function(c){state.characters.push({id:uid(),name:c.name,checked:c.checked});});state.active=state.characters[state.characters.length-clean.characters.length].id;save();render();toast("นำเข้าข้อมูล "+clean.characters.length+" ตัวละครแล้ว");}catch(err){toast("รูปแบบไฟล์ไม่ถูกต้อง");}finally{e.target.value="";}};reader.onerror=function(){toast("อ่านไฟล์ไม่สำเร็จ");};reader.readAsText(f);});
+  render();save();
+})();
+</script>
+</body>
+</html>

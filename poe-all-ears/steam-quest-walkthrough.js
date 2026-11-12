@@ -558,7 +558,355 @@ window.POE_STEAM_WALK = {
         ],
         "confidence": "historical"
       }
+    ],
+    "3": [
+      {
+        "id": "sarn-entry",
+        "place": "The City of Sarn / Sarn Encampment",
+        "heading": "เริ่ม Act 3 · ช่วย Clarissa ก่อนเร่งเข้า Crematorium",
+        "quest": "Lost in Love",
+        "dialogueIds": [
+          111,
+          114,
+          112,
+          113
+        ],
+        "loreIds": [
+          41
+        ],
+        "actions": [
+          "เข้า City of Sarn ให้ช่วย Clarissa และตรวจบทสนทนาของ Maramoa, Hargan และ Grigor ที่เปิดตามสถานะจริง",
+          "อ่าน Ancient Graffiti ใน City of Sarn และกลับเมืองเมื่อมีหัวข้อ NPC เพิ่ม"
+        ],
+        "stop": "อย่าเร่งเผชิญ Piety ใน Crematorium ก่อนช่วย Clarissa และตรวจบทสนทนาต้น Act",
+        "stopIds": [
+          111,
+          114,
+          112,
+          113
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "bracelet",
+        "place": "The Slums / The Crematorium / Sarn Encampment",
+        "heading": "Tolman's Bracelet · กลับหา Hargan ก่อนส่งของ",
+        "quest": "Lost in Love",
+        "dialogueIds": [
+          118,
+          124,
+          119,
+          120,
+          125,
+          128,
+          126,
+          129,
+          123,
+          121,
+          122,
+          116,
+          115,
+          117,
+          131,
+          127,
+          130
+        ],
+        "loreIds": [
+          42,
+          43
+        ],
+        "actions": [
+          "เมื่อเก็บ Tolman's Bracelet ได้ ให้กลับเมืองคุย Hargan: Introduction (Wiki #115) ขณะที่ยังถือไอเทมอยู่",
+          "ตรวจ NPC ในเมืองตามเงื่อนไขของแต่ละหัวข้อ บางหัวข้อในกลุ่มนี้เปิดหลังส่ง Bracelet ไม่ใช่ทั้งหมดต้องฟังก่อน",
+          "คุยหัวข้อก่อนส่งครบแล้วจึงส่ง Bracelet ให้ Clarissa รับ Sewer Keys และกลับตรวจหัวข้อหลังจบเควสต์"
+        ],
+        "stop": "ยังไม่ควรส่ง Tolman's Bracelet ให้ Clarissa ก่อนฟัง Hargan: Introduction (Wiki #115)",
+        "stopIds": [
+          118
+        ],
+        "confidence": "historical",
+        "visual": {
+          "asset": "./assets/clarissa-quest-illustration.svg",
+          "title": "Lost in Love · ก่อนส่ง Tolman's Bracelet",
+          "alt": "ภาพจำลองเควสต์ Lost in Love ใน Act 3 เน้นกลับไปคุย Hargan ก่อนส่ง Tolman's Bracelet ให้ Clarissa",
+          "check": "ถือ Tolman's Bracelet กลับคุย Hargan: Introduction (Wiki #115) ก่อนส่งของให้ Clarissa แล้วตรวจบทสนทนาหลังรับ Sewer Keys",
+          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+          "status": "mock-not-in-game"
+        }
+      },
+      {
+        "id": "sewer-blockage",
+        "place": "The Sewers / Sarn Encampment",
+        "heading": "Sewers · กลับหา Maramoa ก่อนเข้า Marketplace",
+        "quest": "Victario's Secrets",
+        "dialogueIds": [
+          134,
+          133,
+          132,
+          135,
+          138,
+          136,
+          137,
+          139,
+          140
+        ],
+        "loreIds": [],
+        "actions": [
+          "ระหว่างเดิน Sewers ตรวจบทสนทนาของ Clarissa ตามเงื่อนไขที่เปิด",
+          "เมื่อพบ Undying Blockage ให้กลับคุย Maramoa: Crossing the River (Wiki #140) ก่อนผ่านไป Marketplace",
+          "หัวข้ออื่นในช่วง #132–139 อาจเปิดเมื่อเข้าพื้นที่ถัดไป ให้ตรวจตามเกม ไม่จำเป็นต้องปลดทุกหัวข้อก่อนจุดกั้น"
+        ],
+        "stop": "ยังไม่ควรเข้า The Marketplace หลังพบ Undying Blockage จนกว่าจะตรวจ Maramoa: Crossing the River (Wiki #140)",
+        "stopIds": [
+          140
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "market-battlefront",
+        "place": "The Marketplace / The Catacombs / The Battlefront",
+        "heading": "Marketplace และ Battlefront · เก็บ Lore ระหว่างทาง",
+        "quest": "The Gemling Queen / Victario's Secrets",
+        "dialogueIds": [
+          141,
+          147
+        ],
+        "loreIds": [
+          44,
+          45,
+          46,
+          47
+        ],
+        "actions": [
+          "อ่าน Ancient Notebook ที่ Marketplace และ Graffiti/Monograph ที่ Catacombs ตามชื่อในเกม",
+          "เมื่อไปถึง Battlefront เก็บ Graffiti และกลับตรวจ Clarissa: Statues ตามจังหวะที่หัวข้อเปิด",
+          "หากพบทางไป Solaris Temple ให้กลับตรวจ Clarissa: The Lunaris Temple"
+        ],
+        "stop": null,
+        "stopIds": [],
+        "confidence": "historical"
+      },
+      {
+        "id": "docks-fairgraves",
+        "place": "The Docks",
+        "heading": "Fairgraves ที่ Docks · คุยก่อนเก็บ Decanter/Plum",
+        "quest": "A Swig of Hope",
+        "dialogueIds": [
+          142,
+          143,
+          144,
+          146,
+          145
+        ],
+        "loreIds": [
+          48
+        ],
+        "actions": [
+          "ไปพบ Fairgraves ขณะยังไม่มี Decanter Spiritus หรือ Chitus' Plum ในกระเป๋า เพื่อฟัง Introduction (Wiki #153)",
+          "ตรวจหัวข้อ Decanter Spiritus, Chitus' Plum, The Undying และ Resurrection ตามที่เปิด ก่อนส่งไอเทม",
+          "อ่าน Graffiti ใน Docks; หาก Fairgraves ไม่ปรากฏตรวจว่าเควสต์ The Marooned Mariner ใน Act 1 สำเร็จแล้ว"
+        ],
+        "stop": "ยังไม่ควรถือ Decanter Spiritus หรือ Chitus' Plum ก่อนฟัง Fairgraves: Introduction (Wiki #153)",
+        "stopIds": [
+          142
+        ],
+        "confidence": "conflict",
+        "patchProblem": "ผู้เขียนคู่มือ Steam รายงานว่า Fairgraves คุยไม่ได้ในแพตช์ 3.29; ยังไม่มีหลักฐานยืนยันการแก้ไขในแพตช์ 3.30"
+      },
+      {
+        "id": "dialla-intro",
+        "place": "The Solaris Temple Level 2 / Sarn Encampment",
+        "heading": "Lady Dialla ครั้งแรก · ยังไม่มี Sulphite หรือ Ribbon Spool",
+        "quest": "The Gemling Queen",
+        "dialogueIds": [
+          148,
+          149,
+          150,
+          151,
+          152
+        ],
+        "loreIds": [],
+        "actions": [
+          "ก่อนพบ Lady Dialla ครั้งแรกตรวจว่าไม่มี Thaumetic Sulphite หรือ Ribbon Spool ในกระเป๋า (Wiki #143)",
+          "ฟัง Lady Dialla: Introduction แล้วกลับตรวจบทสนทนา Hargan, Grigor และ Maramoa ที่ปลดล็อก",
+          "การพบ Fairgraves กับ Lady Dialla เป็นคนละเควสต์; อย่าตีความลำดับกลุ่มนี้ว่าเป็นเส้นทางที่ทดสอบกับแพตช์ใหม่แล้ว"
+        ],
+        "stop": "ยังไม่ควรถือ Thaumetic Sulphite หรือ Ribbon Spool ก่อนฟัง Lady Dialla: Introduction (Wiki #143)",
+        "stopIds": [
+          148
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "dialla-items",
+        "place": "The Docks / The Battlefront / Solaris Temple Level 2",
+        "heading": "รับ Sulphite และ Ribbon Spool · ตรวจสถานะทีละชิ้น",
+        "quest": "The Gemling Queen / The Ribbon Spool",
+        "dialogueIds": [
+          153,
+          154,
+          156,
+          157,
+          155
+        ],
+        "loreIds": [
+          49,
+          50,
+          51
+        ],
+        "actions": [
+          "คุย Lady Dialla: Thaumetic Sulphite โดยยังไม่มี Ribbon Spool ตาม Wiki #148",
+          "เมื่อสถานะเควสต์เปลี่ยน ค่อยตรวจหัวข้อ The Sewers, Malachai, Chitus และ Infernal Talc ที่เปิดใหม่",
+          "เก็บ Journal Entry, Reverie Device และ Malachai's Journal ใน Solaris Temple Level 2"
+        ],
+        "stop": "ยังไม่ควรรับ Ribbon Spool ก่อนตรวจ Lady Dialla: Thaumetic Sulphite ตามเงื่อนไข (Wiki #148)",
+        "stopIds": [
+          153
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "ebony-pre-gravicius",
+        "place": "The Ebony Barracks / Sarn Encampment",
+        "heading": "ก่อนสู้ Gravicius · กลับคุย Maramoa",
+        "quest": "Sever the Right Hand",
+        "dialogueIds": [
+          158
+        ],
+        "loreIds": [
+          52
+        ],
+        "actions": [
+          "หลังเข้า Ebony Barracks กลับเมืองคุย Maramoa: Crossing the River",
+          "อ่าน Ancient Graffiti ใน Ebony Barracks ก่อนเดินต่อ",
+          "ตรวจหัวข้อครบแล้วจึงสู้ General Gravicius"
+        ],
+        "stop": "ยังไม่ควรฆ่า General Gravicius ก่อน Maramoa: Crossing the River (Wiki #158)",
+        "stopIds": [
+          158
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "gravicius-before-piety",
+        "place": "The Ebony Barracks / The Lunaris Temple / Sarn Encampment",
+        "heading": "หลัง Gravicius · ตรวจ Maramoa และ Grigor ก่อน Piety",
+        "quest": "Sever the Right Hand / Piety's Pets",
+        "dialogueIds": [
+          159,
+          162,
+          163,
+          160,
+          164,
+          161
+        ],
+        "loreIds": [],
+        "actions": [
+          "หลังฆ่า Gravicius กลับตรวจ Lady Dialla, Hargan, Clarissa, Maramoa และ Grigor ในหัวข้อที่เปิด",
+          "รับรางวัล Sever the Right Hand แล้วตรวจ Maramoa: Piety; คุย Grigor: The Lunaris Temple ตามเงื่อนไขใน Wiki",
+          "อย่าฆ่า Piety ก่อนเก็บสองหัวข้อที่ถูกเตือนใน Wiki #163–164"
+        ],
+        "stop": "ยังไม่ควรฆ่า Piety ก่อน Grigor: The Lunaris Temple และ Maramoa: Piety (Wiki #163–164)",
+        "stopIds": [
+          164,
+          161
+        ],
+        "confidence": "historical"
+      },
+      {
+        "id": "after-piety",
+        "place": "The Lunaris Temple / Sarn Encampment",
+        "heading": "หลัง Piety · กลับเก็บหัวข้อในเมือง",
+        "quest": "Piety's Pets",
+        "dialogueIds": [
+          167,
+          166,
+          165,
+          168
+        ],
+        "loreIds": [],
+        "actions": [
+          "หลังฆ่า Piety กลับเมืองคุย Clarissa, Hargan และ Maramoa เรื่อง Piety",
+          "ตรวจ Grigor: The Beast เมื่อหัวข้อเปิดตามสถานะเกม",
+          "เทียบยอดหัวข้อที่เก็บจริงก่อนย้ายไปส่วน Library"
+        ],
+        "stop": null,
+        "stopIds": [],
+        "confidence": "historical"
+      },
+      {
+        "id": "library",
+        "place": "The Imperial Gardens / The Library / The Archives",
+        "heading": "Library และ Siosa · หาหนังสือให้ครบ 17 แบบ",
+        "quest": "A Fixture of Fate",
+        "dialogueIds": [
+          169,
+          170,
+          171,
+          172,
+          174,
+          176,
+          178,
+          173,
+          177,
+          179,
+          175
+        ],
+        "loreIds": [
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70
+        ],
+        "actions": [
+          "เก็บ Bronze Monograph ใน Imperial Gardens ก่อนเข้า Library",
+          "พบ Siosa และเก็บ Golden Pages ทีละหน้า แล้วกลับตรวจบทสนทนา Siosa ตามช่วงที่เปิด",
+          "The Ancients 7, Purity Chronicles 6, Victario's Writings 4 รวม 17 แบบ; ตรวจชื่อแต่ละเล่ม เพราะตำแหน่งหรือข้อความที่พบอาจซ้ำ"
+        ],
+        "stop": null,
+        "stopIds": [],
+        "confidence": "historical"
+      },
+      {
+        "id": "after-dominus",
+        "place": "The Sceptre of God / Sarn Encampment",
+        "heading": "หลัง Dominus · กลับตรวจบทสนทนาปิด Act 3",
+        "quest": "Sceptre of God",
+        "dialogueIds": [
+          180,
+          181
+        ],
+        "loreIds": [
+          71,
+          72
+        ],
+        "actions": [
+          "หลังฆ่า Dominus กลับเมืองคุย Maramoa: Dominus และ Piety and Dominus",
+          "อ่าน Plaque และ Letter to Chitus ใน The Sceptre of God",
+          "ก่อนออก Act ให้ตรวจ Lore, Waypoint และ Side Quest ที่ยังขาด และเทียบกับเกมจริง"
+        ],
+        "stop": "ก่อนออกจาก Act 3 ให้กลับตรวจหัวข้อหลัง Dominus ทั้งสองรายการ",
+        "stopIds": [
+          180,
+          181
+        ],
+        "confidence": "historical"
+      }
     ]
   },
-  "note": "Act 1: 9 phases 41/41 dialogues and 15/29 lore explicitly placed. Act 2: 10 historical zone phases cover wiki rows 42–110 exactly once; source disagreement before Ancient Seal/Bandits remains unresolved, so cannot certify a safe play order. Both Acts still require separate Lore, Waypoint and Side Quest gates."
+  "note": "Act 1: 9 phases 41/41 dialogues and 15/29 lore explicitly placed. Act 2: 10 historical zone phases cover wiki rows 42–110 exactly once; source disagreement before Ancient Seal/Bandits remains unresolved, so cannot certify a safe play order. Both Acts still require separate Lore, Waypoint and Side Quest gates. Act 3: twelve historic source phases crosswalk all 71 dialogue IDs and 32 lore IDs once. Clarissa, Dialla, Fairgraves, Gravicius and Piety cautions are not gameplay-certified for patch 3.30."
 };

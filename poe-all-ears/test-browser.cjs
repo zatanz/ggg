@@ -247,6 +247,22 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'todo','goal shortcut filters to uncompleted entries');
  await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').selectOption('all');
+ await hub.locator('.hubActStrip [data-act="3"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="3"]').count(),1,'Act 3 source-linked walkthrough renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select option').count(),12,'Act 3 has twelve phase navigation steps');
+ assert.equal((await hub.locator('#hubView [data-steam-act="3"]').innerText()).includes('71 รายการ'),true,'Act 3 uses real dialogue count rather than hard-coded Act 2 total');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Tolman'),true,'Bracelet quest stop is explicit');
+ const clarissaVisual=hub.locator('#hubView [data-visual-phase="bracelet"]');
+ await clarissaVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const img=document.querySelector('[data-visual-phase="bracelet"] img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await clarissaVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act 3 mock image labelled conceptual');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'Act 3 Fairgraves historical patch caution shown');
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('10');
+ assert.equal((await hub.locator('#hubView .hubWalkLore > summary').innerText()).includes('/ 18'),true,'Library phase contains 18 historical lore references including Imperial Gardens');
+ await hub.locator('.hubActStrip [data-act="1"]').click();
+
 
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
@@ -370,12 +386,13 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ยังมีชีวิต (Oak)'),true,'Act 2 second-kill description shows survivor Oak');
  await hub.locator('.hubActStrip [data-act="3"]').click();
- assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act 3 shows only one checkpoint at a time');
- assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),5,'Act 3 five source-linked checkpoints are available');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubCheckpoint').count(),1,'Act 3 retains one historic checkpoint at a time');
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),5,'Act 3 five source-linked legacy checkpoints remain accessible');
  assert.equal(await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').evaluate(x=>x.open),true,'Clarissa pre-handoff checkpoint opens by default');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"]').innerText()).includes("Tolman's Bracelet"),true,'Act 3 warning names quest turn-in prerequisite');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-clarissa"] .hubCheckpointRowTrigger').first().innerText()).includes("Tolman's Bracelet"),true,'Act 3 dialogue timing is translated and displayed per row');
- await hub.locator('#hubView .hubStepNavigator select').selectOption('4');
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('4');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a3-piety"]').innerText()).includes('Piety'),true,'Piety warning accessible by step selection');
  await hub.locator('.hubActStrip [data-act="2"]').click();
 

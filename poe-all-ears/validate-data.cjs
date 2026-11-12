@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const dir=__dirname,ctx={window:{}};let errors=[];
 function load(name){vm.runInNewContext(fs.readFileSync(path.join(dir,name),'utf8'),ctx,{filename:name});}
-for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','guide-act1.js','act2-advisory.js'])load(name);
+for(const name of ['data.js','patches.js','route-act1.js','route-act2.js','route-act3.js','guide-act1.js','act2-advisory.js'])load(name);
 const d=ctx.window.ALL_EARS_DATA,route=ctx.window.ALL_EARS_ROUTE_ACT1,patches=ctx.window.POE_PATCH_PROFILES,guide=ctx.window.ALL_EARS_GUIDE;
 function assert(cond,msg){if(!cond)errors.push(msg)}
 const expected=[41,69,71,72,44,44,45,30,36,32];
@@ -55,7 +55,19 @@ assert(act3Inventory.records.length===71,'Act 3 inventory must cover 71 dialogue
 assert(new Set(act3Inventory.records.map(x=>x.id)).size===71,'Act 3 inventory contains duplicate IDs');
 assert(act3Inventory.records.every((x,i)=>x.id===act3Items[i].id),'Act 3 inventory ID/order drift');
 assert(act3Inventory.records.every((x,i)=>x.npc===act3Items[i].npc&&x.topic===act3Items[i].dialog&&x.legacyNote===act3Items[i].note),'Act 3 inventory content drift');
-assert(act3Inventory.records.every(x=>x.wikiRow===null&&x.patchEvidence===null&&x.reviewStatus==='inventory-only-unverified'),'Act 3 inventory makes unsupported wiki/patch claims');
+const act3Route=ctx.window.ALL_EARS_ROUTE_ACT3;
+assert(act3Route.records.length===71,'Act 3 route must have 71 rows');
+assert(act3Route.records.every((x,i)=>x.wikiRow===111+i),'Act 3 wiki rows must be 111–181');
+assert(new Set(act3Route.records.map(x=>x.id)).size===71,'Act 3 wiki route duplicate IDs');
+assert(act3Route.records.every(x=>act3Items.some(y=>y.id===x.id&&y.npc===x.npc&&y.dialog===x.dialog)),'Act 3 wiki route source ID mismatch');
+assert(act3Route.routeSafe===false&&act3Route.patch==='unverified','Act 3 wiki ordering is not a certified safe route');
+const byAct3Id=new Map(act3Route.records.map(x=>[x.id,x]));
+assert(act3Inventory.records.every(x=>x.wikiRow===byAct3Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 3 inventory/wiki route mapping drift or unsupported patch claim');
+assert(act3Route.records.find(x=>x.wikiRow===115)?.id===118,'Act 3 Tolman bracelet Hargan mapping mismatch');
+assert(act3Route.records.find(x=>x.wikiRow===143)?.id===148,'Act 3 Dialla introduction mapping mismatch');
+assert(act3Route.records.find(x=>x.wikiRow===153)?.id===142,'Act 3 Fairgraves introduction mapping mismatch');
+assert(act3Route.records.find(x=>x.wikiRow===164)?.id===161,'Act 3 Piety missable mapping mismatch');
+assert(act3Route.notes.some(x=>x.includes('Clarissa')),'Act 3 critical Clarissa warning missing');
 assert(act3Inventory.patchCertified===false&&act3Inventory.routeSafe===false,'Act 3 inventory must not claim a safe certified route');
 assert(act3Inventory.records.filter(x=>x.riskCandidate).length===21,'Act 3 candidate risk inventory drift');
 const act3Risks=JSON.parse(fs.readFileSync(path.join(dir,'act3-risk-ledger.json'),'utf8'));

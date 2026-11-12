@@ -152,6 +152,22 @@ const assert=require('node:assert/strict');
  await hub.goto('file://'+path.resolve(__dirname,'index.html')+'#route');
  await hub.locator('#hubNav button').first().waitFor();
  assert.equal(await hub.locator('#hubNav button').count(),3,'primary navigation has three clear modes');
+ const contrast=await hub.evaluate(()=>{
+   const lum=css=>{
+     const nums=(css.match(/[\d.]+/g)||[]).slice(0,3).map(v=>Number(v)/255);
+     return nums.map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4)
+       .reduce((acc,n,i)=>acc+n*[0.2126,0.7152,0.0722][i],0);
+   };
+   const calc=el=>{
+      const s=getComputedStyle(el),fg=lum(s.color),bg=lum(s.backgroundColor);
+      return (Math.max(fg,bg)+0.05)/(Math.min(fg,bg)+0.05);
+   };
+   return {active:calc(document.querySelector('#hubNav [aria-selected="true"]')),
+     inactive:calc(document.querySelector('#hubNav [aria-selected="false"]')),
+     act:calc(document.querySelector('.hubActStrip [aria-pressed="true"]'))};
+ });
+ assert.equal(Math.min(contrast.active,contrast.inactive,contrast.act)>=4.5,true,'active and inactive menus must have at least 4.5:1 text contrast');
+
  assert.equal(await hub.locator('.hubActStrip button').count(),13,'quick picker exposes campaign Acts, Labyrinth, Vaal and Epilogue');
  
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');

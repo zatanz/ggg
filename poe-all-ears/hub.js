@@ -46,7 +46,7 @@ function area(x,type){return type==="ears"?"Act "+x.act+(getRisk({id:x.id,act:x.
 function warning(x,type){if(type==="ears"){const route=getRisk({id:x.id,act:x.act,type});return route&&(route.before||route.trigger)||x.note||"";}return type==="lore"&&x.random?"จุดปรากฏหรือเนื้อหาอาจสุ่ม ต้องสำรวจซ้ำหรือเข้า Instance ใหม่":"";}
 const journeyScopes=[...Array.from({length:10},(_,i)=>String(i+1)),"Labyrinth","Vaal","Epilogue"];
 function scopeName(scope){return scope==="Labyrinth"?"The Labyrinth":scope==="Vaal"?"Vaal Letter / Research Journal":scope==="Epilogue"?"Epilogue · Waypoints":"Act "+scope;}
-function scopeTypes(scope){return scope==="Labyrinth"||scope==="Vaal"?["lore"]:scope==="Epilogue"?["waypoints"]:Object.keys(names);}
+function scopeTypes(scope){return scope==="Labyrinth"?["lore","waypoints"]:scope==="Vaal"?["lore"]:scope==="Epilogue"?["waypoints"]:Object.keys(names);}
 function scopeSnapshot(scope){
  const groups=scopeTypes(scope).map(type=>{const rows=records(type,scope),marked=new Set(entries(type));return {type,all:rows.length,done:rows.filter(x=>marked.has(x.id)).length,remaining:rows.filter(x=>!marked.has(x.id))};});
  return {scope,groups,all:groups.reduce((n,g)=>n+g.all,0),done:groups.reduce((n,g)=>n+g.done,0)};
@@ -284,6 +284,17 @@ function specialLoreRoute(target,scope){
  if(scope==="Labyrinth"){
   const groups=info.groups;
   groups.forEach((g,i)=>group("lab-"+g.id,(i+1)+". "+g.name,g.note,g.ids,i===0));
+  const labWaypoints=records("waypoints","Labyrinth");
+  if(labWaypoints.length){
+   const chapter=el("details",undefined,"hubChapter hubSpecialGroup");
+   chapter.dataset.specialGroup="lab-waypoint";
+   const checkedWp=new Set(entries("waypoints"));
+   const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
+   heading.append(el("strong","Waypoint ของ Labyrinth"),el("small","อีก "+labWaypoints.length+" จุดใน Locomancer · นับแยกจาก Lore"));
+   summary.append(heading,el("span",labWaypoints.filter(x=>checkedWp.has(x.id)).length+" / "+labWaypoints.length,"hubChapterCount"));chapter.append(summary);
+   const list=el("div",undefined,"hubChapterBody"),rows=el("div",undefined,"hubList");
+   labWaypoints.forEach(x=>rows.append(itemCard("waypoints",x)));list.append(rows);chapter.append(list);panel.append(chapter);
+  }
   const lnk=el("a","ข้อมูลผังและ Trials — The Lord's Labyrinth");lnk.href=info.layoutSource;lnk.target="_blank";lnk.rel="noopener noreferrer";panel.append(lnk);
  }else{
   const finder=el("details",undefined,"hubChapter hubVaalGuide");finder.open=true;

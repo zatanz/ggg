@@ -42,7 +42,7 @@ const assert=require('node:assert/strict');
  await page.locator('#addChar').click();
  assert.equal(await page.locator('#character option').count(),beforeCount,'failed localStorage write must roll back character addition');
  const beforeProgress=await page.locator('#progress').innerText();
- await page.locator('#results input[type="checkbox"]').first().check({force:true}).catch(async()=>{await page.locator('#results input[type="checkbox"]').first().uncheck({force:true})});
+ const firstBox=page.locator('#results input[type="checkbox"]').first();if(await firstBox.isChecked())await firstBox.uncheck();else await firstBox.check();
  assert.equal(await page.locator('#progress').innerText(),beforeProgress,'failed localStorage write must roll back checkbox change');
  await page.evaluate(()=>{Storage.prototype.setItem=window.__originalSetItem;});
  await page.locator('#patch').selectOption('3.30');

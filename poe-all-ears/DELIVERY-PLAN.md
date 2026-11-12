@@ -215,3 +215,23 @@ Deadline requested: 2026-11-12 Asia/Bangkok. This is a target, not a guarantee. 
 - First extended CI failed because the test opened two isolated browser contexts; next failed because browser.newPage() implicit context cannot open a second page. Fixed test to explicitly create one BrowserContext and two pages sharing localStorage. These were test harness issues, not product failures.
 - **Verified PASS:** GitHub Actions https://github.com/zatanz/ggg/actions/runs/43172952037, both validate and browser-smoke jobs successful.
 - Remaining: independent in-game/current-patch verification of quest conditions and branch alternatives; patch 3.30 certified 0/484. 484/484 historical Wiki row mappings do not establish current-patch correctness.
+
+
+## Continuation — Player feedback implementation (2026-11-12 Asia/Bangkok)
+User feedback: classic list works but Act 2 order causes misses; add Stone lore, count recheck, and a Vaal Letter random-area aid while preserving existing profiles. The historical 3.9 workbook also tracks 91 Waypoints and 30 Side Quests.
+
+Implementation on master:
+- Added lore-data.js with 140 historical factual identifiers/areas split into Acts 1–10, Labyrinth 10 and Vaal 16 (12 Vaal Letters and 4 Research Journals). Descriptive prose in the legacy spreadsheet was not republished.
+- Added companion.html: accessible Classic/Guided lore views, character-isolated progress, Act 2 manual safety preflight for bandits/Ancient Seal/The Darkness and branch hints, manual game-total reconciliation with optional historical matching checkpoint, Vaal area search for four source-matched examples, and Lore-only backup/import.
+- Added extra-data.js and extras.html: 91 Locomancer Waypoints and 30 No Loose Ends side quests (3.9 historical reference only), per-character marks, filters and separate backup/import.
+- Added navigation links from index.html and walkthrough.html. Walkthrough Act 2 now requires explicit confirmation when marking Wiki risk rows. Existing 484 All Ears stable IDs, v1 localStorage key and old backup/import schema were not changed.
+- New companion and extras pages store active-character selection in their own keys without overwriting main All Ears storage. All three manual trackers retain independent backups; export all three when switching devices.
+- Expanded validate-data.cjs and real Chromium Playwright smoke to test dataset counts, checkboxes and persistence, mobile overflow, manual game count mismatch and matching checkpoint, Vaal lookup, Act 2 safety persistence, character independence and selection persistence.
+- **Verified passing pre-selection-fix CI:** GitHub Actions run https://github.com/zatanz/ggg/actions/runs/43176895076 (validate + browser-smoke successful). Newer CI status after the selection-fix commit must be confirmed before the latest release is considered tested.
+
+Hard limits:
+- The 484 mapped All Ears dialogue rows are from a 2025 Wiki guide; **current 3.30 patch certification is still 0/484**. Act 2 dependency correctness cannot be certified from route order alone. All supplemental 3.9 factual lists remain patch-unverified; they must not be advertised as a safe guaranteed route.
+- This app cannot inspect game telemetry: count recheck only identifies numerical discrepancies and possible manually checked items since the last matched checkpoint, not definitive missing content.
+- The Vaal area name lookup currently includes only four sourced examples; remaining area-to-lore relationships and patch-specific farm locations need evidence audit. Patch 3.30 removes Vaal Side Areas from Maps; pre-3.30 Map Device farming advice is obsolete.
+- QA/Release Gates G1–G6 still need current patch evidence and in-game route testing. Do not claim production accuracy based only on green CI.
+- Future improvement: unify a robust cross-page backup format with explicit migration and rollbacks; add source-level 3.30 evidence/quest-state gate for every risk item.

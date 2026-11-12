@@ -1,5 +1,18 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Source-labelled contextual gameplay explanations
+
+- Added guide-descriptions.js as an isolated presentation layer for **745 entries** (All Ears 484, Lore 140, Waypoints 91, side quests 30); original IDs, counts, localStorage and backup schema unchanged.
+- Each item displays a compact **วิธีเก็บ** line. Expand **ดูวิธีเก็บและเงื่อนไข** for action, area, prerequisites, warnings, notes, source links and explicit patch verification status.
+- Reused all 41 existing Act 1 draft walkthrough steps and available source-annotated route triggers/warnings, and translated **62** flagged legacy spreadsheet notes into Thai without labelling them as patch-certified.
+- Highlighted randomized Letters of Exile, Library book instance rotations and Vaal Side Areas, including the 3.30 caveat against the old fragment Map Device farming method.
+- Act 2 branch-sensitive descriptions: Eramir source rows #101 and #102 now display the first killed and remaining living bandit according to the player's manually recorded kill order; unknown choices produce neutral prompts rather than falsely displaying a fixed bandit.
+- Fixed Act 2 **ดูเพิ่ม** so all 69 dialogue records are reachable, not just the first 40.
+- Description links remain accessible in expandable panels, not repeated excessively on every list row. Source descriptions are historical 2025 Wiki / 3.9 spreadsheet; status remains unverified for 3.30.
+- Expanded static data checks and Chromium tests for all 745 descriptions, Thai caution language, Act 1 / random Lore / side quest examples and Act 2 dynamic branch variants.
+- **Still incomplete:** All 484 dialogue rules, 140 Lore locations/conditions, and 91/30 waypoint/quest paths have not been independently certified in 3.30; generic entries clearly say that row-specific prereqs are not confirmed. This is a documentation/UI upgrade, not an evidence-based gameplay certification.
+
+
 ## 2026-11-12 — Act-first usability and game-language refinement
 
 - Replaced six persistent primary tabs with **ตาม Act**, **เช็กลิสต์ทั้งหมด**, and **ตรวจยอด / สำรอง**, reducing navigation choices while keeping all four Achievement lists reachable on the same URL.

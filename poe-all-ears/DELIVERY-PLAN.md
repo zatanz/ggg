@@ -313,3 +313,20 @@ Feedback: player-facing labels and navigation were improved but explanations had
 - The 3.30 release is scheduled 2026-11-13 PST, after this checkpoint. Current conditions and every branch must be verified once the build is actually available. Do not raise certification based on green CI.
 - Next: verify in-game Act 2 on a fresh character; then revise individual instructions, source locations, quest prerequisites and branches with screenshots/video, including Bandit choice effects. Audit all Acts and randomized Lore before enabling patchSafe.
 - Read final GitHub Actions and Pages status for the final commit. A deployment success does not replace live human usability testing or in-game route evidence.
+
+
+## Checkpoint — critical quest-state sequence (2026-11-12)
+
+**User priority:** verify and make the order of quest-dependent All Ears dialogue understandable, without adding class-specific rewards or increasing UI complexity.
+
+**Implemented:** Acts 1–3 now show **15 source-linked irreversible quest checkpoints / 35 original All Ears ID references** at the start of each Act screen. Individual steps use checked/remaining counts, the canonical character checklist/backup, exact before-action warnings, quest-relevant reward references and links to 2025 PoE Wiki source sections. Act 2 Bandits/Seal/Darkness safety state stays manual and now appears within the prominent Bandit checkpoint. Added static validation and browser tests.
+
+- Act 1: 3 checkpoints — Glyph Wall, Brutus, Allflame/Fairgraves.
+- Act 2: 7 checkpoints — pre-completion Great White Beast / Intruders in Black, Baleful Gem/Spike, Ancient Seal/Darkness, then first/second/third Bandit transitions with Eramir.
+- Act 3: 5 checkpoints — Clarissa, Lady Dialla, Fairgraves in Docks, General Gravicius, Piety.
+- The changes preserve the existing 484 + 140 + 91 + 30 checklists, 58 rewards, and patch-specific blocking for unverified data.
+
+**Boundaries:** This is not an exact globally interleaved walking route, nor a proof that all optional dialogue is recoverable for every Bandit choice. Source is historical PoE Wiki as of June 2025; no 3.30 route has passed live game tests. G2–G4 and full game release gates remain open.
+
+**Next ordered work:** (1) test dangerous quest decisions in fresh-character 3.30 game and collect evidence; (2) reconcile branch alternatives, rewards and order; (3) expand sourced critical checkpoints to Acts 4–10; (4) test actual player findability and mobile ergonomics. Defer class-specific gem and equipment reward lists. Full evidence and stage matrix: [QUEST-SEQUENCE-AUDIT.md](./QUEST-SEQUENCE-AUDIT.md).
+

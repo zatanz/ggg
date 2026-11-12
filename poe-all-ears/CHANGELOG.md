@@ -1,5 +1,18 @@
 # Changelog — Path of Exile Achievement Companion
 
+## 2026-11-12 — Act-first usability and game-language refinement
+
+- Replaced six persistent primary tabs with **ตาม Act**, **เช็กลิสต์ทั้งหมด**, and **ตรวจยอด / สำรอง**, reducing navigation choices while keeping all four Achievement lists reachable on the same URL.
+- Added a horizontal one-tap Act 1–10 selector, and four collapsible achievement chapters inside each Act with done/total counters. NPC dialogue is expanded by default; Lore/Waypoints/Side Quests can be expanded when needed.
+- On narrow phones, all four secondary Achievement choices appear as a visible 2x2 grid rather than a scrollable tab strip; added keyboard focus states and a sticky-menu offset for the classic list.
+- Advanced rename/delete and old All Ears backup controls now live inside a disclosure called "จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม"; new-character control and the global character selection remain visible.
+- Updated Thai gameplay vocabulary: **ฟังบทสนทนา NPC**, **สำรวจ Lore**, **เปิด Waypoint**, **ทำเควสต์รอง**, **ยังไม่ได้เก็บ / เก็บแล้ว**, and **ตรวจยอดกับเกม**. All NPC, quest and location proper nouns stay English as displayed in the game.
+- The Lore description now specifies that interaction with the object counts, not fully reading the text. Random Letters of Exile/Library and Vaal-related cautions remain visible, with Vaal area lookup initially collapsed instead of dumping 25+ results.
+- Act 2 preflight remains prominently available in the Act 2 flow; the same controls appear in a collapsed section under Recheck. No unverified quest-route order is presented as safe.
+- Original v1 All Ears character data, legacy backups and v2 combined backup import/export are preserved. New UX test assertions check the 3-button menu, 10-Act picker, disclosure groups, category switching, backup and patch safety.
+- References: [UX design decision and copy glossary](./UX-REDESIGN.md) · [Patch 3.30 certification gates](./PATCH-330-AUDIT.md).
+
+
 ## 2026-11-12 — Unified preview (not patch-certified)
 
 ### One-page design

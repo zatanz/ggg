@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "act": 3,
+  "source": "legacy-3.9",
+  "sourceGuide": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+  "patchCertified": false,
+  "warning": "ข้อมูลนี้เป็นข้อควรระวังจากชุดข้อมูลเก่า 3.9 ยังไม่ตรวจยืนยันกับแพตช์ปัจจุบัน",
+  "records": [
+    {
+      "id": 140,
+      "npc": "Maramoa",
+      "topic": "Crossing the River",
+      "legacyNote": "After seeing undying blockage - Do NOT enter The Marketplace",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 142,
+      "npc": "Fairgraves *",
+      "topic": "Introduction - (!)",
+      "legacyNote": "Do NOT have Decanter Spiritus or Chitus' Plum in inventory",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 146,
+      "npc": "Fairgraves *",
+      "topic": "The Undying",
+      "legacyNote": "After this dialogue proceed to turn in Decanter Spiritus and Chitus' Plum",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 148,
+      "npc": "Dialla *",
+      "topic": "Introduction - (!)",
+      "legacyNote": "Do NOT have Thaumetic Sulphite or Ribbon Spool in inventory",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 149,
+      "npc": "Hargan",
+      "topic": "The Undying",
+      "legacyNote": "Return to town - Do NOT continue talking to Dialla",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 153,
+      "npc": "Dialla *",
+      "topic": "Thaumetic Sulphite",
+      "legacyNote": "After getting Thaumetic Sulphite - Do NOT have Ribbon Spool in inventory",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 154,
+      "npc": "Dialla *",
+      "topic": "The Sewers - (!)",
+      "legacyNote": "After getting Ribbon Spool",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 158,
+      "npc": "Maramoa",
+      "topic": "Crossing the River",
+      "legacyNote": "Before killing General Gravicius",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    },
+    {
+      "id": 161,
+      "npc": "Maramoa",
+      "topic": "Piety",
+      "legacyNote": "After killing General Gravicius - Do NOT kill Piety",
+      "review": "legacy-note-unverified",
+      "patchCertified": false
+    }
+  ]
+}

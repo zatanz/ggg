@@ -276,6 +276,7 @@ const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
 load('steam-quest-walkthrough.js');
 load('steam-act4.js');
+load('steam-act5.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -321,6 +322,31 @@ assert(actFour.find(p=>p.id==='piety-after')?.stopIds.includes(241),'Piety befor
 assert(actFour.find(p=>p.id==='harvest-before')?.stopIds.includes(247)&&actFour.find(p=>p.id==='harvest-after')?.stopIds.includes(248),'Pre/post organ hand-in warning must be split into different phases');
 assert(steamWalk.patchCertified===false,'Act 4 guide cannot certify patch 3.30 gameplay');
 
+const actFive=steamWalk.acts[5],actFiveIds=actFive.flatMap(p=>p.dialogueIds),actFiveLore=actFive.flatMap(p=>p.loreIds||[]),actFiveWp=actFive.flatMap(p=>p.waypointIds||[]),actFiveSide=actFive.flatMap(p=>p.sidequestIds||[]);
+assert(actFive.length===12,'Act 5 must have twelve distinct source-aligned quest phases');
+assert(sameExactSet(actFiveIds,d.items.filter(x=>x.act===5).map(x=>x.id)),'Act 5 must include all 44 canonical NPC entries once');
+assert(sameExactSet(actFiveLore,lore.entries.filter(x=>x.act===5).map(x=>x.id)),'Act 5 must include all 12 lore entries once');
+assert(sameExactSet(actFiveWp,extras.waypoints.filter(x=>x.act===5).map(x=>x.id)),'Act 5 must include eight Waypoints once');
+assert(sameExactSet(actFiveSide,extras.sidequests.filter(x=>x.act===5).map(x=>x.id)),'Act 5 two optional quests must appear once');
+assert(actFive.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>0&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 5 must contain reviewed Thai/English steps and proper STOP IDs');
+assert(actFive.find(p=>p.id==='casticus-return')?.stopIds.includes(275),'Act 5 must protect Utula after Casticus but before Avarius');
+assert(actFive.find(p=>p.id==='innocence-sin')?.stopIds.includes(277),'Act 5 must protect Sin before leaving Chamber of Innocence');
+assert(actFive.find(p=>p.id==='ossuary-sin')?.stopIds.includes(295),'Act 5 must protect Sin after Sign of Purity');
+assert(actFive.find(p=>p.id==='reliquary')?.keyItems.length===3,'Act 5 Reliquary must show three exact quest item names');
+assert(steamWalk.patchCertified===false,'Act 5 must not claim 3.30 gameplay certification');
+const langCtx={window:{},localStorage:{getItem:()=>null,setItem:()=>{}}};
+vm.runInNewContext(fs.readFileSync(path.join(dir,'poe-language.js'),'utf8'),langCtx,{filename:'poe-language.js'});
+const locale=langCtx.window.POE_LANGUAGE;
+assert(locale.get().description==='th'&&locale.get().names==='en','User defaults must be Thai guidance and canonical English names');
+assert(locale.set('description','en')&&locale.tr('ก่อนทำต่อ','Before continuing')==='Before continuing','English guidance selector must act independently');
+assert(locale.set('names','both')&&locale.term("Kitava's Torments").includes("Kitava's Torments")&&locale.term("Kitava's Torments").includes("คิทาวา"),'Bilingual quest names must preserve original source text');
+assert(locale.set('names','th')&&locale.term('Miasmeter').includes('เครื่องวัด'),'Known Act 5 quest item Thai name must display');
+assert(locale.term('Untranslated Official Name')==='Untranslated Official Name','Unknown source names must not be guessed');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===277),{}).caution.includes('Innocence'),'Act 5 Sin stop must remain explicit in English');
+const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
+assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
+assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -337,9 +363,11 @@ const visualTargets=[
  ["2","bandit-decisions","bandits-quest-illustration.svg","Deal with the Bandits"],
  ["3","bracelet","clarissa-quest-illustration.svg","Lost in Love"],
  ["4","voll-mines","deshret-quest-illustration.svg","An Indomitable Spirit"],
- ["4","harvest-before","piety-organs-quest-illustration.svg","The Eternal Nightmare"]
+ ["4","harvest-before","piety-organs-quest-illustration.svg","The Eternal Nightmare"],
+ ["5","innocence-sin","act5-innocence-sin.svg","Death to Purity"],
+ ["5","ossuary-sin","act5-ossuary-sign.svg","The Ravenous God"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly nine sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly eleven sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

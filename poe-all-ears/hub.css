@@ -423,3 +423,9 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubRunPreflight ul{padding:0 0 0 21px;margin:8px 0;font-size:12px;line-height:1.65}
 .hubRunPreflight li{margin:6px 0}
 .hubRunPreflight a{color:#ffdfa7;text-decoration:underline;font-size:12px}
+
+/* Secondary, source-specific risk panels are reachable without duplicating the primary Act 2 route. */
+.hubHistoricalRisks{border:1px solid #5b6470;background:#212831;border-radius:10px;padding:11px 12px;margin:12px 0}
+.hubHistoricalRisks>summary{cursor:pointer;font-size:12px;font-weight:750;color:#f3dcaa;line-height:1.65}
+.hubHistoricalRisks .hubCritical{margin-top:12px}
+.hubHistoricalRisks .hubCheckpoint{margin-top:8px}

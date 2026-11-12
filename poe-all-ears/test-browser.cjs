@@ -207,7 +207,7 @@ const assert=require('node:assert/strict');
  const next=await hub.locator('#hubStats .hubStat').nth(1).innerText();
  assert.notEqual(next,prev,'inline Lore checkbox updates dashboard');
  assert.equal(await hub.locator('#hubView .hubSection > .hubList > .hubItem').first().getAttribute('data-state'),'done','completed item remains in place and clearly marked');
- assert.equal((await hub.locator('#hubView .hubSection > .hubList > .hubItemState').first().innerText()).includes('เก็บแล้ว'),true,'checklist shows explicit done label');
+ assert.equal((await hub.locator('#hubView .hubSection > .hubList > .hubItem .hubItemState').first().innerText()).includes('เก็บแล้ว'),true,'checklist shows explicit done label');
  await hub.locator('#hubToolbar [data-category="waypoints"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Locomancer'),true,'Waypoint panel renders');
  await hub.locator('#hubToolbar [data-category="sidequests"]').click();

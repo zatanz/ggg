@@ -297,6 +297,9 @@ assert(actTwo.find(p=>p.id==='western-forest').stop.includes('Chamber of Sins'),
 
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
+const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
+assert(banditAsset.includes('ILLUSTRATION ONLY')&&banditAsset.includes('Deal with the Bandits'),'Act 2 quest illustration must be self-labelled and tied to its real quest name');
+
 load('critical-checkpoints.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
 assert(checkpointData.acts[2].find(x=>x.id==='a2-darkness')?.sourceConflict?.kind==='steam-vs-wiki','Bandit timing contradiction must remain prominently visible');

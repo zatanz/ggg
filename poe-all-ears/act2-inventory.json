@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "act": 2,
   "sourceVersion": "3.9 legacy spreadsheet",
   "source": "https://docs.google.com/spreadsheets/d/1RWPN_NO3wcl7QRTHP6iTONG-T47VForpQgZ-eN2IQzc/edit",
@@ -7,7 +7,7 @@
   "reviewedAt": "2026-11-12",
   "patchCertified": false,
   "routeSafe": false,
-  "ordering": "legacy spreadsheet, not wiki recommended order",
+  "ordering": "matched to PoE Wiki 2025-06-30, patch unverified",
   "records": [
     {
       "id": 42,
@@ -15,10 +15,11 @@
       "npc": "Eramir",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 42,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 43,
@@ -26,10 +27,11 @@
       "npc": "Eramir",
       "topic": "The Azmeri",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 43,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 44,
@@ -37,10 +39,11 @@
       "npc": "Eramir",
       "topic": "Blocked Passage",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 44,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 45,
@@ -48,10 +51,11 @@
       "npc": "Greust",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 48,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 46,
@@ -59,10 +63,11 @@
       "npc": "Greust",
       "topic": "Eramir",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 52,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 47,
@@ -70,10 +75,11 @@
       "npc": "Greust",
       "topic": "Blood Apes",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 49,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 48,
@@ -81,10 +87,11 @@
       "npc": "Greust",
       "topic": "Bandit Lords",
       "legacyNote": "Do not kill any bandits until AFTER The Darkness",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 63,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 49,
@@ -92,10 +99,11 @@
       "npc": "Yeena",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 45,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 50,
@@ -103,10 +111,11 @@
       "npc": "Yeena",
       "topic": "Eramir",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 50,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 51,
@@ -114,10 +123,11 @@
       "npc": "Yeena",
       "topic": "Greust",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 60,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 52,
@@ -125,10 +135,11 @@
       "npc": "Yeena",
       "topic": "Blood Apes",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 46,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 53,
@@ -136,10 +147,11 @@
       "npc": "Silk",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 47,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 54,
@@ -147,10 +159,11 @@
       "npc": "Silk",
       "topic": "Eramir",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 51,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 55,
@@ -158,10 +171,11 @@
       "npc": "Silk",
       "topic": "Yeena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 54,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 56,
@@ -169,10 +183,11 @@
       "npc": "Silk",
       "topic": "Greust",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 61,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 57,
@@ -180,10 +195,11 @@
       "npc": "Silk",
       "topic": "The Great White Beast",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 62,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 58,
@@ -191,10 +207,11 @@
       "npc": "Eramir",
       "topic": "Yeena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 53,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 59,
@@ -202,10 +219,11 @@
       "npc": "Eramir",
       "topic": "Greust",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 59,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 60,
@@ -213,10 +231,11 @@
       "npc": "Eramir",
       "topic": "Silk",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 56,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 61,
@@ -224,10 +243,11 @@
       "npc": "Greust",
       "topic": "Yeena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 55,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 62,
@@ -235,10 +255,11 @@
       "npc": "Greust",
       "topic": "Silk",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 58,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 63,
@@ -246,10 +267,11 @@
       "npc": "Yeena",
       "topic": "Silk",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 57,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 64,
@@ -257,10 +279,11 @@
       "npc": "Greust",
       "topic": "Elementals",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 64,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 65,
@@ -268,10 +291,11 @@
       "npc": "Yeena",
       "topic": "Elementals",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 65,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 66,
@@ -279,10 +303,11 @@
       "npc": "Silk",
       "topic": "The Great White Beast - QC",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 66,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 67,
@@ -290,10 +315,11 @@
       "npc": "Greust",
       "topic": "Viper",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 68,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 68,
@@ -301,10 +327,11 @@
       "npc": "Yeena",
       "topic": "Viper",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 67,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 69,
@@ -312,10 +339,11 @@
       "npc": "Greust",
       "topic": "Chamber of Sins",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 69,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 70,
@@ -323,10 +351,11 @@
       "npc": "Eramir",
       "topic": "Blackguards",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 70,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 71,
@@ -334,10 +363,11 @@
       "npc": "Silk",
       "topic": "Reopened Passage",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 71,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 72,
@@ -345,10 +375,11 @@
       "npc": "Nessa",
       "topic": "Reopened Passage - QC",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 72,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 73,
@@ -356,10 +387,11 @@
       "npc": "Bestel",
       "topic": "Inspirational Poem - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 74,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 74,
@@ -367,10 +399,11 @@
       "npc": "Tarkleigh",
       "topic": "Reopened Passage",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 73,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 75,
@@ -378,10 +411,11 @@
       "npc": "Yeena",
       "topic": "Chamber of Sins",
       "legacyNote": "Before rescuing Helena",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 75,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 76,
@@ -389,10 +423,11 @@
       "npc": "Eramir",
       "topic": "Helena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 76,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 77,
@@ -400,10 +435,11 @@
       "npc": "Eramir",
       "topic": "The Baleful Gem",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": true,
+      "wikiRow": 85,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 78,
@@ -411,10 +447,11 @@
       "npc": "Greust",
       "topic": "Helena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 79,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 79,
@@ -422,10 +459,11 @@
       "npc": "Yeena",
       "topic": "Helena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 77,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 80,
@@ -433,10 +471,11 @@
       "npc": "Silk",
       "topic": "Helena",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 78,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 81,
@@ -444,10 +483,11 @@
       "npc": "Helena",
       "topic": "Rescued - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 80,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 82,
@@ -455,10 +495,11 @@
       "npc": "Helena",
       "topic": "The Baleful Gem",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 81,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 83,
@@ -466,10 +507,11 @@
       "npc": "Helena",
       "topic": "Fidelitas",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 82,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 84,
@@ -477,10 +519,11 @@
       "npc": "Helena",
       "topic": "Dominus",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 83,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 85,
@@ -488,10 +531,11 @@
       "npc": "Helena",
       "topic": "Prisoner's Gate",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 84,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 86,
@@ -499,10 +543,11 @@
       "npc": "Eramir",
       "topic": "Maligaro's Spike",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 86,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 87,
@@ -510,10 +555,11 @@
       "npc": "Greust",
       "topic": "Maligaro's Spike - Talk to Silk First",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 88,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 88,
@@ -521,10 +567,11 @@
       "npc": "Yeena",
       "topic": "Maligaro's Spike",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 87,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 89,
@@ -532,10 +579,11 @@
       "npc": "Eramir",
       "topic": "Kraityn",
       "legacyNote": "After killing Kraityn - Do NOT kill Alira or Oak",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 101,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 90,
@@ -543,10 +591,11 @@
       "npc": "Eramir",
       "topic": "Fellshrine Ruins",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 89,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 91,
@@ -554,10 +603,11 @@
       "npc": "Eramir",
       "topic": "Maligaro's Creation",
       "legacyNote": "After getting the Baleful Gem and Maligaro's Spike - Do NOT use on Lorrata (the roots blocking the way in the Wetlands)",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 90,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 92,
@@ -565,10 +615,11 @@
       "npc": "Eramir",
       "topic": "Ancient Gateway",
       "legacyNote": "After seeing Lorrata - Do NOT use on Lorrata (the roots blocking the way in The Wetlands)",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 91,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 93,
@@ -576,10 +627,11 @@
       "npc": "Eramir",
       "topic": "Lorrata",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 93,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 94,
@@ -587,10 +639,11 @@
       "npc": "Yeena",
       "topic": "Lorrata",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 92,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 95,
@@ -598,10 +651,11 @@
       "npc": "Eramir",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 94,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 96,
@@ -609,10 +663,11 @@
       "npc": "Greust",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 97,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 97,
@@ -620,10 +675,11 @@
       "npc": "Yeena",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 98,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 98,
@@ -631,10 +687,11 @@
       "npc": "Silk",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 96,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 99,
@@ -642,10 +699,11 @@
       "npc": "Helena",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 95,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 100,
@@ -653,10 +711,11 @@
       "npc": "Alira *",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 99,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 101,
@@ -664,10 +723,11 @@
       "npc": "Eramir",
       "topic": "Oak",
       "legacyNote": "After killing Alira - Do NOT kill Oak",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 102,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 102,
@@ -675,10 +735,11 @@
       "npc": "Oak *",
       "topic": "The Darkness - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 100,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 103,
@@ -686,10 +747,11 @@
       "npc": "Eramir",
       "topic": "Bandit Lords - QC - (!)",
       "legacyNote": "After killing Oak",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 103,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 104,
@@ -697,10 +759,11 @@
       "npc": "Greust",
       "topic": "Bandit Lords",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
-      "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "reviewStatus": "wiki-row-matched-patch-unverified",
+      "riskCandidate": false,
+      "wikiRow": 104,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 105,
@@ -708,10 +771,11 @@
       "npc": "Helena",
       "topic": "Yeena's Vision - Talk to Yeena First",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 105,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 106,
@@ -719,10 +783,11 @@
       "npc": "Eramir",
       "topic": "The Light - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 106,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 107,
@@ -730,10 +795,11 @@
       "npc": "Greust",
       "topic": "The Light - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 110,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 108,
@@ -741,10 +807,11 @@
       "npc": "Yeena",
       "topic": "The Light - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 107,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 109,
@@ -752,10 +819,11 @@
       "npc": "Silk",
       "topic": "The Light - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 109,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     },
     {
       "id": 110,
@@ -763,10 +831,11 @@
       "npc": "Helena",
       "topic": "The Light - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 108,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2"
     }
   ]
 }

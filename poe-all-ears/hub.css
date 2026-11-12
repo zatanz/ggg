@@ -416,3 +416,10 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
  .hubResearchConflict{padding:10px}
  .hubStopGate{padding:10px}
 }
+
+/* Risk and game-mode preflight stays collapsed to prevent first-screen overload. */
+.hubRunPreflight{border:1px solid #94724e;background:#302a24;border-radius:8px;padding:9px 12px;color:#f4dbc5}
+.hubRunPreflight>summary{font-size:12px;font-weight:750;cursor:pointer;line-height:1.55;color:#f9d4a0}
+.hubRunPreflight ul{padding:0 0 0 21px;margin:8px 0;font-size:12px;line-height:1.65}
+.hubRunPreflight li{margin:6px 0}
+.hubRunPreflight a{color:#ffdfa7;text-decoration:underline;font-size:12px}

@@ -203,6 +203,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่ยืนยันกับแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+ await hub.locator('#hubView .hubActMissionGate > summary').click();
  await hub.locator('#hubView [data-goal-category="sidequests"]').click();
  assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'todo','goal shortcut filters to uncompleted entries');

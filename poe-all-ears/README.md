@@ -6,13 +6,13 @@
 
 ## เปิดใช้เว็บ
 
-- **หลังเปิด GitHub Pages:** https://zatanz.github.io/Test/poe-all-ears/
-- **ซอร์สโค้ด:** https://github.com/zatanz/Test/tree/master/poe-all-ears
+- **GitHub Pages (ตรวจผล deploy แล้ว; ยังไม่ได้ทดสอบการใช้งานจริงในเบราว์เซอร์):** https://zatanz.github.io/ggg/poe-all-ears/
+- **ซอร์สโค้ด:** https://github.com/zatanz/ggg/tree/master/poe-all-ears
 - ไม่ต้องสร้างบัญชีและไม่มีบริการเซิร์ฟเวอร์เก็บข้อมูลผู้เล่น
 
-## เปิด GitHub Pages (เจ้าของรีโพซิทอรีทำครั้งแรก)
+## ตั้งค่า/ตรวจ GitHub Pages (หากจำเป็น)
 
-1. ไปที่ https://github.com/zatanz/Test/settings/pages
+1. ไปที่ https://github.com/zatanz/ggg/settings/pages
 2. **Build and deployment → Source:** เลือก **Deploy from a branch**
 3. **Branch:** เลือก **master** และโฟลเดอร์ **/(root)**
 4. กด **Save** จากนั้นดูสถานะ Deploy และ URL ที่ GitHub รายงานในหน้า Settings → Pages

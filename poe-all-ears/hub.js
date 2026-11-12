@@ -404,11 +404,12 @@ function actSteamGuide(act){
  }
  const actions=el("ol",undefined,"hubWalkActions");
  phase.actions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
- if(phase.id==="mudflats"){
+ if(phase.id==="mudflats"||phase.id==="bandit-decisions"){
+   const bandits=phase.id==="bandit-decisions";
    const visual=el("details",undefined,"hubQuestVisual");
    visual.append(el("summary","ดูภาพจำลองหน้า World / Quest (ปุ่ม U) และจุดที่ยังไม่ควรผ่าน"));
-   const img=el("img");img.src="./assets/quest-journal-illustration.svg";img.alt="ภาพวาดจำลอง Quest Screen: Breaking Some Eggs, The Mud Flats และคำเตือนอย่าใส่ Glyphs ก่อนคุย Tarkleigh";img.loading="lazy";
-   const desc=el("p","ภาพประกอบที่สร้างสำหรับคู่มือ ไม่ใช่ภาพหน้าจอเกมจริง · ในเกมกด U เพื่อดู World / Quest และกด H เพื่อตรวจ Achievement","hubSubtle");
+   const img=el("img");img.src=bandits?"./assets/bandits-quest-illustration.svg":"./assets/quest-journal-illustration.svg";img.alt=bandits?"ภาพวาดจำลอง World Quest: Deal with the Bandits, Ancient Seal และคำเตือนก่อนเลือกช่วยหรือฆ่า":"ภาพวาดจำลอง Quest Screen: Breaking Some Eggs, The Mud Flats และคำเตือนอย่าใส่ Glyphs ก่อนคุย Tarkleigh";img.loading="lazy";
+   const desc=el("p","ภาพประกอบที่สร้างสำหรับคู่มือ ไม่ใช่ภาพหน้าจอเกมจริง · ในเกมกด U เพื่อดู World / Quest และกด H เพื่อตรวจ Achievement"+(bandits?" · ลำดับการคุย Bandits ยังขัดแย้งระหว่างสองแหล่งอ้างอิง":""),"hubSubtle");
    const reference=el("a","วิธีเปิด Quest Log และ World Map จาก PoE Wiki");reference.href="https://www.poewiki.net/wiki/Quest";reference.target="_blank";reference.rel="noopener noreferrer";
    visual.append(img,desc,reference);box.append(visual);
  }

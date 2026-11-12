@@ -17,6 +17,7 @@ const uiNames={ears:"บทสนทนา NPC",lore:"สำรวจ Lore",wayp
 const verbs={ears:"ฟังแล้ว",lore:"สำรวจแล้ว",waypoints:"เปิดแล้ว",sidequests:"ทำสำเร็จ"};
 const routeOpen=new Set(["ears"]);
 const criticalOpen=new Set(["a1-glyphs","a2-darkness","a3-clarissa","a4-deshret","a5-utula","a6-karui","a7-den","a8-love","a9-adus"]);
+const postQuestOpen=new Set(["a10-safe-passage"]);
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:40,reviewType:"lore",gameCount:""};
@@ -164,6 +165,34 @@ function criticalPanel(act){
  }
  return section;
 }
+function postQuestPanel(act){
+ const stages=window.POE_CRITICAL_CHECKPOINTS?.postQuest?.[act]||[];
+ if(!stages.length)return null;
+ const section=el("section",undefined,"hubCritical hubPostQuests");
+ section.dataset.postAct=String(act);
+ const head=el("div",undefined,"hubCriticalTitle");
+ head.append(el("h3","หลังจบเควสต์ · กลับไปคุย NPC"),el("p","รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","hubSubtle"));section.append(head);
+ const entriesDone=new Set(entries("ears"));
+ const lookup=new Map(E.items.map(x=>[x.id,x]));
+ for(const stage of stages){
+  const detail=el("details",undefined,"hubCheckpoint hubPostQuest"),summary=el("summary");
+  detail.dataset.postStage=stage.id;detail.open=postQuestOpen.has(stage.id);
+  const title=el("span",undefined,"hubCheckpointTitle");title.append(el("strong",stage.title),el("small",stage.timing));
+  const complete=stage.ids.every(id=>entriesDone.has(id));
+  summary.append(title,el("span",complete?"บันทึกแล้ว":"ยังไม่บันทึก","hubCheckpointState"+(complete?" complete":"")));
+  detail.append(summary);
+  const body=el("div",undefined,"hubCheckpointBody");
+  body.append(el("p","หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
+  for(const id of stage.ids){const x=lookup.get(id);if(x)body.append(itemCard("ears",x));}
+  const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
+  if(reward)body.append(el("p","รางวัลอ้างอิง "+stage.quest+": "+reward.reward+" · ข้อมูลเก่า ยังไม่รับรอง 3.30","hubCheckpointReward"));
+  const link=el("a","ตรวจต้นทางบน PoE Wiki");link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
+  body.append(link);detail.append(body);
+  detail.addEventListener("toggle",()=>{if(detail.open)postQuestOpen.add(stage.id);else postQuestOpen.delete(stage.id)});
+  section.append(detail);
+ }
+ return section;
+}
 function renderRoute(target){const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · รายการเก็บ Achievement");
 panel.append(el("p","ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
@@ -172,7 +201,7 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong","เก็บแล้ว "+doneAll+" / "+countAll+" รายการ"),el("span",riskRemaining+" บทสนทนามีคำเตือนที่ต้องตรวจ","hubSubtle"));panel.append(quick);
 const critical=criticalPanel(act);if(critical)panel.append(critical);
-if(act==="10")panel.append(el("p","Act 10: ฐานข้อมูล Wiki ปี 2025 ที่ใช้ยังไม่มีรายการจุดเสี่ยงแบบก่อนเปลี่ยนสถานะเควสต์ในส่วนนี้ ไม่ได้หมายความว่า Act 10 ปลอดภัยหรือผ่านการตรวจแพตช์ 3.30","hubNotice"));
+if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;

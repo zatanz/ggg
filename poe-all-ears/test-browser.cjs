@@ -200,14 +200,14 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView input[aria-label="ค้นหาชื่อ Vaal Side Area"]').fill('Concealed Caldarium');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Wiki #128'),true,'Vaal area links local ID to Wiki row');
 
- const firstLore=hub.locator('#hubView .hubItem input[type="checkbox"]').first();
+ const firstLore=hub.locator('#hubView .hubSection > .hubList > .hubItem input[type="checkbox"]').first();
  if(await firstLore.isChecked())await firstLore.uncheck();
  const prev=await hub.locator('#hubStats .hubStat').nth(1).innerText();
- await hub.locator('#hubView .hubItem input[type="checkbox"]').first().check();
+ await firstLore.check();
  const next=await hub.locator('#hubStats .hubStat').nth(1).innerText();
  assert.notEqual(next,prev,'inline Lore checkbox updates dashboard');
- assert.equal(await hub.locator('#hubView .hubItem').first().getAttribute('data-state'),'done','completed item remains in place and clearly marked');
- assert.equal((await hub.locator('#hubView .hubItemState').first().innerText()).includes('เก็บแล้ว'),true,'checklist shows explicit done label');
+ assert.equal(await hub.locator('#hubView .hubSection > .hubList > .hubItem').first().getAttribute('data-state'),'done','completed item remains in place and clearly marked');
+ assert.equal((await hub.locator('#hubView .hubSection > .hubList > .hubItemState').first().innerText()).includes('เก็บแล้ว'),true,'checklist shows explicit done label');
  await hub.locator('#hubToolbar [data-category="waypoints"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Locomancer'),true,'Waypoint panel renders');
  await hub.locator('#hubToolbar [data-category="sidequests"]').click();

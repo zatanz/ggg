@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "act": 3,
   "sourceVersion": "3.9 legacy spreadsheet",
   "source": "https://docs.google.com/spreadsheets/d/1RWPN_NO3wcl7QRTHP6iTONG-T47VForpQgZ-eN2IQzc/edit",
@@ -7,7 +7,7 @@
   "reviewedAt": "2026-11-12",
   "patchCertified": false,
   "routeSafe": false,
-  "ordering": "legacy spreadsheet; Wiki row mapping not independently verified",
+  "ordering": "matched to PoE Wiki 2025-06-30; patch and safe progression unverified",
   "records": [
     {
       "id": 111,
@@ -15,10 +15,11 @@
       "npc": "Maramoa",
       "topic": "The Ebony Legion",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 111,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 112,
@@ -26,10 +27,11 @@
       "npc": "Hargan",
       "topic": "Tolman - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 113,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 113,
@@ -37,10 +39,11 @@
       "npc": "Hargan",
       "topic": "The Slums",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 114,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 114,
@@ -48,10 +51,11 @@
       "npc": "Grigor",
       "topic": "The Ezomytes",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 112,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 115,
@@ -59,10 +63,11 @@
       "npc": "Maramoa",
       "topic": "Tolman - QC",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 127,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 116,
@@ -70,10 +75,11 @@
       "npc": "Maramoa",
       "topic": "The Purity Rebellion",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 126,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 117,
@@ -81,10 +87,11 @@
       "npc": "Maramoa",
       "topic": "Crossing the River",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 128,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 118,
@@ -92,10 +99,11 @@
       "npc": "Hargan",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 115,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 119,
@@ -103,10 +111,11 @@
       "npc": "Hargan",
       "topic": "Clarissa",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 117,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 120,
@@ -114,10 +123,11 @@
       "npc": "Hargan",
       "topic": "Maramoa",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 118,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 121,
@@ -125,10 +135,11 @@
       "npc": "Hargan",
       "topic": "General Gravicius",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 124,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 122,
@@ -136,10 +147,11 @@
       "npc": "Hargan",
       "topic": "The Purity Rebellion",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 125,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 123,
@@ -147,10 +159,11 @@
       "npc": "Clarissa",
       "topic": "Sewer Keys",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 123,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 124,
@@ -158,10 +171,11 @@
       "npc": "Grigor",
       "topic": "Tolman - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 116,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 125,
@@ -169,10 +183,11 @@
       "npc": "Grigor",
       "topic": "Maramoa",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 119,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 126,
@@ -180,10 +195,11 @@
       "npc": "Grigor",
       "topic": "Hargan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 121,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 127,
@@ -191,10 +207,11 @@
       "npc": "Grigor",
       "topic": "General Gravicius",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 130,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 128,
@@ -202,10 +219,11 @@
       "npc": "Maramoa",
       "topic": "Hargan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 120,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 129,
@@ -213,10 +231,11 @@
       "npc": "Maramoa",
       "topic": "Grigor",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 122,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 130,
@@ -224,10 +243,11 @@
       "npc": "Hargan",
       "topic": "Grigor",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 131,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 131,
@@ -235,10 +255,11 @@
       "npc": "Grigor",
       "topic": "Victario",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 129,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 132,
@@ -246,10 +267,11 @@
       "npc": "Clarissa",
       "topic": "Maramoa",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 134,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 133,
@@ -257,10 +279,11 @@
       "npc": "Clarissa",
       "topic": "Hargan",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 133,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 134,
@@ -268,10 +291,11 @@
       "npc": "Clarissa",
       "topic": "Grigor",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 132,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 135,
@@ -279,10 +303,11 @@
       "npc": "Clarissa",
       "topic": "Piety",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 135,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 136,
@@ -290,10 +315,11 @@
       "npc": "Clarissa",
       "topic": "Piety's Gems",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 137,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 137,
@@ -301,10 +327,11 @@
       "npc": "Clarissa",
       "topic": "Vinia",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 138,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 138,
@@ -312,10 +339,11 @@
       "npc": "Clarissa",
       "topic": "Cataclysm",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 136,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 139,
@@ -323,10 +351,11 @@
       "npc": "Clarissa",
       "topic": "The Purity Rebellion",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 139,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 140,
@@ -334,10 +363,11 @@
       "npc": "Maramoa",
       "topic": "Crossing the River",
       "legacyNote": "After seeing undying blockage - Do NOT enter The Marketplace",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 140,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 141,
@@ -345,10 +375,11 @@
       "npc": "Clarissa",
       "topic": "Statues",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 141,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 142,
@@ -356,10 +387,11 @@
       "npc": "Fairgraves *",
       "topic": "Introduction - (!)",
       "legacyNote": "Do NOT have Decanter Spiritus or Chitus' Plum in inventory",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 153,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 143,
@@ -367,10 +399,11 @@
       "npc": "Fairgraves *",
       "topic": "Decanter Spiritus",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 154,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 144,
@@ -378,10 +411,11 @@
       "npc": "Fairgraves *",
       "topic": "Chitus' Plum",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 155,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 145,
@@ -389,10 +423,11 @@
       "npc": "Fairgraves *",
       "topic": "Resurrection",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 157,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 146,
@@ -400,10 +435,11 @@
       "npc": "Fairgraves *",
       "topic": "The Undying",
       "legacyNote": "After this dialogue proceed to turn in Decanter Spiritus and Chitus' Plum",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 156,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 147,
@@ -411,10 +447,11 @@
       "npc": "Clarissa",
       "topic": "The Lunaris Temple",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 142,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 148,
@@ -422,10 +459,11 @@
       "npc": "Dialla *",
       "topic": "Introduction - (!)",
       "legacyNote": "Do NOT have Thaumetic Sulphite or Ribbon Spool in inventory",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 143,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 149,
@@ -433,10 +471,11 @@
       "npc": "Hargan",
       "topic": "The Undying",
       "legacyNote": "Return to town - Do NOT continue talking to Dialla",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 144,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 150,
@@ -444,10 +483,11 @@
       "npc": "Grigor",
       "topic": "The Ribbon Spool - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 145,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 151,
@@ -455,10 +495,11 @@
       "npc": "Grigor",
       "topic": "Gemlings",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 146,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 152,
@@ -466,10 +507,11 @@
       "npc": "Maramoa",
       "topic": "The Undying",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 147,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 153,
@@ -477,10 +519,11 @@
       "npc": "Dialla *",
       "topic": "Thaumetic Sulphite",
       "legacyNote": "After getting Thaumetic Sulphite - Do NOT have Ribbon Spool in inventory",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 148,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 154,
@@ -488,10 +531,11 @@
       "npc": "Dialla *",
       "topic": "The Sewers - (!)",
       "legacyNote": "After getting Ribbon Spool",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 149,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 155,
@@ -499,10 +543,11 @@
       "npc": "Dialla *",
       "topic": "Infernal Talc",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 152,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 156,
@@ -510,10 +555,11 @@
       "npc": "Dialla *",
       "topic": "Malachai",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 150,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 157,
@@ -521,10 +567,11 @@
       "npc": "Dialla *",
       "topic": "Chitus",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 151,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 158,
@@ -532,10 +579,11 @@
       "npc": "Maramoa",
       "topic": "Crossing the River",
       "legacyNote": "Before killing General Gravicius",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 158,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 159,
@@ -543,10 +591,11 @@
       "npc": "Dialla *",
       "topic": "General Gravicius - QC",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 159,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 160,
@@ -554,10 +603,11 @@
       "npc": "Maramoa",
       "topic": "General Gravicius - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 162,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 161,
@@ -565,10 +615,11 @@
       "npc": "Maramoa",
       "topic": "Piety",
       "legacyNote": "After killing General Gravicius - Do NOT kill Piety",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 164,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 162,
@@ -576,10 +627,11 @@
       "npc": "Hargan",
       "topic": "General Gravicius",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 160,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 163,
@@ -587,10 +639,11 @@
       "npc": "Clarissa",
       "topic": "General Gravicius",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 161,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 164,
@@ -598,10 +651,11 @@
       "npc": "Grigor",
       "topic": "The Lunaris Temple",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 163,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 165,
@@ -609,10 +663,11 @@
       "npc": "Maramoa",
       "topic": "Piety - QC - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 167,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 166,
@@ -620,10 +675,11 @@
       "npc": "Hargan",
       "topic": "Piety - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 166,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 167,
@@ -631,10 +687,11 @@
       "npc": "Clarissa",
       "topic": "Piety - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 165,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 168,
@@ -642,10 +699,11 @@
       "npc": "Grigor",
       "topic": "The Beast",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 168,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 169,
@@ -653,10 +711,11 @@
       "npc": "Siosa",
       "topic": "Introduction - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 169,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 170,
@@ -664,10 +723,11 @@
       "npc": "Siosa",
       "topic": "Archives",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 170,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 171,
@@ -675,10 +735,11 @@
       "npc": "Siosa",
       "topic": "The Painting",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 171,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 172,
@@ -686,10 +747,11 @@
       "npc": "Siosa",
       "topic": "Page One Translation",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 172,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 173,
@@ -697,10 +759,11 @@
       "npc": "Siosa",
       "topic": "Doryani",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 176,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 174,
@@ -708,10 +771,11 @@
       "npc": "Siosa",
       "topic": "Page Two Translation",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 173,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 175,
@@ -719,10 +783,11 @@
       "npc": "Siosa",
       "topic": "Malachai",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 179,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 176,
@@ -730,10 +795,11 @@
       "npc": "Siosa",
       "topic": "Page Three Translation",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 174,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 177,
@@ -741,10 +807,11 @@
       "npc": "Siosa",
       "topic": "Queen Atziri",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 177,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 178,
@@ -752,10 +819,11 @@
       "npc": "Siosa",
       "topic": "Page Four Translation",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 175,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 179,
@@ -763,10 +831,11 @@
       "npc": "Siosa",
       "topic": "Cataclysm",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 178,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 180,
@@ -774,10 +843,11 @@
       "npc": "Maramoa",
       "topic": "Dominus - (!)",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": true,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 180,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     },
     {
       "id": 181,
@@ -785,10 +855,11 @@
       "npc": "Maramoa",
       "topic": "Piety and Dominus",
       "legacyNote": "",
-      "reviewStatus": "inventory-only-unverified",
+      "reviewStatus": "wiki-row-matched-patch-unverified",
       "riskCandidate": false,
-      "wikiRow": null,
-      "patchEvidence": null
+      "wikiRow": 181,
+      "patchEvidence": null,
+      "guideSource": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
     }
   ]
 }

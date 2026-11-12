@@ -429,3 +429,29 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubHistoricalRisks>summary{cursor:pointer;font-size:12px;font-weight:750;color:#f3dcaa;line-height:1.65}
 .hubHistoricalRisks .hubCritical{margin-top:12px}
 .hubHistoricalRisks .hubCheckpoint{margin-top:8px}
+
+/* Evidence-aware in-game-style quest mock: one optional visual at the active action. */
+.hubQuestVisual{margin:12px 0;border:1px solid #ab8756;background:#202933;border-radius:10px;overflow:hidden}
+.hubQuestVisual>summary{display:flex;align-items:center;min-height:47px;padding:10px 13px;cursor:pointer;font-size:12px;font-weight:800;line-height:1.55;color:#fbe3b5;list-style:none}
+.hubQuestVisual>summary::-webkit-details-marker{display:none}
+.hubQuestVisual>summary::before{content:"▣";font-size:18px;line-height:1;margin-right:10px;color:#ffd28f}
+.hubQuestVisual[open]>summary{border-bottom:1px solid #896d49;background:#36302a}
+.hubQuestVisual>summary:focus-visible{outline:3px solid #f5d68b;outline-offset:-3px}
+.hubQuestVisualBody{padding:12px;display:grid;gap:10px}
+.hubVisualSourceWarning{display:flex;flex-direction:column;gap:3px;background:#392b20;border-left:4px solid #e8b66c;border-radius:0 7px 7px 0;padding:8px 12px}
+.hubVisualSourceWarning strong{font-size:12px;color:#ffe4af;line-height:1.5}
+.hubVisualSourceWarning span{font-size:11px;color:#d9c9b2;line-height:1.5}
+.hubQuestFigure{margin:0;max-width:100%;padding:0}
+.hubQuestFigure img{display:block;max-width:100%;width:100%;height:auto;margin:0;border:1px solid #98764c;border-radius:8px;background:#131923}
+.hubQuestFigure figcaption{font-size:11px;color:#b9c8cd;line-height:1.5;padding:8px 1px 0}
+.hubVisualCheck{background:#27382f;border:1px solid #587c66;border-radius:8px;padding:11px 12px}
+.hubVisualCheck strong{color:#d5f0dc;font-size:12px;line-height:1.55}
+.hubVisualCheck p{font-size:12px;line-height:1.6;color:#e1e9dd;margin:5px 0 0}
+.hubVisualLinks{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;font-weight:700}
+.hubVisualLinks a{color:#f6d99b;text-decoration:underline;line-height:1.5;overflow-wrap:anywhere}
+@media(max-width:720px){
+ .hubQuestVisualBody{padding:8px;gap:8px}
+ .hubQuestVisual>summary{font-size:12px;padding:10px}
+ .hubQuestFigure img{border-radius:5px}
+ .hubVisualLinks{flex-direction:column}
+}

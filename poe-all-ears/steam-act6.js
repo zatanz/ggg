@@ -456,6 +456,8 @@ guide.acts[6]=[
     "keyItems": [
       "The Black Flag"
     ],
+    "sourceNote": "ข้อควรระวังเรื่องกำหนดเวลา: ข้อมูลเดิมของ ID 336 เตือนก่อนเข้า The Beacon แต่ PoE Wiki ปี 2025 เตือนก่อนเผา The Black Flag ใช้เงื่อนไขที่เร็วกว่าเพื่อเลี่ยงความเสี่ยง โดยยังไม่มีผลทดสอบ 3.29 ยืนยันว่าการเข้า Beacon ทำให้หัวข้อหาย",
+    "sourceNoteEN": "Deadline discrepancy: legacy checklist ID 336 cautions before entering The Beacon, while the 2025 PoE Wiki warns before burning The Black Flag. Follow the earlier precaution; there is no 3.29 game evidence here that entering the Beacon makes the topic disappear.",
     "confidence": "historical-source-only"
   },
   {

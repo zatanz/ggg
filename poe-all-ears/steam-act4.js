@@ -393,4 +393,72 @@
     "confidence": "historical"
   }
 ];
+// English text is authored per quest-state; never translate a STOP deadline by guessing.
+const english={
+  "aqueduct":["Enter Highgate · meet the first town NPCs",[
+    "Read the Note in the Aqueduct and discover the Aqueduct and Highgate Waypoints.",
+    "Speak with Kira, Petarus and Vanja, Tasuni, Oyun and Lady Dialla as the historical source introduces them.",
+    "Return for cross-NPC topics after meeting each person; these unlock in later stages."
+  ],null],
+  "highgate-followups":["Highgate · return for newly unlocked NPC topics",[
+    "Speak again to Kira, Petarus and Vanja, Tasuni, Oyun and Lady Dialla after introductions unlock new topics.",
+    "Review The Beast, Deshret, Voll and topics about other NPCs as they appear."
+  ],null],
+  "voll-mines":["After Voll · talk to Kira BEFORE freeing Deshret",[
+    "Read Voll's Confession at the Dried Lake, then defeat Voll to gain access to the Mines.",
+    "After receiving An Indomitable Spirit, return to Highgate for Kira: Deshret (checklist ID 220) BEFORE freeing Deshret in Mines Level 2.",
+    "Review newly unlocked Mines, Voll and Rapture Device dialogue before continuing."
+  ],"STOP: hear Kira: Deshret (checklist ID 220; Wiki #219) before freeing Deshret."],
+  "deshret-after":["After freeing Deshret · return to Kira and Oyun",[
+    "Return to Highgate after freeing Deshret and listen to Kira and Oyun: Deshret.",
+    "Only mark An Indomitable Spirit in No Loose Ends after the quest is actually completed."
+  ],null],
+  "crystal-veins":["Crystal Veins · meet Dialla before finishing both boss quests",[
+    "Activate the Crystal Veins Waypoint and collect Malachai's Notebook.",
+    "Speak to Lady Dialla about Kaom and Daresso before completing BOTH The King of Fury and The King of Desire.",
+    "Revisit Petarus and Vanja, Tasuni and Oyun in Highgate for the resulting topics."
+  ],"STOP: speak to Lady Dialla in the Crystal Veins before completing both Kaom and Daresso quest lines (Wiki #223–224)."],
+  "daresso-after":["After Daresso · check two dialogues before Belly of the Beast",[
+    "Activate the Grand Arena Waypoint and discover the three Plaque lore entries.",
+    "After completing The King of Desire, return to Highgate for Petarus and Vanja: Daresso and Tasuni: Daresso BEFORE entering The Belly of the Beast."
+  ],"STOP: hear the two post-Daresso town topics before entering The Belly of the Beast (Wiki #231–232). Entering Kaom's Dream alone is not the sourced deadline."],
+  "kaom-after":["After Kaom · review town conversations before Belly of the Beast",[
+    "Discover the four Weathered Carvings and activate the Kaom's Stronghold Waypoint.",
+    "After defeating Kaom and handing in The Eye of Fury, return to Highgate.",
+    "Check Oyun, Tasuni, Petarus and Vanja, Kira and Lady Dialla's newly unlocked topics after the Rapture Device changes state."
+  ],"STOP: complete the relevant post-Kaom and post-Rapture Device conversations BEFORE entering The Belly of the Beast (Wiki #233–239)."],
+  "belly-intro":["Belly of the Beast · review Tasuni: Ghasts",[
+    "Review the newly unlocked Tasuni: Ghasts dialogue.",
+    "After the Piety encounter, check The Godless Three before entering The Harvest."
+  ],null],
+  "piety-after":["After Piety · do NOT enter the Harvest immediately",[
+    "Talk to Piety about The Godless Three after the encounter in the Belly of the Beast, before entering The Harvest."
+  ],"STOP: hear Piety: The Godless Three before entering The Harvest (Wiki #241)."],
+  "piety-town":["After Piety · review Tasuni before killing Malachai",[
+    "Return to Highgate and review newly available Petarus and Vanja, Tasuni and Lady Dialla topics.",
+    "Hear Tasuni: Malachai's Apprentices (checklist ID 245; Wiki #246) BEFORE killing Malachai."
+  ],"STOP: hear Tasuni: Malachai's Apprentices before defeating Malachai (Wiki #246)."],
+  "harvest-before":["The Harvest · speak to Piety before the final organ hand-in",[
+    "Activate the Harvest Waypoint and collect Malachai's Dedication lore.",
+    "Listen to Piety: Malachai (checklist ID 247) while at least one organ has NOT yet been handed in.",
+    "Only hand in the final organ after recording the actual in-game dialogue."
+  ],"STOP: hear Piety: Malachai (Wiki #247) BEFORE handing in all organs."],
+  "harvest-after":["After the organ hand-in · speak to Dialla before Malachai",[
+    "After handing all organs to Piety, hear Lady Dialla: Malachai (checklist ID 248).",
+    "Verify that the post-hand-in dialogue was heard before fighting Malachai."
+  ],"STOP: hear Lady Dialla: Malachai (Wiki #248) AFTER handing in all organs but BEFORE killing Malachai."],
+  "malachai-after":["After Malachai · finish Highgate dialogue and Act 4 lore",[
+    "After defeating Malachai, revisit Kira, Petarus and Vanja, Tasuni and Oyun for their newly unlocked topics.",
+    "Read Resonator Instructions in the Ascent.",
+    "Compare the four tracked achievement counts with your in-game progress before leaving Act 4."
+  ],"Before leaving Act 4, revisit the post-Malachai NPC conversations (Wiki #249–253)."]
+};
+const phases=guide.acts[4];
+if(phases.length!==Object.keys(english).length)throw Error("Act 4 English phase coverage mismatch");
+for(const phase of phases){
+ const strings=english[phase.id];
+ if(!strings||strings[1].length!==phase.actions.length||!!strings[2]!==!!phase.stop)throw Error("Act 4 English timing mismatch: "+phase.id);
+ phase.headingEN=strings[0];phase.actionsEN=strings[1];
+ if(strings[2])phase.stopEN=strings[2];
+}
 })();

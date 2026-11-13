@@ -319,7 +319,7 @@ for(const act of [1,2,3]){
 }
 const earlyEN=steamWalk.acts[1].find(p=>p.id==='fairgraves');
 assert(earlyEN.actionsEN.some(t=>t.includes('Allflame'))&&earlyEN.stopEN.includes('Fairgraves'),'Act1 Allflame dialogue chain must survive English edit');
-assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('disagree')),'Act2 Bandit historical conflict must be retained in English');
+assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('Steam')&&t.includes('PoE Wiki')&&t.includes('earlier talks')),'Act2 Bandit English instructions must separate documented kill sequence from unsupported first-talk prohibition');
 assert(steamWalk.acts[3].find(p=>p.id==='bracelet').stopEN.includes('Clarissa'),'Act3 Bracelet STOP still names its recipient and timing');
 const playerHelpSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act),linked.index)'),'Checklist explanations must offer direct jump to exact quest-stage actions');
@@ -339,7 +339,7 @@ assert(actTwoIds.every(id=>d.items.some(x=>x.id===id&&x.act===2)),'Act 2 zone gu
 const steamRouteRows=ctx.window.ALL_EARS_ROUTE_ACT2.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(x=>x.id);
 assert(actTwoIds.join(',')===steamRouteRows.join(','),'Act 2 sequence must be derived from Wiki row numbers, not incorrectly using local ID order');
 assert(actTwo.every(p=>p.actions.length>0&&p.place&&(!p.stopIds||p.stopIds.every(id=>actTwoIds.includes(id)))),'Act 2 do-not-progress guards must refer to existing source-linked Act 2 dialogue IDs');
-assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('ขัดแย้ง'),'Act 2 Steam/Wiki disputed Ancient Seal timing must not be claimed as safe');
+assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('ไม่ได้สั่งห้ามคุยก่อน Seal')&&actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('3.30'),'Act 2 must not invent a Steam pre-Seal talking prohibition or certify patch 3.30');
 assert(actTwo.find(p=>p.id==='western-forest').stop.includes('Chamber of Sins'),'West Forest must precede the relevant Chamber of Sins quest transition in source-oriented Act 2');
 
 const actThree=steamWalk.acts[3],actThreeIds=actThree.flatMap(p=>p.dialogueIds),actThreeLore=actThree.flatMap(p=>p.loreIds);

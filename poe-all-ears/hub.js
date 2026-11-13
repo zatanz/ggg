@@ -121,7 +121,16 @@ function renderQuickStart(){
   currentBox.append(el("p",tr("ติ๊กครบในพื้นที่นี้แล้ว แต่ต้องตรวจยอดในเกมอีกครั้ง","Every item here is marked; verify the actual in-game counters before treating it as complete.")));
  }else if(phase){
   currentBox.append(el("p",(descEN()?(phase.headingEN||phase.place):phase.heading),"hubBeginnerQuest"));
-  currentBox.append(el("small",tr("เหลือ ","Remaining ")+(current.all-current.done)+tr(" รายการในพื้นที่นี้"," items in this area")));
+  currentBox.append(el("p",tr("ไปที่: ","Go to: ")+gameName(phase.place)+" · "+tr("เควส: ","Quest: ")+gameName(phase.quest),"hubBeginnerWhere"));
+  const steps=descEN()?(phase.actionsEN||[]):phase.actions||[];
+  if(steps.length){
+   currentBox.append(el("strong",tr("ต้องทำอะไรในเกม","What to do in-game")));
+   const guide=el("ol",undefined,"hubBeginnerInstructions");
+   steps.slice(0,3).forEach(x=>guide.append(el("li",x)));
+   currentBox.append(guide);
+   if(steps.length>3)currentBox.append(el("small",tr("เปิดคู่มือด้านล่างเพื่อดูขั้นตอนที่เหลือ","Open the quest guide below for the remaining steps")));
+  }else currentBox.append(el("p",tr("ตรวจบทสนทนาและรายการในช่วงนี้จากคู่มือด้านล่างก่อนเดินเควสต่อ","Review this stage's dialogue and checklist below before advancing."),"hubBeginnerWhere"));
+  currentBox.append(el("small",tr("เหลือ ","Remaining ")+(current.all-current.done)+tr(" รายการในพื้นที่นี้ · ติ๊กเมื่อทำในเกมจริงแล้วเท่านั้น"," items in this area · check only after collecting in-game")));
   if(phase.stop&&(phase.stopIds||[]).some(id=>!groups.ears.has(id))){
    currentBox.append(el("p",tr("จุดที่ต้องระวังก่อนทำเควสต่อ: ","Before you advance, check: ")+(descEN()?(phase.stopEN||phase.stop):phase.stop),"hubBeginnerStop"));
   }
@@ -634,7 +643,7 @@ function actSteamGuide(act){
   const item=collections[current.type].find(x=>x.id===current.id);
   const typeName=current.type==="ears"?"All Ears":current.type==="lore"?"No Stone Unturned":current.type==="waypoints"?"Locomancer":"No Loose Ends";
   focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+typeName,"hubNextActionItem"));
-  const button=el("button",tr("เปิดรายการเพื่อยืนยันด้วยตัวเอง","Open item for manual verification"));button.type="button";
+  const button=el("button",tr("ดูรายการที่ต้องติ๊กหลังทำเสร็จ","See what to mark after completing the steps"));button.type="button";
   button.onclick=()=>{const area=box.querySelector('[data-walk-type="'+current.type+'"]');if(!area)return;if(area.tagName==="DETAILS")area.open=true;area.tabIndex=-1;area.focus({preventScroll:true});area.scrollIntoView({block:"center"});};
   focus.append(button);
  }else{
@@ -714,7 +723,10 @@ function actSteamGuide(act){
  }
  const actions=el("ol",undefined,"hubWalkActions");
  const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
- instructions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
+ instructions.forEach(txt=>actions.append(el("li",txt)));
+ // The instruction list is the primary task, not another card below the warnings and controls.
+ focus.insertBefore(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),focus.querySelector("button"));
+ focus.append(actions);
  if(descEN()&&!phase.actionsEN){
   const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
   original.append(el("summary","Original Thai step-by-step instructions"));

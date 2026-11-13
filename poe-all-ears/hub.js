@@ -422,7 +422,7 @@ function criticalPanel(act){
   if(stage.sourceConflict){
     const conflict=el("div",undefined,"hubResearchConflict");
     conflict.dataset.conflict=stage.sourceConflict.kind;
-    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"Steam and PoE Wiki differ about the Bandits / Ancient Seal sequence. Confirm the actual dialogue in-game before making an irreversible choice; this route is not patch-certified.":stage.sourceConflict.summary));
+    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"PoE Wiki advises speaking to Bandits before the Ancient Seal. Steam's recorded kill sequence happens after The Darkness without forbidding earlier conversations. Confirm every available dialogue before any kill/help choice; patch 3.30 remains unverified.":stage.sourceConflict.summary));
     const steam=el("a",tr("คู่มือ Steam","Steam guide"));steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
@@ -1149,12 +1149,12 @@ function safetyPanel(){
  const wrap=el("div",undefined,"hubPanel");
  wrap.append(
    el("h3",tr("ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness","Before choosing Bandits · check The Darkness")),
-   el("p",tr("แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์",
-     "Steam and PoE Wiki disagree on when to first speak with Bandits relative to the Ancient Seal. Both require checking Darkness dialogue before making an irreversible kill/help choice. These are manual notes, not proof of a patch-safe route."),"hubSubtle")
+   el("p",tr("PoE Wiki แนะนำคุย Bandits ก่อนเปิด Ancient Seal และยังไม่ฆ่าก่อน The Darkness; Steam 3.28 แสดงขั้นฆ่าหลัง The Darkness แต่ไม่ได้ห้ามคุยก่อน Seal ให้บันทึกเฉพาะสิ่งที่ทำจริงและตรวจบทสนทนาก่อนตัดสินใจ",
+     "PoE Wiki advises speaking before the Ancient Seal; Steam's kill route follows The Darkness and does not forbid earlier talks. Verify available dialogue before any irreversible kill/help choice. These are manual notes, not proof of a patch-3.30-safe route."),"hubSubtle")
  );
  wrap.append(el("p",tr(
-   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.29 ได้",
-   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. No in-game 3.29 evidence here establishes that Book of Reform can restore missed dialogue."
+   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.30 ได้",
+   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. No in-game 3.30 evidence here establishes that Book of Reform can restore missed dialogue."
  ),"hubCheckpointRisk"));
  const s=getSafety(),grid=el("div",undefined,"hubCheckGrid");
  const checks=[
@@ -1192,8 +1192,8 @@ function safetyPanel(){
  wrap.append(choices);
  const state=el("div",undefined,"hubNotice"),saved=getSafety(),sealed=!!(saved.seal&&saved.darkness);
  let message=sealed?
-   tr("บันทึก Ancient Seal และ The Darkness แล้ว แต่คู่มือยังขัดแย้งเรื่องลำดับคุย Bandits · ตรวจในเกมก่อนเลือกเส้นทาง",
-      "Ancient Seal and Darkness are marked, but the historical guides still disagree on first-talk order. Check in-game before choosing."):
+   tr("บันทึก Ancient Seal และ The Darkness แล้ว · ตรวจบทสนทนาของ Bandits ที่ยังมีอยู่ก่อนเลือกฆ่าหรือช่วย",
+      "Ancient Seal and Darkness are marked. Verify all available Bandit dialogue before deciding whom to kill or help."):
    tr("ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ · อย่าเพิ่งฆ่าหรือช่วย Bandits",
       "Ancient Seal and Darkness are not both marked. Do not kill or help Bandits yet.");
  if((saved.first||saved.second)&&!sealed)message=tr(

@@ -366,7 +366,7 @@ assert(locale.set('names','th')&&locale.term('Wings of Vastiri').includes('à¸§à¸
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===407),{}).caution.includes('BEFORE completing'),'Act 8 Ankh before-completion warning must work in English');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===411),{}).caution.includes('BEFORE leaving'),'Act 8 Clarissa post-Tolman Quay warning must be unambiguous in English');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===409),{}).caution.includes('BEFORE killing Yugul'),'Act 8 Sin pre-Yugul STOP must remain available in English');
-assert(locale.englishHelp('waypoints',extras.waypoints.find(x=>x.id===71),{}).unlock.includes('Doedre'),'Act 8 waypoint cannot be marked before Doedre's Cesspool exit');
+assert(locale.englishHelp('waypoints',extras.waypoints.find(x=>x.id===71),{}).unlock.includes('Doedre'),'Act 8 waypoint cannot be marked before the Cesspool exit after Doedre');
 const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
 assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
 assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');

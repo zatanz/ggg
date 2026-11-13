@@ -262,7 +262,7 @@ function criticalPanel(act){
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
   }
-  if(stage.patchAlert){inside.append(el("div",en?"A historical patch report describes dialogue availability issues. Do not mark unavailable topics as heard; patch 3.30 behavior is unverified.":stage.patchAlert,"hubResearchConflict"));if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai patch report"),el("p",stage.patchAlert));inside.append(original);}}
+  if(stage.patchAlert){inside.append(el("div",en?(stage.id==="a1-fairgraves"?"Patch 3.29 reports describe Fairgraves dialogue #34–38 as unavailable. Patch 3.30 is unverified; do not mark these topics unless actually heard.":"A historical NPC dialogue availability report exists; patch 3.30 is unverified."):stage.patchAlert,"hubResearchConflict"));if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai patch report"),el("p",stage.patchAlert));inside.append(original);}}
   inside.append(el("p",en?en[1]:stage.action,"hubCheckpointAction"));
   const detailsWhy=el("details",undefined,"hubCheckpointWhy");
   detailsWhy.append(el("summary",tr("ทำไมต้องระวัง / เงื่อนไขเพิ่มเติม","Why this can be missed / source conditions")),el("p",en?en[3]:stage.risk,"hubCheckpointRisk"));
@@ -291,7 +291,8 @@ function criticalPanel(act){
     check.setAttribute("aria-label",tr("ฟังบทสนทนาแล้ว — ","Dialogue heard in-game — ")+label(item,"ears"));
     check.addEventListener("change",()=>{
       const hint=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
-      if(check.checked&&hint?.caution&&!confirm("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n"+hint.caution+"\n\nฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?")){check.checked=false;return;}
+      const displayedHint=descEN()?LANG.englishHelp("ears",item,hint):hint;
+      if(check.checked&&hint?.caution&&!confirm(tr("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n","Missable topic in the 2025 Wiki (not verified for patch 3.30):\n")+(displayedHint?.caution||hint.caution)+"\n\n"+tr("ฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?","Did you finish listening to this topic in-game?"))){check.checked=false;return;}
       writeMarks("ears",id,check.checked);
     });
     line.append(check,info,marked);req.append(line);
@@ -711,7 +712,7 @@ if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  if(["2","3","4","5","6","7","8","9","10"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{panel.append(actMission);const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
-if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
+if(act==="10"){panel.append(el("p",tr("Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","Act 10: the 2025 source has no separate pre-transition STOP groups for this Act. That does not prove Act 10 is safe or certify completion in patch 3.30."),"hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;

@@ -75,7 +75,8 @@ function openJourneyScope(scope){
 function fairgravesCurrentRisk(){
  const card=el("details",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";
  card.open=state.fairgravesExpanded===null?state.routeAct==="1":state.fairgravesExpanded;
- card.addEventListener("toggle",()=>{if(card.isConnected)state.fairgravesExpanded=card.open;});
+ // Persist only an explicit user toggle; automatic defaults track the selected Act.
+ card.addEventListener("click",event=>{if(event.target.closest("summary")&&event.currentTarget===card)state.fairgravesExpanded=!card.open;});
  const summary=el("summary");
  summary.append(el("strong",tr("Act 1 · รายงานปัญหา Fairgraves #34–38 ใน 3.29","Act 1 · reported Fairgraves #34–38 issue in 3.29")),
  el("small",tr("รายงานจากผู้เล่น · เปิดดูหลักฐานและข้อควรระวัง","Player reports · expand for sources and precautions")));

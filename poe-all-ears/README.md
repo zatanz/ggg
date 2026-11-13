@@ -1,5 +1,13 @@
 # Path of Exile 1 — Achievement Companion (single-page preview)
 
+## Issue #30 · campaign route and records
+
+The campaign route connects the 67 additional historical Lore, Waypoint and Side Quest records listed in `route-mapping-67.json`. The Sceptre of God waypoint appears before the post-Dominus stage. Review each item's location and timing in the route before marking it.
+
+The manual quest-step confirmation is independent of checklist marks and is saved per character. Combined backups include this confirmation while continuing to accept older backups. Locomancer IDs 90 and 91 remain importable and exportable as historical Epilogue records. They are excluded from the active route totals. These totals count records in this guide and do not certify the current in-game requirements.
+
+Use the report link beside a task or STOP to open a prefilled GitHub issue. GitHub requires a signed-in account. The app does not submit a report until the player completes submission on GitHub.
+
 ## Guided campaign · 13 November 2026
 
 The **Quests** view opens directly at the current quest. Choose a character and Act or additional area, then use the step selector to pick a different quest stage. The app remembers the last area and selected stages by character in this browser. First-time profiles start in Act 1. Route position is a display preference and is stored separately from the existing progress and backup formats.

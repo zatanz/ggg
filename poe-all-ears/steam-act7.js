@@ -272,22 +272,22 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "เมื่อพบทางกลับ The Forest Encampment เดิมถูกปิด ให้กลับไปคุย Helena หัวข้อ The Den (ID 365)",
-      "เมื่อพบทางกลับ Forest Encampment เดิมถูกปิด ให้ฟัง Helena: The Den (ID 365) ทันที ก่อนเข้า The Fellshrine Ruins ตามคำเตือนเดิม",
-      "PoE Wiki ระบุอย่างช้าที่สุดก่อนเดินต่อสู่ The Den คำเตือน Fellshrine จากฐานข้อมูลเดิมเป็นจุดระวังที่เร็วกว่า ยังไม่ยืนยันว่าเพียงเข้า Fellshrine ทำให้บทสนทนาหายใน 3.29"
+      "เมื่อพบทางกลับ Forest Encampment เดิมถูกปิด ให้ฟัง Helena: The Den (ID 365) ก่อนเดินต่อสู่ The Den",
+      "คำเตือน Fellshrine จากฐานข้อมูลเดิมยังไม่ยืนยันว่าเพียงเข้า Fellshrine ทำให้บทสนทนาหายใน 3.29"
     ],
     "actionsEN": [
       "After discovering the blocked route to the old Forest Encampment, return to Helena for The Den (Wiki row #365).",
-      "After finding the blocked route, hear Helena: The Den (ID 365) immediately, before entering The Fellshrine Ruins as the legacy data cautions.",
-      "The 2025 Wiki warns before continuing toward The Den; the Fellshrine warning is a conservative earlier boundary, not proof that entering Fellshrine removes the topic in 3.29."
+      "After finding the blocked route, hear Helena: The Den (ID 365) before continuing toward The Den.",
+      "The legacy Fellshrine warning is not proof that entering Fellshrine removes the topic in 3.29."
     ],
-    "stop": "หยุดหลังพบเส้นทางถูกปิด: คุย Helena: The Den (ID 365) ก่อนเข้า The Fellshrine Ruins ตามฐานข้อมูลเดิม (Wiki เตือนก่อน The Den)",
-    "stopEN": "STOP: after finding the blocked route, hear Helena: The Den (ID 365) before The Fellshrine Ruins (earlier legacy caution; Wiki says before The Den).",
+    "stop": "หยุดหลังพบเส้นทางถูกปิด: คุย Helena: The Den (ID 365) ก่อนเดินต่อสู่ The Den",
+    "stopEN": "STOP: after finding the blocked route, hear Helena: The Den (ID 365) before continuing toward The Den.",
     "stopIds": [
       365
     ],
     "keyItems": [],
-    "sourceNote": "ข้อมูลเดิม #365 เตือนก่อน The Fellshrine Ruins ขณะที่ PoE Wiki ปี 2025 เตือนก่อนมุ่งหน้า The Den จึงเลือกจุดที่เร็วกว่าเป็นข้อควรระวังเท่านั้น ไม่มีหลักฐานในเกม 3.29 ว่าเข้าพื้นที่ Fellshrine แล้วหัวข้อหายทันที",
-    "sourceNoteEN": "Legacy #365 warns before entering The Fellshrine Ruins; the 2025 Wiki warns before proceeding toward The Den. The earlier point is precautionary only; no 3.29 gameplay reproduction proves the dialogue disappears on entering Fellshrine.",
+    "sourceNote": "ข้อมูลเดิม #365 เตือนก่อน The Fellshrine Ruins ขณะที่ PoE Wiki ปี 2025 เตือนก่อนมุ่งหน้า The Den ไม่มีหลักฐานในเกม 3.29 ว่าเข้าพื้นที่ Fellshrine แล้วหัวข้อหายทันที",
+    "sourceNoteEN": "Legacy #365 warns before entering The Fellshrine Ruins; the 2025 Wiki warns before proceeding toward The Den. No 3.29 gameplay reproduction proves the dialogue disappears on entering Fellshrine.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act7-den-helena-stop.svg",
@@ -319,12 +319,12 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "เปิด Waypoint The Den และ The Ashen Fields; ก่อนสู้ Greust สำรวจ Ode to Ralakesh ใน Ashen Fields",
-      "หลังจบ The Master of a Million Faces ให้กลับเมืองฟัง Helena: Greust (#376) และ Yeena: Greust (#377)",
+      "หลังจบ The Master of a Million Faces ให้กลับเมืองฟัง Helena: Greust (#380) และ Yeena: Greust (#379)",
       "อย่าติ๊กหัวข้อหลังจบเควสต์ก่อนจัดการ Greust/Ralakesh จริง"
     ],
     "actionsEN": [
       "Activate The Den and The Ashen Fields Waypoints, and discover Ode to Ralakesh near Greust's arena.",
-      "After completing The Master of a Million Faces, return to town for Helena: Greust (Wiki #376) and Yeena: Greust (#377).",
+      "After completing The Master of a Million Faces, return to town for Helena: Greust (local #380) and Yeena: Greust (#379).",
       "Do not mark post-Greust dialogue until the boss sequence has actually completed."
     ],
     "stop": null,
@@ -383,12 +383,12 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "รับเควสต์ Kishara's Star จาก Weylam Roth ที่ Bridge Encampment",
-      "ฟัง Weylam Roth: Kishara (#378) หลังรับเควสต์ ก่อนเดินทางไป The Causeway",
+      "ฟัง Weylam Roth: Kishara (#377) หลังรับเควสต์ ก่อนเดินทางไป The Causeway",
       "ไอเท็ม Kishara's Star อยู่ที่ The Causeway ช่วงใกล้ทางออกสู่ The Vaal City; อย่าเพิ่งติ๊กว่าเควสต์เสร็จ"
     ],
     "actionsEN": [
       "Accept Kishara's Star from Weylam Roth in The Bridge Encampment.",
-      "After starting the quest, listen to Weylam Roth: Kishara (Wiki row #378) before travelling to The Causeway.",
+      "After starting the quest, listen to Weylam Roth: Kishara (local #377) before travelling to The Causeway.",
       "Kishara's Star is located near the Causeway's exit toward The Vaal City; do not mark the quest completed yet."
     ],
     "stop": null,
@@ -417,13 +417,13 @@ guide.acts[7]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "รับ Queen of Despair จาก Sin แล้วฟัง Sin: The Mother of Despair (#379)",
-      "กลับคุย Eramir: Gruthkul (#380) หลังรับเควสต์ แต่ต้องทำก่อนฆ่า Gruthkul ใน The Dread Thicket",
+      "รับ Queen of Despair จาก Sin แล้วฟัง Sin: The Mother of Despair (#376)",
+      "กลับคุย Eramir: Gruthkul (#378) หลังรับเควสต์ แต่ต้องทำก่อนฆ่า Gruthkul ใน The Dread Thicket",
       "เมื่อเข้า The Dread Thicket ให้ค้น Shrine to Arakaali - As Her Fury (Lore #115) ก่อนเดินเรื่องต่อ"
     ],
     "actionsEN": [
-      "Start Queen of Despair with Sin and hear The Mother of Despair (Wiki #379).",
-      "After accepting the quest but BEFORE killing Gruthkul in The Dread Thicket, speak to Eramir: Gruthkul (Wiki #380).",
+      "Start Queen of Despair with Sin and hear The Mother of Despair (local #376).",
+      "After accepting the quest but BEFORE killing Gruthkul in The Dread Thicket, speak to Eramir: Gruthkul (local #378).",
       "Discover Shrine to Arakaali in The Dread Thicket (lore #115) before leaving."
     ],
     "stop": "ห้ามฆ่า Gruthkul ก่อนฟัง Eramir: Gruthkul หลังรับ Queen of Despair",
@@ -453,12 +453,12 @@ guide.acts[7]=[
     "actions": [
       "หลังจัดการ Gruthkul ให้กลับ Bridge Encampment คุย Eramir: Gruthkul (#381) ในสถานะหลังสู้",
       "ส่ง Queen of Despair ให้สำเร็จจริง แล้วติ๊กเควสต์รอง No Loose Ends",
-      "ตรวจให้แน่ใจว่าไม่สับสน Eramir: Gruthkul ก่อนสู้ (#380) กับหลังสู้ (#381)"
+      "ตรวจให้แน่ใจว่าไม่สับสน Eramir: Gruthkul ก่อนสู้ (#378) กับหลังสู้ (#381)"
     ],
     "actionsEN": [
-      "After defeating Gruthkul, return to Eramir and hear his post-boss Gruthkul topic (Wiki row #381).",
+      "After defeating Gruthkul, return to Eramir and hear his post-boss Gruthkul topic (local ID #381).",
       "Complete Queen of Despair before marking it as a finished No Loose Ends side quest.",
-      "Do not confuse Eramir's pre-boss topic (#380) with the post-boss topic (#381)."
+      "Do not confuse Eramir's pre-boss topic (#378) with the post-boss topic (#381)."
     ],
     "stop": null,
     "stopEN": null,

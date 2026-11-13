@@ -51,17 +51,17 @@ const translated={
         "Enter the Prison and return to Tarkleigh and Bestel for their Brutus topics.",
         "After meeting Piety, hear Nessa: Piety.",
         "Read Shavronne's Journal in the Upper Prison, then check Bestel: Marceus Lioneye.",
-        "Finish these topics before killing Brutus."
+        "Hear Bestel: Brutus before killing Brutus."
       ],
-      "STOP: check the Brutus, Piety and Marceus Lioneye topics at their required quest states BEFORE killing Brutus."
+      "STOP: hear Bestel: Brutus (local ID 27) before killing Brutus."
     ],
     "prisoners-gate": [
-      "After Brutus · revisit town before the Ship Graveyard",
+      "After Brutus · revisit town",
       [
         "After defeating Brutus, return to town and ask Nessa about Brutus.",
-        "After seeing Piety block the Western Forest route, hear Bestel: Prisoner's Gate BEFORE entering the Ship Graveyard."
+        "After seeing Piety block the Western Forest route, hear Bestel: Prisoner's Gate."
       ],
-      "STOP: hear Bestel: Prisoner's Gate before entering the Ship Graveyard."
+      null
     ],
     "fairgraves": [
       "Fairgraves · finish the dialogue sequence before the Allflame",
@@ -100,7 +100,7 @@ const translated={
         "After defeating the Great White Beast, return for Silk's updated dialogue.",
         "Silk has separate dialogue before and after the quest. Check both, not just one."
       ],
-      "STOP: hear Silk's first Great White Beast topic (Wiki row #62) BEFORE defeating the beast."
+      "STOP: hear Silk: The Great White Beast (local ID #57, Wiki row #62) before completing the quest."
     ],
     "western-forest": [
       "Western Forest · revisit town before helping Helena",
@@ -193,13 +193,13 @@ const translated={
       "STOP: hear Hargan: Introduction (Wiki row #115) BEFORE giving Tolman's Bracelet to Clarissa."
     ],
     "sewer-blockage": [
-      "Sewers · revisit Maramoa before entering Marketplace",
+      "Sewers · revisit Maramoa",
       [
         "In the Sewers, check Clarissa's topics as they become available.",
-        "After seeing the Undying Blockage, return for Maramoa: Crossing the River (Wiki row #140) BEFORE entering the Marketplace.",
+        "After seeing the Undying Blockage, return for Maramoa: Crossing the River (local ID 140).",
         "Other Wiki rows #132–139 can unlock after entering later areas; do not assume they must all be available at this blockage."
       ],
-      "STOP: after seeing the Undying Blockage, hear Maramoa: Crossing the River BEFORE entering the Marketplace."
+      null
     ],
     "market-battlefront": [
       "Marketplace and Battlefront · collect the area's lore",

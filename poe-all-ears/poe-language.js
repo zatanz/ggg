@@ -210,9 +210,9 @@ const highRisk={
   "21": "STOP: "+window.POE_APPROVED_GUIDANCE.undeadRhoas.stopEN+".",
   "22": "After collecting a Strange Glyph, talk before inserting any glyph in the Glyph Wall.",
   "23": "Check the Glyph Wall dialogue before inserting the Strange Glyphs.",
-  "28": "Listen to this topic before defeating Brutus.",
-  "29": "Read Shavronne's Journal and speak before defeating Brutus.",
-  "31": "Listen before leaving for The Ship Graveyard.",
+  "28": "After meeting Piety, check this topic.",
+  "29": "Read Shavronne's Journal, then check this topic.",
+  "31": "Check this topic after seeing Piety block the route.",
   "37": "Talk to Fairgraves before collecting the Allflame.",
   "38": "Talk before collecting the Allflame.",
   "220": "After accepting An Indomitable Spirit, hear Kira: Deshret before freeing Deshret.",
@@ -329,14 +329,15 @@ function entry(type,item,label){
  return term(label||item.name);
 }
 function englishHelp(type,item,guide){
- const act=item.act,base=String(item.name||item.dialog||""),where=String(item.area||"Act "+act);
+ const act=item.act,base=String(type==="lore"&&item.id===73?"Bronze Plaque — The Just Goddess":item.name||item.dialog||""),where=String(item.area||"Act "+act);
  let action="",location="",unlock="",caution="",tip="";
  if(type==="ears"){
    const topic=String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim();
+   const npc=String(item.npc||"").replace(/^Lily Roth/,"Lilly Roth").replace(/ \*$/,"");
    const phases=window.POE_STEAM_WALK?.acts?.[act]||[];
    const phase=phases.find(p=>(p.dialogueIds||[]).includes(item.id));
-   action=guide?.actionEN||("Speak to "+String(item.npc||"").replace(/ \*$/,"")+", select \""+topic+"\", and listen until the dialogue finishes before marking it collected.");
-   location=phase?"Act "+act+" · "+phase.place+" · "+String(item.npc||"").replace(/ \*$/,""):"Act "+act+" · "+item.npc;
+   action=guide?.actionEN||("Speak to "+npc+", select \""+topic+"\", and listen until the dialogue finishes before marking it collected.");
+   location=phase?"Act "+act+" · "+phase.place+" · "+npc:"Act "+act+" · "+npc;
    unlock=phase?.headingEN?"At quest step: "+phase.headingEN+". Open the linked quest-stage instructions before changing quest state.":"Check the Act guide for the event that makes this topic available before moving forward.";
    caution=highRisk[String(item.id)]||guide?.cautionEN||(guide?.caution?"Potentially missable topic. Review the linked source note and STOP timing before advancing.":"");
  }else if(type==="lore"){

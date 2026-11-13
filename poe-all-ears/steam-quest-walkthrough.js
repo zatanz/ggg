@@ -152,14 +152,11 @@ window.POE_STEAM_WALK = {
           "เข้า Prison แล้วกลับคุย Tarkleigh เรื่อง Brutus จากนั้นคุย Bestel เรื่อง Brutus",
           "หลังพบ Piety ตรวจหัวข้อ Nessa: Piety",
           "อ่าน Shavronne's Journal ใน The Upper Prison แล้วตรวจ Bestel: Marceus Lioneye",
-          "คุยครบก่อนสู้ Brutus"
+          "ฟัง Bestel: Brutus ก่อนสู้ Brutus"
         ],
-        "stop": "ยังไม่ควรฆ่า Brutus ก่อนตรวจ Brutus/Piety/Marceus Lioneye ตามเงื่อนไขรายหัวข้อ",
+        "stop": "ยังไม่ควรฆ่า Brutus ก่อนฟัง Bestel: Brutus (ID 27)",
         "stopIds": [
-          26,
-          27,
-          28,
-          29
+          27
         ],
         "confidence": "historical",
         "visual": {
@@ -174,7 +171,7 @@ window.POE_STEAM_WALK = {
       {
         "id": "prisoners-gate",
         "place": "The Prisoner's Gate",
-        "heading": "หลัง Brutus · กลับเมืองก่อนเข้า Ship Graveyard",
+        "heading": "หลัง Brutus · กลับเมืองตรวจบทสนทนา",
         "quest": "The Way Forward",
         "dialogueIds": [
           30,
@@ -183,12 +180,10 @@ window.POE_STEAM_WALK = {
         "loreIds": [],
         "actions": [
           "หลังฆ่า Brutus กลับเมืองคุย Nessa เรื่อง Brutus",
-          "หลังเห็น Piety ปิดทางไป Western Forest ให้กลับคุย Bestel เรื่อง Prisoner's Gate ก่อนเข้า The Ship Graveyard"
+          "หลังเห็น Piety ปิดทางไป Western Forest ให้กลับคุย Bestel เรื่อง Prisoner's Gate"
         ],
-        "stop": "ยังไม่ควรเข้า The Ship Graveyard ก่อนตรวจ Bestel: Prisoner's Gate",
-        "stopIds": [
-          31
-        ],
+        "stop": null,
+        "stopIds": [],
         "confidence": "historical"
       },
       {
@@ -314,7 +309,7 @@ window.POE_STEAM_WALK = {
           "หากจัดการ Great White Beast แล้วให้กลับฟัง Silk หัวข้อที่เปลี่ยนหลังเควสต์",
           "อย่าคิดว่า Silk หัวข้อก่อนและหลังเควสต์นับเป็นรายการเดียวกัน"
         ],
-        "stop": "ก่อนจัดการ The Great White Beast ต้องฟังหัวข้อ Silk ของช่วงแรก (Wiki #62) เสียก่อน",
+        "stop": "ก่อนทำ The Great White Beast สำเร็จ ต้องฟัง Silk (ID 57, Wiki #62) เสียก่อน",
         "stopIds": [
           57
         ],
@@ -637,7 +632,7 @@ window.POE_STEAM_WALK = {
       {
         "id": "sewer-blockage",
         "place": "The Sewers / Sarn Encampment",
-        "heading": "Sewers · กลับหา Maramoa ก่อนเข้า Marketplace",
+        "heading": "Sewers · กลับหา Maramoa",
         "quest": "Victario's Secrets",
         "dialogueIds": [
           134,
@@ -653,13 +648,11 @@ window.POE_STEAM_WALK = {
         "loreIds": [],
         "actions": [
           "ระหว่างเดิน Sewers ตรวจบทสนทนาของ Clarissa ตามเงื่อนไขที่เปิด",
-          "เมื่อพบ Undying Blockage ให้กลับคุย Maramoa: Crossing the River (Wiki #140) ก่อนผ่านไป Marketplace",
+          "เมื่อพบ Undying Blockage ให้กลับคุย Maramoa: Crossing the River (ID 140)",
           "หัวข้ออื่นในช่วง #132–139 อาจเปิดเมื่อเข้าพื้นที่ถัดไป ให้ตรวจตามเกม ไม่จำเป็นต้องปลดทุกหัวข้อก่อนจุดกั้น"
         ],
-        "stop": "ยังไม่ควรเข้า The Marketplace หลังพบ Undying Blockage จนกว่าจะตรวจ Maramoa: Crossing the River (Wiki #140)",
-        "stopIds": [
-          140
-        ],
+        "stop": null,
+        "stopIds": [],
         "confidence": "historical"
       },
       {

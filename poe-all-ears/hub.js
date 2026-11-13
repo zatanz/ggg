@@ -7,6 +7,7 @@ const tr=(th,en)=>LANG.tr(th,en),gameName=s=>LANG.term(s),descEN=()=>LANG.get().
 const MAIN="poe-all-ears-user-data-v1",LORE="poe-companion-lore-v1",EXTRA="poe-companion-extras-v1",HUB="poe-unified-review-v2",RULER="poe-act9-ruler-choice-v1";
 const collections={ears:E.items,lore:L.entries,waypoints:X.waypoints,sidequests:X.sidequests};
 const totals={ears:484,lore:140,waypoints:91,sidequests:30};
+const activeTotals={...totals,waypoints:89};
 const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
 const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
 const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
@@ -47,6 +48,7 @@ function entries(type){const char=active();if(!char)return [];if(type==="ears")r
 const raw=safeParse(type==="lore"?LORE:EXTRA),rec=raw&&raw.version===1&&raw.byCharacter&&raw.byCharacter[char.id];
 return validIDs(type,rec&&rec[type]);}
 function progress(type){return entries(type).length;}
+function activeProgress(type){return type==="waypoints"?entries(type).filter(id=>id!==90&&id!==91).length:progress(type);}
 function getBackupState(key){const data=safeParse(key);return data&&data.version===1&&data.byCharacter&&typeof data.byCharacter==="object"&&!Array.isArray(data.byCharacter)?data:{version:1,byCharacter:{}};}
 function writeMarks(type,id,done){if(type==="ears")return B.mark(id,done);
 const key=type==="lore"?LORE:EXTRA, char=active();if(!char)return false;
@@ -100,7 +102,7 @@ function rememberRoutePosition(){
 function scopeName(scope){return scope==="Labyrinth"?"The Labyrinth":scope==="Vaal"?"Vaal Letter / Research Journal":scope==="Epilogue"?"Epilogue · Waypoints":"Act "+scope;}
 function scopeTypes(scope){return scope==="Labyrinth"?["lore","waypoints"]:scope==="Vaal"?["lore"]:scope==="Epilogue"?["waypoints"]:Object.keys(names);}
 function scopeSnapshot(scope){
- const groups=scopeTypes(scope).map(type=>{const rows=records(type,scope),marked=new Set(entries(type));return {type,all:rows.length,done:rows.filter(x=>marked.has(x.id)).length,remaining:rows.filter(x=>!marked.has(x.id))};});
+ const groups=scopeTypes(scope).map(type=>{const rows=records(type,scope).filter(x=>type!=="waypoints"||![90,91].includes(x.id)),marked=new Set(entries(type));return {type,all:rows.length,done:rows.filter(x=>marked.has(x.id)).length,remaining:rows.filter(x=>!marked.has(x.id))};});
  return {scope,groups,all:groups.reduce((n,g)=>n+g.all,0),done:groups.reduce((n,g)=>n+g.done,0)};
 }
 function openJourneyScope(scope,index){
@@ -136,12 +138,13 @@ function renderSummary(){
  const target=$("hubStats");
  if(!$("hubAdvancedDashboard").open)return;
  target.replaceChildren();
- const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
+ const marked=Object.keys(names).reduce((sum,type)=>sum+activeProgress(type),0),overall=Object.values(activeTotals).reduce((a,b)=>a+b,0);
  const hero=el("div",undefined,"hubMissionTotal");
  const intro=el("div",undefined,"hubMissionHeading");
  intro.append(el("strong",tr("เป้าหมาย: ติ๊ก Checklist ให้ครบ 100% ของ 4 Achievement ที่ติดตาม","Goal: mark 100% of the four tracked achievement checklists")),el("span",tr("ติ๊กเฉพาะสิ่งที่เก็บแล้วในเกม และเทียบยอด Achievement จริงอีกครั้ง · เว็บไม่ตรวจให้อัตโนมัติ","Mark only items you have collected in-game, then compare actual achievement counts. This site cannot detect your game progress."),"hubSubtle"));
  const score=el("div",undefined,"hubMissionScore");
  score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+tr("% ที่บันทึกในเว็บ","% marked in this guide")));
+ score.append(el("small",tr("รายการในเส้นทางนี้ไม่นับ Waypoint ประวัติศาสตร์ #90–91 · จำนวนที่เกมต้องการยังไม่ยืนยัน","These route records exclude historical Waypoints #90–91; the current in-game requirement is unverified.")));
  const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label",tr("ความคืบหน้า 4 Achievement ที่บันทึกไว้ในเว็บ","Progress marked for four tracked achievements"));hero.append(intro,score,bar);
 
  if(rulerChoice()==="Tasuni"){
@@ -157,7 +160,10 @@ function renderSummary(){
  const selected=snapshots.find(x=>x.scope===scope);
  const left=selected?selected.all-selected.done:0;
  const text=el("span",undefined);
- if(selected){
+ if(scope==="Epilogue"){
+  text.append(el("strong",tr("Epilogue · รายการประวัติศาสตร์","Epilogue · historical records")),el("small",tr("ข้อมูลเก่า 2 รายการเก็บไว้รองรับเซฟเดิม","Two historical records remain available for existing saves")));
+  const jump=el("button",tr("ดูรายการประวัติศาสตร์","View historical records"));jump.type="button";jump.onclick=()=>openJourneyScope(scope);next.append(text,jump);
+ }else if(selected){
   text.append(el("strong",tr("กำลังดู: ","Viewing: ")+scopeName(scope)+" · "+selected.done+" / "+selected.all),
     el("small",left?tr("ยังไม่ได้ทำเครื่องหมาย ","Not yet marked: ")+left+tr(" รายการในพื้นที่นี้"," items in this area"):tr("ติ๊กครบในพื้นที่นี้ · ตรวจยอดในเกมก่อนเดินต่อ","All marked in this area · verify in-game progress")));
   const phases=window.POE_STEAM_WALK?.acts?.[scope]||[];
@@ -210,15 +216,15 @@ function renderSummary(){
  const roadmap=el("details",undefined,"hubMissionRoadmap");
  roadmap.append(el("summary",tr("ดูรายการที่ต้องเก็บทั้งหมด: Act 1–10 / Labyrinth / Vaal / Epilogue","See all remaining tasks: Acts 1–10 / Labyrinth / Vaal / Epilogue")));
  const list=el("div",undefined,"hubMissionStages");
- for(const s of snapshots){
+ for(const s of snapshots.filter(s=>s.scope!=="Epilogue")){
    const b=el("button",undefined,"hubMissionStage");b.type="button";b.dataset.scope=s.scope;
    b.append(el("strong",scopeName(s.scope)),el("span",s.done+" / "+s.all+(s.done===s.all?tr(" · ติ๊กครบแล้ว"," · all marked"):tr(" · เหลือ "," · remaining ")+(s.all-s.done))));
    b.onclick=()=>openJourneyScope(s.scope);list.append(b);
  }
  roadmap.append(list);hero.append(roadmap);
  target.append(hero);
- Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label",tr("เปิดรายการ ","Open list for ")+names[k]);const count=progress(k);
- card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?tr("ติ๊กครบ · ตรวจยอดในเกม","All marked · verify in-game"):tr("เหลือ ","Remaining: ")+(totals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
+ Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label",tr("เปิดรายการ ","Open list for ")+names[k]);const count=activeProgress(k);
+ card.append(el("span",names[k]),el("b",count+" / "+activeTotals[k]),el("span",count===activeTotals[k]?tr("ติ๊กครบ · ตรวจยอดในเกม","All marked · verify in-game"):tr("เหลือ ","Remaining: ")+(activeTotals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
 }
 function findRelevantStage(type,x){
  const stages=window.POE_STEAM_WALK?.acts?.[String(x.act)]||[];
@@ -229,15 +235,45 @@ function findRelevantStage(type,x){
 }
 function itemGuide(type,item){
  const original=window.POE_ITEM_DESCRIPTIONS?.get(type,item,type==="ears"&&item.act===2?getSafety():undefined);
- return {original,guide:descEN()?LANG.englishHelp(type,item,original):original};
+ const guide=descEN()?LANG.englishHelp(type,item,original):original;
+ const notes={
+  "lore:28":tr("สำรวจ Sailor's Skin ใน The Cavern of Wrath ก่อน Merveil","Find Sailor's Skin in The Cavern of Wrath before Merveil."),
+  "lore:29":tr("Damp Diary อยู่ใน Merveil's Lair และอาจอ่านหลังจัดการ Merveil ได้","Damp Diary is in Merveil's Lair and may be read after Merveil."),
+  "waypoints:3":tr("ฟัง Bestel: Undead Rhoas (ID 21) ก่อนเข้า The Submerged Passage","Hear Bestel: Undead Rhoas (ID 21) before entering The Submerged Passage."),
+  "waypoints:9":tr("ตรวจ Waypoint บนเส้นทางก่อนสู้ Merveil; ชื่อในรายการเดิมคือ Merveil's Caverns","Check the waypoint before Merveil; the legacy label is Merveil's Caverns."),
+  "waypoints:10":tr("ตรวจ The Southern Forest ระหว่างเดินทางจาก Act 1 ไป Forest Encampment","Check The Southern Forest on the route from Act 1 to Forest Encampment."),
+  "waypoints:14":tr("ตรวจ Waypoint ที่ The Crossroads พร้อม Etchings on Wood I–IV","Check The Crossroads waypoint and Etchings on Wood I–IV."),
+  "waypoints:18":tr("ตรวจ The Northern Forest ระหว่างทางไป The Caverns","Check The Northern Forest on the way to The Caverns."),
+  "waypoints:20":tr("ตรวจ The Caverns ก่อนสู้ Vaal Oversoul","Check The Caverns before Vaal Oversoul."),
+  "waypoints:27":tr("ตรวจ The Solaris Temple Level 1 ก่อนไป Level 2","Check The Solaris Temple Level 1 before reaching Level 2."),
+  "waypoints:34":tr("ตรวจ The Sceptre of God ก่อนสู้ Dominus","Check The Sceptre of God before Dominus."),
+  "sidequests:2":tr("แวะ The Flooded Depths สำหรับ The Dweller of the Deep","Take the The Flooded Depths detour for The Dweller of the Deep."),
+  "sidequests:3":tr("ตรวจบทสนทนา Fairgraves และ Bestel #34–38 ก่อนทำ The Marooned Mariner; สถานะ 3.29 ยังไม่ยืนยัน","Review Fairgraves and Bestel #34–38 before completing The Marooned Mariner; the 3.29 status remains unverified."),
+  "sidequests:4":tr("ฟัง Silk: The Great White Beast (ID 57) ก่อนทำเควสต์สำเร็จ","Hear Silk: The Great White Beast (ID 57) before completing the quest."),
+  "sidequests:7":tr("ตรวจ Fairgraves: Introduction (ID 142) แยกจากการทำ A Swig of Hope สำเร็จ","Check Fairgraves: Introduction (ID 142) separately from completing A Swig of Hope.")
+ };
+ const note=(type==="lore"&&item.id>=32&&item.id<=35)?tr("ตรวจ Etchings on Wood I–IV ที่ The Crossroads ทีละรายการ","Check Etchings on Wood I–IV individually at The Crossroads."):notes[type+":"+item.id];
+ return {original,guide:note?{...guide,location:[guide?.location,note].filter(Boolean).join(" · ")}:guide};
+}
+function reportLink(type,id,act,phase){
+ const link=el("a",tr("รายงานข้อมูลผิด (ต้องเข้าสู่ระบบ GitHub)","Report an issue (GitHub login required)"),"hubReport");
+ const url=new URL("https://github.com/zatanz/ggg/issues/new");
+ url.searchParams.set("title","PoE companion: "+type+" "+(id??phase));
+ url.searchParams.set("body","Type: "+type+"\nID: "+(id??"n/a")+"\nAct: "+(act??"n/a")+"\nStep: "+(phase??"n/a")+"\nLanguage: "+LANG.get().description+"\nRevision: "+(document.querySelector('meta[name="poe-revision"]')?.content||"issue-30")+"\n\nProblem type: \nDescription (optional): \nEvidence URL (optional): ");
+ link.href=url.toString();link.target="_blank";link.rel="noopener noreferrer";return link;
 }
 function itemCheckbox(type,x,done,{original,guide},inlineTask){
- const box=el("input"),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
+ const box=el("input"),canonical=type==="ears"?String(x.npc).replace(/^Lily Roth/,"Lilly Roth")+" — "+x.dialog:type==="lore"&&x.id===73?"Bronze Plaque — The Just Goddess":x.name;
  box.type="checkbox";box.checked=done;
  box.dataset.trackType=type;box.dataset.trackId=String(x.id);
  box.setAttribute("aria-label",(done?tr("ยกเลิกเครื่องหมายว่าเก็บแล้ว — ","Unmark collected — "):tr("ทำเครื่องหมายว่าเก็บแล้ว — ","Mark as collected — "))+canonical);
  box.addEventListener("change",()=>{
    const restoreFocus=document.activeElement===box;
+   if(type==="ears"&&box.checked&&[441,442,443,444].includes(x.id)&&rulerChoice()==="Tasuni"){
+     box.checked=false;
+     alert(tr("ตัวละครนี้เลือก Tasuni แต่รายการนี้เป็นทาง Irasha โปรดตรวจบทสนทนาในเกมและอย่าติ๊กแทนทางเลือกอื่น","This character chose Tasuni. This record belongs to the Irasha branch; check the in-game dialogue and do not mark it as a substitute."));
+     return;
+   }
    if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.29):\\n","This dialogue may be missable (historical guide, not patch 3.29-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
    const wasChecked=box.checked;
    if(!writeMarks(type,x.id,wasChecked)){box.checked=done;return;}
@@ -302,6 +338,7 @@ function itemCard(type,x){
    const source=el("a",tr("ดูแหล่งอ้างอิง","Open source"));source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
    body.append(el("p",tr("ข้อมูลจากคู่มือเก่า · ยังไม่รับรองครบทุกกรณีของ 3.29","Historical source · not fully verified for 3.29"),"hubSubtle"),source);detail.append(body);info.append(detail);
  }
+ info.append(reportLink(type,x.id,x.act,findRelevantStage(type,x)?.phase.id));
  row.append(box,info,el("span",done?tr("เก็บแล้ว","Done"):tr("ยังไม่เก็บ","To do"),"hubItemState"));
  return row;
 }
@@ -544,6 +581,9 @@ function actSteamGuide(act){
  const start=phases.findIndex(p=>p.dialogueIds.some(id=>!allEars.has(id))||(p.loreIds||[]).some(id=>!allLore.has(id))||(p.waypointIds||[]).some(id=>!allWaypoints.has(id))||(p.sidequestIds||[]).some(id=>!allSidequests.has(id)));
  const chosen=state.steamFocusByAct[act]===undefined?Math.max(0,start):Math.max(0,Math.min(phases.length-1,state.steamFocusByAct[act]));
  const phase=phases[chosen];
+ const review=currentReview();
+ const questKey=act+":"+phase.id;
+ const questConfirmed=review.confirmedStages?.[questKey]===true;
  const box=el("section",undefined,"hubWalkthrough");box.dataset.steamAct=String(act);box.dataset.phase=phase.id;
  const header=el("div",undefined,"hubWalkHeader");
  const phaseCount={ears:phase.dialogueIds||[],lore:phase.loreIds||[],waypoints:phase.waypointIds||[],sidequests:phase.sidequestIds||[]};
@@ -551,7 +591,7 @@ function actSteamGuide(act){
  const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0);
  const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0);
  const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
- const position=el("strong",tr("ช่วง ","Step ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
+ const position=el("strong",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
  phases.forEach((p,i)=>{const op=el("option",(i+1)+". "+gameName(p.place));op.value=String(i);select.append(op)});
  select.value=String(chosen);
@@ -613,7 +653,7 @@ function actSteamGuide(act){
  jump.onclick=()=>goto(start<0?0:start,true,"task");
  control.append(position,select);
  const status=el("div",undefined,"hubWalkStageProgress");status.dataset.phaseProgress=phase.id;
- status.append(el("strong",tr("บันทึกแล้ว ","Checked ")+phaseDone+" / "+phaseTotal));
+ status.append(el("strong",tr("รายการติ๊กแล้ว ","Checklist marked ")+phaseDone+" / "+phaseTotal));
  const meter=el("progress");meter.value=phaseDone;meter.max=Math.max(1,phaseTotal);meter.setAttribute("aria-label",tr("ความคืบหน้าในช่วงเควสต์นี้","Achievement checklist progress in this quest step"));status.append(meter);
  control.append(status);
  header.append(control);
@@ -641,6 +681,15 @@ function actSteamGuide(act){
   const note=el("small",tr("ชื่อไทยเป็นคำแปลประกอบ ไม่ใช่ชื่อทางการในเกม","Thai terms are editorial aids, not verified in-game names"),"hubSubtle");items.append(note);head.append(items);
  }
  box.append(head);
+ const questStatus=el("label",undefined,"hubQuestConfirmation");
+ const questCheck=el("input");questCheck.type="checkbox";questCheck.checked=questConfirmed;
+ questCheck.addEventListener("change",()=>{
+  const updated=currentReview();
+  updated.confirmedStages={...updated.confirmedStages,[questKey]:questCheck.checked};
+  if(!saveReview(updated)){questCheck.checked=questConfirmed;return;}
+ });
+ questStatus.append(questCheck,el("span",tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
+ head.append(questStatus);
  // Focus on the first unmarked task within the selected stage, prioritizing an unchecked STOP.
  const unchecked=Object.entries(phaseCount).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
  const urgent=unchecked.find(x=>x.type==="ears"&&(phase.stopIds||[]).includes(x.id));
@@ -720,9 +769,15 @@ function actSteamGuide(act){
    if(pending.length){
      const who=pending.map(id=>{const x=E.items.find(z=>z.id===id);return x?label(x,"ears"):"ID "+id;});
      gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pending.length+tr(" บทสนทนา: "," dialogue(s): ")+who.slice(0,3).join(" / ")+(who.length>3?tr(" และอีก "," and ")+(who.length-3)+" more":""),"hubStopPending"));
+     const prior=phases.findIndex(entry=>entry.id!==phase.id&&pending.some(id=>(entry.dialogueIds||[]).includes(id)));
+     if(prior>=0){
+      const review=el("button",tr("กลับไปตรวจบทสนทนาที่ยังค้าง","Review unresolved dialogue"));
+      review.type="button";review.onclick=()=>goto(prior,false,"task");gate.append(review);
+     }
    }
    const stopText=descEN()?(phase.stopEN||phase.stop):phase.stop;
    if(itemCaution&&!stopText.includes(itemCaution.replace(/^STOP: /,"").replace(/\.$/,"")))gate.append(itemWarning);
+   gate.append(reportLink("stop",(phase.stopIds||[]).join(",")||null,act,phase.id));
    gate.id="hubCurrentStop";
    focus.append(gate);
    const checkbox=inline.querySelector("input");
@@ -743,7 +798,9 @@ function actSteamGuide(act){
   confirmations.append(undo);
  }
  const stageLinks=el("div",undefined,"hubStageLinks");
- stageLinks.append(prev,next,jump);
+ const resume=el("button",tr("ต่อจากช่วงล่าสุด","Continue from last viewed step"),"hubResume");
+ resume.type="button";resume.onclick=focusQuest;
+ stageLinks.append(prev,next,jump,resume);
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
    conflict.append(el("strong",tr("ลำดับ Bandits จากสองคู่มือไม่ตรงกัน","Bandit quest order differs between sources")),
@@ -808,6 +865,7 @@ function actSteamGuide(act){
   const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
  }
  focus.append(inline);
+ focus.append(reportLink(current?.type||"quest",current?.id,act,phase.id));
  if(advance)confirmations.prepend(advance);
  if(confirmations.childElementCount)focus.append(confirmations);
  box.insertBefore(stageLinks,focus.nextSibling);
@@ -979,11 +1037,13 @@ function journeyActGuide(act){
 }
 function epilogueRoute(target){
  const all=records("waypoints","Epilogue"),done=new Set(entries("waypoints"));
- const panel=section(tr("Epilogue · ตรวจ Waypoint ที่เหลือ","Epilogue · remaining Waypoints"));panel.dataset.specialScope="Epilogue";
- panel.append(el("p",tr("หลัง Act 10 ให้ตรวจ Waypoint อีก 2 จุดตามฐานข้อมูล Locomancer เดิม ทั้งสองจุดนับใน Achievement เดิม ไม่ใช่ Achievement ใหม่ · ยังไม่ยืนยันแพตช์ 3.29","After Act 10, verify the two remaining Waypoints in the legacy Locomancer list. These are not a new achievement, and their patch 3.29 requirements are unverified."),"hubSubtle"));
- const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length+tr(" · นับใน Locomancer 91 จุด (ฐานข้อมูลเก่า)"," · part of the 91-entry legacy Locomancer list"),"hubActProgress");panel.append(count);
+ const panel=section(tr("Epilogue · รายการ Waypoint ประวัติศาสตร์","Epilogue · historical Waypoints"));panel.dataset.specialScope="Epilogue";
+ panel.append(el("p",tr("Waypoint สองจุดนี้เป็นข้อมูลเก่าที่เก็บไว้รองรับเซฟเดิม ไม่ใช่จุดที่ต้องเดินทางไปเปิดหลัง Act 10 โปรดเทียบตัวนับ Locomancer กับ Waypoint ที่มีอยู่จริงในเกม","These two waypoints are historical records kept for save compatibility, not destinations to unlock after Act 10. Verify the current Locomancer counter against active in-game waypoints."),"hubSubtle"));
+ const details=el("details");
+ details.append(el("summary",tr("รายการประวัติศาสตร์","Historical records")));
+ const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length,"hubActProgress");details.append(count);
  const list=el("div",undefined,"hubList");
- all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
+ all.forEach(x=>list.append(itemCard("waypoints",x)));details.append(list);panel.append(details);target.append(panel);
 }
 // Show conflicts where a player decides what to do, not only in the footer.
 function routeEvidencePanel(act){
@@ -1174,20 +1234,20 @@ function reviewPanel(){const panel=section(tr("ตรวจยอด Achievement
 panel.append(el("p",tr("กรอกยอด Achievement ที่เกมแสดง แล้วเทียบกับจำนวนที่ติ๊กไว้ในเว็บ · หากไม่ตรง ให้ย้อนตรวจรายการก่อนหน้า เว็บไม่รู้ว่าชิ้นใดเกมยังไม่นับ","Enter the achievement count shown in-game and compare it with your marked entries. If they differ, review previous steps; this site cannot identify which items the game did not count."),"hubSubtle"));
 const controls=el("div",undefined,"hubControls"),select=el("select"),input=el("input"),cmp=el("button",tr("เปรียบเทียบยอด","Compare counts"));
 select.setAttribute("aria-label",tr("เลือก Achievement ที่จะตรวจ","Select achievement to compare"));Object.entries(names).forEach(([k,v])=>{const o=el("option",v);o.value=k;select.append(o)});select.value=state.reviewType;select.onchange=()=>{state.reviewType=select.value;state.gameCount="";renderView();};input.type="number";input.min="0";input.max=String(totals[state.reviewType]);input.step="1";input.value=state.gameCount;input.placeholder=tr("จำนวนที่เกมแสดง","Count shown in-game");input.setAttribute("aria-label",tr("กรอกจำนวนที่เกมแสดง","Enter actual in-game count"));input.oninput=()=>state.gameCount=input.value;
-cmp.className="primary";const out=el("div");cmp.onclick=()=>{const n=Number(input.value);out.replaceChildren();if(input.value.trim()===""||!Number.isInteger(n)||n<0||n>totals[state.reviewType]){out.append(el("div",tr("กรอกจำนวนเต็มตั้งแต่ 0 ถึง ","Enter a whole number from 0 to ")+totals[state.reviewType],"hubNotice"));return;}const checked=progress(state.reviewType),diff=checked-n;const summary=el("div",tr("ที่ติ๊กในเว็บ: ","Marked in guide: ")+checked+tr(" / เกม: "," / in-game: ")+n+". "+(diff===0?tr("ยอดเท่ากัน แต่ยังต้องตรวจว่าทุกชิ้นถูกนับจริง","Counts match, but you still need to verify each item is counted in-game"):diff>0?tr("เว็บมากกว่าเกม ","Guide marks exceed game count by ")+diff+tr(" รายการ"," items"):tr("เกมมากกว่าเว็บ ","Game count exceeds guide marks by ")+(-diff)+tr(" รายการ"," items")),diff===0?"hubGood":"hubNotice");out.append(summary);const baseline=currentReview()?.baselines?.[state.reviewType];if(diff!==0&&baseline){const added=entries(state.reviewType).filter(id=>!baseline.ids.includes(id)),t=el("div",undefined,"hubSection");t.append(el("p",tr("รายการที่ติ๊กเพิ่มหลังจากครั้งล่าสุดที่ยอดตรงกัน ใช้ช่วยย้อนตรวจ ไม่ได้หมายความว่าเกมไม่นับรายการเหล่านี้:","Items marked since the last matching-count checkpoint. Use this list for review; it does not prove the game failed to count these entries:"),"hubSubtle"));const ul=el("ul");added.slice(0,45).forEach(id=>{const x=collections[state.reviewType].find(z=>z.id===id);if(x)ul.append(el("li",label(x,state.reviewType)))});if(!added.length)ul.append(el("li",tr("ไม่มีรายการที่ติ๊กเพิ่มหลังจุดเทียบยอด ลองตรวจรายการก่อนหน้านั้นและรายการที่ยังค้าง","No new marks since your checkpoint. Review earlier and still-unchecked entries.")));t.append(ul);out.append(t);}};
-const checkpoint=el("button",tr("บันทึกจุดที่ยอดตรงกัน","Save matching-count checkpoint"));checkpoint.onclick=()=>{const n=Number(input.value),type=state.reviewType;if(input.value.trim()===""||!Number.isInteger(n)||n!==progress(type)){alert(tr("บันทึกได้เมื่อยอดในเกมเท่ากับจำนวนที่ติ๊กไว้ในเว็บเท่านั้น","You can save a checkpoint only when the in-game count matches your guide marks."));return;}const s=currentReview();if(!s.baselines)s.baselines={};s.baselines[type]={count:n,ids:entries(type),at:new Date().toISOString()};if(saveReview(s)){out.replaceChildren();out.append(el("div",tr("บันทึกจุดเทียบยอดแล้ว (ยืนยันเฉพาะตัวเลข ไม่ใช่การปลด Achievement)","Matching-count checkpoint saved (numbers only, not achievement unlock confirmation)."),"hubGood"));}};
+cmp.className="primary";const out=el("div");cmp.onclick=()=>{const n=Number(input.value);out.replaceChildren();if(input.value.trim()===""||!Number.isInteger(n)||n<0||n>totals[state.reviewType]){out.append(el("div",tr("กรอกจำนวนเต็มตั้งแต่ 0 ถึง ","Enter a whole number from 0 to ")+totals[state.reviewType],"hubNotice"));return;}const checked=activeProgress(state.reviewType),diff=checked-n;const summary=el("div",tr("ที่ติ๊กในเว็บ: ","Marked in guide: ")+checked+tr(" / เกม: "," / in-game: ")+n+". "+(diff===0?tr("ยอดเท่ากัน แต่ยังต้องตรวจว่าทุกชิ้นถูกนับจริง","Counts match, but you still need to verify each item is counted in-game"):diff>0?tr("เว็บมากกว่าเกม ","Guide marks exceed game count by ")+diff+tr(" รายการ"," items"):tr("เกมมากกว่าเว็บ ","Game count exceeds guide marks by ")+(-diff)+tr(" รายการ"," items")),diff===0?"hubGood":"hubNotice");out.append(summary);const baseline=currentReview()?.baselines?.[state.reviewType];if(diff!==0&&baseline){const added=entries(state.reviewType).filter(id=>(state.reviewType!=="waypoints"||id!==90&&id!==91)&&!baseline.ids.includes(id)),t=el("div",undefined,"hubSection");t.append(el("p",tr("รายการที่ติ๊กเพิ่มหลังจากครั้งล่าสุดที่ยอดตรงกัน ใช้ช่วยย้อนตรวจ ไม่ได้หมายความว่าเกมไม่นับรายการเหล่านี้:","Items marked since the last matching-count checkpoint. Use this list for review; it does not prove the game failed to count these entries:"),"hubSubtle"));const ul=el("ul");added.slice(0,45).forEach(id=>{const x=collections[state.reviewType].find(z=>z.id===id);if(x)ul.append(el("li",label(x,state.reviewType)))});if(!added.length)ul.append(el("li",tr("ไม่มีรายการที่ติ๊กเพิ่มหลังจุดเทียบยอด ลองตรวจรายการก่อนหน้านั้นและรายการที่ยังค้าง","No new marks since your checkpoint. Review earlier and still-unchecked entries.")));t.append(ul);out.append(t);}};
+const checkpoint=el("button",tr("บันทึกจุดที่ยอดตรงกัน","Save matching-count checkpoint"));checkpoint.onclick=()=>{const n=Number(input.value),type=state.reviewType;if(input.value.trim()===""||!Number.isInteger(n)||n!==activeProgress(type)){alert(tr("บันทึกได้เมื่อยอดในเกมเท่ากับจำนวนที่ติ๊กไว้ในเว็บเท่านั้น","You can save a checkpoint only when the in-game count matches your guide marks."));return;}const s=currentReview();if(!s.baselines)s.baselines={};s.baselines[type]={count:n,ids:entries(type).filter(id=>type!=="waypoints"||id!==90&&id!==91),at:new Date().toISOString()};if(saveReview(s)){out.replaceChildren();out.append(el("div",tr("บันทึกจุดเทียบยอดแล้ว (ยืนยันเฉพาะตัวเลข ไม่ใช่การปลด Achievement)","Matching-count checkpoint saved (numbers only, not achievement unlock confirmation)."),"hubGood"));}};
 controls.append(select,input,cmp,checkpoint);panel.append(controls,out);
 const old=currentReview()?.baselines?.[state.reviewType];if(old)panel.append(el("p",tr("จุดเทียบยอดล่าสุด: ","Last matching checkpoint: ")+old.count+tr(" รายการ · "," entries · ")+old.at,"hubSubtle"));
 const safety=el("details",undefined,"hubChapter");safety.append(el("summary",tr("ตรวจจุดเสี่ยง Act 2 · Bandits / Ancient Seal","Review Act 2 risks · Bandits / Ancient Seal")),safetyPanel());
 panel.append(safety,exportPanel());return panel;}
 function exportPanel(){const panel=el("div",undefined,"hubPanel");panel.append(el("h3",tr("สำรองข้อมูลทุก Achievement","Back up all tracked achievements")),el("p",tr("ส่งออกเป็นไฟล์เดียวสำหรับทุกตัวละคร · เมื่อนำเข้าจะเพิ่มเป็นตัวละครใหม่ ไม่เขียนทับข้อมูลเดิม","Export one file for all characters. Import adds new character entries and does not overwrite existing ones."),"hubSubtle"));
 const row=el("div",undefined,"hubInlineRow"),exp=el("button",tr("ดาวน์โหลด Backup รวม","Download combined backup")),imp=el("button",tr("นำเข้า Backup รวม","Import combined backup")),file=el("input");file.type="file";file.accept="application/json,.json";file.hidden=true;
-exp.className="primary";exp.onclick=()=>{const s=B.read(),l=getBackupState(LORE),x=getBackupState(EXTRA),h=safeParse(HUB)||{};const characters=s.characters.map(c=>{const lr=l.byCharacter[c.id]||{},ex=x.byCharacter[c.id]||{},rv=h.byCharacter&&h.byCharacter[c.id]||{};return {name:c.name,ears:validIDs("ears",c.checked),lore:validIDs("lore",lr.lore),waypoints:validIDs("waypoints",ex.waypoints),sidequests:validIDs("sidequests",ex.sidequests),safety:lr.safety||{},baselines:rv.baselines||{}};});const blob=new Blob([JSON.stringify({app:"poe-unified-companion",schema:2,exportedAt:new Date().toISOString(),characters},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download="poe-achievements-all-characters.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);};
+exp.className="primary";exp.onclick=()=>{const s=B.read(),l=getBackupState(LORE),x=getBackupState(EXTRA),h=safeParse(HUB)||{};const characters=s.characters.map(c=>{const lr=l.byCharacter[c.id]||{},ex=x.byCharacter[c.id]||{},rv=h.byCharacter&&h.byCharacter[c.id]||{};return {name:c.name,ears:validIDs("ears",c.checked),lore:validIDs("lore",lr.lore),waypoints:validIDs("waypoints",ex.waypoints),sidequests:validIDs("sidequests",ex.sidequests),safety:lr.safety||{},baselines:rv.baselines||{},confirmedStages:rv.confirmedStages||{}};});const blob=new Blob([JSON.stringify({app:"poe-unified-companion",schema:2,exportedAt:new Date().toISOString(),characters},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download="poe-achievements-all-characters.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);};
 imp.onclick=()=>file.click();file.onchange=async()=>{const f=file.files[0];file.value="";if(!f||f.size>4e6){alert(tr("ไฟล์ไม่ถูกต้องหรือใหญ่เกิน 4 MB","Invalid file or larger than 4 MB."));return;}try{const obj=JSON.parse(await f.text()),records=obj.characters;if(obj.app!=="poe-unified-companion"||obj.schema!==2||!Array.isArray(records)||!records.length||records.length>100)throw Error("invalid");
 for(const c of records){if(!c||typeof c.name!=="string"||!c.name.trim()||c.name.length>60)throw Error("name");for(const type of Object.keys(names)){const ids=c[type];if(!Array.isArray(ids)||ids.length>totals[type]||ids.some(z=>!Number.isInteger(z)||z<1||z>totals[type]))throw Error("ids");}}
 const main=B.read();if(main.characters.length+records.length>100)throw Error("limit");if(!confirm(tr("นำเข้า ","Import ")+records.length+tr(" ตัวละครเป็นรายการใหม่? จะไม่ลบข้อมูลเดิม และโหลดหน้าใหม่เมื่อสำเร็จ"," character(s) as new entries? Existing data will remain and the page will reload after success.")))return;
 const originals=[MAIN,LORE,EXTRA,HUB].map(key=>[key,localStorage.getItem(key)]),newMain=JSON.parse(JSON.stringify(main)),newLore=getBackupState(LORE),newExtras=getBackupState(EXTRA),newHub=safeParse(HUB)||{schema:2,byCharacter:{}};if(!newHub.byCharacter)newHub.byCharacter={};
-records.forEach((c,i)=>{const id="hub-"+Date.now().toString(36)+"-"+i+"-"+Math.random().toString(36).slice(2,9);newMain.characters.push({id,name:c.name.trim(),checked:validIDs("ears",c.ears)});newLore.byCharacter[id]={lore:validIDs("lore",c.lore),safety:c.safety&&typeof c.safety==="object"?c.safety:{},checkpoint:null};newExtras.byCharacter[id]={waypoints:validIDs("waypoints",c.waypoints),sidequests:validIDs("sidequests",c.sidequests)};newHub.byCharacter[id]={baselines:{}};});
+records.forEach((c,i)=>{const id="hub-"+Date.now().toString(36)+"-"+i+"-"+Math.random().toString(36).slice(2,9);newMain.characters.push({id,name:c.name.trim(),checked:validIDs("ears",c.ears)});newLore.byCharacter[id]={lore:validIDs("lore",c.lore),safety:c.safety&&typeof c.safety==="object"?c.safety:{},checkpoint:null};newExtras.byCharacter[id]={waypoints:validIDs("waypoints",c.waypoints),sidequests:validIDs("sidequests",c.sidequests)};newHub.byCharacter[id]={baselines:{},confirmedStages:c.confirmedStages&&typeof c.confirmedStages==="object"&&!Array.isArray(c.confirmedStages)?Object.fromEntries(Object.entries(c.confirmedStages).filter(([key,value])=>/^(?:[1-9]|10):[a-z0-9-]+$/.test(key)&&value===true)): {}};});
 try{localStorage.setItem(MAIN,JSON.stringify(newMain));localStorage.setItem(LORE,JSON.stringify(newLore));localStorage.setItem(EXTRA,JSON.stringify(newExtras));localStorage.setItem(HUB,JSON.stringify(newHub));location.reload();}catch(e){originals.forEach(([k,v])=>{try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(_e){}});alert(tr("นำเข้าไม่สำเร็จ ระบบพยายามคืนข้อมูลเดิมแล้ว กรุณาตรวจ Backup ก่อนลองซ้ำ","Import failed. The app attempted to restore your previous data. Verify your backup before retrying."));}
 }catch(e){alert(tr("ไฟล์ Backup ไม่ถูกต้องหรือเกินขีดจำกัดตัวละคร","Invalid backup file or character limit exceeded."));}};
 row.append(exp,imp,file);panel.append(row);return panel;}
@@ -1288,6 +1348,8 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    $("hubCampaignIntro")?.replaceChildren(tr("เลือกตัวละครและ Act ที่กำลังเล่น แล้วเริ่มจากเควสต์ด้านล่าง","Choose your character and Act, then follow the quest below."));
    $("addChar").textContent=tr("+ เพิ่ม","+ Add");
    $("addChar").setAttribute("aria-label",tr("เพิ่มตัวละคร","Add character"));
+   const generalReport=$("hubGeneralReport");
+   if(generalReport){const replacement=reportLink("ui",null,null,null);replacement.id="hubGeneralReport";generalReport.replaceWith(replacement);}
    const statusNote=wrap.querySelector(".tips");
    if(statusNote){
      const overview=el("p");
@@ -1325,7 +1387,7 @@ if(profileRows.length>=2){
   profileRows[0].before(label);
   profileNote?.remove();
   const settings=el("details");settings.id="hubSettings";
-  settings.append(el("summary"),languagePanel,wrap.querySelector('section[aria-label="เวอร์ชันเกม / แพตช์"]'),manage);
+  settings.append(el("summary"),languagePanel,wrap.querySelector('section[aria-label="เลือกแพตช์"]'),manage);
   if(profileNote)settings.append(profileNote);
   header.append(settings);
 }
@@ -1348,6 +1410,7 @@ footer.before(advanced);
 const statusNote=wrap.querySelector(".tips");
 if(statusNote)footer.prepend(statusNote);
 const legacyLinks=header.querySelector(".headlinks");footer.append(legacyLinks);
+const feedback=reportLink("ui",null,null,null);feedback.id="hubGeneralReport";footer.append(feedback);
 updateLanguageLabels();
 $("patch").addEventListener("change",()=>{renderView();});
 function refreshCharacter(){restoreRoutePosition();renderToolbar();refresh();}

@@ -26,7 +26,7 @@ const walkExpanded=new Set(); // Current-step Lore/Waypoint/sidequest disclosure
 const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null,referenceShelfOpen:false};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null,referenceShelfOpen:false,evidenceExpandedByAct:{}};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -497,7 +497,7 @@ function actSteamGuide(act){
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
  phases.forEach((p,i)=>{const op=el("option",(i+1)+". "+gameName(p.place));op.value=String(i);select.append(op)});
  select.value=String(chosen);
- const goto=(i,reviewSkip=false)=>{
+ const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
   if(reviewSkip&&["7","8","9","10"].includes(act)&&target>chosen){
    const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
@@ -517,23 +517,30 @@ function actSteamGuide(act){
    state.skippedRisk=outstanding.length?{act,from:outstanding[0].id,count:outstanding.length}:null;
   }else if(state.skippedRisk?.act===act&&target<=chosen){state.skippedRisk=null;}
   state.steamFocusByAct[act]=target;renderView();
-  document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});
+  const activePhase=document.querySelector('[data-steam-act="'+act+'"]');
+  activePhase?.scrollIntoView({block:"start"});
+  const nav=activePhase?.querySelector('.hubWalkNavigator');
+  const candidate=focusControl==="prev"?nav?.querySelector('button[data-step-nav="prev"]'):
+    focusControl==="next"?nav?.querySelector('button[data-step-nav="next"]'):
+    focusControl==="jump"?nav?.querySelector('button[data-jump-incomplete]'):null;
+  const focusTarget=candidate&&!candidate.disabled?candidate:nav?.querySelector("select");
+  focusTarget?.focus({preventScroll:true});
  };
  select.onchange=()=>goto(Number(select.value),true);
  const prev=el("button",tr("ก่อนหน้า","Previous")),next=el("button",tr("ถัดไป","Next"));
- prev.type="button";next.type="button";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
- prev.onclick=()=>goto(chosen-1);
+ prev.type="button";next.type="button";prev.dataset.stepNav="prev";next.dataset.stepNav="next";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
+ prev.onclick=()=>goto(chosen-1,false,"prev");
  next.onclick=()=>{
   const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id));
   if(phase.stop&&stillMissing.length&&!confirm(tr(
    "จุดเสี่ยงนี้ยังไม่ได้ติ๊กครบ: "+phase.stop+"\n\nปุ่มถัดไปเป็นเพียงการเปลี่ยนหน้า ไม่ได้ยืนยันว่าเควสต์ปลอดภัย ต้องการดูช่วงถัดไปหรือไม่?",
    "You still have an unresolved STOP warning: "+(phase.stopEN||phase.stop)+"\n\nNext only changes the guide step. It does not prove the quest is safe. Continue?"
   )))return;
-  goto(chosen+1);
+  goto(chosen+1,false,"next");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
  jump.dataset.jumpIncomplete="true";jump.disabled=start<0||chosen===start;
- jump.onclick=()=>goto(start<0?0:start,true);
+ jump.onclick=()=>goto(start<0?0:start,true,"jump");
  control.append(position,jump,select,prev,next);box.append(control);
  if(state.skippedRisk?.act===act){
   const skipped=state.skippedRisk,first=phases.findIndex(p=>p.id===skipped.from),origin=phases[first];
@@ -609,7 +616,11 @@ function actSteamGuide(act){
  const label=el("label",tr("ผู้ที่ได้รับ Sekhema Feather:","Who received the Sekhema Feather:"));
  const select=el("select");select.setAttribute("aria-label",tr("บันทึกผู้ปกครอง Highgate ที่เลือกแล้วในเกม","Record the Highgate ruler actually chosen in-game"));
  [["undecided",tr("ยังไม่เลือก","Not chosen yet")],["Irasha","Irasha"],["Tasuni","Tasuni"]].forEach(([value,name])=>{const o=el("option",name);o.value=value;select.append(o);});
- select.value=chosenRuler;select.onchange=()=>saveRulerChoice(select.value);label.append(select);
+ select.value=chosenRuler;select.onchange=()=>{
+  saveRulerChoice(select.value);
+  const replacement=document.querySelector('#hubView [data-phase="ruler-irasha-choice"] .hubBranchChoice select');
+  replacement?.focus({preventScroll:true});
+ };label.append(select);
  const msg=chosenRuler==="Tasuni"?
  tr("เส้นทาง Tasuni ไม่ตรงกับ ID #443/#444 ในฐานข้อมูลเก่า: ห้ามติ๊กสองรายการนั้นแทนบทสนทนา Irasha และยังยืนยัน All Ears 100% จากรายการนี้ไม่ได้","Tasuni route is NOT represented by historic IDs #443/#444. Do not check these as substitutes. This tracker cannot certify All Ears 100% for the Tasuni branch."):
  chosenRuler==="Irasha"?
@@ -817,8 +828,9 @@ function routeEvidencePanel(act){
  const box=el("details",undefined,"hubEvidencePanel");
  box.dataset.evidenceAct=String(act);
  // The initial message stays compact; explicit differences remain one click away.
- box.open=["1","2","9"].includes(String(act));
+ box.open=Object.hasOwn(state.evidenceExpandedByAct,String(act))?state.evidenceExpandedByAct[String(act)]:["1","2","9"].includes(String(act));
  const summary=el("summary");
+ summary.addEventListener("click",()=>{state.evidenceExpandedByAct[String(act)]=!box.open;});
  summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่มีหลักฐานเกม 3.29 ยืนยันทุกเงื่อนไข · "+list.length+" ประเด็น","Not fully verified in live 3.29 · "+list.length+" issue(s)")));
  box.append(summary);
  const body=el("div",undefined,"hubEvidenceBody");

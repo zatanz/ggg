@@ -1190,7 +1190,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await hub.locator('#hubToolbar [data-category="ears"]').click();
  await selectSetting('patch','3.30');
  assert.equal((await hub.locator('#patch option[value="3.30"]').textContent()).includes('แพตช์ล่าสุด'),true,'3.30 selector is current but remains not certified');
- assert.equal((await hub.locator('#patchStatus').innerText()).includes('ยังไม่มีข้อมูลยืนยัน'),true,'released 3.30 remains explicitly unverified, not labelled legacy');
+ assert.equal((await hub.locator('#patchStatus').textContent()).includes('ยังไม่มีข้อมูลยืนยัน'),true,'released 3.30 remains explicitly unverified, not labelled legacy');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'backup always accessible when a patch is unverified');
  await hub.locator('#hubNav [data-tab="route"]').click();

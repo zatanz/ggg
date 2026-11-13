@@ -898,6 +898,27 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Nessa'),true,'Switching back to Thai restores original specific quest guidance');
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Linked stage navigation does not create mobile overflow at 375px');
 
+
+ // English wording is complete for the non-campaign scopes and count-comparison workflow.
+ const waypointCopy=await hub.evaluate(()=>{
+   const x=window.POE_EXTRA.waypoints.find(x=>x.id===71);
+   return window.POE_ITEM_DESCRIPTIONS.get('waypoints',x).action;
+ });
+ assert.equal(waypointCopy.includes('เปิดแผนที่'),true,'Thai Waypoint explanation verifies active map status, not forced manual clicking');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ await hub.locator('.hubActStrip [data-act="Labyrinth"]').click();
+ assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes("Aspirants' Plaza"),true,'English Labyrinth route has authored, actionable Lore steps');
+ assert.equal((await hub.locator('#hubView .hubSpecialGroup').first().innerText()).includes('Before entering the Labyrinth'),true,'English Labyrinth section headings and evidence are translated');
+ await hub.locator('.hubActStrip [data-act="Vaal"]').click();
+ assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes('Side Area'),true,'English Vaal guidance is sourced and not Thai-only');
+ assert.equal((await hub.locator('#hubView .hubVaalGuide').innerText()).includes('Find the Vaal Side Area'),true,'English Vaal area lookup instructions are translated');
+ await hub.locator('.hubActStrip [data-act="Epilogue"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('remaining Waypoints'),true,'Epilogue instructions adapt to English');
+ await hub.locator('#hubNav [data-tab="review"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Compare achievement counts'),true,'Achievement count comparison has English explanation');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Back up all tracked achievements'),true,'Combined backup has English instructions');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
  assert.deepEqual(hubErrors,[],'single-page runtime errors');
  await browser.close();
  console.log('Browser smoke: PASS — 484 rows, persistence, multi-character, export/import, invalid JSON, patch gate, mobile width, walkthrough');

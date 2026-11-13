@@ -119,6 +119,13 @@ function renderSummary(){
  Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
  card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบ · เทียบยอดเกมอีกครั้ง":"เหลือ "+(totals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
 }
+function findRelevantStage(type,x){
+ const stages=window.POE_STEAM_WALK?.acts?.[String(x.act)]||[];
+ const field={ears:"dialogueIds",lore:"loreIds",waypoints:"waypointIds",sidequests:"sidequestIds"}[type];
+ if(!field)return null;
+ const index=stages.findIndex(p=>(p[field]||[]).includes(x.id));
+ return index<0?null:{index,phase:stages[index]};
+}
 function itemCard(type,x){
  const done=entries(type).includes(x.id),original=window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined);
  const guide=descEN()?LANG.englishHelp(type,x,original):original;
@@ -127,23 +134,37 @@ function itemCard(type,x){
  const shown=label(x,type),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
  box.type="checkbox";box.checked=done;box.setAttribute("aria-label",tr("ทำแล้ว — ","Completed — ")+canonical);
  box.addEventListener("change",()=>{
-   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("บทสนทนานี้มีข้อควรระวังจากคู่มือเก่า (ยังไม่รับรอง 3.30):\\n","Historic quest-state caution (not verified for patch 3.30):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ยืนยันว่าคุณฟังในเกมแล้วใช่หรือไม่?","Confirm that you actually heard this dialogue in-game?"))){box.checked=false;return;}
+   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.30):\\n","This dialogue may be missable (historical guide, not patch 3.30-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
    writeMarks(type,x.id,box.checked);
  });
  const name=el("div",shown,"hubName");
  if(LANG.get().names==="th"&&shown!==canonical){name.title=canonical;const originalName=el("small",canonical,"hubCanonicalName");originalName.lang="en";info.append(name,originalName);}else info.append(name);
  const meta=el("div",undefined,"hubCompactMeta");
- const priorityText=type==="ears"&&original?.caution?tr("ระวังพลาด","Missable"):type==="sidequests"?tr("เควสต์รองที่ต้องทำ","Required side quest"):tr("รายการที่ต้องเก็บ","Required for achievement");
+ const priorityText=type==="ears"&&original?.caution?tr("ต้องฟังก่อนเดินเรื่องต่อ","Check before advancing"):type==="sidequests"?tr("เควสต์รอง · ต้องทำให้จบ","Side quest · finish it"):tr("เก็บรายการนี้ในเกม","Collect this in-game");
  meta.append(el("span",priorityText,"hubPriority"+(type==="ears"&&original?.caution?" hubUrgent":"")));
  if(type==="sidequests"){const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);if(reward)meta.append(el("span",tr("รางวัล: ","Reward: ")+reward.reward,"hubRewardPreview"));}
  info.append(meta);
- if(type==="ears"&&guide?.caution)info.append(el("div",tr("ก่อนทำต่อ: ","Before proceeding: ")+guide.caution,"hubRisk"));
+ if(type==="ears"&&guide?.caution)info.append(el("div",tr("ก่อนเดินเรื่องต่อ: ","Before advancing: ")+guide.caution,"hubRisk"));
  else if(type==="ears"&&(window.POE_WORKBOOK_WARNINGS?.wikiRows||[]).includes(getRisk({type:"ears",id:x.id,act:x.act})?.wikiRow))
    info.append(el("div",tr("ไฟล์ Excel ติด WARNING แต่ยังต้องตรวจเงื่อนไขจากต้นทาง","Historical spreadsheet flag: verify quest conditions in the source before advancing"),"hubRisk hubWorkbookRisk"));
  if(guide){
-   const detail=el("details",undefined,"hubItemHelp"),head=el("summary",tr("วิธีเก็บ · เงื่อนไข · ที่มา","How to collect · Conditions · Source")),body=el("div",undefined,"hubItemHelpBody");detail.append(head);
+   const detail=el("details",undefined,"hubItemHelp"),head=el("summary",tr("ทำอย่างไร · ทำตอนไหน · ตรวจจากที่ไหน","What to do · When · Source")),body=el("div",undefined,"hubItemHelpBody");detail.append(head);
    function fact(title,value){if(!value)return;const line=el("div",undefined,"hubFact");line.append(el("strong",title),el("span",value));body.append(line);}
-   fact(tr("วิธีเก็บ","Action"),guide.action);fact(tr("พื้นที่ / NPC","Location / NPC"),guide.location);fact(tr("เงื่อนไข","Unlock condition"),guide.unlock);fact(tr("ห้ามพลาด","Missable warning"),guide.caution);fact(tr("หมายเหตุ","Note"),guide.tip);
+   fact(tr("ต้องทำอะไร","What to do"),guide.action);fact(tr("ไปที่ไหน / หาใคร","Where / who"),guide.location);fact(tr("ทำได้เมื่อไร","When it becomes available"),guide.unlock);fact(tr("อย่าเพิ่งทำอะไร","Before you move on"),guide.caution);fact(tr("ข้อมูลเพิ่มเติม","More information"),guide.tip);
+   const linked=findRelevantStage(type,x);
+   if(linked){
+     const text=descEN()?(linked.phase.headingEN||"Route step "+(linked.index+1)):linked.phase.heading;
+     fact(tr("อยู่ในช่วงเควสต์","Related quest stage"),"Act "+x.act+" · "+(linked.index+1)+". "+text);
+     const open=el("button",tr("ดูขั้นตอนของช่วงนี้","Open this quest step"),"hubOpenLinkedStage");
+     open.type="button";open.dataset.openStage=linked.phase.id;open.dataset.linkedAct=String(x.act);
+     open.onclick=()=>{
+       openJourneyScope(String(x.act));
+       state.steamFocusByAct[String(x.act)]=linked.index;
+       renderView();
+       document.querySelector('[data-steam-act="'+x.act+'"]')?.scrollIntoView({block:"start"});
+     };
+     body.append(open);
+   }
    if(type==="sidequests"){const reward=rewardsByQuest.get(String(x.act)+"|"+x.name);if(reward)fact(tr("รางวัลเควสต์","Quest reward"),reward.reward+" · "+tr("ข้อมูลเก่า ไม่ใช่รางวัล Achievement","Historical reward, not an achievement unlock"));}
    if(descEN()&&original?.caution){
       const thai=el("details",undefined,"hubOriginalThai");thai.lang="th";

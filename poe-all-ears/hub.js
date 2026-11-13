@@ -435,7 +435,7 @@ function actSteamGuide(act){
  const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0);
  const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0);
  header.append(el("span","ACT "+act+" · "+tr("เส้นทางตามพื้นที่ · คู่มือประวัติศาสตร์","Source-led route · historical guide"),"hubWalkEyebrow"),
-   el("h3",tr("ทำตามลำดับเพื่อเก็บ All Ears ","Follow the route for all ")+phases.reduce((sum,p)=>sum+p.dialogueIds.length,0)+tr(" บทสนทนา"," NPC dialogues")),
+   el("h3",tr("ตรวจเส้นทางอ้างอิง All Ears ","Review source-led route for ")+phases.reduce((sum,p)=>sum+p.dialogueIds.length,0)+tr(" บทสนทนา"," NPC dialogues")),
    el("p",tr("แสดงทีละช่วงพร้อม 4 Achievement · ไม่ใช่เส้นทางที่ทดสอบในแพตช์ 3.30","One step at a time across four achievements · not gameplay-tested for patch 3.30"),"hubSubtle"));
  const status=el("div",undefined,"hubWalkStageProgress");status.dataset.phaseProgress=phase.id;
  status.append(el("strong",tr("ช่วงนี้เก็บแล้ว ","This step: ")+phaseDone+" / "+phaseTotal),
@@ -507,9 +507,11 @@ function actSteamGuide(act){
  }
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
-   conflict.append(el("strong","ลำดับ Bandits จากสองคู่มือไม่ตรงกัน"),el("p",phase.sourceConflict));
+   conflict.append(el("strong",tr("ลำดับ Bandits จากสองคู่มือไม่ตรงกัน","Bandit quest order differs between sources")),
+ el("p",descEN()?"Steam 3.28 and PoE Wiki 2025 describe different quest timing. Do not assume either is patch 3.30-certified; inspect the original Thai source note below.":phase.sourceConflict));
+   if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai source note"),el("p",phase.sourceConflict));conflict.append(original);}
    const links=el("div",undefined,"hubConflictLinks");
-   const steam=el("a","คู่มือ Steam");steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
+   const steam=el("a",tr("คู่มือ Steam","Steam walkthrough"));steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
    const wiki=el("a","PoE Wiki");wiki.href=data.wiki;wiki.target="_blank";wiki.rel="noopener noreferrer";
    links.append(steam,wiki);conflict.append(links);box.append(conflict);
  }

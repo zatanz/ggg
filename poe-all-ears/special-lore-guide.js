@@ -23,3 +23,26 @@ window.POE_SPECIAL_LORE = {
     areaSource:"https://www.poewiki.net/wiki/Vaal_side_area"
   }
 };
+
+/* Reviewed English guidance for the two non-campaign Lore scopes. Source IDs and Thai copy stay intact. */
+Object.assign(window.POE_SPECIAL_LORE.labyrinth,{
+ stepsEN:[
+  "Enter the Aspirants' Plaza after unlocking the relevant Labyrinth and read the Bronze Plaque.",
+  "Explore the Labyrinth, reading the Lore inscriptions you find in each room and around the Aspirant's Trial. Room layouts can change.",
+  "Before leaving, check all ten unique Lore entries. If some are missing, return on a later run and search for those exact names."
+ ],
+ caveatEN:"The room layout changes over time. This is not a fixed route or proof that all ten Lore entries must be collected in one run.",
+ groupEN:{
+  plaza:{name:"Before entering the Labyrinth",note:"Enter the Aspirants' Plaza and read the Bronze Plaque before starting the Labyrinth"},
+  chambers:{name:"While exploring Labyrinth rooms",note:"Look for inscriptions and poems. Room locations and layouts can change from day to day"},
+  trials:{name:"Around the Aspirant's Trial",note:"Check the Bronze Inscription and Poem in each Trial phase; do not assume they only appear at the end"}
+ }
+});
+Object.assign(window.POE_SPECIAL_LORE.vaal,{
+ stepsEN:[
+  "Explore the campaign zones to find a Vaal Side Area. Their entrances are not guaranteed in every instance.",
+  "Once inside, search the Side Area's exact name below. Check the historically associated Vaal Letter or Research Journal, usually near the Vaal Vessel.",
+  "Only mark a newly found Lore entry. If you encounter a duplicate, search another instance or Side Area for the remaining entries."
+ ],
+ caveatEN:"The listed Side Area associations are historical Wiki 2025 references, not a fixed order or patch 3.30 certification. Do not follow old Sacrifice Fragment + Map Device instructions."
+});

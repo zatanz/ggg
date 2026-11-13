@@ -486,6 +486,77 @@ const assert=require('node:assert/strict');
  await hub.setViewportSize({width:1280,height:900});
 
 
+ // Act 8: 30 All Ears + 1 lore + 10 Waypoints + 4 side quests in sixteen bilingual stages.
+ await hub.locator('.hubActStrip [data-act="8"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="8"]').count(),1,'Act 8 source-led guide is integrated');
+ assert.equal(await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select option').count(),16,'Act 8 route offers sixteen quest stages');
+ assert.equal((await hub.locator('#hubView [data-steam-act="8"]').innerText()).includes('30 บทสนทนา'),true,'Act 8 includes 30 original All Ears dialogues');
+ assert.equal(await hub.locator('#hubView [data-act-summary="8"]').evaluate(x=>x.open),false,'Act 8 main quest is prioritized above secondary checklist');
+ assert.equal(await hub.locator('#hubView [data-jump-incomplete="true"]').isDisabled(),true,'At first incomplete Act 8 phase, recovery button is disabled');
+
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('2');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="doedre-cesspool"]').innerText()).includes('Sin: Doedre'),true,'Sin post-Doedre caution appears after the boss');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),1,'Shared Toxic Conduits/Cesspool waypoint uses one canonical tracker entry');
+ await hub.locator('#hubView [data-jump-type="waypoints"]').click();
+ assert.equal(await hub.locator('#hubView [data-walk-type="waypoints"]').evaluate(x=>x.open),true,'Act 8 Waypoint shortcut opens correct checklist');
+ assert.equal(await hub.locator('#hubView [data-source-note="doedre-cesspool"]').count(),1,'Doedre Cesspool historical caveat is visible as source disagreement');
+ hub.once('dialog',d=>d.dismiss());
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('4');
+ assert.equal(await hub.locator('#hubView [data-steam-act="8"]').getAttribute('data-phase'),'doedre-cesspool','Act 8 dropdown cannot silently bypass an unchecked Doedre STOP');
+ assert.equal(await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').inputValue(),'2','Declining STOP bypass restores selected phase');
+ const doedreArt=hub.locator('#hubView [data-visual-phase="doedre-cesspool"]');
+ await doedreArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const image=document.querySelector('[data-visual-phase="doedre-cesspool"] img');return !!image&&image.complete&&image.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await doedreArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Doedre quest visual explicitly marked as concept');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('Hargan'),true,'Love is Dead Hargan before completion is separate stage');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Ankh of Eternity'),true,'Ankh item is contextual in pre-completion step');
+ const act8Character=await hub.locator('#character').inputValue();
+ await hub.locator('#hubGameNames').selectOption('both');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Ankh of Eternity'),true,'Game canonical English item name remains in bilingual mode');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('อังก์'),true,'Editorial Thai name is available independently');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Hargan'),true,'Act 8 precise English instructions display in English guidance mode');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('STOP:'),true,'English pre-completion STOP remains visible');
+ await hub.locator('#hubGameNames').selectOption('th');
+ assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),'Ankh of Eternity','Thai-only proper name retains canonical English on hover');
+ assert.equal(await hub.locator('#character').inputValue(),act8Character,'Language mode does not mutate selected character');
+ assert.equal(await hub.locator('#hubView [data-steam-act="8"]').getAttribute('data-phase'),'quay-love-pre','Language mode does not mutate quest phase');
+ await hub.locator('#hubGameNames').selectOption('en');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('5');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="quay-tolman-after"]').innerText()).includes('Clarissa'),true,'Post-Tolman Clarissa warning includes original NPC');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="quay-tolman-after"]').innerText()).includes('The Quay'),true,'Post-Tolman warning names exact area before exit');
+ const tolmanArt=hub.locator('#hubView [data-visual-phase="quay-tolman-after"]');
+ await tolmanArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const image=document.querySelector('[data-visual-phase="quay-tolman-after"] img');return !!image&&image.complete&&image.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await tolmanArt.locator('.hubVisualCheck').innerText()).includes('BEFORE leaving The Quay'),false,'Exact English visual text may use lowercase but must not be generic');
+ assert.equal((await tolmanArt.locator('.hubVisualCheck').innerText()).includes('before leaving The Quay'),true,'English visual action check explains Clarissa timing');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('7');
+ assert.equal(await hub.locator('#hubView [data-phase="grain-gate"] .hubWalkCategory').count(),0,'Grain Gate lore/sidequest-only step does not show an empty NPC list');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),1,'Act 8 lone Official Orders lore is in the Grain Gate');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'Act 8 Gemling Legion quest is linked to the Grain Gate');
+ assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),0,'No NPC quick jump for a phase without dialogue');
+
+ await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('11');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="yugul-before"]').innerText()).includes('Sin'),true,'Sin before Yugul warning is present');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="yugul-before"]').innerText()).includes('Hargan'),true,'Hargan before Yugul warning is present');
+ const yugulArt=hub.locator('#hubView [data-visual-phase="yugul-before"]');
+ await yugulArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const image=document.querySelector('[data-visual-phase="yugul-before"] img');return !!image&&image.complete&&image.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await yugulArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Yugul explanatory image disclaims source origin');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),2,'Original Act 8 Love/Yugul checkpoint groups preserved');
+ await hub.setViewportSize({width:375,height:812});
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Act 8 route does not cause horizontal mobile overflow');
+ assert.equal(await hub.locator('.hubActStrip [data-act="10"]').evaluate(x=>{const r=x.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth}),true,'Act 10 remains visible in mobile Act selector');
+ await hub.setViewportSize({width:1280,height:900});
+
+
  await hub.locator('.hubActStrip [data-act="1"]').click();
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
@@ -625,7 +696,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
- for(const [act,count] of [[8,2],[9,4]]){
+ for(const [act,count] of [[9,4]]){
   await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
   assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act '+act+' shows one checkpoint in focus mode');
   assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),count,'Act '+act+' retains all checkpoints in step picker');

@@ -279,6 +279,7 @@ load('steam-act4.js');
 load('steam-act5.js');
 load('steam-act6.js');
 load('steam-act7.js');
+load('steam-act8.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -359,6 +360,13 @@ assert(locale.term("Nonexistent Lore Translation") === "Nonexistent Lore Transla
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===365),{}).caution.includes('Den'),'Act 7 Helena blocked-route STOP must remain available in English');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===382),{}).caution.includes('seven Fireflies'),'Act 7 Fireflies timing must remain precise in English');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===384),{}).caution.includes('BEFORE leaving'),'Act 7 post-Arakaali boundary must remain explicit');
+
+assert(locale.set('names','both')&&locale.term('Ankh of Eternity').includes('อังก์')&&locale.term('Ankh of Eternity').includes('Ankh of Eternity'),'Act 8 Ankh Thai + canonical English name must work independently');
+assert(locale.set('names','th')&&locale.term('Wings of Vastiri').includes('วัสทิรี'),'Act 8 Wings quest item must have an editorial Thai title');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===407),{}).caution.includes('BEFORE completing'),'Act 8 Ankh before-completion warning must work in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===411),{}).caution.includes('BEFORE leaving'),'Act 8 Clarissa post-Tolman Quay warning must be unambiguous in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===409),{}).caution.includes('BEFORE killing Yugul'),'Act 8 Sin pre-Yugul STOP must remain available in English');
+assert(locale.englishHelp('waypoints',extras.waypoints.find(x=>x.id===71),{}).unlock.includes('Doedre'),'Act 8 waypoint cannot be marked before the Cesspool exit after Doedre');
 const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
 assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
 assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');
@@ -409,6 +417,32 @@ const uiSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('dataset.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(chosen,target)'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
 assert(uiSource.includes('if(phase.dialogueIds.length)')&&uiSource.includes('hubSourceDiscrepancy'),'Act 7 source differences need disclosure and zero-dialogue stages must not render fake NPC lists');
 
+const actEight=steamWalk.acts[8],actEightEars=actEight.flatMap(p=>p.dialogueIds),actEightLore=actEight.flatMap(p=>p.loreIds||[]);
+const actEightWp=actEight.flatMap(p=>p.waypointIds||[]),actEightSide=actEight.flatMap(p=>p.sidequestIds||[]);
+assert(actEight.length===16,'Act 8 must have sixteen area- and quest-state-specific phases');
+assert(sameExactSet(actEightEars,d.items.filter(x=>x.act===8).map(x=>x.id)),'Act 8 All Ears 30 original dialogue IDs exactly once');
+assert(sameExactSet(actEightLore,lore.entries.filter(x=>x.act===8).map(x=>x.id)),'Act 8 No Stone Unturned: exactly one Official Orders original ID');
+assert(sameExactSet(actEightWp,extras.waypoints.filter(x=>x.act===8).map(x=>x.id)),'Act 8 Locomancer: ten original Waypoint IDs exactly once');
+assert(sameExactSet(actEightSide,extras.sidequests.filter(x=>x.act===8).map(x=>x.id)),'Act 8 No Loose Ends: four sidequest IDs exactly once');
+assert(actEight.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length>=2&&p.actions.length===p.actionsEN.length&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 8 bilingual stage actions must match and STOP IDs must belong to the correct phase');
+const wikiActEight=ctx.window.ALL_EARS_ROUTE_ACT8.records;
+assert(wikiActEight.length===30&&sameExactSet(wikiActEight.map(x=>x.id),actEightEars),'Act 8 must map original local IDs to all thirty historical Wiki source rows');
+assert(actEight.find(p=>p.id==='doedre-cesspool')?.stopIds.includes(403)&&actEight.find(p=>p.id==='doedre-cesspool')?.sourceNoteEN.includes('legacy'),'Act 8 Sin after Doedre historic caveat and source difference must be retained');
+assert(actEight.find(p=>p.id==='doedre-cesspool')?.waypointIds.includes(71),'Act 8 Toxic Conduits waypoint activation is a post-Doedre area-state check');
+assert(actEight.find(p=>p.id==='quay-love-pre')?.stopIds.includes(407),'Act 8 Hargan Ankh topic BEFORE Love is Dead completion');
+assert(sameExactSet(actEight.find(p=>p.id==='quay-tolman-after')?.stopIds||[],[411,413]),'Act 8 Clarissa Ankh and Tolman AFTER the fight before leaving The Quay');
+assert(actEight.find(p=>p.id==='love-return')?.dialogueIds.includes(412),'Act 8 post-completion Maramoa Tolman dialogue local ID 412 not confused with Wiki 412');
+assert(sameExactSet(actEight.find(p=>p.id==='yugul-before')?.stopIds||[],[409,410]),'Act 8 Sin then Hargan before Yugul must be tracked as two distinct dialogue IDs');
+assert(actEight.find(p=>p.id==='yugul-after')?.sidequestIds.includes(23),'Act 8 Reflection of Terror sidequest is only marked in post-boss phase');
+assert(actEight.find(p=>p.id==='grain-gate')?.loreIds.includes(121),'Act 8 Official Orders environmental lore linked to correct Grain Gate phase');
+assert(actEight.find(p=>p.id==='orbs-town')?.dialogueIds.includes(414)&&actEight.find(p=>p.id==='orbs-town')?.dialogueIds.includes(415),'Both Sun and Moon Orb town dialogues must unlock after owning BOTH items');
+assert(actEight.find(p=>p.id==='sisters-after')?.dialogueIds.includes(416),'Hargan after both Solaris/Lunaris quests must be separate from their intro');
+assert(canonicalSource.includes('src="./steam-act8.js"'),'Act 8 route script must load before hub.js');
+assert(steamWalk.patchCertified===false,'Act 8 source-led guidance must not claim 3.30 gameplay certification');
+const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(uiActEight.includes('["7","8"].includes(act)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
+assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -432,9 +466,12 @@ const visualTargets=[
  ["6","reef-weylam","act6-weylam-brine-reef.svg","The Brine King"],
  ["7","den-before","act7-den-helena-stop.svg","The Master of a Million Faces"],
  ["7","fireflies-return","act7-fireflies-yeena-stop.svg","Lighting the Way"],
- ["7","temple-arakaali-after","act7-arakaali-yeena-stop.svg","The Mother of Spiders"]
+ ["7","temple-arakaali-after","act7-arakaali-yeena-stop.svg","The Mother of Spiders"],
+ ["8","doedre-cesspool","act8-doedre-sin-quest.svg","Essence of the Hag"],
+ ["8","quay-tolman-after","act8-tolman-clarissa-quest.svg","Love is Dead"],
+ ["8","yugul-before","act8-yugul-preboss-quest.svg","Reflection of Terror"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly sixteen sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly nineteen sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

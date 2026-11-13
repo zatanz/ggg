@@ -177,6 +177,7 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubQuickStart').innerText()).includes('ทำ Achievement 100% แบบทีละขั้น'),true,'new beginner lead explains first-run goal');
  await hub.locator('#hubQuickStart [data-beginner-continue]').click();
  assert.equal(await hub.locator('#hubView [data-steam-act="1"]').isVisible(),true,'first-time action opens relevant quest-stage guide');
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').evaluate(x=>document.activeElement===x),true,'first-time primary action transfers keyboard focus directly into the quest route');
  assert.equal(await hub.locator('#hubQuickStart [data-beginner-scope="1"]').count(),1,'first-time starter follows the current campaign Act');
  await hub.locator('#hubAdvancedDashboard > summary').click();
  assert.equal(await hub.locator('#hubAdvancedDashboard').evaluate(x=>x.open),true,'advanced users can opt into all four completion dashboards');

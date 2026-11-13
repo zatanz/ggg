@@ -953,7 +953,7 @@ function actSteamGuide(act){
    const sharedWaypoint=type==="waypoints"&&ids.includes(71)&&act==="8";
    const waypointCopy=sharedWaypoint?
      tr("ตรวจว่าจุดเดินทางเปิดใช้งานแล้วบนแผนที่ก่อนติ๊กใน Checklist","Check that the waypoint is unlocked on the world map before marking the checklist"):
-     tr("ติ๊กเมื่อเปิด Waypoint จริงในเกม · รหัสเดิมร่วมกับสรุป Act","Check only after activating this Waypoint in-game.");
+     tr("Waypoint เปิดใช้งานอัตโนมัติเมื่อเดินเข้าใกล้ตั้งแต่แพตช์ 3.25 ให้ตรวจบนแผนที่ว่าเปิดแล้วก่อนติ๊กในเว็บ · ไม่ต้องกดที่จุดเดินทาง","Since patch 3.25, Waypoints unlock automatically when you walk near them. Check the world map before marking the guide; no manual interaction is required.");
    group.append(el("p",type==="waypoints"?waypointCopy:tr("ติ๊กหลังทำเควสต์เสร็จในเกม · รหัสเดิมร่วมกับสรุป Act","Check only after completing this optional quest in-game."),"hubSubtle"));
    const list=el("div",undefined,"hubList");
    appendReviewItems(list,type,ids);

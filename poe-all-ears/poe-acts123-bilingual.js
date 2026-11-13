@@ -269,7 +269,8 @@ const translated={
       [
         "Read Bronze Monograph in the Imperial Gardens before heading into the Library.",
         "Meet Siosa, collect the Golden Pages and revisit his dialogue at the relevant quest states.",
-        "Collect the seventeen distinct books: seven The Ancients, six Purity Chronicles and four Victario's Writings. Check each title; repeated books do not count again."
+        "Collect the seventeen distinct books: seven The Ancients, six Purity Chronicles and four Victario's Writings. Check each title; repeated books do not count again.",
+        "After the Library, enter The Sceptre of God. On its third floor, walk near Waypoint #34 to unlock it automatically and verify it on the world map before entering The Upper Sceptre of God to fight Dominus."
       ],
       null
     ],

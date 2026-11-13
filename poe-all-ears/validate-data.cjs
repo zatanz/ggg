@@ -451,7 +451,7 @@ assert(actEight.find(p=>p.id==='sisters-after')?.dialogueIds.includes(416),'Harg
 assert(canonicalSource.includes('src="./steam-act8.js"'),'Act 8 route script must load before hub.js');
 assert(steamWalk.patchCertified===false,'Act 8 source-led guidance must not claim 3.30 gameplay certification');
 const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiActEight.includes('["7","8"].includes(act)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
+assert(uiActEight.includes('["7","8","9","10"].includes(act)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
 assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
 
 

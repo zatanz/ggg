@@ -257,6 +257,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive > summary').click();
  const originalInline=hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive input[data-track-type="ears"][data-track-id="'+initialInlineId+'"]');
  assert.equal(await originalInline.isChecked(),true,'archived checklist mirrors the inline completion');
+ await originalInline.evaluate(node=>{for(let parent=node.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
  await originalInline.uncheck();
  assert.equal(await hub.locator('#hubView [data-phase="mudflats"] .hubInlineCurrentChecklist input[type="checkbox"]').getAttribute('data-track-id'),initialInlineId,'undoing a mark restores that task in the primary workflow');
  await hub.locator('#hubView .hubQuestVisual > summary').click();

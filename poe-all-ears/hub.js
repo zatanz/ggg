@@ -200,7 +200,7 @@ function renderSummary(){
  [
  [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ได้ยืนยันยอดจริงจากเกม 3.29","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. The exact live 3.29 count is not independently certified."),"https://www.poewiki.net/wiki/Waypoint"],
  [tr("Vaal Side Area: คำแนะนำเก่าบางแหล่งเกี่ยวกับ Fragment/Map Device อาจใช้ไม่ได้ในเวอร์ชันปัจจุบัน ควรตรวจพื้นที่จริงและเงื่อนไข Lore จากคู่มือปัจจุบัน ก่อนใช้เส้นทางนั้น","Vaal Side Areas: older Fragment / Map Device instructions may be version-specific. Verify actual lore availability and areas for the current playable patch rather than assuming an old farming route still works."),"https://www.poewiki.net/wiki/Vaal_side_area"],
- [tr("Act 2: ลำดับ Bandits / The Darkness ใน Steam และ PoE Wiki ไม่ตรงกัน · ดูคำเตือนใน Act 2 ก่อนเลือกช่วยหรือฆ่า","Act 2: Steam and PoE Wiki disagree on Bandit / Darkness ordering. Open Act 2 warnings before choosing to help or kill."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
+ [tr("Act 2: PoE Wiki แนะนำคุย Bandits ก่อนเปิด Ancient Seal ส่วน Steam จัดช่วงฆ่า Bandits หลัง The Darkness · ยังไม่ยืนยันใน 3.30","Act 2: PoE Wiki advises speaking to Bandits before the Ancient Seal; Steam places the kill route after The Darkness. Patch 3.30 is not certified."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
  ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
  sourceAlert.append(sourceBody);hero.append(sourceAlert);
  const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
@@ -208,7 +208,7 @@ function renderSummary(){
  const checklist=el("ul",undefined);
  [[ "Ruthless: คู่มือ PoE Wiki ระบุว่า Vaal Side Area ไม่เกิดในโหมดนี้ จึงไม่ควรใช้เส้นทางนี้เป็นหลักฐานว่าจะเก็บ No Stone Unturned ครบ", "Ruthless: the PoE Wiki says Vaal Side Areas do not spawn in this mode. This route cannot certify No Stone Unturned here." ],
  [ "Act 1: มีรายงานว่า Fairgraves อาจคุยไม่ได้ในแพตช์ 3.29 ทำให้ All Ears ขาดหัวข้อ #34–38 · ยังไม่มีผลตรวจเกม 3.29 ครบทุกสถานะ", "Act 1: Fairgraves dialogue #34–38 was reportedly unavailable in patch 3.29; the issue is not fully reproduced across all 3.29 character states." ],
- [ "Act 2: คู่มือ Steam กับ PoE Wiki ให้ลำดับคุย Bandits / Ancient Seal ต่างกัน ต้องตรวจบทสนทนา The Darkness ก่อนตัดสินใจฆ่าหรือช่วย", "Act 2: Steam and PoE Wiki disagree on the Bandits / Ancient Seal order. Check the Darkness topics before choosing whom to kill or help." ],
+ [ "Act 2: Wiki แนะนำคุย Bandits ก่อน Ancient Seal; Steam จัดการฆ่าหลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal · ห้ามฆ่าก่อนตรวจบทสนทนา", "Act 2: Wiki says talk before Ancient Seal; Steam kills Bandits after The Darkness without prohibiting earlier talks. Verify all relevant dialogue before killing." ],
  [ "เปิด Quest Log และหน้า Achievement ในเกมเพื่อเทียบยอดจริง · เครื่องหมายในเว็บเป็นเพียงบันทึกของคุณ", "Open the in-game Quest Log and Achievement panel to compare real counts. Website checkmarks are manual notes, not game verification." ]].forEach(([th,en])=>checklist.append(el("li",tr(th,en))));
  prep.append(checklist);
  const link=el("a","PoE Wiki: Ruthless mode");link.href="https://www.poewiki.net/wiki/Ruthless_mode";link.target="_blank";link.rel="noopener noreferrer";
@@ -422,7 +422,7 @@ function criticalPanel(act){
   if(stage.sourceConflict){
     const conflict=el("div",undefined,"hubResearchConflict");
     conflict.dataset.conflict=stage.sourceConflict.kind;
-    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"Steam and PoE Wiki differ about the Bandits / Ancient Seal sequence. Confirm the actual dialogue in-game before making an irreversible choice; this route is not patch-certified.":stage.sourceConflict.summary));
+    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"PoE Wiki advises speaking to Bandits before the Ancient Seal. Steam's recorded kill sequence happens after The Darkness without forbidding earlier conversations. Confirm every available dialogue before any kill/help choice; patch 3.30 remains unverified.":stage.sourceConflict.summary));
     const steam=el("a",tr("คู่มือ Steam","Steam guide"));steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
@@ -805,8 +805,8 @@ function actSteamGuide(act){
  stageLinks.append(prev,next,jump,resume);
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
-   conflict.append(el("strong",tr("ลำดับ Bandits จากสองคู่มือไม่ตรงกัน","Bandit quest order differs between sources")),
- el("p",descEN()?"Steam 3.28 and PoE Wiki 2025 prescribe incompatible Bandit-first-talk timing. Neither route is fully verified for 3.29; review both original sources before an irreversible choice.":phase.sourceConflict));
+   conflict.append(el("strong",tr("คู่มือ Bandits เน้นลำดับต่างกัน · ยังไม่รับรอง 3.30","Bandit guide sequences differ · 3.30 unverified")),
+ el("p",descEN()?"PoE Wiki advises talking to each Bandit before the Ancient Seal. Steam 3.28 places the Bandit kill sequence after The Darkness but does not explicitly forbid talking earlier. No fully verified route for patch 3.30; do not kill or choose sides before checking available dialogue.":phase.sourceConflict));
    if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai source note"),el("p",phase.sourceConflict));conflict.append(original);}
    const links=el("div",undefined,"hubConflictLinks");
    const steam=el("a",tr("คู่มือ Steam","Steam walkthrough"));steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
@@ -1051,7 +1051,7 @@ function epilogueRoute(target){
 function routeEvidencePanel(act){
  const issues={
   "1":[["Fairgraves #34–38 · current 3.29 reports","Fairgraves #34–38 · รายงานใน 3.29","Community reports describe five inaccessible Fairgraves/Bestel dialogues after the Act 1 rework. If the NPC cannot be spoken to, do not mark these as heard or assume the achievement is possible on this league character.","มีรายงานว่าการปรับเควสต์ Act 1 ทำให้บทสนทนา Fairgraves/Bestel 5 รายการเข้าไม่ถึง หากคุยไม่ได้ อย่าติ๊กว่าได้ฟังแล้ว และอย่าสรุปว่าตัวละครในลีกนี้เก็บ All Ears ได้แน่นอน","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
-  "2":[["Bandits / The Darkness","Bandits / The Darkness","PoE Wiki: TALK to every Bandit BEFORE opening the Ancient Seal, but do not kill before The Darkness. Steam 3.28: do NOT TALK TO or kill Bandits until AFTER triggering The Darkness. These instructions directly conflict; neither is verified as universally safe for 3.29. Eramir #101–103 depend on the first/second kill order.","PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal แต่ห้ามฆ่าก่อน The Darkness ส่วน Steam 3.28: ห้ามแม้แต่คุยหรือฆ่า Bandits ก่อนเปิด The Darkness ทั้งสองแหล่งขัดกันโดยตรง ยังไม่มีหลักฐานรับรองว่าลำดับใดปลอดภัยเสมอสำหรับ 3.29 ส่วน Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the Steam route against the Wiki before advancing; neither is fully gameplay-verified for 3.29.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนเล่นต่อ ทั้งคู่ยังไม่ผ่านการทดสอบครบใน 3.29","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","PoE Wiki: talk to each Bandit before the Ancient Seal and do not kill before The Darkness. Steam 3.28 places the kill sequence after The Darkness; it does not explicitly ban earlier conversations. Source ordering differs, but an absolute conflict on FIRST TALK is unsupported. In the local tracker, #101 is Eramir: Oak after Alira, #102 is Oak: The Darkness, and #103 is Eramir: Bandit Lords. PoE Wiki's 101–103 are row numbers with different meanings. Patch 3.30 remains untested.","PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal และยังไม่ฆ่าจนกว่าจะเก็บ The Darkness ส่วน Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal จึงยังสรุปว่าขัดกันเรื่องการคุยครั้งแรกไม่ได้ ต้องตรวจบทสนทนาในเกมก่อนตัดสินใจ และแยกเลขฐานข้อมูล: #101 Eramir: Oak หลังฆ่า Alira, #102 Oak: The Darkness, #103 Eramir: Bandit Lords (เลขแถว Wiki 101–103 ไม่ใช่ ID เดียวกัน) · ยังไม่รับรอง 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the historical Steam and Wiki routes before irreversible Bandit choices; neither is gameplay-certified for 3.30.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนตัดสินใจฆ่าหรือช่วย ทั้งคู่ยังไม่มีผลทดสอบครบใน 3.30","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
   "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
   "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
  };
@@ -1149,12 +1149,12 @@ function safetyPanel(){
  const wrap=el("div",undefined,"hubPanel");
  wrap.append(
    el("h3",tr("ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness","Before choosing Bandits · check The Darkness")),
-   el("p",tr("แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์",
-     "Steam and PoE Wiki disagree on when to first speak with Bandits relative to the Ancient Seal. Both require checking Darkness dialogue before making an irreversible kill/help choice. These are manual notes, not proof of a patch-safe route."),"hubSubtle")
+   el("p",tr("PoE Wiki แนะนำคุย Bandits ก่อนเปิด Ancient Seal และยังไม่ฆ่าก่อน The Darkness; Steam 3.28 แสดงขั้นฆ่าหลัง The Darkness แต่ไม่ได้ห้ามคุยก่อน Seal ให้บันทึกเฉพาะสิ่งที่ทำจริงและตรวจบทสนทนาก่อนตัดสินใจ",
+     "PoE Wiki advises speaking before the Ancient Seal; Steam's kill route follows The Darkness and does not forbid earlier talks. Verify available dialogue before any irreversible kill/help choice. These are manual notes, not proof of a patch-3.30-safe route."),"hubSubtle")
  );
  wrap.append(el("p",tr(
-   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.29 ได้",
-   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. No in-game 3.29 evidence here establishes that Book of Reform can restore missed dialogue."
+   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.30 ได้",
+   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. No in-game 3.30 evidence here establishes that Book of Reform can restore missed dialogue."
  ),"hubCheckpointRisk"));
  const s=getSafety(),grid=el("div",undefined,"hubCheckGrid");
  const checks=[
@@ -1192,8 +1192,8 @@ function safetyPanel(){
  wrap.append(choices);
  const state=el("div",undefined,"hubNotice"),saved=getSafety(),sealed=!!(saved.seal&&saved.darkness);
  let message=sealed?
-   tr("บันทึก Ancient Seal และ The Darkness แล้ว แต่คู่มือยังขัดแย้งเรื่องลำดับคุย Bandits · ตรวจในเกมก่อนเลือกเส้นทาง",
-      "Ancient Seal and Darkness are marked, but the historical guides still disagree on first-talk order. Check in-game before choosing."):
+   tr("บันทึก Ancient Seal และ The Darkness แล้ว · ตรวจบทสนทนาของ Bandits ที่ยังมีอยู่ก่อนเลือกฆ่าหรือช่วย",
+      "Ancient Seal and Darkness are marked. Verify all available Bandit dialogue before deciding whom to kill or help."):
    tr("ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ · อย่าเพิ่งฆ่าหรือช่วย Bandits",
       "Ancient Seal and Darkness are not both marked. Do not kill or help Bandits yet.");
  if((saved.first||saved.second)&&!sealed)message=tr(

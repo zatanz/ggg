@@ -25,7 +25,7 @@ window.POE_PATCH_PROFILES = {
     },
     {
       "id": "3.30",
-      "label": "3.30 — เวอร์ชันถัดไป (พักการตรวจไว้ก่อน)",
+      "label": "3.30 — ยังไม่รับรองเส้นทาง Achievement",
       "version": "3.30",
       "status": "announced-unverified",
       "dialogues": null,

@@ -285,7 +285,7 @@ window.POE_STEAM_WALK = {
         "actions": [
           "คุย Eramir, Greust, Yeena, Silk และ Helena ตามหัวข้อที่เปิด แล้วกลับคุยเรื่อง NPC หลังรู้จักกัน",
           "เมื่อได้รับ The Great White Beast ให้เก็บบทสนทนาของ Silk ก่อนทำเควสต์สำเร็จ",
-          "ยังไม่ตัดสินใจเรื่อง Bandits; ลำดับคุย Bandits ก่อน/หลัง Seal ยังมีข้อขัดแย้งในคู่มือ"
+          "ยังไม่ฆ่าหรือช่วย Bandits; PoE Wiki แนะนำคุยก่อน Ancient Seal ส่วน Steam แสดงขั้นฆ่าหลัง The Darkness ไม่ได้ห้ามคุยก่อน Seal"
         ],
         "stop": "ยังไม่ควรทำ The Great White Beast เสร็จก่อนฟัง Silk และยังไม่ควรฆ่าหรือช่วย Bandit ตัวใด",
         "stopIds": [
@@ -502,7 +502,7 @@ window.POE_STEAM_WALK = {
           "ตรวจบทสนทนา The Darkness ของ Alira และ Oak ขณะที่ยังมีชีวิต; Kraityn ไม่มีหัวข้อนี้ตาม Wiki 2025",
           "ถ้าติดตามสายฆ่าทั้งสาม ให้กลับ Eramir หลังฆ่าตัวแรก แล้วกลับอีกครั้งหลังตัวที่สอง ก่อนฆ่าตัวสุดท้าย",
           "หลังฆ่าครบให้กลับคุย Eramir เรื่อง Bandit Lords และตรวจหัวข้อ Greust / Helena ที่เปิดเพิ่มเติม",
-          "ระวัง: คำแนะนำเรื่องเวลาที่ควรคุย Bandits ครั้งแรกของ Steam และ PoE Wiki ขัดแย้งกัน ไม่ใช่เส้นทางที่รับรองแล้ว"
+          "ระวัง: Wiki แนะนำคุย Bandits ก่อนเปิด Seal; Steam วางขั้นฆ่าหลัง The Darkness ไม่ได้ห้ามคุยก่อน Seal · ลำดับปลอดภัยยังไม่รับรองแพตช์ 3.30"
         ],
         "stop": "ยังไม่ควรฆ่าหรือช่วย Bandits จนกว่าจะเก็บ The Darkness ของเมืองและ Alira/Oak ครบ; และต้องกลับ Eramir ระหว่างการฆ่า",
         "stopIds": [
@@ -515,12 +515,12 @@ window.POE_STEAM_WALK = {
           102
         ],
         "confidence": "conflict",
-        "sourceConflict": "ข้อขัดแย้งยังไม่คลี่คลาย: Steam ให้รอคุย Bandits หลังเปิด The Darkness แต่ PoE Wiki แนะนำคุยก่อนเปิด Ancient Seal จึงต้องตรวจในเกมก่อนทำขั้นที่เปลี่ยนสถานะ Bandits",
+        "sourceConflict": "ข้อมูลหลักฐานต่างกัน: PoE Wiki แนะนำคุย Bandits ทุกคนก่อนเปิด Ancient Seal ส่วน Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้สั่งห้ามคุยก่อน Seal ยังไม่มีผลทดสอบ 3.30 ที่รับรองลำดับปลอดภัย ให้ตรวจบทสนทนาก่อนตัดสินใจฆ่าหรือช่วย",
         "visual": {
           "asset": "./assets/bandits-quest-illustration.svg",
           "title": "Deal with the Bandits · ก่อนตัดสินใจ",
           "alt": "ภาพวาดจำลอง Quest ของ Bandits ใน Vaal Ruins และคำเตือนให้เก็บ The Darkness ก่อนตัดสินใจ",
-          "check": "ตรวจ The Darkness ให้ครบ และกลับ Eramir ระหว่างฆ่า Bandits ทีละตัว เงื่อนไขการคุย Bandits ครั้งแรกยังมีข้อขัดแย้ง",
+          "check": "ตรวจ The Darkness ให้ครบก่อนตัดสินใจฆ่า/ช่วย และกลับ Eramir หลังฆ่าทีละตัว · คำแนะนำ Steam ไม่ได้ห้ามคุย Bandits ก่อนเปิด Seal",
           "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
           "status": "mock-not-in-game"
         }

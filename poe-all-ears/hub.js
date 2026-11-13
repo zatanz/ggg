@@ -624,6 +624,8 @@ function actSteamGuide(act){
     missing.length+" unchecked task(s) remain in this step.\nFirst: "+nextName+"\n\nCheck these in-game before progressing. Skip to preview the next step?"
    )))return;
   }
+  // Keep a visible return path when the user knowingly previews beyond a STOP.
+  if(phase.stop&&stillMissing.length)state.skippedRisk={act,from:phase.id,count:1};
   goto(chosen+1,false,"next");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";

@@ -26,7 +26,7 @@ const walkExpanded=new Set(); // Current-step Lore/Waypoint/sidequest disclosure
 const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null,referenceShelfOpen:false};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -832,16 +832,25 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
 const evidence=routeEvidencePanel(act);if(evidence)panel.append(evidence);
+const reference=el("details",undefined,"hubReferenceShelf");reference.dataset.referenceAct=act;
+reference.open=state.referenceShelfOpen;
+reference.addEventListener("toggle",()=>{if(reference.isConnected)state.referenceShelfOpen=reference.open;});
+const referenceTitle=el("summary");
+// Record the user's explicit choice before native details toggle; frequent route re-renders can occur before an async toggle event.
+referenceTitle.addEventListener("click",()=>{state.referenceShelfOpen=!reference.open;});
+referenceTitle.append(el("strong",tr("รายละเอียดเพิ่มเติม · หลักฐานและรายการทั้งหมด","More details · sources and full checklists")),
+ el("small",tr("เปิดเมื่อต้องการเทียบข้อมูลเดิม จุดเสี่ยงจาก Wiki และรายการ 4 Achievement","Expand for older evidence, Wiki warnings and all four achievement inventories")));
+reference.append(referenceTitle);
 const actMission=journeyActGuide(act);
 if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
  const moreMission=el("details",undefined,"hubActSummaryMore");moreMission.dataset.actSummary=act;
  moreMission.append(el("summary",tr("ดูภาพรวม 4 Achievement / รายการที่ยังขาด","View four-achievement overview and remaining tasks")),actMission);
- panel.append(moreMission);
- if(["2","3","4","5","6","7","8","9","10"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
- }else{panel.append(actMission);const critical=criticalPanel(act);if(critical)panel.append(critical);}
-const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
-if(act==="10"){panel.append(el("p",tr("Act 10: ฐานข้อมูลปี 2025 ไม่มีคำเตือนก่อนเปลี่ยนสถานะเควสต์แยกต่างหาก ไม่ได้หมายความว่าปลอดภัยในเกม 3.29","Act 10: the 2025 source has no separate pre-transition STOP groups. This is not proof of safety or 3.29 gameplay verification."),"hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
+ reference.append(moreMission);
+ if(["2","3","4","5","6","7","8","9","10"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});reference.append(more);}
+ }else{reference.append(actMission);const critical=criticalPanel(act);if(critical)reference.append(critical);}
+const extraWarn=supplementalWarnings(act);if(extraWarn)reference.append(extraWarn);
+if(act==="10"){reference.append(el("p",tr("Act 10: ฐานข้อมูลปี 2025 ไม่มีคำเตือนก่อนเปลี่ยนสถานะเควสต์แยกต่างหาก ไม่ได้หมายความว่าปลอดภัยในเกม 3.29","Act 10: the 2025 source has no separate pre-transition STOP groups. This is not proof of safety or 3.29 gameplay verification."),"hubNotice"));const followup=postQuestPanel(act);if(followup)reference.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;
@@ -854,8 +863,10 @@ if(type==="ears"){const note=el("p",undefined,"hubSubtle");const source=el("a","
 addList(content,type,act,state.limit,true);chapter.append(content);
 summary.addEventListener("click",()=>{if(state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.delete(key);else routeOpen.add(key);});
 chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.add(key);else routeOpen.delete(key);});
-panel.append(chapter);
-});const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
+reference.append(chapter);
+});const rewardChapter=renderActRewards(act);if(rewardChapter)reference.append(rewardChapter);
+panel.append(reference);
+target.append(panel);}
 function renderCategory(target,type){const panel=section(categoryName(type)+" · "+names[type]);
 const desc={lore:tr("Lore 140 รายการแบ่งเป็น Campaign, Labyrinth และ Vaal Side Areas โดย Letters of Exile และหนังสือ Library อาจออกซ้ำ ต้องนับเฉพาะข้อความ/เล่มที่ยังไม่ได้เก็บจริง","140 historical Lore entries across the campaign, Labyrinth and Vaal Side Areas. Letters of Exile and Library book variants can repeat; only mark a distinct entry after encountering it."),
 waypoints:tr("รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด","91 legacy Waypoint entries from patch 3.9 data. The actual current patch requirements may differ."),

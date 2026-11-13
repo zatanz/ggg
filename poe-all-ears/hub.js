@@ -96,6 +96,18 @@ function renderSummary(){
   next.append(action,jump);
  }else next.append(el("strong",tr("ติ๊กครบทุกช่องแล้ว · ยังต้องเทียบยอดกับเกมจริงทีละ Achievement","All checklist boxes are marked. Compare each achievement counter in-game before claiming completion.")));
  hero.append(next);
+ const sourceAlert=el("details",undefined,"hubEvidencePanel hubGlobalEvidence");
+ sourceAlert.dataset.evidenceScope="global";
+ const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจความเสี่ยงด้านข้อมูล: Waypoint / Vaal / Bandits","Check source conflicts: Waypoints / Vaal / Bandits")),
+ el("small",tr("ข้อมูลเดิมบางส่วนไม่ตรงกับเวอร์ชันใหม่ · เปิดอ่านก่อนทำตาม","Some old instructions may be obsolete · review before following")));
+ sourceAlert.append(sourceTitle);
+ const sourceBody=el("div",undefined,"hubEvidenceBody");
+ [
+ [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ตรวจยอดในเกม 3.30","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. Current 3.30 in-game count is not certified."),"https://www.poewiki.net/wiki/Waypoint"],
+ [tr("Vaal Side Area: แหล่งข้อมูลเก่าแนะนำ Sacrifice Fragment กับ Map Device แต่ 3.30 เปลี่ยนระบบ Fragment และนำ Vaal Side Area ออกจากแผนที่ Map · ไม่ควรทำตามวิธีเก่า","Vaal Side Areas: old guides suggest Sacrifice Fragments in the Map Device. Patch 3.30 changes Fragments and removes Vaal Side Areas from Maps. Do not follow that old method."),"https://poedb.tw/us/Version_3.30.0"],
+ [tr("Act 2: ลำดับ Bandits / The Darkness ใน Steam และ PoE Wiki ไม่ตรงกัน · ดูคำเตือนใน Act 2 ก่อนเลือกช่วยหรือฆ่า","Act 2: Steam and PoE Wiki disagree on Bandit / Darkness ordering. Open Act 2 warnings before choosing to help or kill."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
+ ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
+ sourceAlert.append(sourceBody);hero.append(sourceAlert);
  const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
  prep.append(el("summary",tr("เช็กก่อนเริ่ม · จุดที่อาจพลาดและข้อจำกัดของแพตช์","Before you start · missable steps and patch limitations")));
  const checklist=el("ul",undefined);
@@ -696,6 +708,34 @@ function epilogueRoute(target){
  const list=el("div",undefined,"hubList");
  all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
 }
+// Show conflicts where a player decides what to do, not only in the footer.
+function routeEvidencePanel(act){
+ const issues={
+  "1":[["Fairgraves · 3.29 report","Fairgraves · รายงานปัญหา 3.29","Dialogue availability was disputed in 3.29; no 3.30 gameplay reproduction is recorded.","มีรายงานว่าบทสนทนา Fairgraves ใช้ไม่ได้ใน 3.29 แต่ยังไม่มีผลทดสอบกับเกม 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","The Steam 3.28 route and the 2025 PoE Wiki guide disagree on quest ordering. Check every Bandit and Darkness topic before killing or helping anyone. Eramir #101–103 depend on kill order, not static NPC labels.","คู่มือ Steam 3.28 กับ PoE Wiki ปี 2025 เรียงจังหวะเควสต์ต่างกัน ตรวจบทสนทนา Bandits และ The Darkness ก่อนฆ่าหรือช่วยใคร หัวข้อ Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare its original route, but do not assume its timing is valid in 3.30.","เทียบลำดับจากคู่มือ Steam โดยไม่ถือว่ายืนยันกับแพตช์ 3.30 แล้ว","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
+  "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
+ };
+ const list=issues[String(act)]||[];
+ if(!list.length)return null;
+ const box=el("details",undefined,"hubEvidencePanel");
+ box.dataset.evidenceAct=String(act);
+ // The initial message stays compact; explicit differences remain one click away.
+ box.open=String(act)==="2"||String(act)==="9";
+ const summary=el("summary");
+ summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่ตรวจยืนยันในเกมแพตช์ 3.30 · "+list.length+" ประเด็น","Not gameplay-certified for 3.30 · "+list.length+" issue(s)")));
+ box.append(summary);
+ const body=el("div",undefined,"hubEvidenceBody");
+ list.forEach(([en,th,detailEN,detailTH,href])=>{
+  const entry=el("div",undefined,"hubEvidenceIssue");
+  entry.append(el("strong",tr(th,en)),el("p",tr(detailTH,detailEN)));
+  const source=el("a",tr("เปิดหลักฐานต้นทาง","Read original source"));
+  source.href=href;source.target="_blank";source.rel="noopener noreferrer";
+  entry.append(source);body.append(entry);
+ });
+ body.append(el("p",tr("ระดับหลักฐาน: คู่มือประวัติศาสตร์ / ยังไม่มีภาพจากเกม 3.30 · ห้ามใช้เป็นการรับรองว่าจะไม่พลาด","Evidence level: historical guides only / no 3.30 gameplay captures. This is not a missable-safe certification."),"hubSubtle"));
+ box.append(body);return box;
+}
 function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · "+tr("รายการเก็บ Achievement","Achievement route"));
 panel.append(el("p",tr("ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","Check only after collecting in-game. Completed entries remain in place; important STOP warnings appear before details."),"hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
@@ -703,6 +743,7 @@ const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+re
 const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
+const evidence=routeEvidencePanel(act);if(evidence)panel.append(evidence);
 const actMission=journeyActGuide(act);
 if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);

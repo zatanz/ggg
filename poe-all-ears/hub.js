@@ -510,7 +510,7 @@ function actSteamGuide(act){
    const img=el("img");img.src=v.asset;img.alt=v.alt;img.loading="lazy";img.decoding="async";
    figure.append(img,el("figcaption",tr("ตัวอย่างแนวคิดหน้า World / Quest (ปุ่ม U ตามค่าปกติ) · ","Concept World / Quest screen (U by default) · ")+gameName(v.title)));body.append(figure);
    const check=el("div",undefined,"hubVisualCheck");
-   check.append(el("strong",tr("จุดที่ต้องตรวจในเกมจริง","What to verify in the actual game")),el("p",descEN()?"Verify the quest state and NPC dialogue in the live game. Switch guidance to Thai for the detailed original note.":v.check));
+   check.append(el("strong",tr("จุดที่ต้องตรวจในเกมจริง","What to verify in the actual game")),el("p",descEN()?(v.checkEN||"Verify the quest state and NPC dialogue in the live game. Switch guidance to Thai for the original detailed check."):v.check));
    body.append(check);
    const links=el("div",undefined,"hubVisualLinks");
    const full=el("a",tr("เปิดภาพจำลองขนาดเต็ม","Open full-size illustration"));full.href=v.asset;full.target="_blank";full.rel="noopener noreferrer";

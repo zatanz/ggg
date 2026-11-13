@@ -465,6 +465,7 @@ function actSteamGuide(act){
    const links=el("div",undefined,"hubConflictLinks");
    const wiki=el("a","PoE Wiki · All Ears Act "+act);wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;wiki.rel="noopener noreferrer";wiki.target="_blank";
    const legacy=el("a",tr("หมายเหตุเดิมใน Act "+act+" Inventory","Legacy Act "+act+" source notes"));legacy.href="./act"+act+"-inventory.json";legacy.rel="noopener noreferrer";legacy.target="_blank";
+   if(act==="8"){const waypoint=el("a","PoE Wiki · Waypoint");waypoint.href="https://www.poewiki.net/wiki/Waypoint";waypoint.rel="noopener noreferrer";waypoint.target="_blank";links.append(waypoint);}
    links.append(wiki,legacy);caution.append(links);box.append(caution);
  }
  if(phase.patchProblem){

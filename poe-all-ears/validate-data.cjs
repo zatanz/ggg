@@ -277,6 +277,7 @@ assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSourc
 load('steam-quest-walkthrough.js');
 load('steam-act4.js');
 load('steam-act5.js');
+load('steam-act6.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -343,9 +344,37 @@ assert(locale.set('names','both')&&locale.term("Kitava's Torments").includes("Ki
 assert(locale.set('names','th')&&locale.term('Miasmeter').includes('เครื่องวัด'),'Known Act 5 quest item Thai name must display');
 assert(locale.term('Untranslated Official Name')==='Untranslated Official Name','Unknown source names must not be guessed');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===277),{}).caution.includes('Innocence'),'Act 5 Sin stop must remain explicit in English');
+
+assert(locale.set('names','both')&&locale.term('Eye of Conquest').includes('ดวงตา')&&locale.term('Eye of Conquest').includes('Eye of Conquest'),'Act 6 bilingual source item should preserve original English');
+assert(locale.set('names','th')&&locale.term("The Brine King's Reef").includes('ปะการัง'),'Act 6 area name needs Thai editorial glossary');
+assert(locale.entry('ears',d.items.find(x=>x.id===336)).includes('Lilly Roth'),'Act 6 canonical Lily/Lilly source alias must display correct English NPC name');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===321),{}).caution.includes('BEFORE using'),'Act 6 English before-Eye warning must be explicit');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===322),{}).unlock.includes('BEFORE entering'),'Act 6 post-Eye / pre-Fortress state must be distinct');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===338),{}).caution.includes('Tsoagoth'),'Act 6 Reef stop must remain in English');
 const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
 assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
 assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');
+
+const actSix=steamWalk.acts[6],actSixEars=actSix.flatMap(p=>p.dialogueIds),actSixLore=actSix.flatMap(p=>p.loreIds||[]);
+const actSixWp=actSix.flatMap(p=>p.waypointIds||[]),actSixSide=actSix.flatMap(p=>p.sidequestIds||[]);
+assert(actSix.length===15,'Act 6 has fifteen source-aligned player quest stages');
+assert(sameExactSet(actSixEars,d.items.filter(x=>x.act===6).map(x=>x.id)),'Act 6 All Ears: 44 original IDs exactly once');
+assert(sameExactSet(actSixLore,lore.entries.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Stone: six original IDs exactly once');
+assert(sameExactSet(actSixWp,extras.waypoints.filter(x=>x.act===6).map(x=>x.id)),'Act 6 Locomancer: ten original IDs exactly once');
+assert(sameExactSet(actSixSide,extras.sidequests.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Loose Ends: four original IDs exactly once');
+assert(actSix.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>=2&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 6 bilingual source and stop IDs must be tied to the actual phase');
+const actSixWikiRoute=ctx.window.ALL_EARS_ROUTE_ACT6.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(r=>r.id);
+assert(actSixEars.join(',')===actSixWikiRoute.join(','),'Act 6 source steps must follow Wiki row order, not local ID order');
+assert(actSix.find(p=>p.id==='eye-before')?.stopIds.includes(321),'Eye of Conquest before-use stop required');
+assert(actSix.find(p=>p.id==='eye-after')?.stopIds.includes(322),'Eye of Conquest after-use, before-enter stop required');
+assert(actSix.find(p=>p.id==='tukohama-after')?.stopIds.includes(324),'Tukohama/Shavronne before-boss dialogue required');
+assert(actSix.find(p=>p.id==='shavronne-after')?.stopIds.includes(326),'Shavronne post-fight Sin dialogue required');
+assert(actSix.find(p=>p.id==='nessa-ships')?.stopIds.includes(333),'Nessa/Tarkleigh before Cavern of Anger required');
+assert(actSix.find(p=>p.id==='beacon-flag')?.stopIds.includes(336),'Lilly Black Flag before-use stop required');
+assert(sameExactSet(actSix.find(p=>p.id==='reef-weylam')?.stopIds||[],[338,339]),'Weylam two dialogs before Tsoagoth required');
+assert(actSix.find(p=>p.id==='beacon-flag')?.keyItems.includes('The Black Flag'),'Black Flag original item name must stay available');
+assert(steamWalk.patchCertified===false,'Act 6 must remain historical and unverified for patch 3.30');
+assert(canonicalSource.includes('src="./steam-act6.js"'),'Act 6 data script must be loaded before UI');
 
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
@@ -365,9 +394,11 @@ const visualTargets=[
  ["4","voll-mines","deshret-quest-illustration.svg","An Indomitable Spirit"],
  ["4","harvest-before","piety-organs-quest-illustration.svg","The Eternal Nightmare"],
  ["5","innocence-sin","act5-innocence-sin.svg","Death to Purity"],
- ["5","ossuary-sin","act5-ossuary-sign.svg","The Ravenous God"]
+ ["5","ossuary-sin","act5-ossuary-sign.svg","The Ravenous God"],
+ ["6","eye-after","act6-karui-eye-states.svg","The Father of War"],
+ ["6","reef-weylam","act6-weylam-brine-reef.svg","The Brine King"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly eleven sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly thirteen sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

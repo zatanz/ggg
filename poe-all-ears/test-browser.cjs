@@ -886,16 +886,16 @@ const assert=require('node:assert/strict');
 
  // Checklist explanation now points to a concrete, source-led stage instead of a generic instruction.
  await hub.locator('#hubNav [data-tab="collection"]').click();
- await hub.locator('#hubToolbar [data-category="ears"]').click();
+ await hub.locator('#hubToolbar [data-category="lore"]').click();
  await hub.locator('#hubToolbar .hubControls select').first().selectOption('1');
- const firstGuide=hub.locator('#hubView .hubItem').filter({hasText:'Dying Exile'}).first();
+ const firstGuide=hub.locator('#hubView .hubItem').filter({hasText:'Letters of Exile'}).first();
  await firstGuide.locator('.hubItemHelp > summary').click();
  assert.equal((await firstGuide.locator('.hubItemHelpBody').innerText()).includes('What to do'),true,'English individual-item help has actionable headings');
- assert.equal(await firstGuide.locator('[data-open-stage="strand"]').count(),1,'Dying Exile item is linked to its exact quest phase');
- await firstGuide.locator('[data-open-stage="strand"]').click();
- assert.equal(await hub.locator('#hubView [data-steam-act="1"]').getAttribute('data-phase'),'strand','Checklist-to-route jump reaches exact Act 1 source phase');
+ assert.equal(await firstGuide.locator('[data-open-stage="town"]').count(),1,'Act1 Letters of Exile lore links to its exact Lioneye town quest phase');
+ await firstGuide.locator('[data-open-stage="town"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').getAttribute('data-phase'),'town','Lore checklist-to-route jump reaches Act 1 source phase');
  await hub.locator('#hubDescriptionLanguage').selectOption('th');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Dying Exile'),true,'Switching back to Thai restores original specific quest guidance');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Nessa'),true,'Switching back to Thai restores original specific quest guidance');
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Linked stage navigation does not create mobile overflow at 375px');
 
  assert.deepEqual(hubErrors,[],'single-page runtime errors');

@@ -621,3 +621,16 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubSkippedRisk small{display:block;margin-top:9px;color:#e4c8ad;font-size:12px}
 .hubSkippedRisk button:focus-visible{outline:3px solid #ffe7b5;outline-offset:3px}
 @media(max-width:600px){.hubSkippedRisk{padding:12px}.hubSkippedRisk button{width:100%}}
+
+
+/* Task-first route: risk, next manual verification, then phase navigation. */
+.hubNextAction{display:grid;gap:8px;margin:10px 0;padding:13px 15px;border:1px solid #68807b;border-left:4px solid #9cc2ae;border-radius:10px;background:#20332f;color:#f0f5ee;min-width:0}
+.hubNextAction>strong{font-size:14px;line-height:1.4;color:#cfebd8}
+.hubNextActionItem{font-size:14px;line-height:1.55;font-weight:650;margin:0;overflow-wrap:anywhere}
+.hubNextAction button{justify-self:start;min-height:44px;padding:9px 13px;background:#d0e5d5;color:#152e22;border:1px solid #c3ddcc;border-radius:8px;font-weight:750}
+.hubNextAction button:hover{background:#e5f6e8}
+.hubNextAction button:focus-visible{outline:3px solid #f9edac;outline-offset:3px}
+.hubWalkthrough>.hubWalkFocus{margin-top:12px}
+.hubWalkthrough>.hubStopGate{margin:9px 0}
+.hubWalkthrough>.hubStepNavigator{margin-top:12px}
+@media(max-width:600px){.hubNextAction{padding:12px}.hubNextAction button{width:100%;justify-self:stretch;white-space:normal}.hubWalkFocus{padding:11px}.hubWalkNavigator select{min-width:0;max-width:100%}}

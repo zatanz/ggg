@@ -263,7 +263,8 @@ const assert=require('node:assert/strict');
  await hub.waitForFunction(()=>{const img=document.querySelector('#hubView .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
  assert.equal(await hub.locator('#hubView .hubQuestVisual img').getAttribute('alt')!==null,true,'illustrative quest journal asset has accessible alt text');
  const thisDialog=hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive .hubItem').filter({hasText:'Undead Rhoas'}).first();
- await hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive > summary').click();
+ if(!await hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive').evaluate(x=>x.open))
+   await hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive > summary').click();
  if(await thisDialog.locator('input[type="checkbox"]').isChecked())await thisDialog.locator('input[type="checkbox"]').uncheck();
  const statBeforeCheckpoint=await hub.locator('#hubStats .hubStat').first().innerText();
  hub.once('dialog',d=>d.accept());

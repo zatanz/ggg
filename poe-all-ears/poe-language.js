@@ -83,7 +83,42 @@ const glossary={
   "Shavronne's Manifesto": "คำประกาศของชาฟรอน",
   "Letter Fragment": "เศษจดหมาย",
   "Templar Report": "รายงานเทมพลาร์",
-  "Shrine to the Brine King": "ศาลเจ้าราชาแห่งทะเลเค็ม"
+  "Shrine to the Brine King": "ศาลเจ้าราชาแห่งทะเลเค็ม",
+  "The Bridge Encampment": "ค่ายสะพาน",
+  "The Broken Bridge": "สะพานหัก",
+  "The Crossroads": "ทางแยก",
+  "The Fellshrine Ruins": "ซากปรักแห่งเฟลไชร์น",
+  "The Crypt": "สุสานใต้ดิน",
+  "The Chamber of Sins Level 1": "ห้องโถงแห่งบาป ชั้น 1",
+  "The Chamber of Sins Level 2": "ห้องโถงแห่งบาป ชั้น 2",
+  "Maligaro's Sanctum": "สถานศักดิ์สิทธิ์ของมาลิกาโร",
+  "The Den": "ถ้ำเดน",
+  "The Ashen Fields": "ทุ่งเถ้าถ่าน",
+  "The Northern Forest": "ป่าทางเหนือ",
+  "The Dread Thicket": "พงไพรแห่งความหวาดกลัว",
+  "The Causeway": "ทางยกระดับ",
+  "The Vaal City": "นครวาล",
+  "The Temple of Decay": "วิหารแห่งความเสื่อมสลาย",
+  "The Temple of Decay Level 1": "วิหารแห่งความเสื่อมสลาย ชั้น 1",
+  "The Temple of Decay Level 2": "วิหารแห่งความเสื่อมสลาย ชั้น 2",
+  "The Silver Locket": "จี้ล็อกเก็ตสีเงิน",
+  "Silver Locket": "จี้ล็อกเก็ตสีเงิน",
+  "Essence of the Artist": "แก่นแท้ของศิลปิน",
+  "Web of Secrets": "ใยแห่งความลับ",
+  "The Master of a Million Faces": "เจ้าแห่งใบหน้านับล้าน",
+  "In Memory of Greust": "รำลึกถึงกรูสต์",
+  "Queen of Despair": "ราชินีแห่งความสิ้นหวัง",
+  "Kishara's Star": "ดาราของคิชารา",
+  "Lighting the Way": "แสงส่องทาง",
+  "The Mother of Spiders": "มารดาแห่งแมงมุม",
+  "Maligaro's Map": "แผนที่ของมาลิกาโร",
+  "Black Venom": "พิษดำ",
+  "Greust's Necklace": "สร้อยคอของกรูสต์",
+  "Firefly": "หิ่งห้อย",
+  "Maligaro's Manifesto": "คำประกาศของมาลิกาโร",
+  "Ode to Ralakesh": "บทสดุดีราลาเคช",
+  "Love Letter": "จดหมายรัก",
+  "Shrine to Arakaali": "ศาลเจ้าอาราคาอาลี"
 };
 const highRisk={
   "21": "Before entering The Fetid Pool, collect the relevant Oozeback Bloom dialogue.",
@@ -116,7 +151,21 @@ const highRisk={
   "333": "After meeting Nessa in Prisoner's Gate, hear Tarkleigh: The Ship Graveyard BEFORE entering The Cavern of Anger.",
   "336": "After collecting The Black Flag, talk to Lilly Roth BEFORE burning the flag at The Beacon.",
   "338": "After arriving at The Brine King's Reef, talk to Weylam Roth BEFORE killing Tsoagoth.",
-  "339": "After arriving at The Brine King's Reef, hear Weylam Roth: The Brine King BEFORE killing Tsoagoth."
+  "339": "After arriving at The Brine King's Reef, hear Weylam Roth: The Brine King BEFORE killing Tsoagoth.",
+  "365": "After finding the blocked route to the old Forest Encampment, speak to Helena: The Den BEFORE entering The Den. Legacy notes disagree on the area boundary.",
+  "366": "After obtaining Maligaro's Map from The Crypt, speak to Helena BEFORE using the map device.",
+  "369": "AFTER killing Maligaro, the Artist, speak to Sin: Maligaro BEFORE leaving Maligaro's Sanctum (historical caution).",
+  "370": "After giving Black Venom to Silk and speaking to Sin about Arakaali, check Sin: The Spinner of Shadows.",
+  "376": "After completing The Master of a Million Faces, speak to Sin about The Mother of Despair only when Queen of Despair becomes available.",
+  "377": "After accepting Kishara's Star from Weylam, listen to Weylam: Kishara BEFORE continuing to The Causeway.",
+  "378": "After starting Queen of Despair, hear Eramir: Gruthkul BEFORE killing Gruthkul.",
+  "380": "AFTER finishing The Master of a Million Faces, return for Helena: Greust.",
+  "381": "AFTER killing Gruthkul, return to Eramir for the post-boss Gruthkul topic (separate from #378).",
+  "382": "AFTER collecting all seven Fireflies, hear Yeena: Arakaali's Temple in town BEFORE meeting Yeena in The Vaal City.",
+  "383": "After first entering The Vaal City, revisit Eramir for The Vaal City.",
+  "384": "AFTER killing Arakaali, speak to Yeena: Arakaali BEFORE leaving Temple of Decay Level 2.",
+  "385": "After killing Arakaali, return to Eramir: Silk.",
+  "386": "After killing Arakaali, return to Yeena: Silk."
 };
 const valid={description:["th","en"],names:["en","both","th"]};
 let prefs={description:"th",names:"en"};
@@ -159,6 +208,34 @@ function englishHelp(type,item,guide){
  }else{
    action="Finish the optional quest \""+base+"\" in Act "+act+" before marking it completed.";
    location="Act "+act;unlock="Confirm completion in the in-game quest journal.";
+ }
+ if(type==="ears"&&act===7){
+   const special={
+    361:"After Eramir: Ralakesh and Sin: Ralakesh dialogues are available.",
+    365:"After seeing the blocked route to the old Forest Encampment, BEFORE entering The Den.",
+    366:"After collecting Maligaro's Map from The Crypt.",
+    367:"After meeting Silk in The Chamber of Sins Level 1.",
+    368:"After speaking to Silk in the Chamber of Sins Level 1.",
+    369:"AFTER killing Maligaro the Artist, BEFORE leaving Maligaro's Sanctum.",
+    370:"After giving Black Venom to Silk and hearing Sin: Arakaali.",
+    371:"After giving Black Venom to Silk.",
+    372:"After giving Black Venom to Silk.",
+    373:"After giving Black Venom to Silk.",
+    374:"After giving Black Venom to Silk.",
+    375:"After giving Black Venom to Silk.",
+    376:"After accepting Queen of Despair.",
+    377:"After accepting Kishara's Star from Weylam.",
+    378:"After accepting Queen of Despair, BEFORE killing Gruthkul.",
+    379:"After finishing The Master of a Million Faces.",
+    380:"After finishing The Master of a Million Faces.",
+    381:"AFTER killing Gruthkul.",
+    382:"AFTER collecting seven Fireflies in The Dread Thicket, BEFORE meeting Yeena in The Vaal City.",
+    383:"After first entering The Vaal City.",
+    384:"AFTER killing Arakaali, BEFORE leaving Temple of Decay Level 2.",
+    385:"After killing Arakaali.",
+    386:"After killing Arakaali."
+   };
+   unlock=special[item.id]||unlock;
  }
  if(type==="ears"&&act===6){
    const special={

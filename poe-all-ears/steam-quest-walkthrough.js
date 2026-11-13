@@ -829,8 +829,8 @@ window.POE_STEAM_WALK = {
       },
       {
         "id": "library",
-        "place": "The Imperial Gardens / The Library / The Archives",
-        "heading": "Library และ Siosa · หาหนังสือให้ครบ 17 แบบ",
+        "place": "The Imperial Gardens / The Library / The Archives / The Sceptre of God",
+        "heading": "Library และ Siosa → The Sceptre of God ก่อน Dominus",
         "quest": "A Fixture of Fate",
         "dialogueIds": [
           169,
@@ -868,7 +868,8 @@ window.POE_STEAM_WALK = {
         "actions": [
           "เก็บ Bronze Monograph ใน Imperial Gardens ก่อนเข้า Library",
           "พบ Siosa และเก็บ Golden Pages ทีละหน้า แล้วกลับตรวจบทสนทนา Siosa ตามช่วงที่เปิด",
-          "The Ancients 7, Purity Chronicles 6, Victario's Writings 4 รวม 17 แบบ; ตรวจชื่อแต่ละเล่ม เพราะตำแหน่งหรือข้อความที่พบอาจซ้ำ"
+          "The Ancients 7, Purity Chronicles 6, Victario's Writings 4 รวม 17 แบบ; ตรวจชื่อแต่ละเล่ม เพราะตำแหน่งหรือข้อความที่พบอาจซ้ำ",
+          "หลังเก็บหนังสือแล้ว ไป The Sceptre of God: เดินถึงชั้น 3 ให้เข้าใกล้ Waypoint #34 เพื่อปลดล็อกอัตโนมัติและตรวจว่าปรากฏบนแผนที่ ก่อนขึ้น The Upper Sceptre of God ไปสู้ Dominus"
         ],
         "stop": null,
         "stopIds": [],

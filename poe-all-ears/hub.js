@@ -746,19 +746,73 @@ addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
 try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
-function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness"),el("p","แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์","hubSubtle"));
-wrap.append(el("p","สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30","hubCheckpointRisk"));
-const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","เคยคุย Alira (ยังไม่รับรองเวลา)"],["oak","เคยคุย Oak (ยังไม่รับรองเวลา)"],["kraityn","เคยคุย Kraityn (ยังไม่รับรองเวลา)"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
-const s=getSafety();
-checks.forEach(([id,title])=>{const lab=el("label"),inp=el("input");inp.type="checkbox";inp.checked=s[id]===true;inp.dataset.safety=id;inp.onchange=()=>updateSafety(id,inp.checked);lab.append(inp,document.createTextNode(title));grid.append(lab);});
-wrap.append(grid);
-const choices=el("div",undefined,"hubControls");[["first","Bandit ที่ฆ่าคนแรก"],["second","Bandit ที่ฆ่าคนที่สอง"]].forEach(([k,l])=>{const div=el("div");const labelNode=el("label",l),sel=el("select");sel.dataset.kill=k;[["","ยังไม่ได้ฆ่า / ไม่แน่ใจ"],["Alira","Alira"],["Oak","Oak"],["Kraityn","Kraityn"]].forEach(([v,t])=>{const o=el("option",t);o.value=v;sel.append(o);});sel.value=s[k]||"";sel.onchange=()=>{const v=sel.value,other=k==="first"?"second":"first";if(v&&v===getSafety()[other]){alert("Bandits ที่ฆ่าคนแรกและคนที่สองต้องต่างกัน");sel.value=s[k]||"";return;}updateSafety(k,v);};div.append(labelNode,sel);choices.append(div);});wrap.append(choices);
-const status=el("div",undefined,"hubNotice"),ss=getSafety(),intro=["alira","oak","kraityn"].every(k=>ss[k]),before=ss.seal&&ss.darkness;
-let text=!before?"ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ — อย่าเพิ่งฆ่าหรือช่วย Bandits":"บันทึก Ancient Seal และ The Darkness แล้ว แต่ยังมีข้อขัดแย้งเรื่องลำดับคุย Bandits; ตรวจในเกมก่อนเลือกเส้นทาง";
-if((ss.first||ss.second)&&!before)text="ระวัง: บันทึกว่าฆ่า Bandit แล้วแต่ยังไม่ยืนยัน Ancient Seal / The Darkness — อาจพลาดบทสนทนา";
-status.className="hubNotice";status.textContent=text;wrap.append(status);
-if(ss.first||ss.second){const remaining=["Alira","Oak","Kraityn"].filter(k=>k!==ss.first&&k!==ss.second);wrap.append(el("p","หลังฆ่า Bandit ตัวแรก หัวข้อ Eramir จะเปลี่ยนตามตัวที่ฆ่า; หลังตัวที่สองขึ้นกับตัวที่รอด ("+(remaining.join(", ")||"ไม่มี")+") ตรวจหัวข้อจริงในเกม (Wiki แถว 101–103)","hubSubtle"));}
-const ref=el("a","อ่านเงื่อนไข Act 2 จาก PoE Wiki");ref.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2";ref.target="_blank";ref.rel="noopener noreferrer";wrap.append(ref);return wrap;}
+function safetyPanel(){
+ const wrap=el("div",undefined,"hubPanel");
+ wrap.append(
+   el("h3",tr("ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness","Before choosing Bandits · check The Darkness")),
+   el("p",tr("แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์",
+     "Steam and PoE Wiki disagree on when to first speak with Bandits relative to the Ancient Seal. Both require checking Darkness dialogue before making an irreversible kill/help choice. These are manual notes, not proof of a patch-safe route."),"hubSubtle")
+ );
+ wrap.append(el("p",tr(
+   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30",
+   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. Whether Book of Reform repairs missed topics in patch 3.30 is unverified."
+ ),"hubCheckpointRisk"));
+ const s=getSafety(),grid=el("div",undefined,"hubCheckGrid");
+ const checks=[
+  ["alira","เคยคุย Alira (ยังไม่รับรองเวลา)","Spoke to Alira (timing unverified)"],
+  ["oak","เคยคุย Oak (ยังไม่รับรองเวลา)","Spoke to Oak (timing unverified)"],
+  ["kraityn","เคยคุย Kraityn (ยังไม่รับรองเวลา)","Spoke to Kraityn (timing unverified)"],
+  ["seal","เปิด Ancient Seal แล้ว","Opened the Ancient Seal"],
+  ["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว","Heard all applicable Darkness topics"]
+ ];
+ checks.forEach(([id,th,en])=>{
+   const label=el("label"),checkbox=el("input");
+   checkbox.type="checkbox";checkbox.checked=s[id]===true;checkbox.dataset.safety=id;
+   checkbox.onchange=()=>updateSafety(id,checkbox.checked);
+   label.append(checkbox,document.createTextNode(tr(th,en)));grid.append(label);
+ });
+ wrap.append(grid);
+ const choices=el("div",undefined,"hubControls");
+ [["first","Bandit ที่ฆ่าคนแรก","First Bandit you killed"],["second","Bandit ที่ฆ่าคนที่สอง","Second Bandit you killed"]].forEach(([key,th,en])=>{
+   const group=el("div"),name=el("label",tr(th,en)),select=el("select");
+   select.dataset.kill=key;
+   [["",tr("ยังไม่ได้ฆ่า / ไม่แน่ใจ","Not killed / unsure")],["Alira","Alira"],["Oak","Oak"],["Kraityn","Kraityn"]].forEach(([value,title])=>{
+      const opt=el("option",title);opt.value=value;select.append(opt);
+   });
+   select.value=s[key]||"";
+   select.onchange=()=>{
+     const value=select.value,other=key==="first"?"second":"first";
+     if(value&&value===getSafety()[other]){
+       alert(tr("Bandits ที่ฆ่าคนแรกและคนที่สองต้องต่างกัน","Your first and second defeated Bandits must be different."));
+       select.value=s[key]||"";return;
+     }
+     updateSafety(key,value);
+   };
+   group.append(name,select);choices.append(group);
+ });
+ wrap.append(choices);
+ const state=el("div",undefined,"hubNotice"),saved=getSafety(),sealed=!!(saved.seal&&saved.darkness);
+ let message=sealed?
+   tr("บันทึก Ancient Seal และ The Darkness แล้ว แต่คู่มือยังขัดแย้งเรื่องลำดับคุย Bandits · ตรวจในเกมก่อนเลือกเส้นทาง",
+      "Ancient Seal and Darkness are marked, but the historical guides still disagree on first-talk order. Check in-game before choosing."):
+   tr("ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ · อย่าเพิ่งฆ่าหรือช่วย Bandits",
+      "Ancient Seal and Darkness are not both marked. Do not kill or help Bandits yet.");
+ if((saved.first||saved.second)&&!sealed)message=tr(
+   "ระวัง: บันทึกว่าฆ่า Bandit แล้ว แต่ยังไม่ยืนยัน Ancient Seal / The Darkness · อาจพลาดบทสนทนา",
+   "Warning: a Bandit kill was recorded before Seal / Darkness verification. Dialogue may already have been missed."
+ );
+ state.textContent=message;wrap.append(state);
+ if(saved.first||saved.second){
+   const remaining=["Alira","Oak","Kraityn"].filter(n=>n!==saved.first&&n!==saved.second);
+   wrap.append(el("p",tr(
+     "หลังฆ่าตัวแรก ให้คุย Eramir ตามชื่อ Bandit ที่ฆ่า; หลังฆ่าตัวที่สอง ให้คุยตามชื่อ Bandit ที่ยังรอด (",
+     "After your first kill, hear Eramir's topic for the defeated Bandit. After your second, hear the topic for the survivor ("
+   )+(remaining.join(", ")||tr("ไม่มี","none"))+tr(") · ต้องตรวจหัวข้อจริงในเกม (Wiki แถว 101–103)",") · verify actual in-game topics (Wiki rows 101–103)."),"hubSubtle"));
+ }
+ const wiki=el("a",tr("อ่านเงื่อนไข Act 2 จาก PoE Wiki","Review Act 2 requirements on PoE Wiki"));
+ wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2";wiki.target="_blank";wiki.rel="noopener noreferrer";wrap.append(wiki);
+ return wrap;
+}
 const vaalMap=[
 ["Abandoned Dam","Atziri Is My","The Dried Lake"],["Ancient Catacomb","Queen Atziri Forfeited","The Dried Lake"],["Arcane Chambers","What Did I","The Lunaris Temple"],["Blind Alley","Atziri Is My","The Quay / Grain Gate"],
 ["Clouded Ledge","I Had Nothing","The Ridge"],["Concealed Caldarium","I Had Nothing","The Bath House"],["Concealed Cavity","Atziri Promises Us","The Coast / Tidal Island (Act 6)"],["Covered-up Hollow","There Was No","The Den / Fellshrine Ruins"],["Cremated Archives","I Am Templar","The Torched Courts"],["Deathly Chambers","I Have Been","The Ossuary"],

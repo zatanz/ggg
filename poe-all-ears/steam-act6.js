@@ -423,8 +423,8 @@ guide.acts[6]=[
   {
     "id": "beacon-flag",
     "place": "The Beacon / Lioneye's Watch",
-    "heading": "The Black Flag · ฟัง Lilly ก่อนเผาธง",
-    "headingEN": "The Black Flag · talk to Lilly before lighting",
+    "heading": "The Black Flag · กลับคุย Lilly ก่อนเข้า Beacon",
+    "headingEN": "The Black Flag · talk to Lilly before entering the Beacon",
     "quest": "The Brine King",
     "dialogueIds": [
       336,
@@ -439,23 +439,25 @@ guide.acts[6]=[
     ],
     "sidequestIds": [],
     "actions": [
-      "ได้ The Black Flag แล้ว ให้กลับเมืองฟัง Lilly Roth: The Black Flag (#336) ก่อนใช้ธงที่ประภาคาร",
+      "เมื่อได้ The Black Flag ให้กลับ Lioneye's Watch ฟัง Lilly Roth: The Black Flag (ID 336) ก่อนเข้า The Beacon ตามข้อมูลเก่า; PoE Wiki กำหนดอย่างช้าที่สุดก่อนเผาธง",
       "เมื่อเข้า The Beacon ให้ฟัง Lilly Roth: The Brine King (#337) ตามเงื่อนไขที่เปิด",
       "เปิด Waypoint The Beacon และอ่าน Letter Fragment / Templar Report (#110–111) ก่อนออกจากพื้นที่"
     ],
     "actionsEN": [
-      "Once you obtain The Black Flag, return to Lilly Roth and hear The Black Flag (Wiki #336) BEFORE burning it at the lighthouse.",
+      "Once you obtain The Black Flag, return to Lilly Roth in Lioneye's Watch and hear The Black Flag (ID 336) BEFORE entering The Beacon according to legacy data; the 2025 Wiki states no later than burning the flag.",
       "On entering The Beacon, check Lilly Roth: The Brine King (#337) when available.",
       "Activate The Beacon Waypoint and discover Letter Fragment and Templar Report (#110–111)."
     ],
-    "stop": "ห้ามเผา The Black Flag ที่ Beacon ก่อนคุย Lilly: The Black Flag",
-    "stopEN": "STOP: do not burn The Black Flag at The Beacon before talking to Lilly.",
+    "stop": "หยุดก่อนเข้า The Beacon: ต้องคุย Lilly Roth: The Black Flag (ID 336) ให้ครบก่อน ข้อมูลเก่าเตือนเร็วกว่าจุดเผาธงใน Wiki",
+    "stopEN": "STOP: hear Lilly Roth: The Black Flag (ID 336) BEFORE entering The Beacon (early legacy caution). The 2025 Wiki cautions before burning the flag.",
     "stopIds": [
       336
     ],
     "keyItems": [
       "The Black Flag"
     ],
+    "sourceNote": "ข้อควรระวังเรื่องกำหนดเวลา: ข้อมูลเดิมของ ID 336 เตือนก่อนเข้า The Beacon แต่ PoE Wiki ปี 2025 เตือนก่อนเผา The Black Flag ใช้เงื่อนไขที่เร็วกว่าเพื่อเลี่ยงความเสี่ยง โดยยังไม่มีผลทดสอบ 3.29 ยืนยันว่าการเข้า Beacon ทำให้หัวข้อหาย",
+    "sourceNoteEN": "Deadline discrepancy: legacy checklist ID 336 cautions before entering The Beacon, while the 2025 PoE Wiki warns before burning The Black Flag. Follow the earlier precaution; there is no 3.29 game evidence here that entering the Beacon makes the topic disappear.",
     "confidence": "historical-source-only"
   },
   {

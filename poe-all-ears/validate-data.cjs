@@ -358,7 +358,7 @@ assert(actFive.find(p=>p.id==='innocence-sin')?.stopIds.includes(277),'Act 5 mus
 assert(actFive.find(p=>p.id==='ossuary-sin')?.stopIds.includes(295),'Act 5 must protect Sin after Sign of Purity');
 assert(actFive.find(p=>p.id==='reliquary')?.keyItems.length===3,'Act 5 Reliquary must show three exact quest item names');
 assert(steamWalk.patchCertified===false,'Act 5 must not claim 3.30 gameplay certification');
-const langCtx={window:{},localStorage:{getItem:()=>null,setItem:()=>{}}};
+const langCtx={window:{POE_STEAM_WALK:steamWalk},localStorage:{getItem:()=>null,setItem:()=>{}}};
 vm.runInNewContext(fs.readFileSync(path.join(dir,'poe-language.js'),'utf8'),langCtx,{filename:'poe-language.js'});
 const locale=langCtx.window.POE_LANGUAGE;
 assert(locale.get().description==='th'&&locale.get().names==='en','User defaults must be Thai guidance and canonical English names');
@@ -630,6 +630,25 @@ assert(descriptions.get('ears',firstBranch,{first:'Oak'}).action.includes('“Oa
 assert(descriptions.get('ears',secondBranch,{first:'Alira',second:'Kraityn'}).displayLabel.includes('Oak'),'Act 2 second-kill branch must show surviving bandit');
 assert(descriptions.get('ears',secondBranch,{first:'Oak',second:'Alira'}).action.includes('“Kraityn”'),'Act 2 alternate survivor case incorrect');
 assert(descriptions.get('ears',firstBranch,{}).displayLabel.includes('Bandit ที่ฆ่าคนแรก'),'Act 2 unknown branch must not assume one fixed bandit');
+
+
+const firstEN=descriptions.get('ears',firstBranch,{first:'Alira'});
+const secondEN=descriptions.get('ears',secondBranch,{first:'Alira',second:'Kraityn'});
+const alternateEN=descriptions.get('ears',secondBranch,{first:'Oak',second:'Alira'});
+assert(firstEN.displayLabelEN.includes('First defeated Bandit (Alira)')&&firstEN.actionEN.includes('BEFORE fighting the second'),'Act2 first Bandit English label and next-kill deadline must use selected branch');
+assert(secondEN.displayLabelEN.includes('Surviving Bandit (Oak)')&&secondEN.actionEN.includes('Oak is still alive'),'Act2 surviving Bandit English label cannot show an unrelated branch');
+assert(alternateEN.actionEN.includes('Kraityn is still alive')&&alternateEN.displayLabelEN.includes('Kraityn'),'Act2 alternate surviving Bandit English copy must follow the user choice');
+assert(locale.englishHelp('ears',firstBranch,firstEN).action.includes('Alira')&&locale.englishHelp('ears',firstBranch,firstEN).caution.includes('second Bandit'),'English Act2 row-level instructions must preserve the first-kill-before-second rule');
+assert(locale.englishHelp('ears',secondBranch,secondEN).action.includes('Oak')&&locale.englishHelp('ears',secondBranch,secondEN).caution.includes('third Bandit'),'English Act2 survivor context must be safe before the third kill');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===21),descriptions.get('ears',d.items.find(x=>x.id===21))).unlock.includes('Mud Flats'),'Act1 detailed English row must be linked to its correct quest state');
+const loreLetter=lore.entries.find(x=>x.id===1),loreLibrary=lore.entries.find(x=>x.area==='The Library'),loreLab=lore.entries.find(x=>x.act==='Labyrinth'),loreVaal=lore.entries.find(x=>x.act==='Vaal');
+assert(locale.englishHelp('lore',loreLetter,descriptions.get('lore',loreLetter)).caution.includes('random'),'English Letters of Exile duplicates need explicit warning');
+assert(locale.englishHelp('lore',loreLibrary,descriptions.get('lore',loreLibrary)).unlock.includes('another instance'),'English Library book search must mention instance repeats');
+assert(locale.englishHelp('lore',loreLab,descriptions.get('lore',loreLab)).caution.includes('rooms'),'English Labyrinth instructions must not imply a fixed daily layout');
+assert(locale.englishHelp('lore',loreVaal,descriptions.get('lore',loreVaal)).caution.includes('Map Device'),'English Vaal lore instructions must reject obsolete map-device advice');
+assert(locale.englishHelp('sidequests',extras.sidequests[0],descriptions.get('sidequests',extras.sidequests[0])).caution.includes('quest'),'English sidequest guide must require an actual turn-in/completion check');
+const enCaveat=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(enCaveat.includes('hint.displayLabelEN'),'Act2 branch label must obey the selected guidance language');
 
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));

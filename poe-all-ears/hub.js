@@ -392,8 +392,23 @@ function actSteamGuide(act){
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
  phases.forEach((p,i)=>{const op=el("option",(i+1)+". "+gameName(p.place));op.value=String(i);select.append(op)});
  select.value=String(chosen);
- const goto=i=>{state.steamFocusByAct[act]=i;renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"})};
- select.onchange=()=>goto(Number(select.value));
+ const goto=(i,reviewSkip=false)=>{
+  const target=Math.max(0,Math.min(phases.length-1,i));
+  if(reviewSkip&&act==="7"&&target>chosen){
+   const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
+   if(outstanding.length){
+    const first=outstanding[0];
+    const msg=tr(
+      "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+outstanding.length+" ช่วง\\nจุดแรก: "+first.stop+"\\n\\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
+      "You are skipping "+outstanding.length+" unchecked STOP checkpoint(s).\\nFirst: "+(first.stopEN||first.stop)+"\\n\\nNavigation is not proof of quest safety. Jump anyway?"
+    );
+    if(!confirm(msg)){select.value=String(chosen);return;}
+   }
+  }
+  state.steamFocusByAct[act]=target;renderView();
+  document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});
+ };
+ select.onchange=()=>goto(Number(select.value),true);
  const prev=el("button",tr("ก่อนหน้า","Previous")),next=el("button",tr("ถัดไป","Next"));
  prev.type="button";next.type="button";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
  prev.onclick=()=>goto(chosen-1);
@@ -405,7 +420,10 @@ function actSteamGuide(act){
   )))return;
   goto(chosen+1);
  };
- control.append(position,select,prev,next);box.append(control);
+ const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
+ jump.dataset.jumpIncomplete="true";jump.disabled=start<0||chosen===start;
+ jump.onclick=()=>goto(start<0?0:start,true);
+ control.append(position,select,prev,next,jump);box.append(control);
  const head=el("div",undefined,"hubWalkFocus");
  head.append(el("h4",descEN()?(phase.headingEN||("Route step: "+phase.place)):phase.heading),
  el("p",tr("พื้นที่: ","Area: ")+gameName(phase.place)+" · "+tr("เควสต์: ","Quest: ")+gameName(phase.quest)));
@@ -415,7 +433,9 @@ function actSteamGuide(act){
   phase.keyItems.forEach((name,i)=>{const tag=el("span",gameName(name),"hubQuestItem");tag.title=name;tag.lang=LANG.get().names==="th"?"th":"en";items.append(tag)});
   const note=el("small",tr("ชื่อไทยเป็นคำแปลประกอบ ไม่ใช่ชื่อทางการในเกม","Thai terms are editorial aids, not verified in-game names"),"hubSubtle");items.append(note);head.append(items);
  }
- const count=el("span",complete+"/"+phase.dialogueIds.length+tr(" บทสนทนาที่บันทึก"," NPC dialogues checked"),"hubWalkCount");
+ const count=el("span",phase.dialogueIds.length?
+    complete+"/"+phase.dialogueIds.length+tr(" บทสนทนาที่บันทึก"," NPC dialogues checked"):
+    tr("ช่วงนี้มีเฉพาะ Lore / Waypoint / เควสต์รอง","This step contains Lore / Waypoints / side quests only"),"hubWalkCount");
  head.append(count);box.append(head);
  const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id));
  if(phase.stop){
@@ -437,6 +457,15 @@ function actSteamGuide(act){
    const steam=el("a","คู่มือ Steam");steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
    const wiki=el("a","PoE Wiki");wiki.href=data.wiki;wiki.target="_blank";wiki.rel="noopener noreferrer";
    links.append(steam,wiki);conflict.append(links);box.append(conflict);
+ }
+ if(phase.sourceNote){
+   const caution=el("details",undefined,"hubSourceDiscrepancy");caution.dataset.sourceNote=phase.id;
+   const summary=el("summary",tr("ข้อแตกต่างระหว่างแหล่งข้อมูล · ยังไม่รับรองแพตช์","Historical sources disagree · not patch-certified"));
+   caution.append(summary,el("p",descEN()?(phase.sourceNoteEN||"Review the original Thai source difference before advancing."):phase.sourceNote));
+   const links=el("div",undefined,"hubConflictLinks");
+   const wiki=el("a","PoE Wiki · All Ears Act "+act);wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;wiki.rel="noopener noreferrer";wiki.target="_blank";
+   const steam=el("a","Steam · historical guide");steam.href=data.source;steam.rel="noopener noreferrer";steam.target="_blank";
+   links.append(wiki,steam);caution.append(links);box.append(caution);
  }
  if(phase.patchProblem){
    const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";
@@ -489,6 +518,7 @@ function actSteamGuide(act){
    links.append(full,source);body.append(links);
    visual.append(body);box.append(visual);
  }
+ if(phase.dialogueIds.length){
  const npc=el("section",undefined,"hubWalkCategory");npc.dataset.walkType="ears";
  npc.append(el("h4",tr("บทสนทนาที่ต้องเก็บช่วงนี้","NPC dialogues in this step")),el("p",tr("ติ๊กเฉพาะเมื่อฟังในเกมจริงแล้ว · รายการอื่นยังอยู่ในหมวดหลักด้วย","Check only after hearing the in-game dialogue. These use the original checklist records."),"hubSubtle"));
  const rows=el("div",undefined,"hubList");
@@ -507,6 +537,7 @@ function actSteamGuide(act){
    npc.append(details);
  }
  box.append(npc);
+ }
  if(phase.loreIds?.length){
    const found=phase.loreIds.filter(id=>allLore.has(id)).length;
    const section=el("details",undefined,"hubWalkLore");section.dataset.walkType="lore";
@@ -553,7 +584,7 @@ function journeyActGuide(act){
    const top=el("div",undefined,"hubActMissionWarning");
    const text=el("div",undefined);text.append(el("strong",tr("จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: ","Unchecked historical risk groups: ")+risk.length),el("span",tr("ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง","Review quest transitions before acting. This is not a certified safe route.")));
    const jump=el("button",tr("ดูจุดตรวจที่ยังขาด","Open next risk checkpoint"));jump.type="button";jump.onclick=()=>{
-      if(["1","2","3","4","5","6"].includes(act)){const phases=window.POE_STEAM_WALK?.acts?.[act]||[];const found=phases.findIndex(p=>p.dialogueIds.some(id=>risk[0].ids.includes(id)));state.steamFocusByAct[act]=Math.max(0,found);renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});return;}
+      if(["1","2","3","4","5","6","7"].includes(act)){const phases=window.POE_STEAM_WALK?.acts?.[act]||[];const found=phases.findIndex(p=>p.dialogueIds.some(id=>risk[0].ids.includes(id)));state.steamFocusByAct[act]=Math.max(0,found);renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});return;}
       const stages=window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[];
       state.focusByAct[act]=stages.findIndex(s=>s.id===risk[0].id);renderView();
       const section=document.querySelector('[data-critical-act="'+act+'"]');section?.scrollIntoView({block:"start"});
@@ -603,12 +634,12 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
 const actMission=journeyActGuide(act);
-if(["1","2","3","4","5","6"].includes(act)){
+if(["1","2","3","4","5","6","7"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
  const moreMission=el("details",undefined,"hubActSummaryMore");moreMission.dataset.actSummary=act;
  moreMission.append(el("summary",tr("ดูภาพรวม 4 Achievement / รายการที่ยังขาด","View four-achievement overview and remaining tasks")),actMission);
  panel.append(moreMission);
- if(["2","3","4","5","6"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
+ if(["2","3","4","5","6","7"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{panel.append(actMission);const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}

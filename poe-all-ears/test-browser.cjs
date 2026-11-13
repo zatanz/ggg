@@ -1095,8 +1095,9 @@ async function verifyEditorialGuidance(browser,url){
  assert.equal((await hub.locator('#hubView .hubPostQuests').innerText()).includes('Safe Passage'),true,'Act 10 Safe Passage dialogue reminder visible');
  assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่าปลอดภัยในเกม 3.29'),true,'Act 10 missing historic warning markers is explicitly disclosed');
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
- assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'two Epilogue waypoints included for Locomancer');
- assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Locomancer 91'),true,'Epilogue waypoints are part of same achievement');
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details').first().evaluate(x=>x.open),false,'obsolete Epilogue records are collapsed');
+ assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('ไม่ใช่จุดที่ต้องเดินทางไปเปิดหลัง Act 10'),true,'Epilogue records are explicitly historical');
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'both legacy records remain accessible');
  await hub.locator('#hubCampaignAct').selectOption('Labyrinth');
  assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),4,'Labyrinth has three Lore groups plus its one separate Waypoint');
  assert.equal(await hub.locator('#hubView [data-special-group="lab-waypoint"] .hubItem').count(),1,'Labyrinth Locomancer waypoint is not omitted from 100% roadmap');
@@ -1192,7 +1193,7 @@ async function verifyEditorialGuidance(browser,url){
  assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes('Side Area'),true,'English Vaal guidance is sourced and not Thai-only');
  assert.equal((await hub.locator('#hubView .hubVaalGuide').innerText()).includes('Find the Vaal Side Area'),true,'English Vaal area lookup instructions are translated');
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
- assert.equal((await hub.locator('#hubView').innerText()).includes('remaining Waypoints'),true,'Epilogue instructions adapt to English');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('historical records kept for save compatibility'),true,'Epilogue instructions adapt to English');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Compare achievement counts'),true,'Achievement count comparison has English explanation');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Back up all tracked achievements'),true,'Combined backup has English instructions');

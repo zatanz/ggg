@@ -979,11 +979,13 @@ function journeyActGuide(act){
 }
 function epilogueRoute(target){
  const all=records("waypoints","Epilogue"),done=new Set(entries("waypoints"));
- const panel=section(tr("Epilogue · ตรวจ Waypoint ที่เหลือ","Epilogue · remaining Waypoints"));panel.dataset.specialScope="Epilogue";
- panel.append(el("p",tr("หลัง Act 10 ให้ตรวจ Waypoint อีก 2 จุดตามฐานข้อมูล Locomancer เดิม ทั้งสองจุดนับใน Achievement เดิม ไม่ใช่ Achievement ใหม่ · ยังไม่ยืนยันแพตช์ 3.29","After Act 10, verify the two remaining Waypoints in the legacy Locomancer list. These are not a new achievement, and their patch 3.29 requirements are unverified."),"hubSubtle"));
- const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length+tr(" · นับใน Locomancer 91 จุด (ฐานข้อมูลเก่า)"," · part of the 91-entry legacy Locomancer list"),"hubActProgress");panel.append(count);
+ const panel=section(tr("Epilogue · รายการ Waypoint ประวัติศาสตร์","Epilogue · historical Waypoints"));panel.dataset.specialScope="Epilogue";
+ panel.append(el("p",tr("Waypoint สองจุดนี้เป็นข้อมูลเก่าที่เก็บไว้รองรับเซฟเดิม ไม่ใช่จุดที่ต้องเดินทางไปเปิดหลัง Act 10 โปรดเทียบตัวนับ Locomancer กับ Waypoint ที่มีอยู่จริงในเกม","These two waypoints are historical records kept for save compatibility, not destinations to unlock after Act 10. Verify the current Locomancer counter against active in-game waypoints."),"hubSubtle"));
+ const details=el("details");
+ details.append(el("summary",tr("รายการประวัติศาสตร์","Historical records")));
+ const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length,"hubActProgress");details.append(count);
  const list=el("div",undefined,"hubList");
- all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
+ all.forEach(x=>list.append(itemCard("waypoints",x)));details.append(list);panel.append(details);target.append(panel);
 }
 // Show conflicts where a player decides what to do, not only in the footer.
 function routeEvidencePanel(act){

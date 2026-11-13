@@ -887,6 +887,7 @@ const assert=require('node:assert/strict');
  // Checklist explanation now points to a concrete, source-led stage instead of a generic instruction.
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="ears"]').click();
+ await hub.locator('#hubToolbar .hubControls select').first().selectOption('1');
  const firstGuide=hub.locator('#hubView .hubItem').filter({hasText:'Dying Exile'}).first();
  await firstGuide.locator('.hubItemHelp > summary').click();
  assert.equal((await firstGuide.locator('.hubItemHelpBody').innerText()).includes('What to do'),true,'English individual-item help has actionable headings');

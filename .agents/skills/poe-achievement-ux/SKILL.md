@@ -54,6 +54,16 @@ Help players manually complete the four tracked achievements: All Ears, No Stone
 - Add screenshot disclaimers for every conceptual quest-state diagram. Its bilingual textual instructions must stand alone without interpreting colors or arrow imagery.
 - Source quality checks must differentiate item availability, source-matched quest state, webpage UI tests and **real-client achievement validation**; only the last can certify 100% in-game completeness.
 
+## Acts 9–10 and final achievement audit
+
+- Act 9's **The Ruler of Highgate** is an irreversible dialogue branch: the canonical historical 484-ID data only includes **Irasha chosen** (Tasuni: Feather and Petarus and Vanja: Irasha at local IDs #443/#444). If Tasuni is selected, alternative Wiki rows refer to different NPC dialogue with no stable local ID. Persist the player's ruler choice per character, separately from checkbox and backup schemas. Never auto-mark branch IDs and never certify 100% for unsupported branch. Put the limitation on the *main dashboard* as well as in the quest step.
+- Differentiate Sin: The Dark Ember while **without Trarthan Powder** from Sin: The Dark Ember **after both ingredients**. Preserve separate STOP phases and do not claim pre-Belly dialogues can be replayed later.
+- After Depraved Trinity, stop and hear Weylam Roth: Rescue and Lilly before advancing to Act 10. Link four achievements to the same stage without changing canonical record counts.
+- For Act 10, finish optional tasks (Map to Tsoatha = The Teardrop at Reliquary; No Love for Old Ghosts = Elixir of Allure at Ossuary; Vilenta's Vengeance = Control Blocks + Lani turn-in). Completion is only after in-game turn-in.
+- Read Cultist Tracts in The Ravaged Square, The Desecrated Chambers and The Canals in their correct areas. Keep Staff of Purity before Bannon's Death and Rebirth and Lilly: Innocence after it. For Act 10 endings do not treat Karui Shores dialogue as part of the historical 484-ID All Ears corpus.
+- The quest illustration accordion must remain open across language switches or checkbox refreshes. Static concept images need source-linked, accurate TH/EN verification text and explicit **NOT AN IN-GAME SCREENSHOT** labels.
+- Do not equate browser/pass data tests with game patch validation. Preserve unresolved 91-vs-90 Waypoint discrepancy, alternate dialogue branch uncertainty, and post-3.29 reports as clearly named patch holds until gameplay evidence supports a versioned change.
+
 ## UX and accessibility
 - One task per phase as primary surface; present progressive disclosure. Keep explicit Previous and Next; warn but do not permanently block when stepping past unchecked STOP lines.
 - Maintain 44px minimum interactive target and visible keyboard focus, legible contrast, labelled controls, correct language semantics and mobile 375px with no horizontal document overflow.

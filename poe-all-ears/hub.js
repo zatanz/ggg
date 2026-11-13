@@ -77,10 +77,10 @@ function renderSummary(){
  const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
  const hero=el("div",undefined,"hubMissionTotal");
  const intro=el("div",undefined,"hubMissionHeading");
- intro.append(el("strong","เป้าหมาย: เก็บ 4 Achievement ที่ติดตามให้ครบ 100%"),el("span","ครบทุกรายการใน Checklist ก่อนเทียบยอดจริงในเกม · เว็บไม่ตรวจความสำเร็จอัตโนมัติ","hubSubtle"));
+ intro.append(el("strong",tr("เป้าหมาย: เก็บ 4 Achievement ที่ติดตามให้ครบ","Goal: finish all four tracked achievements")),el("span",tr("ติ๊กเฉพาะสิ่งที่เก็บแล้วในเกม และเทียบยอด Achievement จริงอีกครั้ง · เว็บไม่ตรวจให้อัตโนมัติ","Mark only items you have collected in-game, then compare actual achievement counts. This site cannot detect your game progress."),"hubSubtle"));
  const score=el("div",undefined,"hubMissionScore");
- score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+"% ที่บันทึกในเว็บ"));
- const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label","ความคืบหน้า Checklist ทั้งสี่ Achievement");hero.append(intro,score,bar);
+ score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+tr("% ที่บันทึกในเว็บ","% marked in this guide")));
+ const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label",tr("ความคืบหน้า 4 Achievement ที่บันทึกไว้ในเว็บ","Progress marked for four tracked achievements"));hero.append(intro,score,bar);
  if(rulerChoice()==="Tasuni"){
    const integrity=el("div",undefined,"hubBranchWarning");integrity.dataset.rulerIntegrity="Tasuni";
    integrity.append(el("strong",tr("ข้อมูลไม่ครอบคลุมทางเลือก Tasuni ของ Act 9","Act 9 Tasuni branch is not represented in the legacy tracker")),
@@ -91,33 +91,33 @@ function renderSummary(){
  const first=snapshots.find(x=>x.done<x.all);
  const next=el("div",undefined,"hubMissionNext");
  if(first){
-  const action=el("span",undefined);action.append(el("strong","จุดค้างแรกตามหมวด: "+scopeName(first.scope)),el("small","เหลือ "+(first.all-first.done)+" รายการ · ตรวจเงื่อนไขก่อนเดินเควสต์ต่อ"));
-  const jump=el("button","เปิดจุดที่ยังขาด");jump.type="button";jump.onclick=()=>openJourneyScope(first.scope);
+  const action=el("span",undefined);action.append(el("strong",tr("จุดค้างแรก: ","First incomplete area: ")+scopeName(first.scope)),el("small",tr("เหลือ ","Remaining: ")+(first.all-first.done)+tr(" รายการ · เช็กจุดที่พลาดได้ก่อนทำเควสต์ต่อ"," items · review missable steps before advancing")));
+  const jump=el("button",tr("ไปดูรายการที่ยังขาด","Open remaining tasks"));jump.type="button";jump.onclick=()=>openJourneyScope(first.scope);
   next.append(action,jump);
- }else next.append(el("strong","ทุกช่องใน Checklist ครบแล้ว · ตรวจยอดในเกมทีละ Achievement ก่อนยืนยันว่าได้จริง"));
+ }else next.append(el("strong",tr("ติ๊กครบทุกช่องแล้ว · ยังต้องเทียบยอดกับเกมจริงทีละ Achievement","All checklist boxes are marked. Compare each achievement counter in-game before claiming completion.")));
  hero.append(next);
  const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
- prep.append(el("summary","ก่อนเริ่มเก็บ 100% · ตรวจโหมดเกมและจุดที่มีรายงานว่าพลาดได้"));
+ prep.append(el("summary",tr("เช็กก่อนเริ่ม · จุดที่อาจพลาดและข้อจำกัดของแพตช์","Before you start · missable steps and patch limitations")));
  const checklist=el("ul",undefined);
- ["Ruthless: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดในโหมดนี้ จึงไม่ควรวางแผนเก็บ No Stone Unturned ให้ครบด้วยเส้นทางนี้",
- "แพตช์ 3.29 มีรายงานว่า Fairgraves คุยไม่ได้และทำให้ All Ears ขาดบทสนทนา 34–38 — 3.30 ยังไม่ผ่านการทดสอบยืนยัน",
- "Act 2: Steam กับ PoE Wiki แนะนำลำดับคุย Bandits ก่อน Ancient Seal ไม่ตรงกัน อย่าฆ่าหรือช่วย Bandit ก่อนตรวจ The Darkness",
- "เปิด U เพื่อดูแผนที่/Quest และ H เพื่อตรวจยอด Achievement ที่เกมนับ — เครื่องหมายในเว็บไม่ใช่หลักฐานจากเกม"].forEach(x=>checklist.append(el("li",x)));
+ [[ "Ruthless: คู่มือ PoE Wiki ระบุว่า Vaal Side Area ไม่เกิดในโหมดนี้ จึงไม่ควรใช้เส้นทางนี้เป็นหลักฐานว่าจะเก็บ No Stone Unturned ครบ", "Ruthless: the PoE Wiki says Vaal Side Areas do not spawn in this mode. This route cannot certify No Stone Unturned here." ],
+ [ "Act 1: มีรายงานว่า Fairgraves อาจคุยไม่ได้ในแพตช์ 3.29 ทำให้ All Ears ขาดหัวข้อ #34–38 · ยังไม่ยืนยันกับ 3.30", "Act 1: Fairgraves dialogue #34–38 was reportedly unavailable in patch 3.29; patch 3.30 is not verified." ],
+ [ "Act 2: คู่มือ Steam กับ PoE Wiki ให้ลำดับคุย Bandits / Ancient Seal ต่างกัน ต้องตรวจบทสนทนา The Darkness ก่อนตัดสินใจฆ่าหรือช่วย", "Act 2: Steam and PoE Wiki disagree on the Bandits / Ancient Seal order. Check the Darkness topics before choosing whom to kill or help." ],
+ [ "เปิด Quest Log และหน้า Achievement ในเกมเพื่อเทียบยอดจริง · เครื่องหมายในเว็บเป็นเพียงบันทึกของคุณ", "Open the in-game Quest Log and Achievement panel to compare real counts. Website checkmarks are manual notes, not game verification." ]].forEach(([th,en])=>checklist.append(el("li",tr(th,en))));
  prep.append(checklist);
  const link=el("a","PoE Wiki: Ruthless mode");link.href="https://www.poewiki.net/wiki/Ruthless_mode";link.target="_blank";link.rel="noopener noreferrer";
  prep.append(link);hero.append(prep);
  const roadmap=el("details",undefined,"hubMissionRoadmap");
- roadmap.append(el("summary","ดูเส้นทางตรวจครบ: Act 1–10 / Labyrinth / Vaal / Epilogue"));
+ roadmap.append(el("summary",tr("ดูรายการที่ต้องเก็บทั้งหมด: Act 1–10 / Labyrinth / Vaal / Epilogue","See all remaining tasks: Acts 1–10 / Labyrinth / Vaal / Epilogue")));
  const list=el("div",undefined,"hubMissionStages");
  for(const s of snapshots){
    const b=el("button",undefined,"hubMissionStage");b.type="button";b.dataset.scope=s.scope;
-   b.append(el("strong",scopeName(s.scope)),el("span",s.done+" / "+s.all+(s.done===s.all?" · บันทึกครบ":" · เหลือ "+(s.all-s.done))));
+   b.append(el("strong",scopeName(s.scope)),el("span",s.done+" / "+s.all+(s.done===s.all?tr(" · ติ๊กครบแล้ว"," · all marked"):tr(" · เหลือ "," · remaining ")+(s.all-s.done))));
    b.onclick=()=>openJourneyScope(s.scope);list.append(b);
  }
  roadmap.append(list);hero.append(roadmap);
  target.append(hero);
- Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label","เปิด "+names[k]);const count=progress(k);
- card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?"บันทึกครบ · เทียบยอดเกมอีกครั้ง":"เหลือ "+(totals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
+ Object.keys(names).forEach(k=>{const card=el("button",undefined,"hubStat");card.type="button";card.setAttribute("aria-label",tr("เปิดรายการ ","Open list for ")+names[k]);const count=progress(k);
+ card.append(el("span",names[k]),el("b",count+" / "+totals[k]),el("span",count===totals[k]?tr("ติ๊กครบ · ตรวจยอดในเกม","All marked · verify in-game"):tr("เหลือ ","Remaining: ")+(totals[k]-count)));card.onclick=()=>openTab(k);target.append(card);});
 }
 function findRelevantStage(type,x){
  const stages=window.POE_STEAM_WALK?.acts?.[String(x.act)]||[];
@@ -858,8 +858,8 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    options.forEach(([value,label])=>{const item=el("option",label);item.value=value;select.append(item);});
    wrap.append(title,select);languageChoices.append(wrap);return {title,select};
  }
- const guidance=choose("hubDescriptionLanguage",[["th","ไทย · TH"],["en","English · EN"]]);
- const namesChoice=choose("hubGameNames",[["en","English · ชื่อในเกม"],["both","ไทย + English"],["th","ไทย · คำแปล"]]);
+ const guidance=choose("hubDescriptionLanguage",[["th","ไทย · คำอธิบาย"],["en","English · Instructions"]]);
+ const namesChoice=choose("hubGameNames",[["en","English · In-game names"],["both","ไทย + English"],["th","ไทย · คำแปลประกอบ"]]);
  const languageNote=el("p",undefined,"hubLanguageNote");languagePanel.append(heading,languageChoices,languageNote);
  header.after(languagePanel);languagePanel.after(nav);
  const updateLanguageLabels=()=>{
@@ -870,8 +870,8 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    guidance.title.textContent=tr("คำอธิบาย / วิธีเก็บ","Guidance / instructions");
    namesChoice.title.textContent=tr("ชื่อเควสต์ พื้นที่ และไอเท็ม","Quest, area and item names");
    languageNote.textContent=tr(
-    "ชื่อไทยเป็นคำแปลเพื่อช่วยอ่าน ไม่ใช่ชื่อทางการ · Act 5 มีคำแนะนำสองภาษา ส่วน Act เก่ายังมีรายละเอียดภาษาอังกฤษไม่ครบ",
-    "Thai names are editorial aids, not official localization. Act 5 has full bilingual route steps; older Acts retain Thai source details where English translations are incomplete."
+    "ชื่อไทยเป็นคำแปลช่วยอ่าน ไม่ใช่ชื่อทางการในเกม · Act 1–10 มีคำแนะนำตามช่วงเควสต์ทั้งไทยและอังกฤษ แต่ยังต้องตรวจเงื่อนไขกับแพตช์จริง",
+    "Thai names are editorial aids, not official game localization. All ten Acts have Thai and English quest-stage instructions, but patch-specific conditions still require in-game verification."
    );
    const title=header.querySelector("h1"),intro=header.querySelector("p");
    if(title)title.textContent=tr("บันทึก Achievement","Achievement Companion");

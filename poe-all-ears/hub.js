@@ -10,7 +10,7 @@ const totals={ears:484,lore:140,waypoints:91,sidequests:30};
 const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
 const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
 const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
-const rewardPriority=q=>q.type==="passive"?"ควรเก็บ · Passive Point":q.type==="refund"?"ควรเก็บ · Refund Point":q.type==="choice"?"ระวัง · มีผลต่อทางเลือก":"ตามความต้องการ · ไม่ใช่รางวัล Achievement";
+const rewardPriority=q=>q.type==="passive"?tr("ควรเก็บ · Passive Point","Useful · Passive Skill Point"):q.type==="refund"?tr("ควรเก็บ · Refund Point","Useful · Passive Refund Point"):q.type==="choice"?tr("ระวัง · มีผลต่อทางเลือก","Choice affects your character"):tr("ตามความต้องการ · ไม่ใช่รางวัล Achievement","Optional reward · not an achievement unlock");
 const itemPriority=(type,item,guide)=>type==="ears"&&(guide?.caution||(window.POE_WORKBOOK_WARNINGS?.wikiRows||[]).includes(getRisk({type:"ears",id:item.id,act:item.act})?.wikiRow))?"ระวังพลาด":type==="sidequests"?"จำเป็นต่อ No Loose Ends":type==="ears"?"จำเป็นต่อ All Ears":type==="lore"?"จำเป็นต่อ No Stone Unturned":"จำเป็นต่อ Locomancer";
 
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
@@ -192,20 +192,20 @@ const group=rewardIndex.find(x=>String(x.act)===String(act));if(!group||!group.q
 const chapter=el("details",undefined,"hubChapter hubRewards");chapter.dataset.extra="rewards";
 const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
 const major=group.quests.filter(q=>q.type==="passive"||q.type==="refund").length;
-heading.append(el("strong","รางวัลเควสต์ใน Act นี้"),el("small",major+" เควสต์ให้ Passive/Refund Point · "+group.quests.length+" เควสต์ในฐานข้อมูล"));
-summary.append(heading,el("span","เปิดดูรางวัล","hubChapterCount"));chapter.append(summary);
+heading.append(el("strong",tr("รางวัลเควสต์ใน Act นี้","Quest rewards in this Act")),el("small",major+tr(" เควสต์ให้ Passive/Refund Point · "," quests grant Passive / Refund Points · ")+group.quests.length+tr(" เควสต์ในฐานข้อมูล"," quests in the historical reward index")));
+summary.append(heading,el("span",tr("เปิดดูรางวัล","View rewards"),"hubChapterCount"));chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
-content.append(el("p","แสดงรางวัลตามเควสต์ (ข้อมูลอ้างอิงเดิม) · ไม่ใช่รายการที่นับใน Achievement · คำว่า ควรเก็บ หมายถึงรางวัล Passive/Refund Point ไม่ได้ยืนยันว่าเป็นเควสต์จำเป็นต่อเนื้อเรื่อง","hubSubtle"));
+content.append(el("p",tr("แสดงรางวัลตามเควสต์ (ข้อมูลอ้างอิงเดิม) · ไม่ใช่รายการที่นับใน Achievement · คำว่า ควรเก็บ หมายถึงรางวัล Passive/Refund Point ไม่ได้ยืนยันว่าเป็นเควสต์จำเป็นต่อเนื้อเรื่อง","Historical quest rewards are listed for convenience and do not count as achievement checklist entries. Useful means it grants Passive or Refund Points, not that the quest is mandatory for story progression."),"hubSubtle"));
 const list=el("div",undefined,"hubRewardList");
 for(const q of [...group.quests].sort((a,b)=>Number(["passive","refund","choice"].includes(b.type))-Number(["passive","refund","choice"].includes(a.type)))){
 const card=el("div",undefined,"hubRewardRow"),title=el("div",undefined,"hubRewardName");
 title.append(el("strong",q.name),el("span",rewardPriority(q),"hubRewardKind"));
 card.append(title,el("p",q.reward,"hubRewardText"));
 const achievement=collections.sidequests.some(item=>String(item.act)===String(act)&&item.name===q.name);
-card.append(el("p",achievement?"จำเป็นต่อ No Loose Ends · เมื่อทำเควสต์นี้สำเร็จ ให้ทำเครื่องหมายในหมวดเควสต์รอง":"ไม่อยู่ในรายการ No Loose Ends ที่ใช้อ้างอิง · ไม่ได้หมายความว่าข้ามเควสต์เนื้อเรื่องได้","hubSubtle"));
+card.append(el("p",achievement?tr("จำเป็นต่อ No Loose Ends · เมื่อทำเควสต์นี้สำเร็จ ให้ทำเครื่องหมายในหมวดเควสต์รอง","Tracked by No Loose Ends · mark the side-quest checklist only after finishing the quest"):tr("ไม่อยู่ในรายการ No Loose Ends ที่ใช้อ้างอิง · ไม่ได้หมายความว่าข้ามเควสต์เนื้อเรื่องได้","Not in the historical No Loose Ends checklist · this does not mean you can skip a story quest"),"hubSubtle"));
 list.append(card);}
 content.append(list);
-const source=el("a","ตรวจรางวัลตามแพตช์จาก PoE Wiki");source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
+const source=el("a",tr("ตรวจรางวัลตามแพตช์จาก PoE Wiki","Check current quest rewards on PoE Wiki"));source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
 }
 function criticalPanel(act){
  const all=window.POE_CRITICAL_CHECKPOINTS;
@@ -400,10 +400,10 @@ function supplementalWarnings(act){
  const chapter=el("details",undefined,"hubChapter hubExcelWarnings");
  chapter.dataset.excelAct=String(act);
  const sum=el("summary"),label=el("span",undefined,"hubChapterTitle");
- label.append(el("strong","คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม"),el("small","อีก "+unmatched.length+" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"));
+ label.append(el("strong",tr("คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม","More historical spreadsheet warnings")),el("small",tr("อีก ","Still outside the main checkpoints: ")+unmatched.length+tr(" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"," NPC topics · patch 3.30 not verified")));
  sum.append(label,el("span",unmatched.filter(r=>entries("ears").includes(r.id)).length+" / "+unmatched.length,"hubChapterCount"));chapter.append(sum);
  const body=el("div",undefined,"hubChapterBody");
- body.append(el("p","ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","hubSubtle"));
+ body.append(el("p",tr("ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","The original spreadsheet flags these topics, but we lack enough evidence to place them safely in the main quest sequence. Read each source-linked condition before changing quest state."),"hubSubtle"));
  const items=new Map(E.items.map(x=>[x.id,x])),list=el("div",undefined,"hubList");
  unmatched.forEach(r=>{const item=items.get(r.id);if(item)list.append(itemCard("ears",item));});
  body.append(list);chapter.append(body);return chapter;
@@ -726,21 +726,21 @@ summary.addEventListener("click",()=>{if(state.search.trim())return;const key=ac
 chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.add(key);else routeOpen.delete(key);});
 panel.append(chapter);
 });const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
-function renderCategory(target,type){const panel=section(uiNames[type]+" · "+names[type]);
-const desc={lore:"Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่",
-waypoints:"รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด",
-sidequests:"Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง",
-ears:"All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)"};
+function renderCategory(target,type){const panel=section(categoryName(type)+" · "+names[type]);
+const desc={lore:tr("Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่","140 historical Lore entries, including Letters of Exile, Library books, Labyrinth and Vaal Side Areas. Names and locations may have changed in later patches."),
+waypoints:tr("รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด","91 legacy Waypoint entries from patch 3.9 data. The actual current patch requirements may differ."),
+sidequests:tr("Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง","30 historical optional quest entries. Confirm each quest state and turn-in in-game before marking it."),
+ears:tr("All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)","All Ears: 484 historical dialogue topics. Mark only conversations actually heard in-game.")};
 panel.append(el("p",desc[type],"hubSubtle"));
 if(type==="lore"){
  const specialPick=el("div",undefined,"hubLoreNavigation");
- specialPick.append(el("p","No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (รวม 140 ชิ้น)","hubSubtle"));
- [["Labyrinth","เปิดขั้นตอน The Labyrinth · 10"],["Vaal","เปิดคู่มือ Vaal Letter · 16"]].forEach(([scope,txt])=>{
+ specialPick.append(el("p",tr("No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (รวม 140 ชิ้น)","No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (total 140 Lore entries)"),"hubSubtle"));
+ [["Labyrinth",tr("เปิดขั้นตอน The Labyrinth · 10","Open Labyrinth guide · 10")],["Vaal",tr("เปิดคู่มือ Vaal Letter · 16","Open Vaal Letter guide · 16")]].forEach(([scope,txt])=>{
   const btn=el("button",txt);btn.type="button";btn.onclick=()=>{state.routeAct=scope;openTab("route");};specialPick.append(btn);
  });
  panel.append(specialPick);
-const tips=el("p","สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","hubNotice");panel.append(tips);
-const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary","ค้นหา Vaal Letter ตามชื่อ Vaal Side Area"),vaalPanel());panel.append(vaal);
+const tips=el("p",tr("สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","Interact with each Lore object in-game and verify the counter; you do not need to read every line. Letters of Exile and Library books may repeat across instances, so revisit until you find each distinct entry."),"hubNotice");panel.append(tips);
+const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary",tr("ค้นหา Vaal Letter ตามชื่อ Vaal Side Area","Find Vaal Letters by Side Area name")),vaalPanel());panel.append(vaal);
 }
 addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}

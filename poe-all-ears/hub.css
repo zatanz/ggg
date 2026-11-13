@@ -697,3 +697,27 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 #hubAdvancedDashboard .hubPanel{margin:11px}
 #hubAdvancedDashboard>summary:focus-visible{outline:3px solid #f3dc9d;outline-offset:-3px}
 @media(max-width:720px){#hubQuickStart{padding:15px;gap:12px}.hubBeginnerSteps{grid-template-columns:1fr}.hubBeginnerStep{padding:8px 10px;align-items:center}.hubBeginnerStep b{width:23px;height:23px;flex-basis:23px}.hubBeginnerQuest{font-size:16px}#hubAdvancedDashboard .hubPanel{margin:7px;padding:10px}}
+
+/* One reading path for new players: a single task surface instead of cards inside cards. */
+#hubQuickStart{border:1px solid #5f736b;background:#202b29;box-shadow:none;gap:14px}
+.hubBeginnerSteps{gap:0;border-top:1px solid #4b5e55;border-bottom:1px solid #4b5e55}
+.hubBeginnerStep{border:0;border-radius:0;background:transparent;padding:12px 9px}
+.hubBeginnerStep+.hubBeginnerStep{border-left:1px solid #4b5e55}
+.hubBeginnerCurrent{background:transparent;border:0;border-radius:0;border-bottom:1px solid #4b5e55;padding:3px 0 14px}
+.hubBeginnerWhere{font-size:14px;color:#d4e8d9;line-height:1.6;margin:7px 0}
+.hubBeginnerInstructions{padding:0 0 0 24px;margin:7px 0 9px;display:grid;gap:8px}
+.hubBeginnerInstructions li{font-size:14px;line-height:1.7;color:#f3f1e8;padding-left:3px}
+.hubBeginnerCurrent>strong{font-size:14px;color:#d2eacb;margin:8px 0}
+.hubWalkthrough{background:transparent;border:0;padding:0;margin:14px 0;box-shadow:none}
+.hubWalkHeader{padding:10px 2px 12px;border-bottom:1px solid #485861}
+.hubWalkthrough>.hubWalkFocus{border:0;background:transparent;padding:12px 2px 8px;margin:0}
+.hubWalkthrough>.hubNextAction{background:transparent;border:0;border-radius:0;border-bottom:1px solid #53675d;margin:0;padding:16px 2px 18px;gap:11px;color:#f1f5eb}
+.hubWalkthrough>.hubNextAction>strong{font-size:18px;color:#d8edda}
+.hubWalkthrough .hubNextActionItem{font-size:15px;line-height:1.6}
+.hubActionInstructionsLabel{font-size:15px!important;color:#f7e1b2!important}
+.hubWalkthrough .hubWalkActions{margin:2px 0 8px;gap:0}
+.hubWalkthrough .hubWalkActions li{background:transparent;border:0;border-radius:0;border-bottom:1px solid #40504d;padding:12px 7px 12px 41px;font-size:14px;line-height:1.7}
+.hubWalkthrough .hubWalkActions li::before{top:13px;left:5px;background:#c5dcca;color:#1b3026}
+.hubWalkthrough>.hubStepNavigator{background:transparent;border:0;border-top:1px solid #465963;border-radius:0;padding:12px 0 4px;margin-top:13px}
+.hubWalkthrough>.hubStopGate{margin:11px 0;border-left-width:4px}
+@media(max-width:720px){.hubBeginnerStep+.hubBeginnerStep{border-left:0;border-top:1px solid #4b5e55}#hubQuickStart{padding:15px 16px}.hubBeginnerCurrent{padding-bottom:12px}.hubWalkthrough .hubWalkActions li{font-size:14px}.hubWalkthrough>.hubNextAction>strong{font-size:17px}}

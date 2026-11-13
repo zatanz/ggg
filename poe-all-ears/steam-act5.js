@@ -100,16 +100,16 @@
       10
     ],
     "actions": [
-      "เข้า The Control Blocks เพื่อทำ The Key to Freedom และหา Miasmeter สำหรับ In Service to Science",
-      "หลังจัดการ Justicar Casticus ให้กลับ Overseer's Tower ฟัง Utula: Justicar Casticus (ID 275)",
-      "ส่ง Miasmeter ให้ Vilenta เมื่อทำเควสต์รองสำเร็จจริง แล้วติ๊ก No Loose Ends"
+      "เข้า The Control Blocks เพื่อทำ The Key to Freedom และหา Miasmeter ของเควสต์ In Service to Science",
+      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula หัวข้อ Justicar Casticus (ID 275) ก่อนสู้ Avarius",
+      "ส่ง Miasmeter ให้ Vilenta และติ๊กเควสต์รองเมื่อเกมแสดงว่าสำเร็จจริง"
     ],
     "actionsEN": [
       "Enter The Control Blocks for The Key to Freedom and recover the Miasmeter for In Service to Science.",
       "After defeating Justicar Casticus, return to Overseer's Tower and hear Utula: Justicar Casticus (ID 275).",
       "Return the Miasmeter to Vilenta and mark No Loose Ends only once the optional quest has actually completed."
     ],
-    "stop": "ห้ามฆ่า High Templar Avarius ก่อนฟัง Utula: Justicar Casticus หลังฆ่า Casticus",
+    "stop": "หยุดก่อนสู้ High Templar Avarius: ต้องกลับไปฟัง Utula: Justicar Casticus (ID 275) หลังจัดการ Casticus",
     "stopEN": "Do not kill High Templar Avarius before hearing Utula: Justicar Casticus after Casticus falls.",
     "stopIds": [
       275
@@ -204,14 +204,14 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังชนะ Innocence ให้คุย Sin: Innocence (ID 277) ใน The Chamber of Innocence ทันที",
-      "อย่าเดินออกจากพื้นที่ก่อนที่บทสนทนา Sin จะถูกบันทึกจริง"
+      "หลังชนะ Innocence ให้หยุดอยู่ใน The Chamber of Innocence และคุย Sin หัวข้อ Innocence (ID 277)",
+      "ฟังจนจบและตรวจรายการที่เก็บแล้วในเว็บก่อนออกจากห้อง"
     ],
     "actionsEN": [
       "After defeating Innocence, immediately listen to Sin: Innocence (ID 277) in The Chamber of Innocence.",
       "Do not leave this zone before you have actually heard and recorded Sin's dialogue."
     ],
-    "stop": "ห้ามออกจาก The Chamber of Innocence ก่อนคุย Sin: Innocence",
+    "stop": "หยุดก่อนออกจาก The Chamber of Innocence: ต้องฟัง Sin: Innocence (ID 277) หลังสู้บอส",
     "stopEN": "Do not leave The Chamber of Innocence before listening to Sin: Innocence.",
     "stopIds": [
       277
@@ -378,16 +378,16 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หา Sign of Purity ใน The Ossuary ตามเควสต์ The Ravenous God",
-      "หลังได้ Sign of Purity ให้คุย Sin: The Sign of Purity (ID 295) ขณะที่ยังอยู่ใน Ossuary",
-      "ห้ามออกจากพื้นที่ก่อนฟังบทสนทนาจริง"
+      "เข้า The Ossuary และเก็บ Sign of Purity ตามเควสต์ The Ravenous God",
+      "หลังได้ Sign of Purity แต่ยังอยู่ในพื้นที่ ให้คุย Sin หัวข้อ The Sign of Purity (ID 295)",
+      "ฟังให้จบแล้วจึงออกจาก The Ossuary"
     ],
     "actionsEN": [
       "Find the Sign of Purity in The Ossuary for The Ravenous God.",
       "After obtaining it, listen to Sin: The Sign of Purity (ID 295) while still inside The Ossuary.",
       "Do not leave this zone before listening to the dialogue."
     ],
-    "stop": "ห้ามออกจาก The Ossuary หลังเก็บ Sign of Purity ก่อนคุย Sin",
+    "stop": "หยุดก่อนออกจาก The Ossuary: หลังเก็บ Sign of Purity ต้องฟัง Sin: The Sign of Purity (ID 295)",
     "stopEN": "Do not leave The Ossuary after obtaining the Sign of Purity until you have spoken to Sin.",
     "stopIds": [
       295

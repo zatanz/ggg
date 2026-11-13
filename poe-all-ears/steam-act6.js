@@ -133,14 +133,14 @@ guide.acts[6]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "เมื่อได้ Eye of Conquest ให้กลับ Lioneye's Watch คุย Tarkleigh: The Eye of Conquest (Wiki #321)",
-      "อย่าใช้ Eye of Conquest กับทางเข้า The Karui Fortress จนกว่าจะติ๊กว่าฟังหัวข้อนี้ในเกมจริงแล้ว"
+      "หลังเก็บ Eye of Conquest ให้กลับ Lioneye's Watch และคุย Tarkleigh หัวข้อ The Eye of Conquest (ID 321)",
+      "ฟังจนจบก่อนนำ Eye of Conquest ไปใช้เปิดทางเข้า The Karui Fortress"
     ],
     "actionsEN": [
       "After obtaining the Eye of Conquest, return to Lioneye's Watch and hear Tarkleigh: The Eye of Conquest (Wiki #321).",
       "Do not use the Eye of Conquest on the Karui Fortress entrance before confirming that dialogue."
     ],
-    "stop": "ห้ามใช้ Eye of Conquest ก่อนคุย Tarkleigh: The Eye of Conquest",
+    "stop": "หยุดก่อนใช้ Eye of Conquest: ต้องฟัง Tarkleigh: The Eye of Conquest (ID 321) ให้จบ",
     "stopEN": "STOP: do not use the Eye of Conquest before hearing Tarkleigh's topic.",
     "stopIds": [
       321
@@ -164,16 +164,16 @@ guide.acts[6]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "ใช้ Eye of Conquest เพื่อเปิดทาง แต่หยุดก่อนเดินเข้า The Karui Fortress",
-      "กลับคุย Tarkleigh: The Karui Fortress (Wiki #322) ซึ่งอาจซ่อนอยู่ในหัวข้อเควสต์",
-      "ฟัง Tarkleigh: Karui Revenants (#323) ตามหัวข้อที่เปิด ก่อนเข้าสู่ป้อม"
+      "ใช้ Eye of Conquest เปิดประตูแล้วหยุด อย่าเพิ่งเดินเข้า The Karui Fortress",
+      "กลับไปคุย Tarkleigh หัวข้อ The Karui Fortress (ID 322) ซึ่งอาจอยู่ในเมนูบทสนทนาเควสต์",
+      "ตรวจหัวข้อ Karui Revenants (ID 323) ที่เปิดตามสถานะเกม แล้วจึงกลับไปเข้าป้อม"
     ],
     "actionsEN": [
       "Use the Eye of Conquest to open the gate, but stop before actually entering The Karui Fortress.",
       "Return to Tarkleigh and hear the often-hidden The Karui Fortress quest-topic (Wiki #322).",
       "Check Karui Revenants (Wiki #323) when available before entering the fortress."
     ],
-    "stop": "ยังไม่ควรเข้า The Karui Fortress ก่อนเก็บหัวข้อ Tarkleigh: The Karui Fortress",
+    "stop": "หยุดก่อนเข้า The Karui Fortress: ต้องกลับไปฟัง Tarkleigh: The Karui Fortress (ID 322) หลังใช้ Eye แล้ว",
     "stopEN": "STOP: do not enter The Karui Fortress before Tarkleigh: The Karui Fortress.",
     "stopIds": [
       322
@@ -476,16 +476,16 @@ guide.acts[6]=[
     ],
     "sidequestIds": [],
     "actions": [
-      "เมื่อถึง The Brine King's Reef ให้เปิด Waypoint และสำรวจ Shrine to the Brine King (#112)",
-      "ก่อนฆ่า Tsoagoth ให้ฟัง Weylam Roth: The Brine King's Reef (#338) และ The Brine King (#339)",
-      "ตรวจว่าบันทึกทั้งสองรายการครบแล้วจึงสู้ Tsoagoth"
+      "เมื่อถึง The Brine King's Reef ให้ตรวจ Waypoint และอ่าน Shrine to the Brine King (Lore ID 112)",
+      "ก่อนสู้ Tsoagoth ให้คุย Weylam Roth สองหัวข้อ คือ The Brine King's Reef (ID 338) และ The Brine King (ID 339)",
+      "ฟังครบทั้งสองหัวข้อและตรวจเครื่องหมายแล้ว จึงค่อยสู้ Tsoagoth"
     ],
     "actionsEN": [
       "On reaching The Brine King's Reef, activate the Waypoint and discover Shrine to the Brine King (lore #112).",
       "Before defeating Tsoagoth, listen to BOTH Weylam Roth topics: The Brine King's Reef (#338) and The Brine King (#339).",
       "Verify that both dialogues were heard before beginning the boss encounter."
     ],
-    "stop": "ห้ามฆ่า Tsoagoth ก่อนคุย Weylam Roth ครบทั้งสองหัวข้อ",
+    "stop": "หยุดก่อนฆ่า Tsoagoth: ต้องฟัง Weylam Roth ทั้งสองหัวข้อ (ID 338 และ 339)",
     "stopEN": "STOP: do not kill Tsoagoth before hearing both Weylam Roth dialogues.",
     "stopIds": [
       338,

@@ -209,16 +209,16 @@ guide.acts[9]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "เข้า Shrine of the Winds ที่ The Quarry ต่อสู้ Kira และ Garukhan แล้วเก็บ Sekhema Feather",
-      "ก่อนคุย Irasha หรือ Tasuni เรื่องการส่ง Feather ให้ฟัง Sin: Garukhan (#439) และ Petarus and Vanja: Oyun (#440)",
-      "อย่าเพิ่งมอบ Feather จนกว่าจะติ๊กว่าฟังทั้งสองบทสนทนาแล้ว"
+      "เข้า Shrine of the Winds ใน The Quarry แล้วจัดการ Kira และ Garukhan เพื่อเก็บ Sekhema Feather",
+      "ก่อนมอบ Feather ให้ Irasha หรือ Tasuni ต้องฟัง Sin: Garukhan (ID 439) และ Petarus and Vanja: Oyun (ID 440)",
+      "ตรวจครบสองหัวข้อก่อนตัดสินใจเลือกผู้รับ Feather เพราะบทสนทนาหลังเลือกแตกต่างกัน"
     ],
     "actionsEN": [
       "Defeat Kira and Garukhan at the Shrine of the Winds in The Quarry and collect the Sekhema Feather.",
       "BEFORE speaking to Irasha or Tasuni to hand in the feather, hear Sin: Garukhan (#439) and Petarus and Vanja: Oyun (#440).",
       "Do not hand in the feather before both dialogues have been heard."
     ],
-    "stop": "หลังฆ่า Garukhan ห้ามส่ง Feather ให้ Irasha หรือ Tasuni ก่อนฟัง Sin และ Petarus and Vanja (#439–440)",
+    "stop": "หยุดก่อนมอบ Sekhema Feather: ต้องฟัง Sin (ID 439) และ Petarus and Vanja (ID 440) หลัง Garukhan ก่อน",
     "stopEN": "STOP: after Garukhan, do not give the Feather to Irasha or Tasuni before Sin #439 and Petarus and Vanja #440.",
     "stopIds": [
       439,
@@ -292,16 +292,16 @@ guide.acts[9]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "ไป The Boiling Lake เก็บ Basilisk Acid และ The Refinery เก็บ Trarthan Powder ตามเควสต์ Recurring Nightmare",
-      "เมื่อได้ของครบแล้วคุย Sin ทั้งใน Highgate และ The Quarry ตามหัวข้อ The Dark Ember (#445)",
-      "อย่าเข้า The Belly of the Beast ก่อนตรวจ The Dark Ember จากสถานะหลังได้ของครบ"
+      "เก็บ Basilisk Acid จาก The Boiling Lake และ Trarthan Powder จาก The Refinery ให้ครบตามเควสต์ Recurring Nightmare",
+      "เมื่อได้ทั้งสองชิ้นแล้ว ให้คุย Sin หัวข้อ The Dark Ember (ID 445) ใน The Quarry และ Highgate ตามเงื่อนไขที่เกมเปิด",
+      "ตรวจหัวข้อนี้ก่อนเข้า The Belly of the Beast"
     ],
     "actionsEN": [
       "Collect Basilisk Acid in The Boiling Lake and Trarthan Powder in The Refinery for Recurring Nightmare.",
       "After obtaining BOTH ingredients, hear Sin: The Dark Ember in Highgate and in The Quarry, as available (#445).",
       "Do not enter The Belly of the Beast before checking this post-ingredients dialogue."
     ],
-    "stop": "ห้ามเข้า The Belly of the Beast ก่อนฟัง Sin: The Dark Ember หลังได้ Basilisk Acid และ Trarthan Powder (#445)",
+    "stop": "หยุดก่อนเข้า The Belly of the Beast: หลังได้วัตถุดิบครบ ต้องฟัง Sin: The Dark Ember (ID 445)",
     "stopEN": "STOP: with both Basilisk Acid and Trarthan Powder, hear Sin: The Dark Ember (#445) BEFORE entering The Belly of the Beast.",
     "stopIds": [
       445
@@ -368,16 +368,16 @@ guide.acts[9]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "จัดการ The Depraved Trinity ใน The Black Heart แล้วหยุดก่อนเดินทางไป Act 10",
-      "ตามคู่มือเก่าฟัง Weylam Roth: Rescue (#448) และ Lilly (#449) ให้ครบหลังสู้",
-      "อย่าเลือกเดินทางกับ Lilly ไป Act 10 ก่อนตรวจบทสนทนา Weylam ทั้งสอง"
+      "หลังจัดการ The Depraved Trinity ใน The Black Heart ให้หยุดก่อนออกจาก Act 9",
+      "ตามคู่มือเก่า ต้องคุย Weylam Roth สองหัวข้อ คือ Rescue (ID 448) และ Lilly (ID 449) หลังสู้",
+      "ฟังครบทั้งสองหัวข้อแล้วจึงเดินทางกับ Lilly ไป Act 10"
     ],
     "actionsEN": [
       "Defeat The Depraved Trinity at The Black Heart, then stop before travelling to Act 10.",
       "After the fight, hear Weylam Roth: Rescue (#448) and Lilly (#449) according to the historical source.",
       "Do not depart with Lilly for Act 10 until both Weylam dialogues have been checked."
     ],
-    "stop": "ห้ามเดินทางเข้า Act 10 ก่อนฟัง Weylam Roth: Rescue (#448) และ Lilly (#449) หลัง Depraved Trinity",
+    "stop": "หยุดก่อนเดินทางเข้า Act 10: หลังชนะ The Depraved Trinity ต้องฟัง Weylam Roth: Rescue (ID 448) และ Lilly (ID 449)",
     "stopEN": "STOP: do not travel to Act 10 before hearing Weylam Roth: Rescue (#448) and Lilly (#449) after Depraved Trinity.",
     "stopIds": [
       448,

@@ -41,7 +41,7 @@ function saveRulerChoice(choice){
  const char=active();if(!char||!["undecided","Irasha","Tasuni"].includes(choice))return;
  const stored=safeParse(RULER)||{};
  if(choice==="undecided")delete stored[char.id];else stored[char.id]=choice;
- try{localStorage.setItem(RULER,JSON.stringify(stored));renderView();}catch(_){alert(tr("ไม่สามารถบันทึกตัวเลือกผู้ปกครองได้","Could not save the ruler choice."));}
+ try{localStorage.setItem(RULER,JSON.stringify(stored));renderSummary();renderView();}catch(_){alert(tr("ไม่สามารถบันทึกตัวเลือกผู้ปกครองได้","Could not save the ruler choice."));}
 }
 function entries(type){const char=active();if(!char)return [];if(type==="ears")return validIDs("ears",char.checked);
 const raw=safeParse(type==="lore"?LORE:EXTRA),rec=raw&&raw.version===1&&raw.byCharacter&&raw.byCharacter[char.id];
@@ -81,6 +81,12 @@ function renderSummary(){
  const score=el("div",undefined,"hubMissionScore");
  score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+"% ที่บันทึกในเว็บ"));
  const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label","ความคืบหน้า Checklist ทั้งสี่ Achievement");hero.append(intro,score,bar);
+ if(rulerChoice()==="Tasuni"){
+   const integrity=el("div",undefined,"hubBranchWarning");integrity.dataset.rulerIntegrity="Tasuni";
+   integrity.append(el("strong",tr("ข้อมูลไม่ครอบคลุมทางเลือก Tasuni ของ Act 9","Act 9 Tasuni branch is not represented in the legacy tracker")),
+   el("p",tr("ตัวละครนี้เลือก Tasuni แต่ All Ears #443/#444 มาจากเส้นทาง Irasha · แม้ติ๊กครบ 484/484 ก็ยังไม่ยืนยันว่าเก็บครบจริง","This character chose Tasuni, but All Ears #443/#444 are from the Irasha path. Even 484/484 manual checks cannot certify completion.")));
+   hero.append(integrity);
+ }
  const snapshots=journeyScopes.map(scopeSnapshot);
  const first=snapshots.find(x=>x.done<x.all);
  const next=el("div",undefined,"hubMissionNext");

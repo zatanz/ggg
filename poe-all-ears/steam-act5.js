@@ -118,6 +118,8 @@
       "Miasmeter",
       "Eyes of Zeal"
     ],
+    "sourceNote": "ข้อควรระวังเรื่องกำหนดเวลา: ข้อมูลเดิมของ ID 275 ระบุว่าให้ฟัง Utula ก่อนเข้า Oriath Square ขณะที่ PoE Wiki ปี 2025 ระบุเพียงก่อนฆ่า Avarius จึงใช้จุดที่เร็วกว่าเป็นข้อควรระวัง ไม่ใช่การยืนยันว่าบทสนทนาหายเมื่อเข้าเมืองใน 3.29",
+    "sourceNoteEN": "Deadline discrepancy: legacy checklist ID 275 cautions before entering Oriath Square; the 2025 PoE Wiki says before killing Avarius. The earlier stop is precautionary, not proof that the line disappears on entering the Square in 3.29.",
     "confidence": "historical-source-only"
   },
   {

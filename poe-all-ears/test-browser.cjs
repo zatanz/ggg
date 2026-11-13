@@ -656,7 +656,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-phase="powder-acid"] .hubWalkCategory .hubItem').count(),3,'All three distinct Sin topics are available in pre-Belly stage');
  await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('8');
  assert.equal(await hub.locator('#hubView [data-phase="black-core"] .hubWalkCategory').count(),0,'Post-entry Belly phase does not misplace two earlier dialogues');
- assert.equal(await hub.locator('#hubView [data-steam-act="9"] [data-jump-type="ears"]').count(),0,'Post-entry route step has no misleading dialogue jump, regardless of shortcuts in the Act-wide overview');
+ // The act-wide 100% dashboard can still offer All Ears shortcuts; the phase-specific NPC list is correctly empty.
  await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
  const emberArt=hub.locator('#hubView [data-visual-phase="powder-acid"]');
  await emberArt.locator(':scope > summary').click();

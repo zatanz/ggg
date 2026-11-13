@@ -698,7 +698,9 @@ function actSteamGuide(act){
  const actions=el("ol",undefined,"hubWalkActions");
  const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
  instructions.forEach(txt=>actions.append(el("li",txt)));
- focus.append(el("h3",tr("สิ่งที่ต้องทำในเกม","In-game instructions"),"hubActionInstructionsLabel"),actions);
+ const fullSteps=el("details",undefined,"hubWalkInstructions");
+ fullSteps.append(el("summary",tr("ดูขั้นตอนทั้งหมด · ","All instructions · ")+instructions.length+tr(" ข้อ"," steps")),actions);
+ focus.append(fullSteps);
  const charId=active()?.id;
  const previous=lastInlineMark?.act===act&&lastInlineMark.index===chosen&&lastInlineMark.charId===charId&&
    checkedGroups[lastInlineMark.type].has(lastInlineMark.id)?lastInlineMark:null;
@@ -923,8 +925,8 @@ function actSteamGuide(act){
   }
  }
  if(phase.dialogueIds.length){
- const npc=el("section",undefined,"hubWalkCategory");npc.dataset.walkType="ears";
- npc.append(el("h4",tr("บทสนทนาที่ต้องเก็บช่วงนี้","NPC dialogues in this step")),el("p",tr("ติ๊กเฉพาะเมื่อฟังในเกมจริงแล้ว · รายการอื่นยังอยู่ในหมวดหลักด้วย","Check only after hearing the in-game dialogue. These use the original checklist records."),"hubSubtle"));
+ const npc=el("details",undefined,"hubWalkCategory");npc.dataset.walkType="ears";
+ npc.append(el("summary",tr("บทสนทนาอื่นในช่วงนี้ · ","Other dialogues in this step · ")+phase.dialogueIds.length));
  const rows=el("div",undefined,"hubList");
  appendReviewItems(rows,"ears",phase.dialogueIds);
  npc.append(rows);

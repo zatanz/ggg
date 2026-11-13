@@ -304,3 +304,32 @@
   .hubCampaignRoute .hubCurrentTaskFact { grid-template-columns: 1fr; }
   .hubTaskConfirmations > button { flex: 1 1 100%; }
 }
+
+
+/* Reader-first mode: one active instruction, optional detail on demand. */
+.hubCampaignRoute .hubWalkInstructions,
+.hubCampaignRoute details.hubWalkCategory {
+  margin: 4px 0 10px;
+  border: 1px solid var(--rule, #62543e);
+  border-radius: 8px;
+  background: rgba(15, 15, 14, .24);
+}
+.hubCampaignRoute .hubWalkInstructions > summary,
+.hubCampaignRoute details.hubWalkCategory > summary {
+  cursor: pointer;
+  padding: 11px 13px;
+  color: var(--brass, #c9a368);
+  font-size: .91rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.hubCampaignRoute .hubWalkInstructions[open] > summary,
+.hubCampaignRoute details.hubWalkCategory[open] > summary {
+  border-bottom: 1px solid var(--rule, #62543e);
+}
+.hubCampaignRoute .hubWalkInstructions .hubWalkActions { margin: 0 9px 9px; }
+.hubCampaignRoute details.hubWalkCategory > .hubList { padding: 10px; }
+.hubCampaignRoute :is(.hubWalkInstructions, details.hubWalkCategory) > summary:focus-visible {
+  outline: 2px solid var(--brass, #c9a368);
+  outline-offset: 2px;
+}

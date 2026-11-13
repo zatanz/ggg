@@ -397,6 +397,9 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView [data-stop-phase="mudflats"]').innerText()).includes('ยังไม่ควร'),true,'unsafe quest transition has red stop gate');
  assert.equal(await hub.locator('#hubView [data-next-action="mudflats"]').count(),1,'Act 1 shows one next action for currently selected phase');
  assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkActions li').count()>0,true,'detailed instructions are inside the single primary task area');
+ assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkInstructions').evaluate(x=>x.open),false,'secondary full walkthrough is collapsed by default');
+ await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkInstructions > summary').click();
+ assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkInstructions').evaluate(x=>x.open),true,'secondary full walkthrough opens on demand');
  assert.equal(await hub.locator('#hubView [data-phase="mudflats"] > .hubWalkActions').count(),0,'no duplicate nested instruction panel outside primary task');
  const order=await hub.locator('#hubView [data-phase="mudflats"]').evaluate(node=>{
    const flow=['.hubWalkActions','.hubCurrentTaskFacts','.hubStopGate','.hubInlineCurrentChecklist','.hubStageLinks'].map(selector=>node.querySelector(selector));
@@ -407,7 +410,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkArchive').count(),0,'historical inventory is not nested inside the live task');
  assert.equal(await hub.locator('#hubView .hubWalkArchive').evaluate(x=>x.open),false,'historical bulk checklist starts closed');
  assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubCurrentTaskFact').count()>0,true,'next pending dialogue includes specific action / location / timing from source-backed item guidance');
- assert.equal((await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkActions').innerText()).includes('หากเข้าไปก่อน บทสนทนาอาจไม่ปรากฏอีก'),true,'Mud Flats shows the approved full Thai instruction');
+ assert.equal((await hub.locator('#hubView [data-next-action="mudflats"] .hubWalkActions').textContent()).includes('หากเข้าไปก่อน บทสนทนาอาจไม่ปรากฏอีก'),true,'Mud Flats shows the approved full Thai instruction');
  const actionCountBefore=await hub.locator('#hubStats .hubStat').first().innerText();
  const currentInline=hub.locator('#hubView [data-next-action="mudflats"] .hubInlineCurrentChecklist input[type="checkbox"]');
  assert.equal(await currentInline.isVisible(),true,'current checkbox is visible without scrolling to the archive');
@@ -549,7 +552,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('AFTER handing in all organs but BEFORE killing Malachai'),true,'English Act 4 Piety/Dialla timing is fully authored');
  await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('5');
  assert.equal((await hub.locator('#hubView [data-stop-phase="daresso-after"]').innerText()).includes('Entering Kaom\'s Dream alone is not the sourced deadline'),true,'Act 4 Daresso STOP deadline matches Wiki #231–232, not an invented Kaom deadline');
- assert.equal((await hub.locator('#hubView [data-steam-act="4"] .hubWalkActions').innerText()).includes('BEFORE entering The Belly of the Beast'),true,'English Act 4 guidance follows exact current source condition');
+ assert.equal((await hub.locator('#hubView [data-steam-act="4"] .hubWalkActions').textContent()).includes('BEFORE entering The Belly of the Beast'),true,'English Act 4 guidance follows exact current source condition');
  await selectSetting('hubDescriptionLanguage','th');
 
 
@@ -601,7 +604,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="ossuary-sin"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await ossuaryArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Ossuary image marked conceptual');
  await selectSetting('hubDescriptionLanguage','en');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('The Ossuary'),true,'English route guidance covers actual quest steps');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('The Ossuary'),true,'English route guidance covers actual quest steps');
  assert.equal((await hub.locator('#hubView [data-stop-phase="ossuary-sin"]').innerText()).includes('Do not leave'),true,'English STOP retains source-specific condition');
  await selectSetting('hubGameNames','both');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Sign of Purity'),true,'English source term retained in both-name mode');
@@ -663,7 +666,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Eye of Conquest'),true,'English item name persists alongside Thai translation');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('ดวงตา'),true,'Thai Eye term appears in bilingual name mode');
  await selectSetting('hubDescriptionLanguage','en');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Return to Tarkleigh'),true,'English Act 6 guidance is phase-specific');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Return to Tarkleigh'),true,'English Act 6 guidance is phase-specific');
  assert.equal((await hub.locator('#hubView [data-stop-phase="eye-after"]').innerText()).includes('STOP:'),true,'English critical warning is explicit');
  await selectSetting('hubGameNames','th');
  assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),'Eye of Conquest','Thai-only display preserves original English source term');
@@ -752,7 +755,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes("Kishara's Star"),true,'English proper name remains present in bilingual names');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('คิชารา'),true,'Act7 Thai name displayed in bilingual mode');
  await selectSetting('hubDescriptionLanguage','en');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes("Kishara's Star"),true,'Concrete English Act7 guidance available');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes("Kishara's Star"),true,'Concrete English Act7 guidance available');
  await selectSetting('hubGameNames','th');
  assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),"Kishara's Star",'Canonical English item title preserved in Thai-only display');
  assert.equal(await hub.locator('#character').inputValue(),act7Character,'Switching languages keeps selected character');
@@ -806,9 +809,9 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Ankh of Eternity'),true,'Game canonical English item name remains in bilingual mode');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('อังก์'),true,'Editorial Thai name is available independently');
  await selectSetting('hubDescriptionLanguage','en');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Hargan'),true,'Act 8 precise English instructions display in English guidance mode');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Hargan'),true,'Act 8 precise English instructions display in English guidance mode');
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Viewing: Act 8'),true,'global active-area summary follows English guidance language');
- assert.equal(await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubActionInstructionsLabel').innerText(),'In-game instructions','task heading is translated with guidance language');
+ assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubWalkInstructions > summary').innerText()).includes('All instructions'),true,'collapsed full-instructions label is translated with guidance language');
  assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubCurrentTaskFacts').innerText()).includes('Do this'),true,'English exact-item help explains the actionable step');
  assert.equal(await hub.getByRole('checkbox',{name:/Mark here after completing in-game.*Hargan/}).count(),1,'English route retains the labelled manual checkbox');
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('STOP:'),true,'English pre-completion STOP remains visible');
@@ -969,7 +972,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await selectSetting('hubGameNames','both');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('คทา'),true,'Act10 independent Thai item translation works');
  await selectSetting('hubDescriptionLanguage','en');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Bannon'),true,'Act10 English story instructions concrete');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Bannon'),true,'Act10 English story instructions concrete');
  assert.equal((await staffArt.locator('.hubVisualCheck').innerText()).includes('Staff of Purity'),true,'Act10 English visual check identifies item');
  await selectSetting('hubGameNames','en');
  await selectSetting('hubDescriptionLanguage','th');
@@ -1215,19 +1218,19 @@ async function verifyHistoricalWaypointBackup(browser,url){
 
  await hub.locator('#hubCampaignAct').selectOption('1');
  await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('7');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Allflame'),true,'Act 1 authored English guide covers Fairgraves item timing');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Allflame'),true,'Act 1 authored English guide covers Fairgraves item timing');
  assert.equal((await hub.locator('#hubView [data-stop-phase="fairgraves"]').innerText()).includes('STOP:'),true,'Act 1 English STOP preserves the Allflame risk');
- assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
 
  await hub.locator('#hubCampaignAct').selectOption('2');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Steam and PoE Wiki disagree'),true,'Act 2 English route retains conflicting Bandits source order');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam and PoE Wiki disagree'),true,'Act 2 English route retains conflicting Bandits source order');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
- assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 2 English route has no Thai text');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 2 English route has no Thai text');
 
  await hub.locator('#hubCampaignAct').selectOption('3');
  await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes("Tolman's Bracelet"),true,'Act 3 English guide identifies the exact item and NPC hand-in state');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes("Tolman's Bracelet"),true,'Act 3 English guide identifies the exact item and NPC hand-in state');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Clarissa'),true,'Act 3 English STOP retains the Clarissa prerequisite');
 
  // Checklist explanation now points to a concrete, source-led stage instead of a generic instruction.
@@ -1241,7 +1244,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await firstGuide.locator('[data-open-stage="town"]').click();
  assert.equal(await hub.locator('#hubView [data-steam-act="1"]').getAttribute('data-phase'),'town','Lore checklist-to-route jump reaches Act 1 source phase');
  await selectSetting('hubDescriptionLanguage','th');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Nessa'),true,'Switching back to Thai restores original specific quest guidance');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Nessa'),true,'Switching back to Thai restores original specific quest guidance');
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Linked stage navigation does not create mobile overflow at 375px');
 
 

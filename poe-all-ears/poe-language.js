@@ -311,14 +311,35 @@ function englishHelp(type,item,guide){
  const act=item.act,base=String(item.name||item.dialog||""),where=String(item.area||"Act "+act);
  let action="",location="",unlock="",caution="",tip="";
  if(type==="ears"){
-   action="Speak to "+String(item.npc||"").replace(/ \*$/,"")+", choose the \""+String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim()+"\" topic, and listen through the dialogue before checking it off.";
-   location="Act "+act+" · "+item.npc;
-   unlock="Find this topic at the appropriate quest stage. If it is missing, review the linked Act route before changing quest state.";
-   caution=highRisk[String(item.id)]||(guide?.caution?"Quest-state-sensitive dialogue: read the original Thai source note below before advancing.":"");
+   const topic=String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim();
+   const phases=window.POE_STEAM_WALK?.acts?.[act]||[];
+   const phase=phases.find(p=>(p.dialogueIds||[]).includes(item.id));
+   action=guide?.actionEN||("Speak to "+String(item.npc||"").replace(/ \*$/,"")+", select \""+topic+"\", and listen until the dialogue finishes before marking it collected.");
+   location=phase?"Act "+act+" · "+phase.place+" · "+String(item.npc||"").replace(/ \*$/,""):"Act "+act+" · "+item.npc;
+   unlock=phase?.headingEN?"At quest step: "+phase.headingEN+". Open the linked quest-stage instructions before changing quest state.":"Check the Act guide for the event that makes this topic available before moving forward.";
+   caution=highRisk[String(item.id)]||guide?.cautionEN||(guide?.caution?"Potentially missable topic. Review the linked source note and STOP timing before advancing.":"");
  }else if(type==="lore"){
-   action="Read \""+base+"\" in "+where+"; mark it only after the in-game interaction.";
-   location=where;unlock="Find and interact with the exact lore object.";
-   caution=item.random?"This lore encounter can vary by instance. Check the in-game count.":"";
+   location=where;
+   action="Find \""+base+"\" in "+where+", interact with it in-game, and only then mark this exact Lore entry.";
+   unlock="Match the object's exact name and confirm your in-game progress.";
+   caution=item.random?"This Lore can vary or repeat across instances; do not mark the same entry twice.":"";
+   if(Number.isInteger(item.id)&&item.id>=1&&item.id<=15){
+     action="In Lioneye's Watch, interact with the Letters of Exile plaques until you find \""+base+"\". Mark this exact letter only when it appears.";
+     unlock="Each interaction may produce a letter you have already seen. Continue searching for missing distinct names.";
+     caution="Letters of Exile are random: repeated letters do not add new entries to your checklist.";
+   }else if(item.area==="The Library"){
+     action="Explore the book collections in The Library and read the exact book \""+base+"\" before marking it collected.";
+     unlock="The Library's books may be distributed randomly by instance. Check the title and seek missing books in another instance if needed.";
+     caution="Do not mark a book again when the same title appears twice.";
+   }else if(item.act==="Labyrinth"){
+     action="Explore the Labyrinth and interact with \""+base+"\" where it appears on your current route.";
+     unlock="Use the Labyrinth lore section to check which area or Trial stage contains this entry.";
+     caution="Labyrinth rooms and object positions may vary. The historical route is not a fixed room-by-room map.";
+   }else if(item.act==="Vaal"){
+     action="Find a Vaal Side Area that contains \""+base+"\" and interact with that exact Letter or Journal.";
+     unlock="Search the Side Area name in the Vaal finder; entrances and available areas may vary between instances.";
+     caution="Do not rely on the old Map Device method. Area-to-Lore matches remain historical and are unverified for patch 3.30.";
+   }
  }else if(type==="waypoints"){
    action="Travel to "+base+" and verify that its Waypoint is active on the in-game map before marking it complete.";
    location="Act "+act+" · "+base;unlock="Some Waypoints activate automatically in newer game versions. Confirm the actual active state rather than assuming that entering the area is enough.";
@@ -329,8 +350,9 @@ function englishHelp(type,item,guide){
      caution="Historic node naming differs from the physical Doedre's Cesspool waypoint access. Check in-game before marking.";
    }
  }else{
-   action="Open the Quest Log and finish \""+base+"\" in Act "+act+". Complete any turn-in or reward step before checking it off.";
-   location="Act "+act;unlock="Use the linked quest-stage route for area and NPC order. Verify completion in the in-game quest journal.";
+   action="Open the Quest Log and complete \""+base+"\" in Act "+act+". Return for the quest hand-in or reward if required, then mark it complete.";
+   location="Act "+act;unlock="Use the linked quest-stage route for the area and NPC order. Confirm completion in the in-game Quest Log.";
+   caution="An accepted quest, boss kill or unclaimed reward alone does not guarantee the side quest is completed. Historical conditions are not patch-certified.";
  }
  if(type==="ears"&&(act===9||act===10)){
    const special={

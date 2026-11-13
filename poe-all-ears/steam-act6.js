@@ -181,7 +181,15 @@ guide.acts[6]=[
     "keyItems": [
       "Eye of Conquest"
     ],
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act6-karui-eye-states.svg",
+      "title": "The Father of War · STOP after using the Eye",
+      "alt": "ภาพจำลองสถานะเควสต์ The Father of War เพื่อแสดงลำดับบทสนทนาที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "ใช้ Eye of Conquest แล้วกลับคุย Tarkleigh: The Karui Fortress (ID 322) ในหัวข้อ Quest ก่อนเข้าป้อม",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "tukohama-after",
@@ -484,7 +492,15 @@ guide.acts[6]=[
       339
     ],
     "keyItems": [],
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act6-weylam-brine-reef.svg",
+      "title": "The Brine King · STOP before Tsoagoth",
+      "alt": "ภาพจำลองสถานะเควสต์ The Brine King เพื่อแสดงลำดับบทสนทนาที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "เมื่อถึง The Brine King's Reef ให้ฟัง Weylam Roth ทั้งสองหัวข้อ (ID 338 และ 339) ก่อนสู้ Tsoagoth",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "brine-after",

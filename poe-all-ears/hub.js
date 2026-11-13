@@ -689,8 +689,14 @@ function actSteamGuide(act){
   const inline=el("div",undefined,"hubInlineCurrentChecklist");
   inline.dataset.inlineChecklist=current.type+":"+current.id;
   inline.append(el("strong",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game"),"hubInlineChecklistTitle"));
-  if(item)inline.append(itemCard(current.type,item));
-  else inline.append(el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle"));
+  if(item){
+   const checklist=itemCard(current.type,item);
+   // Name, location and conditions are already visible immediately above.
+   // Keep only the canonical action control and status; no duplicate card.
+   checklist.querySelector(".hubText")?.remove();
+   checklist.classList.add("hubInlineMark");
+   inline.append(checklist);
+  }else inline.append(el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle"));
   focus.append(inline);
  }else{
   focus.append(el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing."),"hubSubtle"));

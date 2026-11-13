@@ -288,7 +288,16 @@ guide.acts[7]=[
     "keyItems": [],
     "sourceNote": "ไฟล์เก่าเตือนก่อนเข้า The Fellshrine Ruins แต่ PoE Wiki เตือนก่อนเดินต่อ The Den ทั้งสองแหล่งไม่ตรงกัน",
     "sourceNoteEN": "The legacy source warns about The Fellshrine Ruins; the Wiki instead warns before continuing toward The Den. The discrepancy is not gameplay-resolved.",
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act7-den-helena-stop.svg",
+      "title": "The Master of a Million Faces · STOP before The Den",
+      "alt": "ภาพจำลองลำดับเควสต์ The Master of a Million Faces แสดงบทสนทนาสำคัญที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังเห็นทางไป Forest Encampment เดิมถูกปิด ต้องคุย Helena: The Den (ID 365) ก่อนเข้า The Den",
+      "checkEN": "After finding the blocked route to the old Forest Encampment, speak to Helena: The Den (ID 365) BEFORE entering The Den.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "ashen-greust",
@@ -491,7 +500,16 @@ guide.acts[7]=[
     ],
     "sourceNote": "ไฟล์เก่าเตือนก่อนเข้า The Causeway แต่ Wiki ระบุ 'ก่อนพบ Yeena ใน The Vaal City' ยังไม่มีผลทดสอบแยกความต่าง",
     "sourceNoteEN": "Legacy notes say 'before entering The Causeway' but the Wiki says 'before meeting Yeena in The Vaal City'. No patch 3.30 test resolves the difference.",
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act7-fireflies-yeena-stop.svg",
+      "title": "Lighting the Way · STOP before Vaal City",
+      "alt": "ภาพจำลองลำดับเควสต์ Lighting the Way แสดงบทสนทนาสำคัญที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "เมื่อเก็บ Fireflies ครบ 7 ชิ้น ให้กลับคุย Yeena เรื่อง Arakaali's Temple (ID 382) ที่เมืองก่อนพบ Yeena ใน The Vaal City",
+      "checkEN": "Collect all seven Fireflies, return to Yeena in town for Arakaali's Temple (ID 382) BEFORE meeting her in The Vaal City.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "causeway-kishara",
@@ -626,7 +644,16 @@ guide.acts[7]=[
     "keyItems": [],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act7-arakaali-yeena-stop.svg",
+      "title": "The Mother of Spiders · STOP after Arakaali",
+      "alt": "ภาพจำลองลำดับเควสต์ The Mother of Spiders แสดงบทสนทนาสำคัญที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังชนะ Arakaali ให้คุย Yeena: Arakaali (ID 384) ใน Temple of Decay Level 2 ก่อนออกจากพื้นที่",
+      "checkEN": "After defeating Arakaali, hear Yeena: Arakaali (ID 384) INSIDE Temple of Decay Level 2 BEFORE leaving the area.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "act7-final",

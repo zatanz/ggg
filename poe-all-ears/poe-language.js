@@ -118,7 +118,44 @@ const glossary={
   "Maligaro's Manifesto": "คำประกาศของมาลิกาโร",
   "Ode to Ralakesh": "บทสดุดีราลาเคช",
   "Love Letter": "จดหมายรัก",
-  "Shrine to Arakaali": "ศาลเจ้าอาราคาอาลี"
+  "Shrine to Arakaali": "ศาลเจ้าอาราคาอาลี",
+  "The Sarn Ramparts": "เชิงเทินซาร์น",
+  "The Sarn Encampment": "ค่ายซาร์น",
+  "The Toxic Conduits": "ท่อระบายพิษ",
+  "Doedre's Cesspool": "บ่อโสโครกของโดเดร",
+  "The Grand Promenade": "ทางเดินแกรนด์พรอมเมนาด",
+  "The Quay": "ท่าเรือ",
+  "The Grain Gate": "ประตูคลังธัญพืช",
+  "The Bath House": "โรงอาบน้ำ",
+  "The High Gardens": "สวนสูง",
+  "The Pools of Terror": "แอ่งแห่งความหวาดกลัว",
+  "The Imperial Fields": "ทุ่งจักรวรรดิ",
+  "The Solaris Temple": "วิหารโซลาริส",
+  "The Solaris Temple Level 1": "วิหารโซลาริส ชั้น 1",
+  "The Solaris Temple Level 2": "วิหารโซลาริส ชั้น 2",
+  "The Solaris Concourse": "ลานทางเดินโซลาริส",
+  "The Lunaris Concourse": "ลานทางเดินลูนาริส",
+  "The Lunaris Temple": "วิหารลูนาริส",
+  "The Lunaris Temple Level 1": "วิหารลูนาริส ชั้น 1",
+  "The Lunaris Temple Level 2": "วิหารลูนาริส ชั้น 2",
+  "The Harbour Bridge": "สะพานท่าเรือ",
+  "Essence of the Hag": "แก่นแท้แห่งแม่มด",
+  "Love is Dead": "ความรักสิ้นชีพ",
+  "The Gemling Legion": "กองทัพทหารอัญมณี",
+  "The Wings of Vastiri": "ปีกแห่งวัสทิรี",
+  "Reflection of Terror": "เงาสะท้อนแห่งความหวาดกลัว",
+  "Solar Eclipse": "สุริยุปราคา",
+  "Lunar Eclipse": "จันทรุปราคา",
+  "Ankh of Eternity": "อังก์แห่งนิรันดร์",
+  "The Ankh of Eternity": "อังก์แห่งนิรันดร์",
+  "Sun Orb": "ลูกแก้วสุริยะ",
+  "Moon Orb": "ลูกแก้วจันทรา",
+  "Wings of Vastiri": "ปีกแห่งวัสทิรี",
+  "Official Orders": "คำสั่งทางราชการ",
+  "The Eternal Sun": "ดวงสุริยะนิรันดร์",
+  "The Eternal Moon": "ดวงจันทรานิรันดร์",
+  "Doedre Darktongue": "โดเดรลิ้นทมิฬ",
+  "The Orbs of Sun and Moon": "ลูกแก้วแห่งสุริยะและจันทรา"
 };
 const highRisk={
   "21": "Before entering The Fetid Pool, collect the relevant Oozeback Bloom dialogue.",
@@ -165,7 +202,17 @@ const highRisk={
   "383": "After first entering The Vaal City, revisit Eramir for The Vaal City.",
   "384": "AFTER killing Arakaali, speak to Yeena: Arakaali BEFORE leaving Temple of Decay Level 2.",
   "385": "After killing Arakaali, return to Eramir: Silk.",
-  "386": "After killing Arakaali, return to Yeena: Silk."
+  "386": "After killing Arakaali, return to Yeena: Silk.",
+  "391": "After receiving Essence of the Hag, talk to Sin before Hargan: Doedre Darktongue (Wiki row 402).",
+  "403": "AFTER killing Doedre, hear Sin: Doedre; the legacy guide says BEFORE leaving Doedre's Cesspool (unverified 3.30).",
+  "407": "AFTER starting Love is Dead, hear Hargan: The Ankh of Eternity BEFORE completing the quest.",
+  "409": "AFTER completing The Wings of Vastiri, hear Sin: Yugul BEFORE killing Yugul.",
+  "410": "AFTER Sin: Yugul, hear Hargan: Yugul BEFORE killing Yugul.",
+  "411": "AFTER killing Tolman, hear Clarissa: The Ankh of Eternity BEFORE leaving The Quay.",
+  "413": "AFTER killing Tolman, hear Clarissa: Tolman (Wiki row #412) before leaving the area.",
+  "414": "AFTER obtaining both Sun Orb and Moon Orb, hear Maramoa: The Orbs of Sun and Moon.",
+  "415": "AFTER obtaining both Sun Orb and Moon Orb, hear Hargan: The Orbs of Sun and Moon.",
+  "416": "AFTER completing Solar Eclipse and Lunar Eclipse, hear Hargan: Solaris and Lunaris."
 };
 const valid={description:["th","en"],names:["en","both","th"]};
 let prefs={description:"th",names:"en"};
@@ -205,9 +252,50 @@ function englishHelp(type,item,guide){
  }else if(type==="waypoints"){
    action="Activate the Waypoint in "+base+" and check that it is available for travel.";
    location="Act "+act+" · "+base;unlock="Reach this area and activate the Waypoint.";
+   if(act===8&&item.id===71){
+     action="The Toxic Conduits world-map node is shared with the Waypoint you access AFTER defeating Doedre in Doedre's Cesspool. Mark it only when the waypoint is actually active.";
+     location="The Toxic Conduits / Doedre's Cesspool";
+     unlock="After the Doedre encounter and the exit to Doedre's Cesspool, confirm the shared map Waypoint is active. Do NOT mark it on first entering Toxic Conduits.";
+     caution="Historic node naming differs from the physical Doedre's Cesspool waypoint access. Check in-game before marking.";
+   }
  }else{
    action="Finish the optional quest \""+base+"\" in Act "+act+" before marking it completed.";
    location="Act "+act;unlock="Confirm completion in the in-game quest journal.";
+ }
+ if(type==="ears"&&act===8){
+   const special={
+    387: "After entering Sarn Encampment at the start of Act 8.",
+    388: "After returning to Sarn; speak with Maramoa about Clarissa and Tolman.",
+    389: "After returning to Sarn; accept The Gemling Legion from Maramoa.",
+    390: "First meeting with Hargan in Act 8.",
+    391: "After receiving Essence of the Hag; talk to Sin first.",
+    392: "After arriving in Sarn Encampment.",
+    393: "After hearing Maramoa: Gemling Legionnaires.",
+    394: "After arriving in Sarn Encampment.",
+    395: "After returning to Sarn Encampment.",
+    396: "After meeting Clarissa.",
+    397: "After meeting Clarissa.",
+    398: "After meeting Clarissa; hear The Ankh of Eternity before later quest-state changes.",
+    399: "In Sarn Encampment, speak with Sin about The Eternal Sun.",
+    400: "AFTER Sin: The Eternal Sun, hear Sin: Solaris.",
+    401: "In Sarn Encampment, speak with Sin about The Eternal Moon.",
+    402: "AFTER Sin: The Eternal Moon, hear Sin: Lunaris.",
+    403: "AFTER killing Doedre the Vile.",
+    404: "AFTER killing Doedre the Vile, return to Maramoa for Sun Orb.",
+    405: "AFTER killing Doedre the Vile, return to Maramoa for Moon Orb.",
+    406: "After Hargan offers The Wings of Vastiri, talk about Hector Titucius in The Bath House.",
+    407: "AFTER starting Love is Dead but BEFORE completing the quest.",
+    408: "AFTER completing The Wings of Vastiri.",
+    409: "AFTER completing The Wings of Vastiri, BEFORE killing Yugul.",
+    410: "AFTER hearing Sin: Yugul, BEFORE killing Yugul.",
+    411: "AFTER killing Tolman, BEFORE leaving The Quay.",
+    412: "AFTER Love is Dead quest state changes, revisit Maramoa: Clarissa and Tolman.",
+    413: "AFTER killing Tolman, hear Clarissa: Tolman (Wiki row #412).",
+    414: "AFTER acquiring BOTH Sun Orb and Moon Orb.",
+    415: "AFTER acquiring BOTH Sun Orb and Moon Orb.",
+    416: "AFTER completing the Solar Eclipse and Lunar Eclipse quests."
+   };
+   unlock=special[item.id]||unlock;
  }
  if(type==="ears"&&act===7){
    const special={

@@ -1,5 +1,14 @@
 # Path of Exile 1 — Achievement Companion (single-page preview)
 
+## UX Update — 13 November 2026: One task, one checkbox
+
+The current quest-step panel now combines source-linked instructions, STOP guidance and the **same canonical checklist checkbox**. Checking it records actual user input and immediately brings the next unchecked item into the same panel, retaining keyboard focus. The historical per-category lists are available in one initially collapsed **Review every item in this step** section; this avoids asking first-time players to scroll between instructions and a second checklist. When a stage is fully marked, a next-stage preview button appears; the UI still cannot verify achievement completion without game evidence.
+
+Navigation safeguards remain: the main Next button warns before skipping any unfinished checklist entries, while forward selection across explicit STOP checkpoints requires confirmation. The exact stable IDs, per-character local storage, and backup compatibility are unchanged.
+
+QA: JavaScript syntax and GitHub readback were checked; the Playwright smoke tests have been updated for the inline flow, archive synchronization and keyboard focus, but the latest Chromium CI run has **not yet been verified PASS**. These UI changes do not certify the historical dataset for patch 3.29 or 3.30.
+
+
 **เข้าใช้งานหน้าเดียว:** https://zatanz.github.io/ggg/poe-all-ears/
 
 เว็บเดียวสำหรับ 4 Achievement: **All Ears (484 บทสนทนา)**, **No Stone Unturned (140 Lore)**, **Locomancer (91 Waypoints)** และ **No Loose Ends (30 Side Quests)** มีเมนูหลักเพียง **3 ส่วน** ได้แก่ **ตาม Act**, **เช็กลิสต์ทั้งหมด** และ **ตรวจยอด / สำรอง**; ในแต่ละ Act มีหัวข้อพับเก็บได้ พร้อมยอดความคืบหน้าและปุ่มเลือก Act 1–10

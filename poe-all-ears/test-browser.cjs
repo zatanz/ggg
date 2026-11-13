@@ -328,6 +328,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('2');
  assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('Utula'),true,'Utula Casticus checkpoint STOP visible');
  assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('ก่อนเข้า Oriath Square'),true,'Act 5 uses earliest legacy warning for Utula #275');
+ await hub.locator('#hubView [data-source-note="casticus-return"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="casticus-return"]').innerText()).includes('PoE Wiki'),true,'Act 5 explains difference between legacy and Wiki deadline');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Miasmeter'),true,'Act 5 source item names appear in the quest phase');
  assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'In Service to Science side quest appears in phase');
@@ -424,6 +425,7 @@ const assert=require('node:assert/strict');
 
  await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('12');
  assert.equal((await hub.locator('#hubView [data-stop-phase="beacon-flag"]').innerText()).includes('ก่อนเข้า The Beacon'),true,'Act 6 warns before entering the Beacon per legacy #336');
+ await hub.locator('#hubView [data-source-note="beacon-flag"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="beacon-flag"]').innerText()).includes('PoE Wiki'),true,'Act 6 distinguishes burning-flag Wiki timing');
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubView [data-stop-phase="beacon-flag"]').innerText()).includes('BEFORE entering The Beacon'),true,'English Act 6 includes earliest stop');

@@ -376,7 +376,7 @@ function specialLoreRoute(target,scope){
  panel.append(el("div",descEN()?(info.caveatEN||info.caveat):info.caveat,"hubNotice"));
  if(scope==="Vaal")panel.append(el("div",tr("ข้อจำกัดโหมด: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดใน Ruthless จึงยังใช้คู่มือนี้รับรอง No Stone Unturned 140 ชิ้นในโหมดนั้นไม่ได้","Mode limitation: the PoE Wiki states that Vaal Side Areas do not appear in Ruthless. This historical guide cannot certify all 140 No Stone Unturned entries in that mode."),"hubResearchConflict"));
  const source=el("a",tr("คู่มือ No Stone Unturned (PoE Wiki)","No Stone Unturned guide (PoE Wiki)"));source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
- const refs=el("p",undefined,"hubSubtle");refs.append(tr("อ้างอิง Wiki ปี 2025 · ยังไม่รับรองแพตช์ 3.30 · ","Wiki 2025 historical evidence · patch 3.30 not verified · "),source);panel.append(refs);
+ const refs=el("p",undefined,"hubSubtle");refs.append(tr("อ้างอิง Wiki ปี 2025 · ตรวจชื่อ Lore ที่พบจริงใน 3.29 · ","Historical 2025 Wiki reference · confirm the actual 3.29 lore found · "),source);panel.append(refs);
  function group(id,name,hint,ids,defaultOpen){
   const filtered=ids.map(id=>L.entries.find(x=>x.id===id)).filter(Boolean);
   const n=filtered.filter(x=>checked.has(x.id)).length;
@@ -786,7 +786,7 @@ chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.tri
 panel.append(chapter);
 });const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
 function renderCategory(target,type){const panel=section(categoryName(type)+" · "+names[type]);
-const desc={lore:tr("Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่","140 historical Lore entries, including Letters of Exile, Library books, Labyrinth and Vaal Side Areas. Names and locations may have changed in later patches."),
+const desc={lore:tr("Lore 140 รายการแบ่งเป็น Campaign, Labyrinth และ Vaal Side Areas โดย Letters of Exile และหนังสือ Library อาจออกซ้ำ ต้องนับเฉพาะข้อความ/เล่มที่ยังไม่ได้เก็บจริง","140 historical Lore entries across the campaign, Labyrinth and Vaal Side Areas. Letters of Exile and Library book variants can repeat; only mark a distinct entry after encountering it."),
 waypoints:tr("รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด","91 legacy Waypoint entries from patch 3.9 data. The actual current patch requirements may differ."),
 sidequests:tr("Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง","30 historical optional quest entries. Confirm each quest state and turn-in in-game before marking it."),
 ears:tr("All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)","All Ears: 484 historical dialogue topics. Mark only conversations actually heard in-game.")};

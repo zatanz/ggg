@@ -66,12 +66,11 @@ check(hubCSS.includes('.hubEvidencePanel>summary:focus-visible')&&hubCSS.include
 const walkSection=hubSource.slice(hubSource.indexOf('function actSteamGuide('),hubSource.indexOf('function renderRoute('));
 check(walkSection.indexOf('const actions=el("ol"')>=0&&walkSection.indexOf('const actions=el("ol"')<walkSection.indexOf('const taskNav=el('),'what-to-do instructions should precede detailed checklist navigation');
 check(hubSource.includes('const manageTitle=document.querySelector("#hubManage>summary")')&&hubSource.includes('const notice=document.querySelector(".hubDataNotice")'),'legacy help and patch label not updated on language switch');
-// The live route must be one actionable surface: source-backed guidance and its
-// canonical checkbox share a panel; duplicates live behind an optional archive.
-check(hubSource.includes('inline.append(checklist)')&&hubSource.includes('checklist.querySelector(".hubText")?.remove()'),'active quest checklist must be adjacent to guidance without duplicate card text');
-check(hubSource.includes('writeMarks(type,x.id,wasChecked)')&&hubSource.includes('const next=fromCurrent&&wasChecked?'),'inline checklist must retain canonical state and focus the next task');
-check(hubSource.includes('const shelf=el("details",undefined,"hubWalkArchive")')&&hubSource.includes('archived.forEach(node=>shelf.append(node))'),'historical per-category checklist must remain accessible under one disclosure');
-check(hubSource.includes('const advance=el("button",tr("ดูขั้นตอนถัดไป"')&&hubSource.includes('advance.onclick=()=>goto(chosen+1,true,"select")'),'fully marked quest step must offer a next-step action');
+// The live route and review use the same checkbox handler and canonical IDs.
+check(hubSource.includes('const mark=el("label",undefined,"hubInlineMark")')&&hubSource.includes('if(current?.type===type&&current.id===id)continue;'),'active quest checkbox must have a label and appear once in its stage');
+check(hubSource.includes('itemCheckbox(current.type,item,false,details,')&&hubSource.includes('writeMarks(previous.type,previous.id,false)'),'inline mark and undo must share canonical persistence');
+check(hubSource.includes('const shelf=el("details",undefined,"hubWalkArchive")')&&hubSource.includes('if(node.querySelector("input"))shelf.append(node);'),'historical per-category checklist must remain accessible under one disclosure');
+check(hubSource.includes('advance.dataset.inlineAdvance="true"')&&hubSource.includes('advance.onclick=()=>goto(chosen+1,true,"task")'),'fully marked quest step must offer a next-step action');
 check(hubCSS.includes('.hubInlineCurrentChecklist .hubInlineMark')&&hubCSS.includes('.hubWalkArchive>summary'),'inline confirmation and optional archive need accessible styles');
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));
 if(errors.length)process.exitCode=1;

@@ -2,7 +2,7 @@
 
 ## UX Update — 13 November 2026: One task, one checkbox
 
-The current quest-step panel now combines source-linked instructions, STOP guidance and the **same canonical checklist checkbox**. Checking it records actual user input and immediately brings the next unchecked item into the same panel, retaining keyboard focus. The historical per-category lists are available in one initially collapsed **Review every item in this step** section; this avoids asking first-time players to scroll between instructions and a second checklist. When a stage is fully marked, a next-stage preview button appears; the UI still cannot verify achievement completion without game evidence.
+The quest-step panel presents instructions, location and timing, any applicable STOP warning, and the canonical checkbox in reading order. Checking an item moves keyboard focus to the next unchecked item in the same panel. After the final check, focus moves to **View next quest step** when another step is available. **Undo last check** restores the most recent inline check while the step is open. The collapsed **Review other items in this step** section provides access to the rest of the stage checklist.
 
 Navigation safeguards remain: the main Next button warns before skipping any unfinished checklist entries, while forward selection across explicit STOP checkpoints requires confirmation. The exact stable IDs, per-character local storage, and backup compatibility are unchanged.
 

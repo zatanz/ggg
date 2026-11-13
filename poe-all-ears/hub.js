@@ -27,6 +27,7 @@ const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null,referenceShelfOpen:false,evidenceExpandedByAct:{}};
+let lastInlineMark=null;
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -48,11 +49,11 @@ const raw=safeParse(type==="lore"?LORE:EXTRA),rec=raw&&raw.version===1&&raw.byCh
 return validIDs(type,rec&&rec[type]);}
 function progress(type){return entries(type).length;}
 function getBackupState(key){const data=safeParse(key);return data&&data.version===1&&data.byCharacter&&typeof data.byCharacter==="object"&&!Array.isArray(data.byCharacter)?data:{version:1,byCharacter:{}};}
-function writeMarks(type,id,done){if(type==="ears"){const ok=B.mark(id,done);if(ok)refresh();return;}
-const key=type==="lore"?LORE:EXTRA, char=active();if(!char)return;
+function writeMarks(type,id,done){if(type==="ears")return B.mark(id,done);
+const key=type==="lore"?LORE:EXTRA, char=active();if(!char)return false;
 const s=getBackupState(key),rec=s.byCharacter[char.id]||{},before=validIDs(type,rec[type]),next=done?[...new Set(before.concat(id))]:before.filter(i=>i!==id);
 rec[type]=validIDs(type,next);s.byCharacter[char.id]=rec;
-try{localStorage.setItem(key,JSON.stringify(s));refresh();}catch(e){alert(tr("บันทึกข้อมูลไม่ได้ กรุณาสำรองข้อมูลและตรวจพื้นที่เก็บข้อมูลเบราว์เซอร์","Could not save progress. Back up your data and check browser storage availability."));}}
+try{localStorage.setItem(key,JSON.stringify(s));return true;}catch(e){alert(tr("บันทึกข้อมูลไม่ได้ กรุณาสำรองข้อมูลและตรวจพื้นที่เก็บข้อมูลเบราว์เซอร์","Could not save progress. Back up your data and check browser storage availability."));return false;}}
 function getRisk(x){if(x.type!=="ears")return null;return (routes[x.act]||[]).find(r=>r.id===x.id)||null;}
 function sortedAllEars(act){const base=E.items.filter(x=>String(x.act)===String(act)),r=routes[Number(act)]||[];if(!r.length)return base;
 const byId=new Map(base.map(x=>[x.id,x]));return r.map(x=>byId.get(x.id)).filter(Boolean);}
@@ -95,7 +96,6 @@ function renderQuickStart(){
  const groups={ears:new Set(entries("ears")),lore:new Set(entries("lore")),waypoints:new Set(entries("waypoints")),sidequests:new Set(entries("sidequests"))};
  const fields={ears:"dialogueIds",lore:"loreIds",waypoints:"waypointIds",sidequests:"sidequestIds"};
  const index=phases.findIndex(p=>Object.entries(fields).some(([t,key])=>(p[key]||[]).some(id=>!groups[t].has(id))));
- const phase=index>=0?phases[index]:phases[0];
  const eyebrow=el("span",tr("เริ่มที่นี่ · สำหรับผู้เล่นครั้งแรก","START HERE · First-time completion guide"),"hubBeginnerEyebrow");
  card.append(eyebrow,el("h2",tr("ทำ Achievement 100% แบบทีละขั้น","Your first 100% achievement run, step by step")));
  card.append(el("p",tr("ไม่ต้องอ่านทุกตาราง เริ่มจากตัวละครที่เล่นอยู่ เลือก Act ที่กำลังทำ แล้วตรวจสิ่งที่ต้องเก็บก่อนเดินเรื่องต่อ","You do not need to learn the entire tracker. Choose your character and current Act, then check the next task before advancing."),"hubBeginnerIntro"));
@@ -115,29 +115,6 @@ function renderQuickStart(){
  select.value=chosen;
  select.onchange=()=>{state.routeAct=select.value;state.act=select.value;if(state.tab!=="route")openTab("route");else{renderToolbar();renderView();renderSummary();}document.querySelector("#hubBeginnerAct")?.focus({preventScroll:true});};
  picker.append(select);card.append(picker);
- const currentBox=el("div",undefined,"hubBeginnerCurrent");currentBox.dataset.beginnerScope=chosen;
- currentBox.append(el("strong",tr("สิ่งที่ควรทำต่อ","What to do next")));
- if(current.done===current.all){
-  currentBox.append(el("p",tr("ติ๊กครบในพื้นที่นี้แล้ว แต่ต้องตรวจยอดในเกมอีกครั้ง","Every item here is marked; verify the actual in-game counters before treating it as complete.")));
- }else if(phase){
-  currentBox.append(el("p",(descEN()?(phase.headingEN||phase.place):phase.heading),"hubBeginnerQuest"));
-  currentBox.append(el("p",tr("ไปที่: ","Go to: ")+gameName(phase.place)+" · "+tr("เควส: ","Quest: ")+gameName(phase.quest),"hubBeginnerWhere"));
-  const steps=descEN()?(phase.actionsEN||[]):phase.actions||[];
-  if(steps.length){
-   currentBox.append(el("strong",tr("ต้องทำอะไรในเกม","What to do in-game")));
-   const guide=el("ol",undefined,"hubBeginnerInstructions");
-   steps.slice(0,3).forEach(x=>guide.append(el("li",x)));
-   currentBox.append(guide);
-   if(steps.length>3)currentBox.append(el("small",tr("เปิดคู่มือด้านล่างเพื่อดูขั้นตอนที่เหลือ","Open the quest guide below for the remaining steps")));
-  }else currentBox.append(el("p",tr("ตรวจบทสนทนาและรายการในช่วงนี้จากคู่มือด้านล่างก่อนเดินเควสต่อ","Review this stage's dialogue and checklist below before advancing."),"hubBeginnerWhere"));
-  currentBox.append(el("small",tr("เหลือ ","Remaining ")+(current.all-current.done)+tr(" รายการในพื้นที่นี้ · ติ๊กเมื่อทำในเกมจริงแล้วเท่านั้น"," items in this area · check only after collecting in-game")));
-  if(phase.stop&&(phase.stopIds||[]).some(id=>!groups.ears.has(id))){
-   currentBox.append(el("p",tr("จุดที่ต้องระวังก่อนทำเควสต่อ: ","Before you advance, check: ")+(descEN()?(phase.stopEN||phase.stop):phase.stop),"hubBeginnerStop"));
-  }
- }else{
-  currentBox.append(el("p",tr("ยังมีรายการค้างในพื้นที่นี้ เปิดคู่มือเพื่อดูรายการตามหมวด","Some entries remain here. Open the guide to review the available checklist categories.")));
- }
- card.append(currentBox);
  const action=el("button",current.done===current.all?tr("ตรวจรายการในพื้นที่นี้","Review this area"):tr("เปิดขั้นตอนที่ต้องทำต่อ","Show my next step"),"hubBeginnerCTA");
  action.type="button";action.dataset.beginnerContinue="true";
  action.onclick=()=>{
@@ -244,40 +221,45 @@ function findRelevantStage(type,x){
  const index=stages.findIndex(p=>(p[field]||[]).includes(x.id));
  return index<0?null:{index,phase:stages[index]};
 }
-function itemCard(type,x){
- const done=entries(type).includes(x.id),original=window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined);
- const guide=descEN()?LANG.englishHelp(type,x,original):original;
- const row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
- row.dataset.state=done?"done":"todo";
- const shown=label(x,type),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
+function itemGuide(type,item){
+ const original=window.POE_ITEM_DESCRIPTIONS?.get(type,item,type==="ears"&&item.act===2?getSafety():undefined);
+ return {original,guide:descEN()?LANG.englishHelp(type,item,original):original};
+}
+function itemCheckbox(type,x,done,{original,guide},inlineTask){
+ const box=el("input"),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
  box.type="checkbox";box.checked=done;
  box.dataset.trackType=type;box.dataset.trackId=String(x.id);
  box.setAttribute("aria-label",(done?tr("ยกเลิกเครื่องหมายว่าเก็บแล้ว — ","Unmark collected — "):tr("ทำเครื่องหมายว่าเก็บแล้ว — ","Mark as collected — "))+canonical);
  box.addEventListener("change",()=>{
-   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.29):\\n","This dialogue may be missable (historical guide, not patch 3.29-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
    const restoreFocus=document.activeElement===box;
-   const fromCurrent=Boolean(box.closest(".hubInlineCurrentChecklist"));
+   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.29):\\n","This dialogue may be missable (historical guide, not patch 3.29-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
    const wasChecked=box.checked;
-   writeMarks(type,x.id,wasChecked);
+   if(!writeMarks(type,x.id,wasChecked)){box.checked=done;return;}
+   if(inlineTask){
+     state.steamFocusByAct[inlineTask.act]=inlineTask.index;
+     lastInlineMark={...inlineTask,type,id:x.id};
+   }
+   refresh();
    if(restoreFocus){
-     // Completing the inline task replaces it with the next unresolved task.
-     // Keep the keyboard and viewport inside that same one-task workflow.
-     const next=fromCurrent&&wasChecked?document.querySelector('#hubView .hubInlineCurrentChecklist input[type="checkbox"]'):null;
+     const next=inlineTask?document.querySelector('#hubView .hubInlineCurrentChecklist input'):null;
      const same=[...document.querySelectorAll('#hubView input[data-track-type="'+type+'"][data-track-id="'+x.id+'"]')];
      const visible=same.find(node=>node.getClientRects().length>0);
-     const advance=fromCurrent&&wasChecked?document.querySelector('#hubView .hubNextAction [data-inline-advance="true"]'):null;
+     const advance=inlineTask?(document.querySelector('#hubView [data-inline-advance="true"]')||
+       document.querySelector('#hubView [data-inline-undo]')):null;
      const target=next||advance||visible;
      if(target){
        target.focus({preventScroll:true});
-       if(fromCurrent&&wasChecked)target.closest(".hubNextAction")?.scrollIntoView({block:"nearest"});
-     }else if(fromCurrent){
-       const summary=document.querySelector('#hubView .hubNextAction');
-       summary?.setAttribute("tabindex","-1");
-       summary?.focus({preventScroll:true});
-       summary?.scrollIntoView({block:"nearest"});
+       target.scrollIntoView({block:"nearest"});
      }
    }
  });
+ return box;
+}
+function itemCard(type,x){
+ const done=entries(type).includes(x.id),details=itemGuide(type,x),{original,guide}=details;
+ const row=el("div",undefined,"hubItem"+(done?" done":"")),box=itemCheckbox(type,x,done,details),info=el("div",undefined,"hubText");
+ row.dataset.state=done?"done":"todo";
+ const shown=label(x,type),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
  const name=el("div",shown,"hubName");
  if(LANG.get().names==="th"&&shown!==canonical){name.title=canonical;const originalName=el("small",canonical,"hubCanonicalName");originalName.lang="en";info.append(name,originalName);}else info.append(name);
  const meta=el("div",undefined,"hubCompactMeta");
@@ -434,7 +416,7 @@ function criticalPanel(act){
       const hint=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
       const displayedHint=descEN()?LANG.englishHelp("ears",item,hint):hint;
       if(check.checked&&hint?.caution&&!confirm(tr("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.29):\n","Missable topic in the 2025 Wiki (not verified for patch 3.29):\n")+(displayedHint?.caution||hint.caution)+"\n\n"+tr("ฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?","Did you finish listening to this topic in-game?"))){check.checked=false;return;}
-      writeMarks("ears",id,check.checked);
+      if(writeMarks("ears",id,check.checked))refresh();else check.checked=already.has(id);
     });
     line.append(check,info,marked);req.append(line);
   }
@@ -595,8 +577,14 @@ function actSteamGuide(act){
    const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
    state.skippedRisk=outstanding.length?{act,from:outstanding[0].id,count:outstanding.length}:null;
   }else if(state.skippedRisk?.act===act&&target<=chosen){state.skippedRisk=null;}
+  lastInlineMark=null;
   state.steamFocusByAct[act]=target;renderView();
   const activePhase=document.querySelector('[data-steam-act="'+act+'"]');
+  if(focusControl==="task"){
+   const heading=activePhase?.querySelector(".hubWalkFocus h4");
+   if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:"start"});}
+   return;
+  }
   activePhase?.scrollIntoView({block:"start"});
   const nav=activePhase?.querySelector('.hubWalkNavigator');
   const candidate=focusControl==="prev"?nav?.querySelector('button[data-step-nav="prev"]'):
@@ -608,6 +596,7 @@ function actSteamGuide(act){
  select.onchange=()=>goto(Number(select.value),true);
  const prev=el("button",tr("ก่อนหน้า","Previous")),next=el("button",tr("ถัดไป","Next"));
  prev.type="button";next.type="button";prev.dataset.stepNav="prev";next.dataset.stepNav="next";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
+ next.hidden=phaseDone===phaseTotal&&!next.disabled;
  prev.onclick=()=>goto(chosen-1,false,"prev");
  next.onclick=()=>{
   // The primary Next action must not silently bypass ordinary unfinished tasks.
@@ -635,7 +624,7 @@ function actSteamGuide(act){
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
  jump.dataset.jumpIncomplete="true";jump.disabled=start<0||chosen===start;
  jump.onclick=()=>goto(start<0?0:start,true,"jump");
- control.append(position,jump,select,prev,next);box.append(control);
+ control.append(position,select,prev,next,jump);box.append(control);
  if(state.skippedRisk?.act===act){
   const skipped=state.skippedRisk,first=phases.findIndex(p=>p.id===skipped.from),origin=phases[first];
   if(origin&&first>=0){
@@ -644,7 +633,7 @@ function actSteamGuide(act){
    notice.append(el("strong",tr("คุณข้ามจุดตรวจที่ยังไม่ได้บันทึก "+skipped.count+" ช่วง","You skipped "+skipped.count+" unchecked STOP checkpoint(s)")),
     el("p",tr("จุดแรก: ","First unresolved step: ")+(descEN()?(origin.stopEN||origin.headingEN||origin.place):origin.stop||origin.heading)));
    const review=el("button",tr("กลับไปตรวจจุดแรก","Review first missed checkpoint"));review.type="button";
-   review.onclick=()=>{state.skippedRisk=null;state.steamFocusByAct[act]=first;renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});};
+   review.onclick=()=>{state.skippedRisk=null;goto(first,false,"task");};
    notice.append(review,el("small",tr("การเลื่อนหน้าคู่มือไม่เปลี่ยนสถานะเควสต์ในเกม · ยังไม่ใช่หลักฐานว่าเก็บครบ","Guide navigation does not change game quest states or certify achievement completion.")));
    box.insertBefore(notice,control);
   }
@@ -669,14 +658,20 @@ function actSteamGuide(act){
  const focus=el("section",undefined,"hubNextAction");focus.dataset.nextAction=phase.id;
  const focusTitle=el("strong",current?tr("รายการที่ควรตรวจต่อในช่วงนี้","Next item to verify in this step"):tr("รายการในช่วงนี้ทำเครื่องหมายครบแล้ว","All items in this step are checked"));
  focus.append(focusTitle);
+ const actions=el("ol",undefined,"hubWalkActions");
+ const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
+ instructions.forEach(txt=>actions.append(el("li",txt)));
+ focus.append(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),actions);
+ const charId=active()?.id;
+ const previous=lastInlineMark?.act===act&&lastInlineMark.index===chosen&&lastInlineMark.charId===charId&&
+   checkedGroups[lastInlineMark.type].has(lastInlineMark.id)?lastInlineMark:null;
+ let inline,advance;
  if(current){
   const item=collections[current.type].find(x=>x.id===current.id);
-  const typeName=current.type==="ears"?"All Ears":current.type==="lore"?"No Stone Unturned":current.type==="waypoints"?"Locomancer":"No Loose Ends";
-  focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+typeName,"hubNextActionItem"));
+  focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+names[current.type],"hubNextActionItem"));
   // Tell the player what this exact entry requires, not just which achievement category contains it.
   if(item){
-   const original=window.POE_ITEM_DESCRIPTIONS?.get(current.type,item,current.type==="ears"&&item.act===2?getSafety():undefined);
-   const guide=descEN()?LANG.englishHelp(current.type,item,original):original;
+   const details=itemGuide(current.type,item),{guide}=details;
    const facts=el("dl",undefined,"hubCurrentTaskFacts");
    for(const [caption,value] of [
      [tr("ต้องทำอะไร","Do this"),guide?.action],
@@ -688,29 +683,29 @@ function actSteamGuide(act){
     pair.append(el("dt",caption),el("dd",value));facts.append(pair);
    }
    if(facts.childElementCount)focus.append(facts);
-   else focus.append(el("p",tr("เปิดรายการด้านล่างเพื่อดูชื่อที่ต้องตรวจในเกม ไม่มีเงื่อนไขรายรายการที่ยืนยันได้เพิ่ม","Open the exact checklist entry below to verify its in-game name. No additional verified per-item conditions are available."),"hubSubtle"));
+   if(guide?.caution){
+    const warning=el("div",undefined,"hubInlineWarning");
+    warning.id="hubCurrentItemWarning";
+    warning.append(el("strong",tr("ก่อนเดินเรื่องต่อ","Before advancing")),el("p",guide.caution));
+    focus.append(warning);
+   }
+   inline=el("div",undefined,"hubInlineCurrentChecklist");
+   inline.dataset.inlineChecklist=current.type+":"+current.id;
+   const mark=el("label",undefined,"hubInlineMark");
+   const checkbox=itemCheckbox(current.type,item,false,details,{act,index:chosen,charId});
+   if(focus.querySelector(".hubInlineWarning"))checkbox.setAttribute("aria-describedby","hubCurrentItemWarning");
+   checkbox.setAttribute("aria-label",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game")+" — "+label(item,current.type));
+   mark.append(checkbox,el("span",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game")));
+   inline.append(mark);
+  }else{
+   inline=el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle");
   }
-  // The checklist action belongs next to its gameplay instruction. Both views
-  // use the same persisted item ID and writeMarks handler, never separate state.
-  const inline=el("div",undefined,"hubInlineCurrentChecklist");
-  inline.dataset.inlineChecklist=current.type+":"+current.id;
-  inline.append(el("strong",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game"),"hubInlineChecklistTitle"));
-  if(item){
-   const checklist=itemCard(current.type,item);
-   // Name, location and conditions are already visible immediately above.
-   // Keep only the canonical action control and status; no duplicate card.
-   checklist.querySelector(".hubText")?.remove();
-   checklist.classList.add("hubInlineMark");
-   inline.append(checklist);
-  }else inline.append(el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle"));
-  focus.append(inline);
  }else{
-  focus.append(el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing."),"hubSubtle"));
+  inline=el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing."),"hubSubtle");
   if(chosen<phases.length-1){
-   const advance=el("button",tr("ดูขั้นตอนถัดไป","View next quest step"),"hubInlineAdvance");
+   advance=el("button",tr("ดูขั้นตอนถัดไป","View next quest step"),"hubInlineAdvance");
    advance.type="button";advance.dataset.inlineAdvance="true";
-   advance.onclick=()=>goto(chosen+1,true,"select");
-   focus.append(advance);
+   advance.onclick=()=>goto(chosen+1,true,"task");
   }
  }
  box.insertBefore(focus,control);
@@ -725,7 +720,25 @@ function actSteamGuide(act){
      const who=pending.map(id=>{const x=E.items.find(z=>z.id===id);return x?label(x,"ears"):"ID "+id;});
      gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pending.length+tr(" บทสนทนา: "," dialogue(s): ")+who.slice(0,3).join(" / ")+(who.length>3?tr(" และอีก "," and ")+(who.length-3)+" more":""),"hubStopPending"));
    }
-   box.insertBefore(gate,focus);
+   gate.id="hubCurrentStop";
+   focus.append(gate);
+   const checkbox=inline.querySelector("input");
+   if(checkbox)checkbox.setAttribute("aria-describedby",[checkbox.getAttribute("aria-describedby"),gate.id].filter(Boolean).join(" "));
+ }
+ focus.append(inline);
+ if(advance)focus.append(advance);
+ if(previous){
+  const undo=el("button",tr("เลิกทำเครื่องหมายล่าสุด","Undo last check"),"hubInlineUndo");
+  undo.type="button";undo.dataset.inlineUndo="true";
+  undo.onclick=()=>{
+   if(!writeMarks(previous.type,previous.id,false))return;
+   lastInlineMark=null;
+   refresh();
+   const restored=document.querySelector("#hubView .hubInlineCurrentChecklist input");
+   restored?.focus({preventScroll:true});
+   restored?.scrollIntoView({block:"nearest"});
+  };
+  focus.append(undo);
  }
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
@@ -785,21 +798,14 @@ function actSteamGuide(act){
  if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai report"),el("p",phase.patchProblem));alert.append(original);}
  box.append(alert);
  }
- const actions=el("ol",undefined,"hubWalkActions");
- const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
- instructions.forEach(txt=>actions.append(el("li",txt)));
- // The instruction list is the primary task, not another card below the warnings and controls.
- const inlineChecklist=focus.querySelector(".hubInlineCurrentChecklist");
- focus.insertBefore(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),inlineChecklist);
- focus.insertBefore(actions,inlineChecklist);
  if(descEN()&&!phase.actionsEN){
   const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
   original.append(el("summary","Original Thai step-by-step instructions"));
   const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
  }
- const taskNav=el("div",undefined,"hubWalkTaskNav");taskNav.setAttribute("aria-label",tr("รายการในช่วงปัจจุบัน","Tasks in this step"));
+ const taskNav=el("div",undefined,"hubWalkTaskNav");taskNav.setAttribute("role","group");taskNav.setAttribute("aria-label",tr("รายการในช่วงปัจจุบัน","Tasks in this step"));
  for(const [type,ids] of Object.entries(phaseCount)){
-   if(!ids.length)continue;
+   if(!ids.some(id=>current?.type!==type||current.id!==id))continue;
    const saved=checkedGroups[type],finished=ids.filter(id=>saved.has(id)).length;
    const button=el("button",undefined,"hubWalkTaskJump"+(finished===ids.length?" isDone":""));
    button.type="button";button.dataset.jumpType=type;
@@ -809,11 +815,15 @@ function actSteamGuide(act){
    button.onclick=()=>{
      const area=box.querySelector('[data-walk-type="'+type+'"]');
      if(area?.tagName==="DETAILS")area.open=true;
-     if(area)area.scrollIntoView({block:"center"});
+     const heading=area?.querySelector("h4, summary");
+     if(heading){
+      if(heading.tagName!=="SUMMARY")heading.tabIndex=-1;
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView({block:"center"});
+     }
    };
    taskNav.append(button);
  }
- if(taskNav.childElementCount){box.append(el("p",tr("เปิดรายการที่ต้องเก็บในช่วงนี้:","Jump to this step’s required tasks:"),"hubSubtle hubTaskNavLead"),taskNav);}
  if(phase.visual){
    const v=phase.visual;
    const visual=el("details",undefined,"hubQuestVisual");
@@ -839,21 +849,33 @@ function actSteamGuide(act){
    links.append(full,source);body.append(links);
    visual.append(body);box.append(visual);
  }
+ function appendReviewItems(list,type,ids){
+  for(const id of ids){
+   if(current?.type===type&&current.id===id)continue;
+   const item=collections[type].find(entry=>entry.id===id);
+   if(item)list.append(itemCard(type,item));
+  }
+ }
  if(phase.dialogueIds.length){
  const npc=el("section",undefined,"hubWalkCategory");npc.dataset.walkType="ears";
  npc.append(el("h4",tr("บทสนทนาที่ต้องเก็บช่วงนี้","NPC dialogues in this step")),el("p",tr("ติ๊กเฉพาะเมื่อฟังในเกมจริงแล้ว · รายการอื่นยังอยู่ในหมวดหลักด้วย","Check only after hearing the in-game dialogue. These use the original checklist records."),"hubSubtle"));
  const rows=el("div",undefined,"hubList");
  const ids=phase.dialogueIds.slice(0,5),hidden=phase.dialogueIds.slice(5);
- ids.forEach(id=>{const x=E.items.find(z=>z.id===id);if(x)rows.append(itemCard("ears",x))});
+ appendReviewItems(rows,"ears",ids);
  npc.append(rows);
  if(hidden.length){
    const details=el("details",undefined,"hubWalkMore");details.open=steamExpanded.has(phase.id);
    details.append(el("summary",tr("เปิดบทสนทนาเพิ่มอีก ","Show ")+hidden.length+tr(" รายการ"," more dialogues")));
-   const more=el("div",undefined,"hubList");hidden.forEach(id=>{const x=E.items.find(z=>z.id===id);if(x)more.append(itemCard("ears",x))});
+   const more=el("div",undefined,"hubList");appendReviewItems(more,"ears",hidden);
    details.append(more);details.addEventListener("toggle",()=>{if(!details.isConnected)return;if(details.open)steamExpanded.add(phase.id);else steamExpanded.delete(phase.id);});
-   if(pending.some(id=>hidden.includes(id))){
-     const gate=box.querySelector('[data-stop-phase="'+phase.id+'"]');
-     if(gate){const reveal=el("button",tr("เปิดรายการบทสนทนาที่ต้องตรวจ","Reveal required dialogue"));reveal.type="button";reveal.onclick=()=>{details.open=true;details.scrollIntoView({block:"center"});};gate.append(reveal);}
+   if(pending.some(id=>hidden.includes(id)&&id!==current?.id)){
+     const gate=focus.querySelector(".hubStopGate");
+     const reveal=el("button",tr("เปิดรายการบทสนทนาที่ต้องตรวจ","Reveal required dialogue"));
+     reveal.type="button";reveal.onclick=()=>{
+      details.closest(".hubWalkArchive").open=true;
+      details.open=true;
+      details.querySelector("summary").focus();
+     };gate.append(reveal);
    }
    npc.append(details);
  }
@@ -867,7 +889,7 @@ function actSteamGuide(act){
    section.append(el("summary",tr("Lore ในช่วงนี้ · ","Lore in this step · ")+found+" / "+phase.loreIds.length));
    section.append(el("p",tr(act==="1"?"Letters of Exile อาจสุ่มซ้ำ ให้ตรวจยอดใน Achievement ที่เกมนับจริง":phase.id==="library"?"หนังสือใน Library อาจมีข้อความซ้ำ ให้ตรวจชื่อครบทั้ง 17 แบบกับยอดในเกมจริง":"อ่าน Lore ตามชื่อและพื้นที่ในเกมก่อนทำเครื่องหมาย; ข้อมูลยังไม่รับรองแพตช์ 3.29","Check each exact lore title in-game before marking. Historic mapping is not patch 3.29 certified."),"hubSubtle"));
    const list=el("div",undefined,"hubList");
-   phase.loreIds.forEach(id=>{const x=L.entries.find(z=>z.id===id);if(x)list.append(itemCard("lore",x))});
+   appendReviewItems(list,"lore",phase.loreIds);
    section.append(list);box.append(section);
  }
  for(const [type,ids,checked,heading] of [
@@ -881,13 +903,13 @@ function actSteamGuide(act){
    group.append(el("summary",heading+tr(" ในช่วงนี้ · "," in this step · ")+ids.filter(id=>checked.has(id)).length+" / "+ids.length));
    group.append(el("p",tr(type==="waypoints"?"ติ๊กเมื่อเปิด Waypoint จริงในเกม · รหัสเดิมร่วมกับสรุป Act":"ติ๊กหลังทำเควสต์เสร็จในเกม · รหัสเดิมร่วมกับสรุป Act",type==="waypoints"?"Check only after activating this Waypoint in-game.":"Check only after completing this optional quest in-game."),"hubSubtle"));
    const list=el("div",undefined,"hubList");
-   ids.forEach(id=>{const x=collections[type].find(item=>item.id===id);if(x)list.append(itemCard(type,x));});
+   appendReviewItems(list,type,ids);
    group.append(list);box.append(group);
  }
  // Historical inventory remains accessible, but never competes with the current
  // instruction + checkbox. Reuse the exact same entries and persistence handlers.
  const archived=[...box.querySelectorAll("[data-walk-type]")];
- if(archived.length){
+ if(archived.some(group=>group.querySelector("input"))){
   const shelf=el("details",undefined,"hubWalkArchive");
   shelf.dataset.archivePhase=phase.id;
   const archiveKey=act+":"+phase.id+":archive";
@@ -895,15 +917,16 @@ function actSteamGuide(act){
   shelf.addEventListener("toggle",()=>{if(!shelf.isConnected)return;
    if(shelf.open)walkExpanded.add(archiveKey);else walkExpanded.delete(archiveKey);
   });
-  const archivedCount=Object.values(phaseCount).reduce((sum,ids)=>sum+ids.length,0);
-  shelf.append(el("summary",tr("ตรวจรายการทั้งหมดของช่วงนี้ · ","Review every item in this step · ")+archivedCount+tr(" รายการ"," items")));
+  const archivedCount=archived.reduce((count,group)=>count+group.querySelectorAll("input[data-track-id]").length,0);
+  shelf.append(el("summary",tr("ตรวจรายการอื่นในช่วงนี้ · ","Review other items in this step · ")+archivedCount+tr(" รายการ"," items")));
   shelf.append(el("p",tr("ใช้เมื่ออยากย้อนตรวจหลายรายการพร้อมกัน ไม่จำเป็นต้องเปิดเพื่อทำรายการปัจจุบัน","Optional bulk review. You do not need this section to mark the current task."),"hubSubtle"));
-  const navLead=box.querySelector(".hubTaskNavLead");
-  if(navLead) shelf.append(navLead);
   if(taskNav.childElementCount) shelf.append(taskNav);
-  archived.forEach(node=>shelf.append(node));
+  archived.forEach(node=>{
+   if(node.querySelector("input"))shelf.append(node);
+   else node.remove();
+  });
   box.append(shelf);
- }
+ }else archived.forEach(node=>node.remove());
  const foot=el("div",undefined,"hubWalkFooter");
  const ref=el("a",tr("ตรวจลำดับกับคู่มือ Steam","Review historical Steam route"));ref.href=data.source;ref.target="_blank";ref.rel="noopener noreferrer";
  foot.append(el("span",tr("ยังไม่ได้ทดสอบจริงในแพตช์ 3.29 · สีแดงคือข้อควรหยุดตรวจ ไม่ใช่สถานะที่เกมส่งมา","Not tested in patch 3.29 · STOP warnings are based on research, not live game telemetry")),ref);box.append(foot);
@@ -1141,7 +1164,7 @@ function vaalPanel(){const box=el("div",undefined,"hubPanel");box.append(el("h3"
 box.append(el("div",tr("สำหรับ 3.29: ตารางนี้แสดง Lore ตามชื่อพื้นที่ ไม่ใช่การรับรองวิธีฟาร์มผ่าน Map Device ตรวจพื้นที่และ Lore ที่พบจริงก่อนติ๊ก","For 3.29: this area-to-lore table is not a certified Map Device farming route. Verify the actual area and lore before checking it."),"hubNotice"));
 const input=el("input");input.type="search";input.placeholder=tr("พิมพ์ชื่อ เช่น Concealed Caldarium","Type an area name, e.g. Concealed Caldarium");input.value=state.vaalQuery;input.setAttribute("aria-label",tr("ค้นหาชื่อ Vaal Side Area","Search Vaal Side Area name"));const result=el("div",undefined,"hubList");box.append(input,result);
 const show=()=>{result.replaceChildren();const q=input.value.trim().toLowerCase();if(q.length<2){result.append(el("p",tr("พิมพ์ชื่อพื้นที่อย่างน้อย 2 ตัวอักษร","Enter at least 2 characters to search for an area"),"hubSubtle"));return;}const entries=vaalMap.filter(x=>(x[0]+" "+x[2]).toLowerCase().includes(q)).slice(0,10);
-entries.forEach(m=>{const lore=L.entries.find(x=>x.act==="Vaal"&&x.name.toLowerCase().includes(m[1].toLowerCase()));const r=el("div",undefined,"hubItem"),info=el("div",undefined,"hubText");info.append(el("div",m[0],"hubName"),el("div",m[2]+" · "+(lore?lore.name+" · Wiki #"+(lore.wikiRow||"?"):tr("ยังไม่พบรายการที่ตรงกัน","No exact lore match yet")),"hubMeta"));if(lore){const b=el("button",entriesForVaal(lore)?tr("สำรวจแล้ว · ยกเลิก","Marked · undo"):tr("บันทึกว่าสำรวจแล้ว","Mark as collected"));b.onclick=()=>writeMarks("lore",lore.id,!entriesForVaal(lore));r.append(b);}r.prepend(info);result.append(r)});
+entries.forEach(m=>{const lore=L.entries.find(x=>x.act==="Vaal"&&x.name.toLowerCase().includes(m[1].toLowerCase()));const r=el("div",undefined,"hubItem"),info=el("div",undefined,"hubText");info.append(el("div",m[0],"hubName"),el("div",m[2]+" · "+(lore?lore.name+" · Wiki #"+(lore.wikiRow||"?"):tr("ยังไม่พบรายการที่ตรงกัน","No exact lore match yet")),"hubMeta"));if(lore){const b=el("button",entriesForVaal(lore)?tr("สำรวจแล้ว · ยกเลิก","Marked · undo"):tr("บันทึกว่าสำรวจแล้ว","Mark as collected"));b.onclick=()=>{if(writeMarks("lore",lore.id,!entriesForVaal(lore)))refresh();};r.append(b);}r.prepend(info);result.append(r)});
 if(!entries.length)result.append(el("div",tr("ไม่พบชื่อพื้นที่ในตารางต้นทาง อย่าเดาชื่อ Lore จากพื้นที่ที่ชื่อคล้ายกัน","This area is not in the checked reference list. Do not guess a Lore item from a similar name."),"hubNotice"));};input.oninput=()=>{state.vaalQuery=input.value;show();};show();const ref=el("a",tr("ที่มา: PoE Wiki — Vaal side area","Source: PoE Wiki — Vaal side area"));ref.href="https://www.poewiki.net/wiki/Vaal_side_area";ref.target="_blank";ref.rel="noopener noreferrer";box.append(ref);return box;}
 function entriesForVaal(lore){return entries("lore").includes(lore.id);}
 function currentReview(){const c=active(),s=safeParse(HUB);return s&&s.schema===2&&s.byCharacter&&s.byCharacter[c.id]||{};}

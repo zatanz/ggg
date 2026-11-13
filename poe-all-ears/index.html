@@ -211,7 +211,8 @@
       if(done)arr.push(id);
       c.checked=[...new Set(arr)].sort(function(a,b){return a-b});
       if(!commit(next))return false;
-      render();
+      renderProgress();
+      if(selectedPatch==="legacy-3.9")renderItems();
       return true;
     }
   };

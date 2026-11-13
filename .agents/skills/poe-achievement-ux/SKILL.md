@@ -33,6 +33,16 @@ Help players manually complete the four tracked achievements: All Ears, No Stone
 - Keep bilingual stage headlines, step actions and STOP reasons paired. If an English translation of an older Act is incomplete, retain conservative English guidance and an expandable original Thai evidence note.
 - Maintain phase-specific illustrations with explicit disclaimer and source link; visual design must make **which NPC to talk to BEFORE which irreversible action** legible without needing to interpret the illustration alone.
 
+## Act 7 and later — safe navigation and conflicts
+
+- Treat **all forward route controls** as potential skip actions. If a user selects a later phase that bypasses an unchecked STOP, show the count and first critical warning and ask for explicit confirmation. On Cancel, leave the current phase and selection unchanged. Never mark skipped dialogue as heard.
+- Keep a **First incomplete step** button alongside phase navigation, using existing per-character marks across all four categories. Disable it when already at that phase or everything is checked.
+- For phases consisting only of lore, waypoints and side quests, do not render empty NPC sections or irrelevant shortcut buttons. Display the actual current-stage progress across the present categories.
+- Source contradictions (legacy Excel, historical Steam and PoE Wiki) must be separately identified with links to each available primary source. Do not silently choose one source and label it verified for patch 3.30.
+- Model *after boss but before leaving the location* as a standalone phase when the source identifies a missable NPC, such as Sin after Maligaro and Yeena after Arakaali. Preserve the correct local ID as well as its separate Wiki row.
+- A visual check in English must name the exact NPC, topic and before/after boundary, rather than falling back to a generic English translation. Every figure must still be explicitly a conceptual illustration if not taken from a verified game client.
+- Check quest order against the game map: optional side quests may branch off the main route. Do not force linear Wiki row order when it conflicts with area progression; validate the exact ID set and document the branch.
+
 ## UX and accessibility
 - One task per phase as primary surface; present progressive disclosure. Keep explicit Previous and Next; warn but do not permanently block when stepping past unchecked STOP lines.
 - Maintain 44px minimum interactive target and visible keyboard focus, legible contrast, labelled controls, correct language semantics and mobile 375px with no horizontal document overflow.

@@ -417,6 +417,74 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Act 6 does not overflow narrow mobile viewport');
  assert.equal(await hub.locator('.hubActStrip [data-act="10"]').evaluate(x=>{const r=x.getBoundingClientRect();return r.width>=40&&r.left>=0&&r.right<=window.innerWidth}),true,'Mobile Act 10 is directly visible in the Act grid');
  await hub.setViewportSize({width:1280,height:900});
+ // Act 7 covers four original achievement sets and protects quest-state navigation.
+ await hub.locator('.hubActStrip [data-act="7"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"]').count(),1,'Act 7 source-led player route renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select option').count(),19,'Act 7 has 19 quest-state stages');
+ assert.equal((await hub.locator('#hubView [data-steam-act="7"]').innerText()).includes('45 บทสนทนา'),true,'Act 7 uses 45 canonical dialogue IDs');
+ assert.equal(await hub.locator('#hubView [data-jump-incomplete="true"]').isDisabled(),true,'First incomplete step is the default selection');
+ assert.equal(await hub.locator('#hubView [data-act-summary="7"]').evaluate(e=>e.open),false,'Act-wide overview starts collapsed');
+
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('3');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'The Silver Locket sidequest correctly linked');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),2,'Two Broken Bridge / Crypt route Waypoints linked');
+ assert.equal(await hub.locator('#hubView [data-phase="broken-bridge-crypt"] .hubQuestItem').count(),2,'Silver Locket and Maligaro Map displayed in context');
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('5');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="maligaro-after"]').innerText()).includes('Sin: Maligaro'),true,'Maligaro after-boss Sin warning is explicit');
+ hub.once('dialog',d=>d.dismiss());
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('7');
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'maligaro-after','Unmarked STOP prevents accidental jump in phase dropdown');
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').inputValue(),'5','Canceled skip restores previous dropdown option');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('7');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('Helena'),true,'Helena: The Den before-entry STOP is visible');
+ const denSources=hub.locator('#hubView [data-source-note="den-before"]');
+ await denSources.locator(':scope > summary').click();
+ assert.equal((await denSources.innerText()).includes('Fellshrine'),true,'Legacy Den timing conflict is disclosed');
+ await hub.locator('#hubView [data-jump-incomplete="true"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'bridge-sin-weylam','First incomplete button returns to earliest pending dialogue');
+
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('11');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="gruthkul-before"]').innerText()).includes('Eramir'),true,'Pre-Gruthkul Eramir warning attached to correct stage');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('13');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="fireflies-return"]').innerText()).includes('Fireflies'),true,'After seven Fireflies Yeena before Vaal City warning visible');
+ assert.equal(await hub.locator('#hubView [data-source-note="fireflies-return"]').count(),1,'Old Causeway / Wiki Vaal City source disagreement accessible');
+ const fireVisual=hub.locator('#hubView [data-visual-phase="fireflies-return"]');
+ await fireVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="fireflies-return"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await fireVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Fireflies picture is not claimed to be a real screenshot');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('14');
+ assert.equal(await hub.locator('#hubView [data-phase="causeway-kishara"] .hubWalkCategory').count(),0,'Lore/Waypoint stage does not render empty NPC list');
+ assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),0,'Empty NPC group does not create fake navigation choice');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),1,'Causeway lore follows the current zone');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'Kishara Star sidequest linked to Causeway');
+ const act7Character=await hub.locator('#character').inputValue();
+ await hub.locator('#hubGameNames').selectOption('both');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes("Kishara's Star"),true,'English proper name remains present in bilingual names');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('คิชารา'),true,'Act7 Thai name displayed in bilingual mode');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes("Kishara's Star"),true,'Concrete English Act7 guidance available');
+ await hub.locator('#hubGameNames').selectOption('th');
+ assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),"Kishara's Star",'Canonical English item title preserved in Thai-only display');
+ assert.equal(await hub.locator('#character').inputValue(),act7Character,'Switching languages keeps selected character');
+ assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'causeway-kishara','Switching languages preserves selected phase');
+ await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('17');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="temple-arakaali-after"]').innerText()).includes('before leaving'),true,'English post-Arakaali Yeena STOP preserves exact location');
+ const arakaaliVisual=hub.locator('#hubView [data-visual-phase="temple-arakaali-after"]');
+ await arakaaliVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="temple-arakaali-after"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await arakaaliVisual.locator('.hubVisualCheck').innerText()).includes('INSIDE Temple of Decay'),true,'English visual follow-up identifies exact dialogue location');
+ await hub.locator('#hubGameNames').selectOption('en');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),5,'Act7 old five warning groups remain accessible');
+ await hub.setViewportSize({width:375,height:812});
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Act7 walkthrough and buttons fit mobile 375px without overflow');
+ await hub.setViewportSize({width:1280,height:900});
+
 
  await hub.locator('.hubActStrip [data-act="1"]').click();
 
@@ -557,7 +625,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
- for(const [act,count] of [[7,5],[8,2],[9,4]]){
+ for(const [act,count] of [[8,2],[9,4]]){
   await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
   assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act '+act+' shows one checkpoint in focus mode');
   assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),count,'Act '+act+' retains all checkpoints in step picker');

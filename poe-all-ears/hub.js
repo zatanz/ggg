@@ -26,7 +26,7 @@ const walkExpanded=new Set(); // Current-step Lore/Waypoint/sidequest disclosure
 const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -73,9 +73,14 @@ function openJourneyScope(scope){
  renderToolbar();renderView();renderSummary();
 }
 function fairgravesCurrentRisk(){
- const card=el("section",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";
- card.append(el("strong",tr("ก่อนเริ่ม All Ears ใน 3.29: มีรายงานว่าคุยกับ Fairgraves ไม่ได้","Before starting All Ears in 3.29: Fairgraves dialogue may be inaccessible")),
- el("p",tr("ผู้เล่นหลายคนและผู้จัดทำคู่มือ Steam รายงานว่าคุย Fairgraves ไม่ได้ในลีก 3.29 ส่งผลต่อบทสนทนา #34–38 ทั้ง 5 รายการ ซึ่งอาจทำให้ All Ears ไม่สำเร็จในลีกดังกล่าว ยังไม่ยืนยันว่าปัญหาเกิดกับทุกตัวละครหรือแก้ไขแล้ว","Players and the Steam guide author reported that Fairgraves dialogue in the 3.29 league may be unavailable, affecting five entries (#34–38). This may block All Ears on affected characters. It is not established whether every character is affected or the issue was fixed.")));
+ const card=el("details",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";
+ card.open=state.fairgravesExpanded===null?state.routeAct==="1":state.fairgravesExpanded;
+ // Persist only an explicit user toggle; automatic defaults track the selected Act.
+ card.addEventListener("click",event=>{if(event.target.closest("summary")&&event.currentTarget===card)state.fairgravesExpanded=!card.open;});
+ const summary=el("summary");
+ summary.append(el("strong",tr("Act 1 · รายงานปัญหา Fairgraves #34–38 ใน 3.29","Act 1 · reported Fairgraves #34–38 issue in 3.29")),
+ el("small",tr("รายงานจากผู้เล่น · เปิดดูหลักฐานและข้อควรระวัง","Player reports · expand for sources and precautions")));
+ card.append(summary,el("p",tr("ผู้เล่นหลายคนและผู้จัดทำคู่มือ Steam รายงานว่าคุย Fairgraves ไม่ได้ในลีก 3.29 ส่งผลต่อบทสนทนา #34–38 ทั้ง 5 รายการ ซึ่งอาจทำให้ All Ears ไม่สำเร็จในลีกดังกล่าว ยังไม่ยืนยันว่าปัญหาเกิดกับทุกตัวละครหรือแก้ไขแล้ว","Players and the Steam guide author reported that Fairgraves dialogue in the 3.29 league may be unavailable, affecting five entries (#34–38). This may block All Ears on affected characters. It is not established whether every character is affected or the issue was fixed.")));
  const actions=el("div",undefined,"hubCurrentRiskActions"),button=el("button",tr("ตรวจ Fairgraves ใน Act 1","Review Fairgraves in Act 1"));button.type="button";
  button.onclick=()=>{openJourneyScope("1");const detail=document.querySelector('[data-evidence-act="1"]');if(detail)detail.open=true;detail?.scrollIntoView({block:"start"});};
  const source=el("a",tr("คู่มือและรายงาน Steam","Steam guide and reports"));source.href="https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869";source.target="_blank";source.rel="noopener noreferrer";
@@ -91,7 +96,7 @@ function renderSummary(){
  const score=el("div",undefined,"hubMissionScore");
  score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+tr("% ที่บันทึกในเว็บ","% marked in this guide")));
  const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label",tr("ความคืบหน้า 4 Achievement ที่บันทึกไว้ในเว็บ","Progress marked for four tracked achievements"));hero.append(intro,score,bar);
- hero.append(fairgravesCurrentRisk());
+
  if(rulerChoice()==="Tasuni"){
    const integrity=el("div",undefined,"hubBranchWarning");integrity.dataset.rulerIntegrity="Tasuni";
    integrity.append(el("strong",tr("ข้อมูลไม่ครอบคลุมทางเลือก Tasuni ของ Act 9","Act 9 Tasuni branch is not represented in the legacy tracker")),
@@ -132,6 +137,7 @@ function renderSummary(){
  }else if(!first){
   hero.append(el("p",tr("ติ๊กครบทุกช่องแล้ว แต่ยังต้องเทียบยอด Achievement กับเกมจริง","All manual checklist entries are checked; verify actual achievements in-game."),"hubSubtle"));
  }
+ hero.append(fairgravesCurrentRisk());
  const sourceAlert=el("details",undefined,"hubEvidencePanel hubGlobalEvidence");
  sourceAlert.dataset.evidenceScope="global";
  const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจข้อมูลที่อาจทำให้พลาด: Waypoint / Bandits / Vaal","Check potentially missable steps: Waypoints / Bandits / Vaal")),

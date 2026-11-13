@@ -649,3 +649,14 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubFirstMissing button:hover{background:#40515c}
 .hubFirstMissing button:focus-visible,.hubMissionNext button:focus-visible{outline:3px solid #ffe1a6;outline-offset:3px}
 @media(max-width:600px){.hubMissionNext{flex-direction:column;align-items:stretch}.hubMissionNext button{width:100%}.hubFirstMissing{align-items:stretch;flex-direction:column}.hubFirstMissing button{width:100%}}
+
+
+/* Compact source disclosure: never hide the reported Act 1 risk label, but keep secondary evidence off the main task path. */
+.hubCurrentPatchRisk{margin:6px 0;min-width:0;padding:0;overflow:hidden}
+.hubCurrentPatchRisk>summary{cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:9px;padding:12px 14px;list-style-position:inside}
+.hubCurrentPatchRisk>summary strong{display:block;font-size:13px;line-height:1.5;color:#ffe0ac;overflow-wrap:anywhere}
+.hubCurrentPatchRisk>summary small{display:block;font-size:11px;color:#dfcbb2;margin-top:3px;line-height:1.5}
+.hubCurrentPatchRisk[open]>summary{border-bottom:1px solid #76563c}
+.hubCurrentPatchRisk>p,.hubCurrentPatchRisk>.hubCurrentRiskActions,.hubCurrentPatchRisk>.hubSubtle{margin-left:14px;margin-right:14px}
+.hubCurrentPatchRisk>summary:focus-visible{outline:3px solid #ffe3a1;outline-offset:-4px}
+@media(max-width:600px){.hubCurrentPatchRisk>summary{padding:10px 12px;gap:5px}.hubCurrentPatchRisk>p,.hubCurrentPatchRisk>.hubCurrentRiskActions,.hubCurrentPatchRisk>.hubSubtle{margin-left:12px;margin-right:12px}}

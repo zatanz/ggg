@@ -134,9 +134,12 @@ function renderQuickStart(){
  action.onclick=()=>{
   if(index>=0)state.steamFocusByAct[chosen]=index;
   openJourneyScope(chosen);
-  document.querySelector('[data-steam-act="'+chosen+'"]')?.scrollIntoView({block:"start"});
+  const walkthrough=document.querySelector('[data-steam-act="'+chosen+'"]');
+  if(walkthrough){
+   walkthrough.tabIndex=-1;walkthrough.focus({preventScroll:true});walkthrough.scrollIntoView({block:"start"});
+  }else document.querySelector('#hubView')?.scrollIntoView({block:"start"});
  };
- card.append(action,el("p",tr("คำเตือน STOP เป็นข้อควรระวังจากแหล่งข้อมูล ไม่ใช่หลักฐานยืนยันว่าเควสปลอดภัยใน 3.29 · ความคืบหน้า "+allChecked+" / 745 เป็นเพียงการติ๊กด้วยตัวเอง","STOP warnings are research-based, not proof of a safe 3.29 quest state. Your "+allChecked+" / 745 checks are manual, not game verification."),"hubBeginnerFineprint"));
+ card.append(action,el("p",tr("ขั้นตอนที่แสดงคือรายการแรกที่ยังไม่ได้ติ๊ก ไม่ได้แปลว่าเกมรู้ว่าคุณอยู่เควสนี้ · คำเตือน STOP มาจากแหล่งอ้างอิงและยังไม่รับรองทุกเงื่อนไขใน 3.29 · ยอด "+allChecked+" / 745 เป็นการบันทึกด้วยตัวเอง","The suggested step is your first unchecked item, not your detected in-game quest state. STOP warnings are source-based and not fully certified for 3.29. Your "+allChecked+" / 745 checks are manual notes."),"hubBeginnerFineprint"));
 }
 function renderSummary(){
  renderQuickStart();

@@ -56,5 +56,12 @@ const index=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 check(index.includes('src="./lore-data.js"')&&index.includes('src="./extra-data.js"')&&index.includes('src="./hub.js"')&&index.includes('href="./hub.css"'),'unified hub dependencies not loaded');
 check(index.includes('window.POE_HUB_BRIDGE')&&index.includes('mark:function(id,done)'),'legacy progress bridge unavailable');
 check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
+// Regress source-risk disclosures: visible at decision points, bilingual and source-linked.
+const hubCSS=fs.readFileSync(path.join(dir,'hub.css'),'utf8');
+check(hubSource.includes('function routeEvidencePanel(act)')&&hubSource.includes('const evidence=routeEvidencePanel(act)')&&hubSource.includes('panel.append(evidence)'),'source conflicts not surfaced in active Act route');
+check(hubSource.includes('hubGlobalEvidence')&&hubSource.includes('https://www.poewiki.net/wiki/Waypoint')&&hubSource.includes('https://poedb.tw/us/Version_3.30.0'),'global waypoint/3.30 Vaal evidence notice missing');
+check(hubSource.includes('Source disagreement · verify before advancing')&&hubSource.includes('Original Thai source note'),'bilingual source comparison / inspectable original missing');
+check(hubSource.includes('Bandits / The Darkness')&&hubSource.includes('Irasha / Tasuni branch'),'critical quest disagreement indicators missing');
+check(hubCSS.includes('.hubEvidencePanel>summary:focus-visible')&&hubCSS.includes('@media(max-width:600px)'),'source panel focus / responsive styles missing');
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));
 if(errors.length)process.exitCode=1;

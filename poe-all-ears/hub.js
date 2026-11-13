@@ -256,11 +256,22 @@ function itemCard(type,x){
  box.addEventListener("change",()=>{
    if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.29):\\n","This dialogue may be missable (historical guide, not patch 3.29-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
    const restoreFocus=document.activeElement===box;
-   writeMarks(type,x.id,box.checked);
+   const fromCurrent=Boolean(box.closest(".hubInlineCurrentChecklist"));
+   const wasChecked=box.checked;
+   writeMarks(type,x.id,wasChecked);
    if(restoreFocus){
+     // Completing the inline task replaces it with the next unresolved task.
+     // Keep the keyboard and viewport inside that same one-task workflow.
+     const next=fromCurrent&&wasChecked?document.querySelector('#hubView .hubInlineCurrentChecklist input[type="checkbox"]'):null;
      const same=[...document.querySelectorAll('#hubView input[data-track-type="'+type+'"][data-track-id="'+x.id+'"]')];
      const visible=same.find(node=>node.getClientRects().length>0);
-     if(visible)visible.focus({preventScroll:true});
+     const target=next||visible;
+     if(target){
+       target.focus({preventScroll:true});
+       if(fromCurrent&&wasChecked)target.closest(".hubNextAction")?.scrollIntoView({block:"nearest"});
+     }else if(fromCurrent){
+       document.querySelector('#hubView .hubNextAction')?.scrollIntoView({block:"nearest"});
+     }
    }
  });
  const name=el("div",shown,"hubName");
@@ -681,7 +692,13 @@ function actSteamGuide(act){
   inline.append(itemCard(current.type,item));
   focus.append(inline);
  }else{
-  focus.append(el("p",tr("เครื่องหมายในเว็บไม่ใช่หลักฐานว่า Achievement สำเร็จ ตรวจยอดจริงในเกมก่อนเดินเรื่องต่อ","Manual marks are not proof that the achievement unlocked. Compare against the actual game before advancing."),"hubSubtle"));
+  focus.append(el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing."),"hubSubtle"));
+  if(chosen<phases.length-1){
+   const advance=el("button",tr("ดูขั้นตอนถัดไป","View next quest step"),"hubInlineAdvance");
+   advance.type="button";advance.dataset.inlineAdvance="true";
+   advance.onclick=()=>goto(chosen+1,true,"select");
+   focus.append(advance);
+  }
  }
  box.insertBefore(focus,control);
  const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id));
@@ -853,6 +870,26 @@ function actSteamGuide(act){
    const list=el("div",undefined,"hubList");
    ids.forEach(id=>{const x=collections[type].find(item=>item.id===id);if(x)list.append(itemCard(type,x));});
    group.append(list);box.append(group);
+ }
+ // Historical inventory remains accessible, but never competes with the current
+ // instruction + checkbox. Reuse the exact same entries and persistence handlers.
+ const archived=[...box.querySelectorAll("[data-walk-type]")];
+ if(archived.length){
+  const shelf=el("details",undefined,"hubWalkArchive");
+  shelf.dataset.archivePhase=phase.id;
+  const archiveKey=act+":"+phase.id+":archive";
+  shelf.open=walkExpanded.has(archiveKey);
+  shelf.addEventListener("toggle",()=>{if(!shelf.isConnected)return;
+   if(shelf.open)walkExpanded.add(archiveKey);else walkExpanded.delete(archiveKey);
+  });
+  const archivedCount=Object.values(phaseCount).reduce((sum,ids)=>sum+ids.length,0);
+  shelf.append(el("summary",tr("ตรวจรายการทั้งหมดของช่วงนี้ · ","Review every item in this step · ")+archivedCount+tr(" รายการ"," items")));
+  shelf.append(el("p",tr("ใช้เมื่ออยากย้อนตรวจหลายรายการพร้อมกัน ไม่จำเป็นต้องเปิดเพื่อทำรายการปัจจุบัน","Optional bulk review. You do not need this section to mark the current task."),"hubSubtle"));
+  archived.forEach(node=>shelf.append(node));
+  box.append(shelf);
+  // These shortcuts previously duplicated the primary next-item interface.
+  taskNav.remove();
+  box.querySelector(".hubTaskNavLead")?.remove();
  }
  const foot=el("div",undefined,"hubWalkFooter");
  const ref=el("a",tr("ตรวจลำดับกับคู่มือ Steam","Review historical Steam route"));ref.href=data.source;ref.target="_blank";ref.rel="noopener noreferrer";

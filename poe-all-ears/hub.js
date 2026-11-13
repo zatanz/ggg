@@ -186,10 +186,18 @@ function itemCard(type,x){
  const row=el("div",undefined,"hubItem"+(done?" done":"")),box=el("input"),info=el("div",undefined,"hubText");
  row.dataset.state=done?"done":"todo";
  const shown=label(x,type),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
- box.type="checkbox";box.checked=done;box.setAttribute("aria-label",tr("ทำแล้ว — ","Completed — ")+canonical);
+ box.type="checkbox";box.checked=done;
+ box.dataset.trackType=type;box.dataset.trackId=String(x.id);
+ box.setAttribute("aria-label",(done?tr("ยกเลิกเครื่องหมายว่าเก็บแล้ว — ","Unmark collected — "):tr("ทำเครื่องหมายว่าเก็บแล้ว — ","Mark as collected — "))+canonical);
  box.addEventListener("change",()=>{
-   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.30):\\n","This dialogue may be missable (historical guide, not patch 3.30-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
+   if(type==="ears"&&box.checked&&original?.caution&&!confirm(tr("หัวข้อนี้มีเงื่อนไขที่อาจพลาดได้ (อ้างอิงคู่มือเก่า ยังไม่ยืนยันแพตช์ 3.29):\\n","This dialogue may be missable (historical guide, not patch 3.29-verified):\\n")+(guide?.caution||original.caution)+"\\n\\n"+tr("ฟังหัวข้อนี้ในเกมจบแล้วใช่ไหม?","Did you finish listening to this topic in-game?"))){box.checked=false;return;}
+   const restoreFocus=document.activeElement===box;
    writeMarks(type,x.id,box.checked);
+   if(restoreFocus){
+     const same=[...document.querySelectorAll('#hubView input[data-track-type="'+type+'"][data-track-id="'+x.id+'"]')];
+     const visible=same.find(node=>node.getClientRects().length>0);
+     if(visible)visible.focus({preventScroll:true});
+   }
  });
  const name=el("div",shown,"hubName");
  if(LANG.get().names==="th"&&shown!==canonical){name.title=canonical;const originalName=el("small",canonical,"hubCanonicalName");originalName.lang="en";info.append(name,originalName);}else info.append(name);
@@ -224,7 +232,7 @@ function itemCard(type,x){
       const thai=el("details",undefined,"hubOriginalThai");thai.lang="th";
       thai.append(el("summary","Original Thai source warning"),el("p",original.caution));body.append(thai);
    }
-   if(!guide.detailsKnown)body.append(el("p",tr("ยังไม่มีรายละเอียดเงื่อนไขรายรายการที่ยืนยันกับเกม 3.30","Exact conditions have not been verified in-game for patch 3.30"),"hubUnverifiedText"));
+   if(!guide.detailsKnown)body.append(el("p",tr("ยังไม่มีรายละเอียดเงื่อนไขรายรายการที่ยืนยันกับเกม 3.29","Exact conditions have not been verified in-game for patch 3.29"),"hubUnverifiedText"));
    const source=el("a",tr("ดูแหล่งอ้างอิง","Open source"));source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
    body.append(el("p",tr("ข้อมูลจากคู่มือเก่า · ยังไม่รับรองครบทุกกรณีของ 3.29","Historical source · not fully verified for 3.29"),"hubSubtle"),source);detail.append(body);info.append(detail);
  }
@@ -268,7 +276,7 @@ function criticalPanel(act){
  const section=el("section",undefined,"hubCritical");
  section.dataset.criticalAct=act;
  const title=el("div",undefined,"hubCriticalTitle");
- title.append(el("h3",tr("ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด","Before advancing · missable dialogue checkpoints")),el("p",tr("กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.30","Historical 2025 risk groups. Individual dialogue topics can unlock at different quest stages; check each condition before acting. This is not a patch 3.30-certified complete route."),"hubSubtle"));
+ title.append(el("h3",tr("ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด","Before advancing · missable dialogue checkpoints")),el("p",tr("กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.29","Historical 2025 risk groups. Individual dialogue topics can unlock at different quest stages; check each condition before acting. This is not a patch 3.29-certified complete route."),"hubSubtle"));
  section.append(title);
  const already=new Set(entries("ears"));
  const sorted=[...stages]; // Preserve authored stage/source grouping; urgency is a label, never reorders quest timing.
@@ -305,7 +313,7 @@ function criticalPanel(act){
     guard.dataset.stopStage=stage.id;guard.dataset.stopState=missing.length?"hold":"review";
     guard.append(el("strong",missing.length?tr("ยังไม่ควรทำ: ","STOP before: ")+(en?en[2]:rule.action):tr("รายการก่อนผ่านจุดนี้บันทึกครบแล้ว — ตรวจในเกมอีกครั้ง","All required topics are marked · verify in-game before advancing")));
     guard.append(el("p",en?en[1]:rule.note));
-    guard.append(el("div",missing.length?tr("ขาดอีก ","Still unchecked: ")+missing.length+tr(" บทสนทนาก่อนผ่านจุดนี้"," dialogues before this transition"):tr("การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.30","Checkmarks do not certify the correct quest state for patch 3.30."),"hubStopPending"));
+    guard.append(el("div",missing.length?tr("ขาดอีก ","Still unchecked: ")+missing.length+tr(" บทสนทนาก่อนผ่านจุดนี้"," dialogues before this transition"):tr("การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.29","Checkmarks do not certify the correct quest state for patch 3.29."),"hubStopPending"));
     inside.append(guard);
   }
   if(stage.sourceConflict){
@@ -316,7 +324,7 @@ function criticalPanel(act){
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
   }
-  if(stage.patchAlert){inside.append(el("div",en?(stage.id==="a1-fairgraves"?"Patch 3.29 reports describe Fairgraves dialogue #34–38 as unavailable. Patch 3.30 is unverified; do not mark these topics unless actually heard.":"A historical NPC dialogue availability report exists; patch 3.30 is unverified."):stage.patchAlert,"hubResearchConflict"));if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai patch report"),el("p",stage.patchAlert));inside.append(original);}}
+  if(stage.patchAlert){inside.append(el("div",en?(stage.id==="a1-fairgraves"?"Patch 3.29 reports describe Fairgraves dialogue #34–38 as unavailable. Patch 3.29 is unverified; do not mark these topics unless actually heard.":"A historical NPC dialogue availability report exists; patch 3.29 is unverified."):stage.patchAlert,"hubResearchConflict"));if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai patch report"),el("p",stage.patchAlert));inside.append(original);}}
   inside.append(el("p",en?en[1]:stage.action,"hubCheckpointAction"));
   const detailsWhy=el("details",undefined,"hubCheckpointWhy");
   detailsWhy.append(el("summary",tr("ทำไมต้องระวัง / เงื่อนไขเพิ่มเติม","Why this can be missed / source conditions")),el("p",en?en[3]:stage.risk,"hubCheckpointRisk"));
@@ -346,7 +354,7 @@ function criticalPanel(act){
     check.addEventListener("change",()=>{
       const hint=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
       const displayedHint=descEN()?LANG.englishHelp("ears",item,hint):hint;
-      if(check.checked&&hint?.caution&&!confirm(tr("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n","Missable topic in the 2025 Wiki (not verified for patch 3.30):\n")+(displayedHint?.caution||hint.caution)+"\n\n"+tr("ฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?","Did you finish listening to this topic in-game?"))){check.checked=false;return;}
+      if(check.checked&&hint?.caution&&!confirm(tr("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.29):\n","Missable topic in the 2025 Wiki (not verified for patch 3.29):\n")+(displayedHint?.caution||hint.caution)+"\n\n"+tr("ฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?","Did you finish listening to this topic in-game?"))){check.checked=false;return;}
       writeMarks("ears",id,check.checked);
     });
     line.append(check,info,marked);req.append(line);
@@ -369,7 +377,7 @@ function postQuestPanel(act){
  const section=el("section",undefined,"hubCritical hubPostQuests");
  section.dataset.postAct=String(act);
  const head=el("div",undefined,"hubCriticalTitle");
- head.append(el("h3",tr("หลังจบเควสต์ · กลับไปคุย NPC","After quest completion · revisit the NPC")),el("p",tr("รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","These 2025 source topics unlock after a quest turn-in. They are not automatically permanently missable and have not been gameplay-verified for patch 3.30."),"hubSubtle"));section.append(head);
+ head.append(el("h3",tr("หลังจบเควสต์ · กลับไปคุย NPC","After quest completion · revisit the NPC")),el("p",tr("รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.29","These 2025 source topics unlock after a quest turn-in. They are not automatically permanently missable and have not been gameplay-verified for patch 3.29."),"hubSubtle"));section.append(head);
  const entriesDone=new Set(entries("ears"));
  const lookup=new Map(E.items.map(x=>[x.id,x]));
  for(const stage of stages){
@@ -383,7 +391,7 @@ function postQuestPanel(act){
   body.append(el("p",en?en[1]: "หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
   for(const id of stage.ids){const x=lookup.get(id);if(x)body.append(itemCard("ears",x));}
   const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
-  if(reward)body.append(el("p",tr("รางวัลอ้างอิง ","Historical reward for ")+stage.quest+": "+reward.reward+tr(" · ข้อมูลเก่า ยังไม่รับรอง 3.30"," · not patch 3.30-certified"),"hubCheckpointReward"));
+  if(reward)body.append(el("p",tr("รางวัลอ้างอิง ","Historical reward for ")+stage.quest+": "+reward.reward+tr(" · ข้อมูลเก่า ยังไม่รับรอง 3.29"," · not patch 3.29-certified"),"hubCheckpointReward"));
   const link=el("a",tr("ตรวจต้นทางบน PoE Wiki","Check the original PoE Wiki entry"));link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
   body.append(link);detail.append(body);
   detail.addEventListener("toggle",()=>{if(detail.open)postQuestOpen.add(stage.id);else postQuestOpen.delete(stage.id)});
@@ -455,7 +463,7 @@ function supplementalWarnings(act){
  const chapter=el("details",undefined,"hubChapter hubExcelWarnings");
  chapter.dataset.excelAct=String(act);
  const sum=el("summary"),label=el("span",undefined,"hubChapterTitle");
- label.append(el("strong",tr("คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม","More historical spreadsheet warnings")),el("small",tr("อีก ","Still outside the main checkpoints: ")+unmatched.length+tr(" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"," NPC topics · patch 3.30 not verified")));
+ label.append(el("strong",tr("คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม","More historical spreadsheet warnings")),el("small",tr("อีก ","Still outside the main checkpoints: ")+unmatched.length+tr(" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.29"," NPC topics · patch 3.29 not verified")));
  sum.append(label,el("span",unmatched.filter(r=>entries("ears").includes(r.id)).length+" / "+unmatched.length,"hubChapterCount"));chapter.append(sum);
  const body=el("div",undefined,"hubChapterBody");
  body.append(el("p",tr("ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","The original spreadsheet flags these topics, but we lack enough evidence to place them safely in the main quest sequence. Read each source-linked condition before changing quest state."),"hubSubtle"));
@@ -714,7 +722,7 @@ function actSteamGuide(act){
    const sectionKey=act+":"+phase.id+":lore";section.open=walkExpanded.has(sectionKey);
    section.addEventListener("toggle",()=>{if(!section.isConnected)return;if(section.open)walkExpanded.add(sectionKey);else walkExpanded.delete(sectionKey)});
    section.append(el("summary",tr("Lore ในช่วงนี้ · ","Lore in this step · ")+found+" / "+phase.loreIds.length));
-   section.append(el("p",tr(act==="1"?"Letters of Exile อาจสุ่มซ้ำ ให้ตรวจยอดใน Achievement ที่เกมนับจริง":phase.id==="library"?"หนังสือใน Library อาจมีข้อความซ้ำ ให้ตรวจชื่อครบทั้ง 17 แบบกับยอดในเกมจริง":"อ่าน Lore ตามชื่อและพื้นที่ในเกมก่อนทำเครื่องหมาย; ข้อมูลยังไม่รับรองแพตช์ 3.30","Check each exact lore title in-game before marking. Historic mapping is not patch 3.30 certified."),"hubSubtle"));
+   section.append(el("p",tr(act==="1"?"Letters of Exile อาจสุ่มซ้ำ ให้ตรวจยอดใน Achievement ที่เกมนับจริง":phase.id==="library"?"หนังสือใน Library อาจมีข้อความซ้ำ ให้ตรวจชื่อครบทั้ง 17 แบบกับยอดในเกมจริง":"อ่าน Lore ตามชื่อและพื้นที่ในเกมก่อนทำเครื่องหมาย; ข้อมูลยังไม่รับรองแพตช์ 3.29","Check each exact lore title in-game before marking. Historic mapping is not patch 3.29 certified."),"hubSubtle"));
    const list=el("div",undefined,"hubList");
    phase.loreIds.forEach(id=>{const x=L.entries.find(z=>z.id===id);if(x)list.append(itemCard("lore",x))});
    section.append(list);box.append(section);
@@ -735,7 +743,7 @@ function actSteamGuide(act){
  }
  const foot=el("div",undefined,"hubWalkFooter");
  const ref=el("a",tr("ตรวจลำดับกับคู่มือ Steam","Review historical Steam route"));ref.href=data.source;ref.target="_blank";ref.rel="noopener noreferrer";
- foot.append(el("span",tr("ยังไม่ได้ทดสอบจริงในแพตช์ 3.30 · สีแดงคือข้อควรหยุดตรวจ ไม่ใช่สถานะที่เกมส่งมา","Not tested in patch 3.30 · STOP warnings are based on research, not live game telemetry")),ref);box.append(foot);
+ foot.append(el("span",tr("ยังไม่ได้ทดสอบจริงในแพตช์ 3.29 · สีแดงคือข้อควรหยุดตรวจ ไม่ใช่สถานะที่เกมส่งมา","Not tested in patch 3.29 · STOP warnings are based on research, not live game telemetry")),ref);box.append(foot);
  return box;
 }
 function journeyActGuide(act){
@@ -785,13 +793,13 @@ function journeyActGuide(act){
  const missing=summaries.reduce((sum,x)=>sum+x.total-x.done,0);
  gateHead.append(el("strong",tr("ก่อนออกจาก Act นี้ · ตรวจ ","Before leaving this Act · Review ")+summaries.length+tr(" หมวด"," groups")),el("span",missing===0?tr("บันทึกครบทุกหมวดแล้ว","All groups checked"):tr("ยังขาด ","Remaining: ")+missing+tr(" รายการ"," entries")));
  gate.append(gateHead,list);card.append(gate);
- const bottom=el("p",tr("ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.30","Check entries only after actual gameplay. Verify each achievement counter in-game; quest guidance is not certified for patch 3.30."),"hubSubtle");
+ const bottom=el("p",tr("ใช้ช่องติ๊กเฉพาะหลังทำจริงในเกม · แต่ละ Achievement ต้องตรวจยอดของเกมอีกครั้ง · ข้อมูลเควสต์ยังไม่รับรองแพตช์ 3.29","Check entries only after actual gameplay. Verify each achievement counter in-game; quest guidance is not certified for patch 3.29."),"hubSubtle");
  card.append(bottom);return card;
 }
 function epilogueRoute(target){
  const all=records("waypoints","Epilogue"),done=new Set(entries("waypoints"));
  const panel=section(tr("Epilogue · ตรวจ Waypoint ที่เหลือ","Epilogue · remaining Waypoints"));panel.dataset.specialScope="Epilogue";
- panel.append(el("p",tr("หลัง Act 10 ให้ตรวจ Waypoint อีก 2 จุดตามฐานข้อมูล Locomancer เดิม ทั้งสองจุดนับใน Achievement เดิม ไม่ใช่ Achievement ใหม่ · ยังไม่ยืนยันแพตช์ 3.30","After Act 10, verify the two remaining Waypoints in the legacy Locomancer list. These are not a new achievement, and their patch 3.30 requirements are unverified."),"hubSubtle"));
+ panel.append(el("p",tr("หลัง Act 10 ให้ตรวจ Waypoint อีก 2 จุดตามฐานข้อมูล Locomancer เดิม ทั้งสองจุดนับใน Achievement เดิม ไม่ใช่ Achievement ใหม่ · ยังไม่ยืนยันแพตช์ 3.29","After Act 10, verify the two remaining Waypoints in the legacy Locomancer list. These are not a new achievement, and their patch 3.29 requirements are unverified."),"hubSubtle"));
  const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length+tr(" · นับใน Locomancer 91 จุด (ฐานข้อมูลเก่า)"," · part of the 91-entry legacy Locomancer list"),"hubActProgress");panel.append(count);
  const list=el("div",undefined,"hubList");
  all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
@@ -1091,7 +1099,7 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    const manageTitle=document.querySelector("#hubManage>summary");if(manageTitle)manageTitle.textContent=tr("จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม","Manage characters and legacy All Ears backup");
    const overviewTitle=document.querySelector("#hubOverview>h2");if(overviewTitle)overviewTitle.textContent=tr("เส้นทางสู่ 100%","Path to 100%");
    const overviewSub=document.querySelector("#hubOverview>p");if(overviewSub)overviewSub.textContent=tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof");
-   const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30");
+   const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.29","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.29");
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
@@ -1108,7 +1116,7 @@ if(profileRows.length>=2){
 }
 const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2",tr("เส้นทางสู่ 100%","Path to 100%")),el("p",tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof"),"hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
 const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
-const status=el("div",tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30"),"hubNotice hubDataNotice");nav.after(status);
+const status=el("div",tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.29","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.29"),"hubNotice hubDataNotice");nav.after(status);
 $("patch").addEventListener("change",()=>{renderView();});
 $("character").addEventListener("change",()=>{setTimeout(refresh,0);});const obs=new MutationObserver(()=>{setTimeout(refresh,0);});obs.observe($("character"),{childList:true});window.addEventListener("storage",e=>{if([MAIN,LORE,EXTRA,HUB].includes(e.key))refresh();});
 const initial=["route","ears","lore","waypoints","sidequests","review","collection"].includes(location.hash.slice(1))?location.hash.slice(1):"route";openTab(initial);

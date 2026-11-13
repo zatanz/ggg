@@ -1,7 +1,6 @@
 /* Single-page Achievement Companion, progressive enhancement over stable All Ears v1 */
 #hubNav{position:sticky;top:0;z-index:12;display:flex;gap:6px;flex-wrap:wrap;padding:10px;background:#14171df5;border:1px solid var(--line);border-radius:14px;margin:16px 0 13px;backdrop-filter:blur(12px)}
 #hubNav button{flex:1 1 auto;white-space:nowrap;padding:10px 12px;font-size:13px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:600}
-#hubNav button[aria-selected=true]{background:var(--gold);color:#252016;border-color:var(--gold)}
 #hubNav button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .hubPanel{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:20px;margin:13px 0}
 .hubPanel h2{font-size:clamp(18px,3vw,25px);margin:0 0 7px;font-weight:650}
@@ -56,7 +55,6 @@ body:not([data-hub-tab="ears"]) .wrap>footer{margin-top:20px}
 .wrap>header p{font-size:14px;line-height:1.65;max-width:800px}
 #hubNav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:7px;margin:15px 0 12px}
 #hubNav button{min-width:0;flex:none;white-space:normal;text-align:center;font-size:14px;min-height:46px;border-radius:9px}
-#hubNav button[aria-selected=true]{box-shadow:inset 0 -2px 0 #8b6a33}
 body:not([data-hub-tab="ears"]) .wrap>section[aria-label="เวอร์ชันเกม / แพตช์"]{display:block!important}
 .wrap>section[aria-label="เวอร์ชันเกม / แพตช์"]{box-shadow:none;padding:13px 16px}
 .wrap>section[aria-label="ตัวละคร"]{box-shadow:none;padding:14px 16px}
@@ -125,11 +123,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 }
 
 /* Act picker: one-tap navigation through campaign chapters. */
-.hubActStrip{display:flex;gap:6px;align-items:center;overflow-x:auto;scroll-snap-type:x proximity;overscroll-behavior-x:contain;padding:7px 2px 11px;margin:5px 0 0;scrollbar-width:thin}
-.hubActStrip button{flex:0 0 auto;scroll-snap-align:center;min-width:70px;min-height:45px;padding:9px 13px;border-radius:10px;background:#252932;border:1px solid #49474a;color:#e4ded2;font-weight:650;white-space:nowrap}
-.hubActStrip button[aria-pressed=true]{background:#4b3822;border-color:#deb96f;color:#ffebc2;box-shadow:inset 0 -2px 0 #c39a56}
-.hubActStrip button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-@media(max-width:720px){.hubActStrip{margin:0 -3px 0;padding-bottom:9px}.hubActStrip button{min-width:64px;min-height:46px}}
 
 /* Keep all four Achievement category choices visible without horizontal scrolling on phones. */
 @media(max-width:720px){.hubCategoryPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible;scroll-snap-type:none}.hubCategoryPicker button{width:100%;white-space:normal;min-height:47px;line-height:1.4}}
@@ -262,7 +255,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubLoreNavigation{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:#232b2b;border:1px solid #4e6862;border-radius:10px;padding:11px 12px;margin:10px 0}
 .hubLoreNavigation p{flex:1 0 100%;margin:0}
 .hubLoreNavigation button{font-size:12px;min-height:39px;border:1px solid #72907f;border-radius:8px;padding:8px 11px}
-.hubActStrip button[data-act="Labyrinth"],.hubActStrip button[data-act="Vaal"]{min-width:125px;white-space:nowrap}
 @media(max-width:720px){
  .hubStepNavigator{grid-template-columns:1fr 1fr;gap:7px}
  .hubStepPosition{grid-column:1;align-self:center}
@@ -349,11 +341,8 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
    amber = source uncertainty, green = item explicitly checked by the player. */
 #hubNav{border-radius:12px;background:#111820;border:1px solid #4a5663;padding:5px;gap:5px}
 #hubNav button{background:#27313c;color:#f1ede4;border:1px solid #5b6975;min-height:49px;border-radius:9px;font-weight:700}
-#hubNav button[aria-selected=true]{background:#72502c;color:#fff5d6;border:2px solid #f6c77b;box-shadow:inset 0 -2px 0 #e6b46a}
-#hubNav button:focus-visible,.hubActStrip button:focus-visible,.hubStepNavigator button:focus-visible,
+#hubNav button:focus-visible,.hubStepNavigator button:focus-visible,
 .hubStopGate button:focus-visible,.hubWalkNavigator button:focus-visible{outline:3px solid #ffdb86;outline-offset:3px}
-.hubActStrip button{background:#27303b;color:#e9e7e1;border-color:#586572}
-.hubActStrip button[aria-pressed=true]{background:#74552f;color:#fff6dc;border:2px solid #f2cc82;box-shadow:inset 0 -2px 0 #f2cc82}
 .hubStepNavigator{background:#1b2530;border-color:#5d6d79}
 .hubStepNavigator select{background:#263441;color:#f5f0e4;border-color:#8495a2;font-weight:650}
 .hubStepPosition{color:#ffe0a0}
@@ -379,14 +368,11 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubCheckpointWhy .hubCheckpointRisk{margin-top:8px}
 /* Walk-by-area Act 1 player mode; only a single phase visible. */
 .hubWalkthrough{background:#17212b;border:1px solid #7f6746;border-radius:14px;padding:14px;margin:17px 0;scroll-margin-top:14px}
-.hubWalkEyebrow{display:inline-block;font-size:11px;color:#ffdb9b;font-weight:800;letter-spacing:.07em}
 .hubWalkHeader h3{margin:7px 0 5px;font-size:18px;line-height:1.4}
 .hubWalkHeader .hubSubtle{font-size:12px;line-height:1.6}
 .hubWalkNavigator{margin:11px 0}
 .hubWalkFocus{padding:11px 13px;border:1px solid #536678;border-radius:9px;background:#253240}
-.hubWalkFocus h4{font-size:15px;color:#fff0cb;margin:0 0 4px;line-height:1.5}
 .hubWalkFocus p{font-size:12px;color:#cdd6dd;margin:0 0 7px;line-height:1.5}
-.hubWalkCount{font-size:11px;display:inline-block;background:#3b4f54;border:1px solid #768d8b;padding:3px 9px;border-radius:20px;color:#e1f7e8}
 .hubWalkActions{counter-reset:poe-actions;list-style:none;display:grid;gap:6px;margin:11px 0;padding:0}
 .hubWalkActions li{padding:9px 11px 9px 40px;border:1px solid #45596a;border-radius:8px;background:#263440;color:#f0efe9;font-size:12px;line-height:1.65;position:relative}
 .hubWalkActions li::before{counter-increment:poe-actions;content:counter(poe-actions);position:absolute;top:9px;left:10px;background:#a57d43;color:#12171d;font-weight:850;border-radius:20px;min-width:21px;line-height:21px;text-align:center}
@@ -396,9 +382,7 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkCategory .hubList{gap:5px}
 .hubWalkCategory .hubItem{padding:8px 9px;background:#25313a}
 .hubWalkCategory .hubItemState{color:#f5dcc1}
-.hubWalkMore{background:#222c34;border:1px solid #53606b;border-radius:8px;margin-top:7px;padding:8px 10px}
-.hubWalkMore>summary,.hubWalkLore>summary{cursor:pointer;color:#ffda99;font-size:12px;font-weight:750;padding:5px}
-.hubWalkMore .hubList{margin-top:8px}
+.hubWalkLore>summary{cursor:pointer;color:#ffda99;font-size:12px;font-weight:750;padding:5px}
 .hubWalkLore{margin-top:12px;border:1px solid #465f53;background:#25352c;border-radius:8px;padding:9px 11px}
 .hubWalkLore .hubList{padding:8px 0 0}
 .hubWalkFooter{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid #4d5964;padding-top:11px;margin-top:14px;font-size:11px;line-height:1.5;color:#c9c7bf}
@@ -483,7 +467,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubStopGate.reviewed{border-left:5px solid #8bbf9c;background:#20352e}
 .hubStopGate button{margin-top:9px;background:#4a3531;border-color:#ddae9a;color:#ffe8d8;min-height:44px;font-weight:750}
 .hubWalkNavigator button{min-height:44px}
-.hubWalkFocus h4{line-height:1.5}
 @media(max-width:900px){.hubLanguagePanel{grid-template-columns:1fr}}
 @media(max-width:720px){
  .hubLanguagePanel{padding:11px;gap:9px}
@@ -491,9 +474,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
  .hubLanguageChoice select{font-size:12px;padding:8px 6px}
  .hubLanguageNote{font-size:10.5px}
  #hubNav{position:sticky;top:0;z-index:30;box-shadow:0 5px 18px #0008}
- .hubActStrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;overflow:visible;scroll-snap-type:none;margin:5px 0;padding:3px 0 8px}
- .hubActStrip button{min-width:0!important;min-height:43px;padding:7px 2px;font-size:11px;white-space:normal;border-radius:7px}
- .hubActStrip button[data-act="Labyrinth"],.hubActStrip button[data-act="Vaal"],.hubActStrip button[data-act="Epilogue"]{grid-column:span 1;min-width:0!important;font-size:10px}
  .hubWalkNavigator{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
  .hubWalkNavigator select{grid-column:1/-1;min-width:0;width:100%}
  .hubWalkNavigator .hubStepPosition{grid-column:1/-1}
@@ -592,7 +572,6 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 
 /* Navigation and keyboard ergonomics across the full achievement flow. */
 #hubNav button,#hubToolbar button,.hubStepNavigator button,.hubOpenLinkedStage,.hubActMissionItem button{min-height:44px}
-#hubNav button[aria-selected=true]{box-shadow:inset 0 -3px 0 #423319}
 #hubView [data-steam-act],#hubView [data-critical-act],#hubView [data-group],#hubView .hubEvidencePanel{scroll-margin-top:92px}
 #hubView summary,#hubStats summary{scroll-margin-top:90px}
 #hubView a:focus-visible,#hubStats a:focus-visible,#hubView summary:focus-visible,#hubStats summary:focus-visible{outline:3px solid #ffdb94;outline-offset:3px}
@@ -673,30 +652,14 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 
 
 /* First-time player path: one decision, one next step, advanced evidence on demand. */
-#hubQuickStart{display:grid;gap:13px;border:1px solid #9f8754;border-radius:16px;padding:21px;background:linear-gradient(135deg,#273329,#1b252d 65%);box-shadow:0 8px 24px #0003;margin:16px 0 12px;min-width:0}
-.hubBeginnerEyebrow{color:#f1d59c;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:800}
-#hubQuickStart h2{font-size:clamp(21px,3.5vw,28px);line-height:1.25;color:#f8ead1;margin:0;max-width:32ch}
-.hubBeginnerIntro{color:#e1e8de;font-size:14px;line-height:1.65;margin:0;max-width:68ch}
-.hubBeginnerSteps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.hubBeginnerStep{background:#293b37;border:1px solid #536f62;border-radius:10px;padding:11px;display:flex;align-items:flex-start;gap:8px;min-width:0;line-height:1.45;color:#e9eee7;font-size:12px}
-.hubBeginnerStep b{flex:0 0 25px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#d8ebd7;color:#173527;font-size:13px}
-.hubBeginnerPicker{display:grid;gap:6px;min-width:0;color:#f3e4c6;font-weight:700;font-size:14px}
-.hubBeginnerPicker select{width:100%;min-width:0;max-width:410px;min-height:48px;background:#141d26;color:#fff2d6;border:1px solid #849a88}
-.hubBeginnerCTA{background:#d8ebd7!important;color:#163122!important;border:1px solid #d4eed8!important;font-weight:850;font-size:16px;min-height:52px;width:100%;padding:12px 18px}
-.hubBeginnerCTA:hover{background:#e9f9e7!important}
-.hubBeginnerFineprint{font-size:11px;line-height:1.55;color:#bfcfc4;margin:0;max-width:85ch}
 #hubAdvancedDashboard{margin:10px 0 13px;border:1px solid #4e5a59;border-radius:12px;background:#1c2428}
 #hubAdvancedDashboard>summary{cursor:pointer;list-style-position:inside;font-size:13px;font-weight:700;color:#dde8e0;padding:13px 16px}
 #hubAdvancedDashboard[open]>summary{border-bottom:1px solid #4e5a59}
 #hubAdvancedDashboard .hubPanel{margin:11px}
 #hubAdvancedDashboard>summary:focus-visible{outline:3px solid #f3dc9d;outline-offset:-3px}
-@media(max-width:720px){#hubQuickStart{padding:15px;gap:12px}.hubBeginnerSteps{grid-template-columns:1fr}.hubBeginnerStep{padding:8px 10px;align-items:center}.hubBeginnerStep b{width:23px;height:23px;flex-basis:23px}#hubAdvancedDashboard .hubPanel{margin:7px;padding:10px}}
+@media(max-width:720px){#hubAdvancedDashboard .hubPanel{margin:7px;padding:10px}}
 
 /* One reading path for new players: a single task surface instead of cards inside cards. */
-#hubQuickStart{border:1px solid #5f736b;background:#202b29;box-shadow:none;gap:14px}
-.hubBeginnerSteps{gap:0;border-top:1px solid #4b5e55;border-bottom:1px solid #4b5e55}
-.hubBeginnerStep{border:0;border-radius:0;background:transparent;padding:12px 9px}
-.hubBeginnerStep+.hubBeginnerStep{border-left:1px solid #4b5e55}
 .hubWalkthrough{background:transparent;border:0;padding:0;margin:14px 0;box-shadow:none}
 .hubWalkHeader{padding:10px 2px 12px;border-bottom:1px solid #485861}
 .hubWalkthrough>.hubWalkFocus{border:0;background:transparent;padding:12px 2px 8px;margin:0}
@@ -711,7 +674,7 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubNextAction>.hubStopGate{margin:0}
 .hubInlineWarning{border-left:3px solid #f39c8a;padding:4px 12px;color:#ffebdd}
 .hubInlineWarning p{margin:5px 0 0;line-height:1.6}
-@media(max-width:720px){.hubBeginnerStep+.hubBeginnerStep{border-left:0;border-top:1px solid #4b5e55}#hubQuickStart{padding:15px 16px}.hubWalkthrough .hubWalkActions li{font-size:14px}.hubWalkthrough>.hubNextAction>strong{font-size:17px}}
+@media(max-width:720px){.hubWalkthrough .hubWalkActions li{font-size:14px}}
 
 /* First-time task specificity: readable action / location / timing without another card layer. */
 .hubCurrentTaskFacts{display:grid;gap:8px;margin:2px 0 6px;padding:0}
@@ -729,11 +692,11 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubInlineMark:has(input:focus-visible){outline:3px solid #f9edac;outline-offset:3px}
 .hubNextAction .hubInlineUndo{background:transparent;border-color:#718979;color:#deeee2}
 .hubNextAction .hubInlineUndo:hover{background:#294539}
-.hubWalkthrough :is(.hubWalkFocus h4,.hubInlineMark input,.hubInlineAdvance,.hubInlineUndo){scroll-margin-block:100px 20px}
-.hubWalkFocus h4:focus-visible,.hubWalkNavigator select:focus-visible{outline:3px solid #f9edac;outline-offset:3px}
+.hubWalkthrough :is(.hubInlineMark input,.hubInlineAdvance,.hubInlineUndo){scroll-margin-block:100px 20px}
+.hubWalkNavigator select:focus-visible{outline:3px solid #f9edac;outline-offset:3px}
 @media(max-width:720px){
  #hubNav{position:relative;top:auto}
- .hubWalkthrough :is(.hubWalkFocus h4,.hubInlineMark input,.hubInlineAdvance,.hubInlineUndo){scroll-margin-block:16px}
+ .hubWalkthrough :is(.hubInlineMark input,.hubInlineAdvance,.hubInlineUndo){scroll-margin-block:16px}
 }
 .hubWalkArchive{margin:17px 0 0;border-top:1px solid #57625b;padding-top:12px}
 .hubWalkArchive>summary{cursor:pointer;color:#c6c9c3;font-size:13px;font-weight:650;min-height:44px;padding:12px 4px}

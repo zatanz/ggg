@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#15171c">
+  <meta name="theme-color" content="#141918">
   <meta name="description" content="สมุดบันทึก Achievement ของ Path of Exile: บทสนทนา NPC, Lore, Waypoint และเควสต์รอง ตรวจสิ่งที่ยังไม่ได้เก็บได้ในหน้าเดียว">
   <title>PoE Achievement Companion | All Ears · Lore · Waypoints · Quests</title>
   <style>
@@ -63,13 +63,14 @@
     .empty{padding:40px 10px;text-align:center;color:var(--muted)}
     .foot{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:12px}
     .foot p{max-width:900px}
-    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#364137;border:1px solid #759d7f;border-radius:10px;padding:12px 18px;z-index:20;transition:all .2s;max-width:calc(100vw - 24px)}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#364137;border:1px solid #759d7f;border-radius:10px;padding:12px 18px;z-index:20;transition:transform .2s,opacity .2s;max-width:calc(100vw - 24px)}
     .toast.show{opacity:1;transform:translate(-50%,0)}
     .sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
     @media(max-width:720px){.wrap{padding:20px 13px 60px}.panel{padding:15px}.stats{grid-template-columns:1fr}.toolbar{top:0}.ctrls>*{flex-grow:1}.toolbar select{flex:1}.headlinks{gap:12px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
   </style>
 <link rel="stylesheet" href="./hub.css">
+<link rel="stylesheet" href="./campaign.css">
 </head>
 <body>
 <div class="wrap">
@@ -127,6 +128,7 @@
 </div>
 <div id="toast" class="toast" role="status"></div>
 <script src="./data.js"></script>
+<script src="./approved-guidance.js"></script>
 <script src="./guide-act1.js"></script>
 <script src="./quest-rewards.js"></script>
 <script src="./patches.js"></script>
@@ -172,7 +174,12 @@
   function uid(){return "c-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9);}
   function blank(){var id=uid();return {version:1,active:id,characters:[{id:id,name:"ตัวละคร 1",checked:[]}]};}
   function sanitize(raw){if(!raw||!Array.isArray(raw.characters))return blank();var chars=[];var ids=new Set();raw.characters.slice(0,150).forEach(function(c){if(!c||typeof c.name!=="string")return;var id=(typeof c.id==="string"&&c.id.length<100&&!ids.has(c.id))?c.id:uid();ids.add(id);var chk=Array.isArray(c.checked)?c.checked.filter(function(v){return Number.isInteger(v)&&v>=1&&v<=484;}):[];chars.push({id:id,name:c.name.trim().slice(0,60)||"ตัวละคร",checked:Array.from(new Set(chk))});});if(!chars.length)return blank();return {version:1,active:chars.some(function(c){return c.id===raw.active;})?raw.active:chars[0].id,characters:chars};}
-  try{state=sanitize(JSON.parse(localStorage.getItem(KEY)));}catch(e){state=blank();}
+  try{
+    var stored=JSON.parse(localStorage.getItem(KEY));
+    state=sanitize(stored);
+    // A fresh character needs a stable ID before its first route position can be saved.
+    if(!stored)save();
+  }catch(e){state=blank();}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true;}catch(e){toast("บันทึกไม่ได้: พื้นที่เก็บข้อมูลเบราว์เซอร์ถูกปิดหรือเต็ม");return false;}}
   function commit(next){var previous=state;state=next;if(!save()){state=previous;return false;}return true;}
   function snapshot(){return JSON.parse(JSON.stringify(state));}

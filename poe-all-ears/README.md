@@ -1,12 +1,14 @@
 # Path of Exile 1 — Achievement Companion (single-page preview)
 
-## UX Update — 13 November 2026: One task, one checkbox
+## Guided campaign · 13 November 2026
 
-The quest-step panel presents instructions, location and timing, any applicable STOP warning, and the canonical checkbox in reading order. Checking an item moves keyboard focus to the next unchecked item in the same panel. After the final check, focus moves to **View next quest step** when another step is available. **Undo last check** restores the most recent inline check while the step is open. The collapsed **Review other items in this step** section provides access to the rest of the stage checklist.
+The **Quests** view opens directly at the current quest. Choose a character and Act or additional area, then use the step selector to pick a different quest stage. The app remembers the last area and selected stages by character in this browser. First-time profiles start in Act 1. Route position is a display preference and is stored separately from the existing progress and backup formats.
 
-Navigation safeguards remain: the main Next button warns before skipping any unfinished checklist entries, while forward selection across explicit STOP checkpoints requires confirmation. The exact stable IDs, per-character local storage, and backup compatibility are unchanged.
+Instructions, location, timing, STOP guidance and the canonical checkbox are in the same reading flow. A successful check moves focus to the next item or step action. **Undo last check** restores the latest inline mark in the open stage. Use **Review other items in this step** to revisit individual marks, and **Sources and full Act checklist** for references, filters and the Act inventory.
 
-QA: JavaScript syntax and GitHub readback were checked; the Playwright smoke tests have been updated for the inline flow, archive synchronization and keyboard focus, but the latest Chromium CI run has **not yet been verified PASS**. These UI changes do not certify the historical dataset for patch 3.29 or 3.30.
+Use **Settings** for independent guidance and in-game name preferences, patch selection and legacy character tools. The **Backup & verify** view compares manual records with in-game totals and offers the combined backup. The campaign overview, patch caveats and historical source links are available below the guide.
+
+Run `node poe-all-ears/validate-data.cjs`, `node poe-all-ears/validate-ui.cjs` and `node poe-all-ears/test-browser.cjs` from the repository root. For screenshots, set `POE_BROWSER_ARTIFACTS` to an output directory. Browser QA verifies the interface and saved state. Patch 3.29 and 3.30 gameplay remains unverified.
 
 
 **เข้าใช้งานหน้าเดียว:** https://zatanz.github.io/ggg/poe-all-ears/

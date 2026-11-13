@@ -98,12 +98,12 @@ guide.acts[8]=[
     "actions": [
       "เข้า The Toxic Conduits ต่อไป Doedre's Cesspool แล้วจัดการ Doedre the Vile",
       "หลังสู้ให้คุย Sin: Doedre (ID 403) ตามที่เปิด แล้วตรวจให้ครบก่อนออกจากพื้นที่ตามข้อมูลเก่า (ยังไม่ใช่ผลยืนยันในเกม 3.29)",
-      "Waypoint ที่ฐานข้อมูลเรียก The Toxic Conduits (#71) ปรากฏตรงโหนดแผนที่เดียวกับทางออก Doedre's Cesspool และปลดล็อกหลังสู้; อย่าติ๊กตั้งแต่เข้าท่อครั้งแรก"
+      window.POE_APPROVED_GUIDANCE.toxicConduits.th
     ],
     "actionsEN": [
       "Travel from The Toxic Conduits to Doedre's Cesspool and defeat Doedre the Vile.",
       "After the boss, hear Sin: Doedre (ID 403) before leaving as an earlier legacy precaution, not a verified 3.29 miss.",
-      "The tracker calls Waypoint #71 The Toxic Conduits, but the world-map node is shared with the post-fight Doedre's Cesspool waypoint. Confirm it actually unlocks before checking it."
+      window.POE_APPROVED_GUIDANCE.toxicConduits.en
     ],
     "stop": "หลังฆ่า Doedre ให้ตรวจ Sin: Doedre (ID 403) ก่อนออกจาก Doedre's Cesspool ตามข้อควรระวังจากฐานข้อมูลเก่า; PoE Wiki ระบุเพียงว่าหัวข้อเปิดหลังฆ่าบอส",
     "stopEN": "STOP: after defeating Doedre, hear Sin: Doedre (ID 403) before leaving the Cesspool as a legacy precaution. The Wiki documents only the post-boss unlock, not a proven 3.29 exit deadline.",

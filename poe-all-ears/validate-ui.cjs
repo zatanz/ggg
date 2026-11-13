@@ -53,12 +53,14 @@ for(const name of ['index.html','walkthrough.html']){
 const hubSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 try{new vm.Script(hubSource,{filename:'hub.js'})}catch(e){errors.push('hub.js: '+e.message)}
 const index=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+check(index.includes('href="./campaign.css"')&&fs.existsSync(path.join(dir,'campaign.css')),'guided campaign stylesheet must load');
+check(index.indexOf('src="./approved-guidance.js"')>=0&&index.indexOf('src="./approved-guidance.js"')<index.indexOf('src="./guide-descriptions.js"'),'approved copy must load before its route and item consumers');
 check(index.includes('src="./lore-data.js"')&&index.includes('src="./extra-data.js"')&&index.includes('src="./hub.js"')&&index.includes('href="./hub.css"'),'unified hub dependencies not loaded');
 check(index.includes('window.POE_HUB_BRIDGE')&&index.includes('mark:function(id,done)'),'legacy progress bridge unavailable');
 check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
 // Regress source-risk disclosures: visible at decision points, bilingual and source-linked.
 const hubCSS=fs.readFileSync(path.join(dir,'hub.css'),'utf8');
-check(hubSource.includes('function routeEvidencePanel(act)')&&hubSource.includes('const evidence=routeEvidencePanel(act)')&&hubSource.includes('panel.append(evidence)'),'source conflicts not surfaced in active Act route');
+check(hubSource.includes('function routeEvidencePanel(act)')&&hubSource.includes('const evidence=routeEvidencePanel(act)')&&hubSource.includes('panel.insertBefore(evidence,reference)'),'source conflicts not surfaced in active Act route');
 check(hubSource.includes('hubGlobalEvidence')&&hubSource.includes('https://www.poewiki.net/wiki/Waypoint')&&hubSource.includes('https://www.poewiki.net/wiki/Vaal_side_area'),'global waypoint and source-backed Vaal evidence notices missing');
 check(hubSource.includes('Source disagreement · verify before advancing')&&hubSource.includes('Original Thai source note'),'bilingual source comparison / inspectable original missing');
 check(hubSource.includes('Bandits / The Darkness')&&hubSource.includes('Irasha / Tasuni branch'),'critical quest disagreement indicators missing');

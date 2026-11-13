@@ -274,6 +274,7 @@ const mappedRows=Object.keys(ctx.window).filter(x=>/^ALL_EARS_ROUTE_ACT\d+$/.tes
 assert(sourceWarnings.wikiRows.every(id=>mappedRows.some(r=>r.wikiRow===id)),'Excel warning Wiki row missing from route crosswalk');
 const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
+load('approved-guidance.js');
 load('steam-quest-walkthrough.js');
 load('poe-acts123-bilingual.js');
 load('steam-act4.js');
@@ -301,7 +302,7 @@ assert(earlyEN.actionsEN.some(t=>t.includes('Allflame'))&&earlyEN.stopEN.include
 assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('disagree')),'Act2 Bandit historical conflict must be retained in English');
 assert(steamWalk.acts[3].find(p=>p.id==='bracelet').stopEN.includes('Clarissa'),'Act3 Bracelet STOP still names its recipient and timing');
 const playerHelpSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act))'),'Checklist explanations must offer direct jump to exact quest-stage actions');
+assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act),linked.index)'),'Checklist explanations must offer direct jump to exact quest-stage actions');
 assert(playerHelpSource.includes('statusNote.replaceChildren(overview,warning)'),'Header source caution must be bilingual and updated');
 const actOne=steamWalk.acts[1];
 assert(actOne.length===9,'Act 1 source timeline must expose nine player-oriented steps');
@@ -358,7 +359,7 @@ assert(actFive.find(p=>p.id==='innocence-sin')?.stopIds.includes(277),'Act 5 mus
 assert(actFive.find(p=>p.id==='ossuary-sin')?.stopIds.includes(295),'Act 5 must protect Sin after Sign of Purity');
 assert(actFive.find(p=>p.id==='reliquary')?.keyItems.length===3,'Act 5 Reliquary must show three exact quest item names');
 assert(steamWalk.patchCertified===false,'Act 5 must not claim 3.30 gameplay certification');
-const langCtx={window:{POE_STEAM_WALK:steamWalk},localStorage:{getItem:()=>null,setItem:()=>{}}};
+const langCtx={window:{POE_STEAM_WALK:steamWalk,POE_APPROVED_GUIDANCE:ctx.window.POE_APPROVED_GUIDANCE},localStorage:{getItem:()=>null,setItem:()=>{}}};
 vm.runInNewContext(fs.readFileSync(path.join(dir,'poe-language.js'),'utf8'),langCtx,{filename:'poe-language.js'});
 const locale=langCtx.window.POE_LANGUAGE;
 assert(locale.get().description==='th'&&locale.get().names==='en','User defaults must be Thai guidance and canonical English names');
@@ -444,7 +445,7 @@ assert(actSeven.filter(p=>p.dialogueIds.length===0).length>=3,'Lore/Waypoint-onl
 assert(canonicalSource.includes('src="./steam-act7.js"'),'Act 7 script must load in the main page');
 assert(steamWalk.patchCertified===false,'Act 7 guide must remain historical and not certified for patch 3.30');
 const uiSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('dataset.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(chosen,target)'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
+assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('dataset.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(0,target)')&&uiSource.includes('if(!confirm(msg)){select.value=String(chosen);return;}'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
 assert(uiSource.includes('if(phase.dialogueIds.length)')&&uiSource.includes('hubSourceDiscrepancy'),'Act 7 source differences need disclosure and zero-dialogue stages must not render fake NPC lists');
 
 const actEight=steamWalk.acts[8],actEightEars=actEight.flatMap(p=>p.dialogueIds),actEightLore=actEight.flatMap(p=>p.loreIds||[]);
@@ -470,7 +471,7 @@ assert(actEight.find(p=>p.id==='sisters-after')?.dialogueIds.includes(416),'Harg
 assert(canonicalSource.includes('src="./steam-act8.js"'),'Act 8 route script must load before hub.js');
 assert(steamWalk.patchCertified===false,'Act 8 source-led guidance must not claim 3.30 gameplay certification');
 const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiActEight.includes('["7","8","9","10"].includes(act)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
+assert(uiActEight.includes('Number(act)>=7&&outstanding.some(p=>phases.indexOf(p)>=chosen)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
 assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
 
 
@@ -512,7 +513,7 @@ assert(actTen.find(p=>p.id==='kitava-after')?.dialogueIds.includes(482),'Act10 L
 const finalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(finalSource.includes('src="./steam-act9.js"')&&finalSource.includes('src="./steam-act10.js"'),'Final Acts must load their historical source scripts');
 const finalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(finalHub.includes('["7","8","9","10"].includes(act)'),'Forward dropdown STOP protection must cover Acts 9 and 10');
+assert(finalHub.includes('Number(act)>=7&&outstanding.some(p=>phases.indexOf(p)>=chosen)'),'Forward dropdown STOP protection must cover Acts 9 and 10');
 assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('dataset.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
 assert(steamWalk.patchCertified===false,'Act9 and Act10 cannot claim 3.30 gameplay certification');
 
@@ -637,6 +638,15 @@ assert(checkpointData.acts[3].find(x=>x.id==='a3-clarissa').ids.includes(118),'C
 assert(checkpointData.acts[3].find(x=>x.id==='a3-piety').ids.includes(161),'Piety pre-boss source row missing');
 load('guide-descriptions.js');
 const descriptions=ctx.window.POE_ITEM_DESCRIPTIONS;
+const approved=ctx.window.POE_APPROVED_GUIDANCE;
+const approvedRhoas=d.items.find(item=>item.id===21);
+const approvedWaypoint=extras.waypoints.find(item=>item.id===71);
+const mudFlats=steamWalk.acts['1'].find(phase=>phase.id==='mudflats');
+const cesspool=steamWalk.acts['8'].find(phase=>phase.id==='doedre-cesspool');
+assert(mudFlats.actions.includes(approved.undeadRhoas.th)&&mudFlats.actionsEN.includes(approved.undeadRhoas.en),'Approved Bestel instruction must appear in both route languages');
+assert(mudFlats.stop.includes(approved.undeadRhoas.stopTH)&&mudFlats.stopEN.includes(approved.undeadRhoas.stopEN),'Approved Bestel STOP must include both area boundaries');
+assert(descriptions.get('ears',approvedRhoas).action===approved.undeadRhoas.th&&locale.englishHelp('ears',approvedRhoas,descriptions.get('ears',approvedRhoas)).action===approved.undeadRhoas.en,'Bestel individual help must match the approved route instruction');
+assert(approvedWaypoint.name==='The Toxic Conduits'&&cesspool.waypointIds.includes(71)&&cesspool.actions.includes(approved.toxicConduits.th)&&cesspool.actionsEN.includes(approved.toxicConduits.en),'Shared waypoint must retain canonical ID/name and both approved instructions');
 assert(descriptions.schema===1&&descriptions.certifiedFor330===false,'Guide descriptions must remain patch-unverified');
 let descChecked=0;
 for(const [type,records] of Object.entries({ears:d.items,lore:lore.entries,waypoints:extras.waypoints,sidequests:extras.sidequests})){

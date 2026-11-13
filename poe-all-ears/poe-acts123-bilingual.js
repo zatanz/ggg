@@ -31,11 +31,11 @@ const translated={
       "Mud Flats · talk before entering the pool or inserting glyphs",
       [
         "Ask Nessa and Tarkleigh about the Rhoas.",
-        "After defeating Oozeback Bloom, return for Bestel: Undead Rhoas BEFORE entering the Fetid Pool.",
+        window.POE_APPROVED_GUIDANCE.undeadRhoas.en,
         "Collect the Strange Glyphs, find the Glyph Wall, then return for Tarkleigh: Strange Glyphs and Glyph Wall.",
         "Only insert the glyphs after both conversations are complete."
       ],
-      "STOP: do not enter the Fetid Pool before Bestel: Undead Rhoas, or insert glyphs before Tarkleigh's Strange Glyphs and Glyph Wall topics."
+      "STOP: " + window.POE_APPROVED_GUIDANCE.undeadRhoas.stopEN + ", or insert glyphs before Tarkleigh's Strange Glyphs and Glyph Wall topics."
     ],
     "pool": [
       "A Dirty Job · check dialogues after the quest",

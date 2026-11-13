@@ -487,7 +487,7 @@ const finalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(finalSource.includes('src="./steam-act9.js"')&&finalSource.includes('src="./steam-act10.js"'),'Final Acts must load their historical source scripts');
 const finalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(finalHub.includes('["7","8","9","10"].includes(act)'),'Forward dropdown STOP protection must cover Acts 9 and 10');
-assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('data.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
+assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('dataset.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
 assert(steamWalk.patchCertified===false,'Act9 and Act10 cannot claim 3.30 gameplay certification');
 
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');

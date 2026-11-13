@@ -959,7 +959,7 @@ const assert=require('node:assert/strict');
  await hub.getByRole('button',{name:'ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)'}).click();
  assert.equal(await hub.locator('#patch').inputValue(),'legacy-3.9','switch back to explicitly historical data');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'historical preview works after deliberate switch');
- assert.equal((await hub.locator('#hubView .hubDataNotice').innerText()).includes('3.29'),true,'data evidence notice clearly qualifies current 3.29 play instead of the deferred 3.30 version');
+ assert.equal((await hub.locator('.hubDataNotice').innerText()).includes('3.29'),true,'data evidence notice clearly qualifies current 3.29 play instead of the deferred 3.30 version');
 
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();

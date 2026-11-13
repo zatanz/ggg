@@ -550,7 +550,7 @@ function actSteamGuide(act){
  const frame=el("section",undefined,"hubBranchChoice");frame.dataset.rulerBranch=chosenRuler;
  const heading=el("strong",tr("ตัดสินใจครั้งเดียว · ผู้ปกครอง Highgate","Irreversible choice · Highgate ruler"));
  const label=el("label",tr("ผู้ที่ได้รับ Sekhema Feather:","Who received the Sekhema Feather:"));
- const select=el("select");select.setAttribute("aria-label",tr("ผู้ปกครอง Highgate ที่เลือก","Chosen Highgate ruler"));
+ const select=el("select");select.setAttribute("aria-label",tr("บันทึกผู้ปกครอง Highgate ที่เลือกแล้วในเกม","Record the Highgate ruler actually chosen in-game"));
  [["undecided",tr("ยังไม่เลือก","Not chosen yet")],["Irasha","Irasha"],["Tasuni","Tasuni"]].forEach(([value,name])=>{const o=el("option",name);o.value=value;select.append(o);});
  select.value=chosenRuler;select.onchange=()=>saveRulerChoice(select.value);label.append(select);
  const msg=chosenRuler==="Tasuni"?
@@ -558,7 +558,7 @@ function actSteamGuide(act){
  chosenRuler==="Irasha"?
  tr("ตรงกับฐานข้อมูลเดิม: หลังส่ง Feather ให้ Irasha ตรวจ Tasuni: Feather, Petarus and Vanja: Irasha ก่อนติ๊ก ID #443/#444","Matches the original tracker: after giving the Feather to Irasha, hear Tasuni: Feather and Petarus and Vanja: Irasha before marking #443/#444."):
  tr("ยังไม่เลือก: สำรวจบทสนทนาก่อนส่ง Feather ให้ฝ่ายใดฝ่ายหนึ่ง เพราะฐานข้อมูลเดิมมี ID สำหรับ Irasha เท่านั้น","No choice yet: check dialogue before handing in the Feather. The historical dataset has stable IDs for Irasha's branch only.");
- frame.append(heading,label,el("p",msg));
+ frame.append(heading,el("p",tr("ช่องนี้บันทึกการเลือกที่ทำไปแล้วในเกมเท่านั้น ไม่ได้เลือกผู้ปกครองให้ตัวละคร และไม่เปลี่ยนผลเควสต์ในเกม","This field only records the choice you have already made in-game. It does not choose a ruler or change the game's quest outcome."),"hubSubtle"),label,el("p",msg));
  const citation=el("a",tr("ดูผลของการเลือกทั้งสองแบบจาก PoE Wiki","Compare both ruler branches on PoE Wiki"));
  citation.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9";citation.target="_blank";citation.rel="noopener noreferrer";frame.append(citation);
  box.append(frame);
@@ -570,7 +570,10 @@ function actSteamGuide(act){
  }
  if(phase.sourceNote){
    const caution=el("details",undefined,"hubSourceDiscrepancy");caution.dataset.sourceNote=phase.id;
-   const summary=el("summary",tr("ข้อแตกต่างระหว่างแหล่งข้อมูล · ยังไม่รับรองแพตช์","Historical sources disagree · not patch-certified"));
+   if(phase.postQuestReview){caution.dataset.postQuestReview=phase.id;caution.open=true;}
+   const summary=el("summary",phase.postQuestReview?
+     tr("ตรวจบทสนทนาหลังจบเควสต์ · ฟังแล้วจึงติ๊ก","After-quest dialogue check · mark only after hearing"):
+     tr("ข้อแตกต่างระหว่างแหล่งข้อมูล · ยังไม่รับรองแพตช์","Historical sources disagree · not patch-certified"));
    caution.append(summary,el("p",descEN()?(phase.sourceNoteEN||"Review the original Thai source difference before advancing."):phase.sourceNote));
    const links=el("div",undefined,"hubConflictLinks");
    const wiki=el("a","PoE Wiki · All Ears Act "+act);wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;wiki.rel="noopener noreferrer";wiki.target="_blank";
@@ -581,7 +584,7 @@ function actSteamGuide(act){
  if(phase.patchProblem){
    const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";
    alert.append(el("strong",tr("ปัญหาที่มีรายงานจากแพตช์ 3.29","Reported issue from patch 3.29")),
- el("p",descEN()?"A historical report describes unavailable NPC dialogue; this still requires a fresh patch 3.30 game test.":phase.patchProblem),
+ el("p",descEN()?"Community reports describe inaccessible NPC dialogue in 3.29. This project's 3.29 gameplay reproduction is still incomplete.":phase.patchProblem),
  el("p",tr("หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","If an NPC topic is unavailable, do not mark it heard or assume this character can complete All Ears."),"hubSubtle"));
  if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai report"),el("p",phase.patchProblem));alert.append(original);}
  box.append(alert);

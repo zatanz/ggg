@@ -1,4 +1,4 @@
-/* Act 9: historical Wiki/Steam route. Ruler branch in old 484-ID tracker includes Irasha choice ONLY; 3.30 NOT certified. */
+/* Act 9: historical Wiki/Steam route. Ruler branch in old 484-ID tracker includes Irasha choice ONLY; 3.29 route not fully gameplay-certified. */
 (function(){
 "use strict";
 const guide=window.POE_STEAM_WALK;if(!guide||guide.patchCertified!==false||guide.acts[9])throw Error("Cannot attach historical Act9 route");
@@ -273,8 +273,8 @@ guide.acts[9]=[
     "keyItems": [
       "Sekhema Feather"
     ],
-    "sourceNote": "ชุดข้อมูลเดิมบันทึกเพียงเส้นทางมอบ Feather ให้ Irasha; Wiki ระบุว่าเส้นทาง Tasuni สลับบทสนทนา 2 หัวข้อ ขณะนี้ยังไม่มี Local ID และการเทสต์ในเกมแพตช์ 3.30 สำหรับสายนั้น",
-    "sourceNoteEN": "The legacy tracker only includes the Irasha-ruler branch. The Wiki documents two alternative Tasuni-ruler dialogues, but stable tracker IDs do not exist for them. Patch 3.30 branch completeness is unverified.",
+    "sourceNote": "ชุดข้อมูลเดิมบันทึกเพียงเส้นทางมอบ Feather ให้ Irasha; Wiki ระบุว่าเส้นทาง Tasuni สลับบทสนทนา 2 หัวข้อ ขณะนี้ยังไม่มี Local ID และการยืนยันในเกม 3.29 แบบครบทุกทางเลือกสำหรับสายนั้น",
+    "sourceNoteEN": "The legacy tracker only includes the Irasha-ruler branch. The Wiki documents two alternative Tasuni-ruler dialogues, but stable tracker IDs do not exist for them. The alternate route has not been completely gameplay-verified for 3.29.",
     "confidence": "historical-source-only",
     "branchChoice": "Irasha",
     "branchRisk": true
@@ -282,36 +282,40 @@ guide.acts[9]=[
   {
     "id": "powder-acid",
     "place": "The Boiling Lake / The Refinery",
-    "heading": "เก็บกรดและผง · อย่าเพิ่งเข้าท้องอสูร",
-    "headingEN": "Collect both ingredients · pause before entering the Beast",
+    "heading": "ก่อนเข้าท้องอสูร · ฟัง Sin ให้ครบ 3 หัวข้อ",
+    "headingEN": "Before entering the Belly · review three Sin dialogue topics",
     "quest": "Recurring Nightmare",
     "dialogueIds": [
-      445
+      445,
+      446,
+      447
     ],
     "loreIds": [],
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "เก็บ Basilisk Acid จาก The Boiling Lake และ Trarthan Powder จาก The Refinery ให้ครบตามเควสต์ Recurring Nightmare",
-      "เมื่อได้ทั้งสองชิ้นแล้ว ให้คุย Sin หัวข้อ The Dark Ember (ID 445) ใน The Quarry และ Highgate ตามเงื่อนไขที่เกมเปิด",
-      "ตรวจหัวข้อนี้ก่อนเข้า The Belly of the Beast"
+      "เมื่อได้ Trarthan Powder ให้ตรวจ Sin: The Black Core (ID 446) และ Cataclysm (ID 447) ทันที ก่อนเข้า The Belly of the Beast ตามคำเตือนของฐานข้อมูลเดิม",
+      "เก็บ Basilisk Acid และ Trarthan Powder ครบทั้งสองชนิด แล้วกลับคุย Sin: The Dark Ember (ID 445) ใน The Quarry และ Highgate ตามหัวข้อที่เปิด",
+      "ก่อนเข้า The Belly of the Beast ต้องตรวจบทสนทนา #445, #446 และ #447 ทีละรายการ ห้ามตีความว่าเห็นหัวข้อเดียวเท่ากับฟังครบสามหัวข้อ"
     ],
     "actionsEN": [
-      "Collect Basilisk Acid in The Boiling Lake and Trarthan Powder in The Refinery for Recurring Nightmare.",
-      "After obtaining BOTH ingredients, hear Sin: The Dark Ember in Highgate and in The Quarry, as available (#445).",
-      "Do not enter The Belly of the Beast before checking this post-ingredients dialogue."
+      "After obtaining Trarthan Powder, immediately check Sin: The Black Core (ID 446) and Cataclysm (ID 447) BEFORE entering The Belly of the Beast, as the legacy checklist warns.",
+      "After obtaining BOTH Basilisk Acid and Trarthan Powder, hear Sin: The Dark Ember (ID 445) in The Quarry and Highgate as available.",
+      "Before entering The Belly of the Beast, verify each of #445, #446 and #447 separately. Seeing one dialogue option does not mean all three have been heard."
     ],
-    "stop": "หยุดก่อนเข้า The Belly of the Beast: หลังได้วัตถุดิบครบ ต้องฟัง Sin: The Dark Ember (ID 445)",
-    "stopEN": "STOP: with both Basilisk Acid and Trarthan Powder, hear Sin: The Dark Ember (#445) BEFORE entering The Belly of the Beast.",
+    "stop": "หยุดก่อนเข้า The Belly of the Beast: หลังได้ Trarthan Powder ตรวจ Sin: The Black Core (#446) และ Cataclysm (#447) จากนั้นเมื่อวัตถุดิบสองชิ้นครบ ตรวจ Sin: The Dark Ember (#445)",
+    "stopEN": "STOP BEFORE entering The Belly of the Beast: after Trarthan Powder, check Sin: The Black Core (#446) and Cataclysm (#447); after BOTH ingredients, check Sin: The Dark Ember (#445).",
     "stopIds": [
-      445
+      445,
+      446,
+      447
     ],
     "keyItems": [
       "Basilisk Acid",
       "Trarthan Powder"
     ],
-    "sourceNote": null,
-    "sourceNoteEN": null,
+    "sourceNote": "ID 446/447 ในข้อมูลเดิมมีคำเตือนว่าต้องฟังหลังได้ Trarthan Powder แต่ก่อนเข้าท้องอสูร ส่วน Wiki ระบุเงื่อนไขหลังได้ Trarthan Powder เช่นกัน จึงย้ายสองรายการออกจากช่วงหลังเข้าพื้นที่ แต่ยังไม่มีผลทดสอบยืนยันทุกทางเลือกใน 3.29",
+    "sourceNoteEN": "Legacy IDs #446/#447 explicitly caution after obtaining Trarthan Powder but BEFORE entering the Belly. The 2025 Wiki also associates the topics with the powder. These now appear at the earlier decision boundary; the full 3.29 branch timing is not gameplay-certified.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act9-ember-two-ingredients.svg",
@@ -326,32 +330,29 @@ guide.acts[9]=[
   {
     "id": "black-core",
     "place": "The Belly of the Beast / The Rotting Core",
-    "heading": "เข้าสู่แกนอสูร · ฟัง Sin ให้ครบ",
-    "headingEN": "Inside the Beast · hear Sin before continuing",
+    "heading": "เข้าสู่ The Belly of the Beast · ตรวจ Lore และเส้นทาง",
+    "headingEN": "Enter The Belly of the Beast · continue the area route",
     "quest": "Recurring Nightmare",
-    "dialogueIds": [
-      446,
-      447
-    ],
+    "dialogueIds": [],
     "loreIds": [],
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังตรวจ The Dark Ember จึงเข้า The Belly of the Beast และ The Rotting Core",
-      "ตรวจ Sin: The Black Core (#446) และ Cataclysm (#447) ในช่วงที่เปิดบทสนทนา",
-      "สองหัวข้อนี้มีคำเตือนเก่าที่อาจผูกกับจังหวะหลังเก็บ Trarthan Powder ก่อนเข้า Belly; หากพบเปิดเร็วกว่านั้นให้ฟังทันที ห้ามเดาว่ากลับมาฟังภายหลังได้"
+      "เข้าพื้นที่นี้เมื่อฟัง Sin #445, #446 และ #447 ครบตามหัวข้อที่เปิดในขั้นก่อนหน้าแล้ว",
+      "หากยังไม่ได้ฟังครบ ให้ตรวจสถานะ NPC และบันทึกข้อผิดพลาดที่พบจริง ห้ามติ๊กย้อนหลังจากการเดา",
+      "เดินหน้าไปยัง The Rotting Core และเตรียมจุดตรวจ Weylam Roth หลังชนะ The Depraved Trinity"
     ],
     "actionsEN": [
-      "After completing The Dark Ember, enter The Belly of the Beast and The Rotting Core.",
-      "Check Sin: The Black Core (#446) and Cataclysm (#447) as soon as the topics appear.",
-      "Historical notes may place these dialogues after Trarthan Powder but BEFORE entering the Belly. If they appear earlier, hear them immediately; do not assume you can return later."
+      "Enter this area only after reviewing the three Sin topics (#445–447) at the preceding quest-state checkpoint.",
+      "If any topic was unavailable, record the actual NPC/quest state rather than checking it retroactively.",
+      "Continue to The Rotting Core and prepare to check Weylam Roth after The Depraved Trinity."
     ],
     "stop": null,
     "stopEN": null,
     "stopIds": [],
     "keyItems": [],
-    "sourceNote": "หมายเหตุเก่าระบุ #446/#447 หลังได้ Trarthan Powder แต่ก่อนเข้า Belly of the Beast ขณะที่ลำดับพื้นที่ทำให้การเปิดหัวข้อจริงต้องทดสอบ; ไม่ควรเลื่อนผ่านจุดนี้โดยไม่ตรวจ Sin",
-    "sourceNoteEN": "Legacy notes require Sin: The Black Core and Cataclysm after Trarthan Powder, potentially before entering the Belly. Their exact unlock location/timing requires in-game confirmation.",
+    "sourceNote": "หัวข้อ Sin #446/#447 ย้ายไปแสดงในจุดตรวจ Trarthan Powder ก่อนเข้า Belly ตามข้อมูลเดิม ไม่ใช่ว่าเข้า Belly แล้วจึงค่อยไปฟัง",
+    "sourceNoteEN": "Sin #446/#447 are tracked in the pre-Belly Trarthan Powder step. Their previous placement after entering the Belly was later than the historical warning.",
     "confidence": "historical-source-only"
   },
   {

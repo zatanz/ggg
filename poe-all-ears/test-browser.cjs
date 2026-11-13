@@ -811,7 +811,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await selectSetting('hubDescriptionLanguage','en');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Hargan'),true,'Act 8 precise English instructions display in English guidance mode');
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Viewing: Act 8'),true,'global active-area summary follows English guidance language');
- assert.equal(await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubActionInstructionsLabel').innerText(),'In-game instructions','task heading is translated with guidance language');
+ assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubWalkInstructions > summary').innerText()).includes('All instructions'),true,'collapsed full-instructions label is translated with guidance language');
  assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] .hubCurrentTaskFacts').innerText()).includes('Do this'),true,'English exact-item help explains the actionable step');
  assert.equal(await hub.getByRole('checkbox',{name:/Mark here after completing in-game.*Hargan/}).count(),1,'English route retains the labelled manual checkbox');
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('STOP:'),true,'English pre-completion STOP remains visible');

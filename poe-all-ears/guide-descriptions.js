@@ -17,6 +17,8 @@ let action;
 if(/Introduction/i.test(topic)){action="ไปหา "+npc+" แล้วฟังหัวข้อ Introduction ให้จบ ก่อนทำเครื่องหมายว่าเก็บแล้ว";}else{action="คุยกับ "+npc+" เลือกหัวข้อ “"+topic+"” แล้วฟังให้จบ จึงค่อยทำเครื่องหมายว่าเก็บแล้ว";}
 if(g?.steps)action=g.steps;
 let displayLabel="",displayLabelEN="",actionEN="",cautionEN="";
+const approved=item.act===1&&item.id===21?window.POE_APPROVED_GUIDANCE.undeadRhoas:null;
+if(approved){action=approved.th;actionEN=approved.en;}
 const bandits=["Alira","Oak","Kraityn"],first=bandits.includes(context?.first)?context.first:"",second=bandits.includes(context?.second)&&context.second!==first?context.second:"";
 if(item.act===2&&r.wikiRow===101){
  displayLabel="Eramir — หัวข้อ Bandit ที่ฆ่าคนแรก"+(first?" ("+first+")":"");
@@ -42,7 +44,7 @@ if(item.act===2&&r.wikiRow===103){
 
 const translate=routeAct3Thai[item.id]||[];
 const unlock=(r.trigger&&/^[A-Za-z]/.test(r.trigger)?translate[0]||extra[0]||"":r.trigger)||translate[0]||extra[0]||"";
-const caution=(r.before&&/^[A-Za-z]/.test(r.before)?translate[1]||extra[1]||"":r.before)||g?.warning||translate[1]||extra[1]||"";
+const caution=approved?.stopTH||(r.before&&/^[A-Za-z]/.test(r.before)?translate[1]||extra[1]||"":r.before)||g?.warning||translate[1]||extra[1]||"";
 let location=r.area||"";
 if(!location&&item.act===1&&item.id>=2&&item.id<=15)location="Lioneye's Watch (อ้างอิงคำแนะนำ Act 1 เดิม)";
 const tags=[];
@@ -63,7 +65,8 @@ else if(item.act==="Vaal"){action="พบ Vaal Side Area ที่มีบั�
 return {action,location:item.area,unlock:"",caution,tip,source:loreSource,sourceLabel:"PoE Wiki 2025 / ชุดรายการประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:true};
 }
 function forWaypoint(item){
-return {action:"เดินทางไป "+item.name+" แล้วเปิดแผนที่เพื่อตรวจว่าจุดวาร์ปของพื้นที่นี้ใช้งานได้ จึงทำเครื่องหมายว่าเก็บแล้ว",location:item.name,unlock:"จุดวาร์ปบางแห่งเปิดให้อัตโนมัติในเกมรุ่นใหม่ ไม่จำเป็นต้องกดคลิกทุกจุด ให้ดูสถานะจริงในเกม",caution:"ฐานข้อมูลเดิมมี 91 จุด แต่จำนวนที่เกมรุ่นใหม่ต้องใช้อาจต่างออกไป ยังไม่รับรองกับแพตช์ 3.30",tip:"ต้องตรวจด้วยตัวละครที่ต้องการเก็บ Locomancer การเดินถึงพื้นที่แต่ยังใช้จุดวาร์ปไม่ได้ ไม่ถือว่าตรวจผ่าน",source:"https://www.poewiki.net/wiki/Waypoint",sourceLabel:"ชื่อพื้นที่จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
+const shared=item.act===8&&item.id===71;
+return {action:shared?window.POE_APPROVED_GUIDANCE.toxicConduits.th:"เดินทางไป "+item.name+" แล้วเปิดแผนที่เพื่อตรวจว่าจุดวาร์ปของพื้นที่นี้ใช้งานได้ จึงทำเครื่องหมายว่าเก็บแล้ว",location:shared?"The Toxic Conduits / Doedre's Cesspool":item.name,unlock:"จุดวาร์ปบางแห่งเปิดให้อัตโนมัติในเกมรุ่นใหม่ ไม่จำเป็นต้องกดคลิกทุกจุด ให้ดูสถานะจริงในเกม",caution:"ฐานข้อมูลเดิมมี 91 จุด แต่จำนวนที่เกมรุ่นใหม่ต้องใช้อาจต่างออกไป ยังไม่รับรองกับแพตช์ 3.30",tip:"ต้องตรวจด้วยตัวละครที่ต้องการเก็บ Locomancer การเดินถึงพื้นที่แต่ยังใช้จุดวาร์ปไม่ได้ ไม่ถือว่าตรวจผ่าน",source:"https://www.poewiki.net/wiki/Waypoint",sourceLabel:"ชื่อพื้นที่จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
 }
 function forQuest(item){
 return {action:"เปิดบันทึกเควสต์ (Quest Log) แล้วทำ “"+item.name+"” ให้จบ รวมถึงกลับไปส่งเควสต์หรือรับรางวัลถ้ามี ก่อนทำเครื่องหมายว่าเก็บแล้ว",location:"Act "+item.act,unlock:"ให้ดูช่วงเควสต์ที่เชื่อมกับรายการนี้ในคู่มือ Act เพื่อทราบลำดับพื้นที่และ NPC ตามข้อมูลต้นทาง",caution:"รายละเอียดยังไม่ยืนยันกับแพตช์ 3.30 อย่าติ๊กว่าเสร็จเพียงเพราะรับเควสต์หรือสู้บอสแล้ว",tip:"ตรวจสถานะเควสต์และยอด No Loose Ends จากในเกมจริง เพราะเครื่องหมายบนเว็บเป็นการบันทึกด้วยตนเอง",source:"https://www.poewiki.net/wiki/Quest",sourceLabel:"ชื่อเควสต์จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};

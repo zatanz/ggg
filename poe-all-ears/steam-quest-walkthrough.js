@@ -99,11 +99,11 @@ window.POE_STEAM_WALK = {
         "loreIds": [],
         "actions": [
           "คุย Nessa และ Tarkleigh เรื่อง Rhoas",
-          "หลังจัดการ Oozeback Bloom กลับไปฟัง Bestel: Undead Rhoas ก่อนเข้า Fetid Pool",
+          window.POE_APPROVED_GUIDANCE.undeadRhoas.th,
           "เก็บ Strange Glyphs พบ Glyph Wall แล้วกลับไปฟัง Tarkleigh เรื่อง Strange Glyphs และ Glyph Wall",
           "คุยครบแล้วจึงใส่ Glyphs เพื่อเปิดทาง"
         ],
-        "stop": "ยังไม่ควรเข้า The Fetid Pool ก่อน Bestel: Undead Rhoas และยังไม่ควรใส่ Glyphs ลง Glyph Wall ก่อน Tarkleigh: Strange Glyphs/Glyph Wall",
+        "stop": window.POE_APPROVED_GUIDANCE.undeadRhoas.stopTH + " และยังไม่ควรใส่ Glyphs ลง Glyph Wall ก่อน Tarkleigh: Strange Glyphs/Glyph Wall",
         "stopIds": [
           21,
           22,

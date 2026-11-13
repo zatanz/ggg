@@ -53,12 +53,14 @@ for(const name of ['index.html','walkthrough.html']){
 const hubSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 try{new vm.Script(hubSource,{filename:'hub.js'})}catch(e){errors.push('hub.js: '+e.message)}
 const index=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+check(index.includes('href="./campaign.css"')&&fs.existsSync(path.join(dir,'campaign.css')),'guided campaign stylesheet must load');
+check(index.indexOf('src="./approved-guidance.js"')>=0&&index.indexOf('src="./approved-guidance.js"')<index.indexOf('src="./guide-descriptions.js"'),'approved copy must load before its route and item consumers');
 check(index.includes('src="./lore-data.js"')&&index.includes('src="./extra-data.js"')&&index.includes('src="./hub.js"')&&index.includes('href="./hub.css"'),'unified hub dependencies not loaded');
 check(index.includes('window.POE_HUB_BRIDGE')&&index.includes('mark:function(id,done)'),'legacy progress bridge unavailable');
 check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
 // Regress source-risk disclosures: visible at decision points, bilingual and source-linked.
 const hubCSS=fs.readFileSync(path.join(dir,'hub.css'),'utf8');
-check(hubSource.includes('function routeEvidencePanel(act)')&&hubSource.includes('const evidence=routeEvidencePanel(act)')&&hubSource.includes('panel.append(evidence)'),'source conflicts not surfaced in active Act route');
+check(hubSource.includes('function routeEvidencePanel(act)')&&hubSource.includes('const evidence=routeEvidencePanel(act)')&&hubSource.includes('panel.insertBefore(evidence,reference)'),'source conflicts not surfaced in active Act route');
 check(hubSource.includes('hubGlobalEvidence')&&hubSource.includes('https://www.poewiki.net/wiki/Waypoint')&&hubSource.includes('https://www.poewiki.net/wiki/Vaal_side_area'),'global waypoint and source-backed Vaal evidence notices missing');
 check(hubSource.includes('Source disagreement · verify before advancing')&&hubSource.includes('Original Thai source note'),'bilingual source comparison / inspectable original missing');
 check(hubSource.includes('Bandits / The Darkness')&&hubSource.includes('Irasha / Tasuni branch'),'critical quest disagreement indicators missing');
@@ -66,12 +68,11 @@ check(hubCSS.includes('.hubEvidencePanel>summary:focus-visible')&&hubCSS.include
 const walkSection=hubSource.slice(hubSource.indexOf('function actSteamGuide('),hubSource.indexOf('function renderRoute('));
 check(walkSection.indexOf('const actions=el("ol"')>=0&&walkSection.indexOf('const actions=el("ol"')<walkSection.indexOf('const taskNav=el('),'what-to-do instructions should precede detailed checklist navigation');
 check(hubSource.includes('const manageTitle=document.querySelector("#hubManage>summary")')&&hubSource.includes('const notice=document.querySelector(".hubDataNotice")'),'legacy help and patch label not updated on language switch');
-// The live route must be one actionable surface: source-backed guidance and its
-// canonical checkbox share a panel; duplicates live behind an optional archive.
-check(hubSource.includes('inline.append(checklist)')&&hubSource.includes('checklist.querySelector(".hubText")?.remove()'),'active quest checklist must be adjacent to guidance without duplicate card text');
-check(hubSource.includes('writeMarks(type,x.id,wasChecked)')&&hubSource.includes('const next=fromCurrent&&wasChecked?'),'inline checklist must retain canonical state and focus the next task');
-check(hubSource.includes('const shelf=el("details",undefined,"hubWalkArchive")')&&hubSource.includes('archived.forEach(node=>shelf.append(node))'),'historical per-category checklist must remain accessible under one disclosure');
-check(hubSource.includes('const advance=el("button",tr("ดูขั้นตอนถัดไป"')&&hubSource.includes('advance.onclick=()=>goto(chosen+1,true,"select")'),'fully marked quest step must offer a next-step action');
+// The live route and review use the same checkbox handler and canonical IDs.
+check(hubSource.includes('const mark=el("label",undefined,"hubInlineMark")')&&hubSource.includes('if(current?.type===type&&current.id===id)continue;'),'active quest checkbox must have a label and appear once in its stage');
+check(hubSource.includes('itemCheckbox(current.type,item,false,details,')&&hubSource.includes('writeMarks(previous.type,previous.id,false)'),'inline mark and undo must share canonical persistence');
+check(hubSource.includes('const shelf=el("details",undefined,"hubWalkArchive")')&&hubSource.includes('if(node.querySelector("input"))shelf.append(node);'),'historical per-category checklist must remain accessible under one disclosure');
+check(hubSource.includes('advance.dataset.inlineAdvance="true"')&&hubSource.includes('advance.onclick=()=>goto(chosen+1,true,"task")'),'fully marked quest step must offer a next-step action');
 check(hubCSS.includes('.hubInlineCurrentChecklist .hubInlineMark')&&hubCSS.includes('.hubWalkArchive>summary'),'inline confirmation and optional archive need accessible styles');
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));
 if(errors.length)process.exitCode=1;

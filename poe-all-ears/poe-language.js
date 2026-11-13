@@ -207,7 +207,7 @@ const glossary={
   "Tsoatha": "ทโซอาธา"
 };
 const highRisk={
-  "21": "Before entering The Fetid Pool, collect the relevant Oozeback Bloom dialogue.",
+  "21": "STOP: "+window.POE_APPROVED_GUIDANCE.undeadRhoas.stopEN+".",
   "22": "After collecting a Strange Glyph, talk before inserting any glyph in the Glyph Wall.",
   "23": "Check the Glyph Wall dialogue before inserting the Strange Glyphs.",
   "28": "Listen to this topic before defeating Brutus.",
@@ -365,7 +365,7 @@ function englishHelp(type,item,guide){
    action="Travel to "+base+" and verify that its Waypoint is active on the in-game map before marking it complete.";
    location="Act "+act+" · "+base;unlock="Some Waypoints activate automatically in newer game versions. Confirm the actual active state rather than assuming that entering the area is enough.";
    if(act===8&&item.id===71){
-     action="The Toxic Conduits world-map node is shared with the Waypoint you access AFTER defeating Doedre in Doedre's Cesspool. Mark it only when the waypoint is actually active.";
+     action=window.POE_APPROVED_GUIDANCE.toxicConduits.en;
      location="The Toxic Conduits / Doedre's Cesspool";
      unlock="After the Doedre encounter and the exit to Doedre's Cesspool, confirm the shared map Waypoint is active. Do NOT mark it on first entering Toxic Conduits.";
      caution="Historic node naming differs from the physical Doedre's Cesspool waypoint access. Check in-game before marking.";

@@ -261,8 +261,8 @@ guide.acts[7]=[
   {
     "id": "den-before",
     "place": "The Chamber of Sins Level 2 / The Den",
-    "heading": "เห็นทางถูกปิด · ต้องคุย Helena ก่อนเข้า Den",
-    "headingEN": "Blocked route · speak to Helena before entering Den",
+    "heading": "Helena: The Den · คุยทันทีหลังพบทางถูกปิด",
+    "headingEN": "Helena: The Den · speak immediately after finding the blocked route",
     "quest": "The Master of a Million Faces",
     "dialogueIds": [
       365
@@ -272,22 +272,22 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "เมื่อพบทางกลับ The Forest Encampment เดิมถูกปิด ให้กลับไปคุย Helena หัวข้อ The Den (ID 365)",
-      "ฟังหัวข้อนี้ให้จบก่อนเดินผ่าน The Chamber of Sins Level 2 ไป The Den",
-      "คู่มือเก่าเตือนก่อน The Fellshrine Ruins แต่ PoE Wiki เตือนก่อน The Den จึงควรตรวจทันทีที่พบทางถูกปิด"
+      "เมื่อพบทางกลับ Forest Encampment เดิมถูกปิด ให้ฟัง Helena: The Den (ID 365) ทันที ก่อนเข้า The Fellshrine Ruins ตามคำเตือนเดิม",
+      "PoE Wiki ระบุอย่างช้าที่สุดก่อนเดินต่อสู่ The Den คำเตือน Fellshrine จากฐานข้อมูลเดิมเป็นจุดระวังที่เร็วกว่า ยังไม่ยืนยันว่าเพียงเข้า Fellshrine ทำให้บทสนทนาหายใน 3.29"
     ],
     "actionsEN": [
       "After discovering the blocked route to the old Forest Encampment, return to Helena for The Den (Wiki row #365).",
-      "Complete that dialogue before proceeding through The Chamber of Sins Level 2 into The Den.",
-      "Legacy notes mention The Fellshrine Ruins, while the Wiki specifies before continuing toward The Den. Treat this as a historical conflict requiring in-game verification."
+      "After finding the blocked route, hear Helena: The Den (ID 365) immediately, before entering The Fellshrine Ruins as the legacy data cautions.",
+      "The 2025 Wiki warns before continuing toward The Den; the Fellshrine warning is a conservative earlier boundary, not proof that entering Fellshrine removes the topic in 3.29."
     ],
-    "stop": "หยุดก่อนเข้า The Den: ต้องฟัง Helena: The Den (ID 365) หลังพบเส้นทางที่ถูกปิด",
-    "stopEN": "STOP: do not enter The Den before hearing Helena: The Den after discovering the blocked passage.",
+    "stop": "หยุดหลังพบเส้นทางถูกปิด: คุย Helena: The Den (ID 365) ก่อนเข้า The Fellshrine Ruins ตามฐานข้อมูลเดิม (Wiki เตือนก่อน The Den)",
+    "stopEN": "STOP: after finding the blocked route, hear Helena: The Den (ID 365) before The Fellshrine Ruins (earlier legacy caution; Wiki says before The Den).",
     "stopIds": [
       365
     ],
     "keyItems": [],
-    "sourceNote": "ไฟล์เก่าเตือนก่อนเข้า The Fellshrine Ruins แต่ PoE Wiki เตือนก่อนเดินต่อ The Den ทั้งสองแหล่งไม่ตรงกัน",
-    "sourceNoteEN": "The legacy source warns about The Fellshrine Ruins; the Wiki instead warns before continuing toward The Den. The discrepancy is not gameplay-resolved.",
+    "sourceNote": "ข้อมูลเดิม #365 เตือนก่อน The Fellshrine Ruins ขณะที่ PoE Wiki ปี 2025 เตือนก่อนมุ่งหน้า The Den จึงเลือกจุดที่เร็วกว่าเป็นข้อควรระวังเท่านั้น ไม่มีหลักฐานในเกม 3.29 ว่าเข้าพื้นที่ Fellshrine แล้วหัวข้อหายทันที",
+    "sourceNoteEN": "Legacy #365 warns before entering The Fellshrine Ruins; the 2025 Wiki warns before proceeding toward The Den. The earlier point is precautionary only; no 3.29 gameplay reproduction proves the dialogue disappears on entering Fellshrine.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act7-den-helena-stop.svg",
@@ -471,8 +471,8 @@ guide.acts[7]=[
   {
     "id": "fireflies-return",
     "place": "The Dread Thicket / The Bridge Encampment",
-    "heading": "เก็บ Fireflies ครบ 7 · คุย Yeena ก่อนพบใน Vaal City",
-    "headingEN": "After seven Fireflies · speak to Yeena before Vaal City",
+    "heading": "Fireflies ครบ 7 · คุย Yeena ก่อนเข้า Causeway",
+    "headingEN": "Seven Fireflies · speak to Yeena before entering the Causeway",
     "quest": "Lighting the Way",
     "dialogueIds": [
       382
@@ -482,24 +482,24 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "เก็บ Firefly ให้ครบ 7 ชิ้นใน The Dread Thicket สำหรับเควสต์ Lighting the Way",
-      "กลับ Bridge Encampment คุย Yeena หัวข้อ Arakaali's Temple (ID 382) ก่อนพบเธอใน The Vaal City",
-      "ข้อมูลเดิมเตือนก่อนเข้า The Causeway แต่ PoE Wiki เตือนก่อนพบ Yeena ใน Vaal City เพื่อความปลอดภัยควรฟังทันทีที่เก็บ Fireflies ครบ"
+      "หลังเก็บ Fireflies ครบ 7 ชิ้น กลับ Bridge Encampment คุย Yeena: Arakaali's Temple (ID 382) ทันที และทำก่อนเข้า The Causeway ตามข้อมูลเดิม",
+      "PoE Wiki เตือนก่อนพบ Yeena ใน The Vaal City ซึ่งเป็นจุดที่ช้ากว่า หลีกเลี่ยงการเข้า Causeway ก่อนบันทึกบทสนทนา แต่ยังไม่ถือว่าได้รับรองด้วยเกม 3.29"
     ],
     "actionsEN": [
       "Collect all seven Fireflies in The Dread Thicket for Lighting the Way.",
-      "Return to Yeena in The Bridge Encampment and hear Arakaali's Temple (Wiki #382) BEFORE meeting Yeena in The Vaal City.",
-      "An older workbook warns before entering The Causeway, whereas the Wiki warns before meeting Yeena in The Vaal City; check this dialogue as soon as you have all Fireflies."
+      "After collecting all seven Fireflies, immediately return to Yeena at the Bridge Encampment and hear Arakaali's Temple (ID 382) BEFORE entering The Causeway as the legacy checklist cautions.",
+      "The 2025 Wiki warns before meeting Yeena in The Vaal City, a later boundary. Treat the earlier Causeway stop as a conservative precaution, not independently gameplay-certified in 3.29."
     ],
-    "stop": "หยุดก่อนพบ Yeena ใน The Vaal City: หลังเก็บ Fireflies ครบ 7 ชิ้น ต้องคุย Yeena: Arakaali's Temple (ID 382) ที่เมือง",
-    "stopEN": "STOP: once all seven Fireflies are found, hear Yeena: Arakaali's Temple in town BEFORE meeting her in The Vaal City.",
+    "stop": "หยุดหลังเก็บ Fireflies ครบ 7: คุย Yeena: Arakaali's Temple (ID 382) ที่ Bridge Encampment ก่อนเข้า The Causeway ตามฐานเดิม (Wiki เตือนก่อนพบ Yeena ใน Vaal City)",
+    "stopEN": "STOP: after all seven Fireflies, hear Yeena: Arakaali's Temple (ID 382) in town BEFORE entering The Causeway (legacy precaution; Wiki warns before meeting Yeena in Vaal City).",
     "stopIds": [
       382
     ],
     "keyItems": [
       "Firefly"
     ],
-    "sourceNote": "ไฟล์เก่าเตือนก่อนเข้า The Causeway แต่ Wiki ระบุ 'ก่อนพบ Yeena ใน The Vaal City' ยังไม่มีผลทดสอบแยกความต่าง",
-    "sourceNoteEN": "Legacy notes say 'before entering The Causeway' but the Wiki says 'before meeting Yeena in The Vaal City'. No patch 3.30 test resolves the difference.",
+    "sourceNote": "ฐานข้อมูลเดิม #382 เตือนก่อนเข้า The Causeway ส่วน PoE Wiki 2025 เตือนก่อนพบ Yeena ใน The Vaal City จึงใช้จุดที่เร็วกว่าเป็นข้อควรระวัง ไม่มีหลักฐานเกม 3.29 ยืนยันว่าการเข้า Causeway ทำให้หัวข้อหาย",
+    "sourceNoteEN": "Legacy #382 says before entering The Causeway, while the 2025 Wiki says before meeting Yeena in The Vaal City. The earlier boundary is precautionary; no 3.29 gameplay test proves entering Causeway removes the dialogue.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act7-fireflies-yeena-stop.svg",

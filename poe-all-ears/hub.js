@@ -556,6 +556,14 @@ function actSteamGuide(act){
  if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai report"),el("p",phase.patchProblem));alert.append(original);}
  box.append(alert);
  }
+ const actions=el("ol",undefined,"hubWalkActions");
+ const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
+ instructions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
+ if(descEN()&&!phase.actionsEN){
+  const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
+  original.append(el("summary","Original Thai step-by-step instructions"));
+  const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
+ }
  const taskNav=el("div",undefined,"hubWalkTaskNav");taskNav.setAttribute("aria-label",tr("รายการในช่วงปัจจุบัน","Tasks in this step"));
  for(const [type,ids] of Object.entries(phaseCount)){
    if(!ids.length)continue;
@@ -573,14 +581,6 @@ function actSteamGuide(act){
    taskNav.append(button);
  }
  if(taskNav.childElementCount){box.append(el("p",tr("เปิดรายการที่ต้องเก็บในช่วงนี้:","Jump to this step’s required tasks:"),"hubSubtle hubTaskNavLead"),taskNav);}
- const actions=el("ol",undefined,"hubWalkActions");
- const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
- instructions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
- if(descEN()&&!phase.actionsEN){
-  const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
-  original.append(el("summary","Original Thai step-by-step instructions"));
-  const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
- }
  if(phase.visual){
    const v=phase.visual;
    const visual=el("details",undefined,"hubQuestVisual");

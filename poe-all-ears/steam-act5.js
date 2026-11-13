@@ -101,16 +101,16 @@
     ],
     "actions": [
       "เข้า The Control Blocks เพื่อทำ The Key to Freedom และหา Miasmeter ของเควสต์ In Service to Science",
-      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula หัวข้อ Justicar Casticus (ID 275) ก่อนสู้ Avarius",
+      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula: Justicar Casticus (ID 275) ก่อนเข้า Oriath Square ตามคำเตือนในข้อมูลเดิม; PoE Wiki เตือนว่าต้องฟังก่อนฆ่า Avarius",
       "ส่ง Miasmeter ให้ Vilenta และติ๊กเควสต์รองเมื่อเกมแสดงว่าสำเร็จจริง"
     ],
     "actionsEN": [
       "Enter The Control Blocks for The Key to Freedom and recover the Miasmeter for In Service to Science.",
-      "After defeating Justicar Casticus, return to Overseer's Tower and hear Utula: Justicar Casticus (ID 275).",
+      "After defeating Justicar Casticus, return to Overseer's Tower to hear Utula: Justicar Casticus (ID 275) before entering Oriath Square as the legacy data cautions; the 2025 Wiki gives a later deadline before killing Avarius.",
       "Return the Miasmeter to Vilenta and mark No Loose Ends only once the optional quest has actually completed."
     ],
-    "stop": "หยุดก่อนสู้ High Templar Avarius: ต้องกลับไปฟัง Utula: Justicar Casticus (ID 275) หลังจัดการ Casticus",
-    "stopEN": "Do not kill High Templar Avarius before hearing Utula: Justicar Casticus after Casticus falls.",
+    "stop": "หยุดก่อนเข้า Oriath Square: หลังฆ่า Casticus ต้องกลับไปฟัง Utula: Justicar Casticus (ID 275) ก่อน ข้อมูลเดิมเตือนเร็วกว่าจุดฆ่า Avarius ใน Wiki",
+    "stopEN": "STOP: hear Utula: Justicar Casticus (ID 275) after Casticus and before entering Oriath Square (legacy early caution). The Wiki's later deadline is before killing Avarius.",
     "stopIds": [
       275
     ],

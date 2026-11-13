@@ -608,7 +608,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Hargan'),true,'Act 8 precise English instructions display in English guidance mode');
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Viewing: Act 8'),true,'global active-area summary follows English guidance language');
- assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] > strong').innerText()).includes('Next item'),true,'next-item label is translated with guidance language');
+ assert.equal((await hub.locator('#hubView [data-next-action="quay-love-pre"] > strong').first().innerText()).includes('Next item'),true,'next-item label is translated with guidance language');
  assert.equal(await hub.locator('#hubView [data-next-action="quay-love-pre"] button').count(),1,'English route retains next task manual action');
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('STOP:'),true,'English pre-completion STOP remains visible');
  await hub.locator('#hubGameNames').selectOption('th');

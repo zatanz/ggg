@@ -282,7 +282,28 @@ const highRisk={
   "481": "AFTER completing Death and Rebirth, hear Lilly Roth: Innocence.",
   "482": "AFTER completing An End to Hunger, hear Lilly Roth: Kitava.",
   "483": "Check Innocence: Exile during the Act 10 ending.",
-  "484": "Check Innocence: Sin during the Act 10 ending."
+  "484": "Check Innocence: Sin during the Act 10 ending.",
+  "27": "After entering The Prison and hearing Tarkleigh: Brutus, speak to Bestel: Brutus BEFORE defeating Brutus.",
+  "48": "After accepting Deal with the Bandits, hear Greust: Bandit Lords and review all available Darkness dialogue BEFORE making any kill/help decision. Historical Steam and Wiki order differs.",
+  "57": "After starting The Great White Beast, hear Silk: The Great White Beast BEFORE completing the quest. Check the later dialogue separately.",
+  "69": "After starting Intruders in Black, check Greust: Chamber of Sins before progressing all the way through Chamber of Sins; the old guide also mentions reopening the Western Forest route.",
+  "75": "After FIRST entering The Chamber of Sins, return for Yeena: Chamber of Sins BEFORE rescuing Helena and completing Intruders in Black.",
+  "77": "Listen to Eramir: The Baleful Gem while you have the Baleful Gem but DO NOT yet have Maligaro's Spike in your inventory.",
+  "91": "With both Baleful Gem and Maligaro's Spike, hear Eramir: Maligaro's Creation BEFORE using the items to clear the Tree Roots / deal with Lorrata.",
+  "92": "After finding Lorrata at the blocked Tree Roots, hear Eramir: Ancient Gateway BEFORE removing the obstruction or dealing with Lorrata.",
+  "100": "After the Ancient Seal opens the Darkness topics, speak to Alira: The Darkness while she is alive, BEFORE killing her or committing to a Bandit decision.",
+  "102": "After the Ancient Seal opens the Darkness topics, speak to Oak: The Darkness while he is alive, BEFORE killing him or committing to a Bandit decision.",
+  "103": "AFTER defeating all three Bandits, return to Eramir and listen to Bandit Lords. Do not substitute the earlier conditional Eramir conversations.",
+  "118": "After obtaining Tolman's Bracelet, hear Hargan: Introduction BEFORE handing the Bracelet to Clarissa.",
+  "142": "At your first meeting with Fairgraves in The Docks, hear Introduction while NEITHER Decanter Spiritus NOR Chitus' Plum is in your inventory.",
+  "148": "Hear Lady Dialla: Introduction at your first meeting BEFORE obtaining either Thaumetic Sulphite or Ribbon Spool.",
+  "153": "After showing Lady Dialla the Thaumetic Sulphite, hear her Thaumetic Sulphite topic while Ribbon Spool is NOT in your inventory.",
+  "158": "After entering The Ebony Barracks, return to Maramoa: Crossing the River BEFORE defeating General Gravicius.",
+  "161": "After completing Sever the Right Hand and collecting Maramoa's reward, hear Maramoa: Piety BEFORE killing Piety.",
+  "164": "After defeating General Gravicius, hear Grigor: The Lunaris Temple BEFORE killing Piety.",
+  "231": "After completing The King of Desire, hear Petarus and Vanja: Daresso BEFORE entering The Belly of the Beast.",
+  "233": "After activating the Rapture Device, hear Kira: Dialla BEFORE entering The Belly of the Beast.",
+  "237": "After completing The King of Fury, hear Oyun: Kaom BEFORE entering The Belly of the Beast."
 };
 const valid={description:["th","en"],names:["en","both","th"]};
 let prefs={description:"th",names:"en"};

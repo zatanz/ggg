@@ -836,6 +836,8 @@ const reference=el("details",undefined,"hubReferenceShelf");reference.dataset.re
 reference.open=state.referenceShelfOpen;
 reference.addEventListener("toggle",()=>{if(reference.isConnected)state.referenceShelfOpen=reference.open;});
 const referenceTitle=el("summary");
+// Record the user's explicit choice before native details toggle; frequent route re-renders can occur before an async toggle event.
+referenceTitle.addEventListener("click",()=>{state.referenceShelfOpen=!reference.open;});
 referenceTitle.append(el("strong",tr("รายละเอียดเพิ่มเติม · หลักฐานและรายการทั้งหมด","More details · sources and full checklists")),
  el("small",tr("เปิดเมื่อต้องการเทียบข้อมูลเดิม จุดเสี่ยงจาก Wiki และรายการ 4 Achievement","Expand for older evidence, Wiki warnings and all four achievement inventories")));
 reference.append(referenceTitle);

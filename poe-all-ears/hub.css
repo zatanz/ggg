@@ -597,3 +597,16 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 #hubView summary,#hubStats summary{scroll-margin-top:90px}
 #hubView a:focus-visible,#hubStats a:focus-visible,#hubView summary:focus-visible,#hubStats summary:focus-visible{outline:3px solid #ffdb94;outline-offset:3px}
 @media(max-width:720px){#hubNav{gap:3px;padding:6px}#hubNav button{white-space:normal;line-height:1.35;padding:10px 7px}#hubView [data-steam-act],#hubView [data-critical-act]{scroll-margin-top:100px}}
+
+
+/* High-priority player-facing evidence, shown ahead of long checklist lists. */
+.hubCurrentPatchRisk{margin:12px 0 15px;padding:15px 17px;border:2px solid #d7a572;border-left-width:5px;border-radius:12px;background:#33271f;color:#f5e8d8}
+.hubCurrentPatchRisk>strong{display:block;font-size:15px;color:#ffe0ac;line-height:1.55}
+.hubCurrentPatchRisk p{margin:7px 0 12px;font-size:13px;line-height:1.65}
+.hubCurrentRiskActions{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:9px}
+.hubCurrentRiskActions button{min-height:44px;background:#f1d19a;color:#272018;font-weight:700;border-color:#f1d19a}
+.hubCurrentRiskActions button:hover{background:#ffe5b5}
+.hubCurrentRiskActions a{color:#ffe3b2;font-size:13px;text-underline-offset:3px}
+.hubCurrentPatchRisk small{display:block;color:#e3c8b0;line-height:1.5}
+.hubCurrentPatchRisk :focus-visible{outline:3px solid #ffe3a1;outline-offset:3px}
+@media(max-width:600px){.hubCurrentPatchRisk{padding:12px}.hubCurrentRiskActions button{width:100%}}

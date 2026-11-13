@@ -14,7 +14,7 @@ window.POE_PATCH_PROFILES = {
     },
     {
       "id": "3.29",
-      "label": "3.29 — เวอร์ชันที่เล่นได้ล่าสุด (ยังไม่รับรองครบ)",
+      "label": "3.29 — แพตช์ก่อนหน้า (ยังไม่รับรองเส้นทาง)",
       "version": "3.29",
       "status": "unverified",
       "dialogues": null,
@@ -25,20 +25,20 @@ window.POE_PATCH_PROFILES = {
     },
     {
       "id": "3.30",
-      "label": "3.30 — ยังไม่รับรองเส้นทาง Achievement",
+      "label": "3.30 — แพตช์ล่าสุด (ยังไม่รับรองเส้นทาง Achievement)",
       "version": "3.30",
-      "status": "announced-unverified",
+      "status": "released-unverified",
       "dialogues": null,
       "rewards": null,
       "guide": null,
-      "notes": "ประกาศเปิดตัว 13 พฤศจิกายน 2026 (PST) ยังไม่มีข้อมูล All Ears ที่ตรวจรับรองสำหรับ 3.30",
-      "evidence": "https://steamcommunity.com/app/238960/announcements/"
+      "notes": "กำหนดเปิดตัว 14 พฤศจิกายน 2026 เวลา 02:00 น. (ไทย) · ยังไม่มีหลักฐานตรวจรับรอง All Ears และเส้นทาง Achievement สำหรับเกม 3.30",
+      "evidence": "https://www.pathofexile.com/forum/view-thread/4013680"
     }
   ],
   "sources": [
     "https://www.poewiki.net/wiki/Guide:All_Ears_achievement",
     "https://www.pathofexile.com/forum"
   ],
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "releaseGate": "Do not expose legacy dialogue as verified for 3.29 or 3.30"
 };

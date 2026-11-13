@@ -1,4 +1,6 @@
-# Current playable patch priority — 3.29
+# Archived patch priority — 3.29
+
+**Superseded on 2026-11-14 after the scheduled 3.30 launch time (02:00 Bangkok).** This document records the historical 3.29 editorial decision, not the current patch. The guide remains explicitly historical; **no 3.30 achievement route is game-certified**. See [the 3.30 source changeover audit](./handoff/CONTENT-QA-20261114-330-RELEASE.md).
 
 Updated 2026-11-13, Asia/Bangkok.
 Scope: Path of Exile 1 Achievement Companion, 4 tracked achievements only.

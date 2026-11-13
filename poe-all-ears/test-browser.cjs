@@ -790,6 +790,12 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView details[data-group="ears"] .hubItem').count(),69,'Act 2 expanded list shows all 69 source-matched dialogues');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ฆ่าคนแรก (Alira)'),true,'Act 2 first-kill description reacts to selected Alira');
  assert.equal((await hub.locator('#hubView details[data-group="ears"]').innerText()).includes('Bandit ที่ยังมีชีวิต (Oak)'),true,'Act 2 second-kill description shows survivor Oak');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ const banditEN=await hub.locator('#hubView details[data-group="ears"]').textContent();
+ assert.equal(banditEN.includes('First defeated Bandit (Alira)'),true,'Bandit first kill label is English and retains chosen Alira');
+ assert.equal(banditEN.includes('Surviving Bandit (Oak)'),true,'Bandit survivor label is English and retains actual remaining Oak');
+ assert.equal(banditEN.includes('Bandit ที่ยังมีชีวิต'),false,'Bandit labels no longer leak Thai into English mode');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
  await hub.locator('.hubActStrip [data-act="3"]').click();
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubCheckpoint').count(),1,'Act 3 retains one historic checkpoint at a time');
@@ -917,6 +923,18 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Compare achievement counts'),true,'Achievement count comparison has English explanation');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Back up all tracked achievements'),true,'Combined backup has English instructions');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
+ // Per-item English Lore must explain random and duplicated entries, not just repeat the generic checklist wording.
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ await hub.locator('#hubNav [data-tab="collection"]').click();
+ await hub.locator('#hubToolbar [data-category="lore"]').click();
+ await hub.locator('#hubToolbar .hubControls select').first().selectOption('1');
+ const letterItem=hub.locator('#hubView .hubItem').filter({hasText:'Letters of Exile'}).first();
+ await letterItem.locator('.hubItemHelp > summary').click();
+ const englishLetter=await letterItem.locator('.hubItemHelpBody').innerText();
+ assert.equal(englishLetter.includes('Letters of Exile are random'),true,'English letter explanation warns about duplicates');
+ assert.equal(englishLetter.includes('Lioneye'),true,'English letter guide identifies the location');
  await hub.locator('#hubDescriptionLanguage').selectOption('th');
 
  assert.deepEqual(hubErrors,[],'single-page runtime errors');

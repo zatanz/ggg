@@ -950,7 +950,7 @@ const assert=require('node:assert/strict');
  // Editorial language pass: English must carry the same quest actions and STOP timing as Thai for Acts 1–3.
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
- assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('First incomplete'),true,'Main 100% dashboard next-action text is English');
+ assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('Viewing: Act 10'),true,'Main dashboard names the selected Act in English rather than a misleading global first-incomplete state');
  assert.equal((await hub.locator('.tips').innerText()).includes('Source status:'),true,'Outdated Thai-only source-status warning now has complete English copy');
  assert.equal((await hub.locator('#hubLanguagePanel .hubLanguageNote').innerText()).includes('All ten Acts'),true,'Language policy accurately describes full Act 1–10 bilingual coverage');
 

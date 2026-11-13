@@ -610,3 +610,14 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubCurrentPatchRisk small{display:block;color:#e3c8b0;line-height:1.5}
 .hubCurrentPatchRisk :focus-visible{outline:3px solid #ffe3a1;outline-offset:3px}
 @media(max-width:600px){.hubCurrentPatchRisk{padding:12px}.hubCurrentRiskActions button{width:100%}}
+
+
+/* An accessible persistent review cue for non-linear preview navigation in Acts 1–6. */
+.hubSkippedRisk{margin:13px 0 15px;padding:13px 15px;background:#33261e;border:2px solid #d4a267;border-left-width:5px;border-radius:12px;color:#f4dfc5}
+.hubSkippedRisk strong{display:block;color:#ffdb9e;font-size:14px;line-height:1.5}
+.hubSkippedRisk p{margin:6px 0 10px;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
+.hubSkippedRisk button{min-height:44px;font-weight:700;background:#edc994;color:#2d2018;border-color:#edc994}
+.hubSkippedRisk button:hover{background:#ffdc9f}
+.hubSkippedRisk small{display:block;margin-top:9px;color:#e4c8ad;font-size:12px}
+.hubSkippedRisk button:focus-visible{outline:3px solid #ffe7b5;outline-offset:3px}
+@media(max-width:600px){.hubSkippedRisk{padding:12px}.hubSkippedRisk button{width:100%}}

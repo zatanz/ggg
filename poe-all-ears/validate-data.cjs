@@ -319,7 +319,7 @@ for(const act of [1,2,3]){
 }
 const earlyEN=steamWalk.acts[1].find(p=>p.id==='fairgraves');
 assert(earlyEN.actionsEN.some(t=>t.includes('Allflame'))&&earlyEN.stopEN.includes('Fairgraves'),'Act1 Allflame dialogue chain must survive English edit');
-assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('Steam')&&t.includes('PoE Wiki')&&t.includes('earlier talks')),'Act2 Bandit English instructions must separate documented kill sequence from unsupported first-talk prohibition');
+assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('Steam')&&t.includes('PoE Wiki')&&t.includes('does not forbid early conversation')),'Act2 Bandit English instructions must separate documented kill sequence from unsupported first-talk prohibition');
 assert(steamWalk.acts[3].find(p=>p.id==='bracelet').stopEN.includes('Clarissa'),'Act3 Bracelet STOP still names its recipient and timing');
 const playerHelpSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act),linked.index)'),'Checklist explanations must offer direct jump to exact quest-stage actions');

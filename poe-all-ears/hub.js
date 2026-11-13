@@ -314,22 +314,22 @@ function postQuestPanel(act){
  const section=el("section",undefined,"hubCritical hubPostQuests");
  section.dataset.postAct=String(act);
  const head=el("div",undefined,"hubCriticalTitle");
- head.append(el("h3","หลังจบเควสต์ · กลับไปคุย NPC"),el("p","รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","hubSubtle"));section.append(head);
+ head.append(el("h3",tr("หลังจบเควสต์ · กลับไปคุย NPC","After quest completion · revisit the NPC")),el("p",tr("รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","These 2025 source topics unlock after a quest turn-in. They are not automatically permanently missable and have not been gameplay-verified for patch 3.30."),"hubSubtle"));section.append(head);
  const entriesDone=new Set(entries("ears"));
  const lookup=new Map(E.items.map(x=>[x.id,x]));
  for(const stage of stages){
   const detail=el("details",undefined,"hubCheckpoint hubPostQuest"),summary=el("summary");
   detail.dataset.postStage=stage.id;detail.open=postQuestOpen.has(stage.id);
-  const title=el("span",undefined,"hubCheckpointTitle");title.append(el("strong",stage.title),el("small",stage.timing));
+  const title=el("span",undefined,"hubCheckpointTitle"),en=descEN()?window.POE_CRITICAL_LANGUAGE?.postQuest?.[stage.id]:null;title.append(el("strong",en?en[0]:stage.title),el("small",en?en[1]:stage.timing));
   const complete=stage.ids.every(id=>entriesDone.has(id));
-  summary.append(title,el("span",complete?"บันทึกแล้ว":"ยังไม่บันทึก","hubCheckpointState"+(complete?" complete":"")));
+  summary.append(title,el("span",complete?tr("บันทึกแล้ว","Marked in guide"):tr("ยังไม่บันทึก","Not marked yet"),"hubCheckpointState"+(complete?" complete":"")));
   detail.append(summary);
   const body=el("div",undefined,"hubCheckpointBody");
-  body.append(el("p","หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
+  body.append(el("p",en?en[1]: "หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
   for(const id of stage.ids){const x=lookup.get(id);if(x)body.append(itemCard("ears",x));}
   const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
-  if(reward)body.append(el("p","รางวัลอ้างอิง "+stage.quest+": "+reward.reward+" · ข้อมูลเก่า ยังไม่รับรอง 3.30","hubCheckpointReward"));
-  const link=el("a","ตรวจต้นทางบน PoE Wiki");link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
+  if(reward)body.append(el("p",tr("รางวัลอ้างอิง ","Historical reward for ")+stage.quest+": "+reward.reward+tr(" · ข้อมูลเก่า ยังไม่รับรอง 3.30"," · not patch 3.30-certified"),"hubCheckpointReward"));
+  const link=el("a",tr("ตรวจต้นทางบน PoE Wiki","Check the original PoE Wiki entry"));link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
   body.append(link);detail.append(body);
   detail.addEventListener("toggle",()=>{if(detail.open)postQuestOpen.add(stage.id);else postQuestOpen.delete(stage.id)});
   section.append(detail);

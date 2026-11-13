@@ -854,7 +854,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'backup always accessible when a patch is unverified');
  await hub.locator('#hubNav [data-tab="route"]').click();
- assert.equal((await hub.locator('#hubView').innerText()).includes('ยังไม่มีรายการที่ตรวจรับรองสำหรับแพตช์นี้'),true,'unverified patch blocks route preview');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('ยังไม่มีคู่มือรับรองแยกสำหรับแพตช์นี้'),true,'unverified patch blocks route preview');
  assert.equal(await hub.locator('#hubView .hubItem').count(),0,'3.30 must not expose historical rows as certified');
  await hub.getByRole('button',{name:'ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)'}).click();
  assert.equal(await hub.locator('#patch').inputValue(),'legacy-3.9','switch back to explicitly historical data');

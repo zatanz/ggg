@@ -938,6 +938,45 @@ const assert=require('node:assert/strict');
  assert.equal(englishLetter.includes('Lioneye'),true,'English letter guide identifies the location');
  await hub.locator('#hubDescriptionLanguage').selectOption('th');
 
+
+ // Bilingual source panels: risk timing and Bandit choices must not revert to Thai-only paragraphs.
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ await hub.locator('#hubNav [data-tab="route"]').click();
+ await hub.locator('.hubActStrip [data-act="2"]').click();
+ const riskOpen=hub.locator('#hubView .hubHistoricalRisks');
+ if(!(await riskOpen.evaluate(x=>x.open)))await riskOpen.locator(':scope > summary').click();
+ const riskSelect=hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select');
+ await riskSelect.selectOption('3');
+ const darkness=hub.locator('#hubView .hubCheckpoint[data-stage="a2-darkness"]');
+ assert.equal(await darkness.count(),1,'Original source-linked Bandit risk group remains accessible');
+ assert.equal((await darkness.locator('.hubCheckpointTitle').innerText()).includes('Ancient Seal / The Darkness'),true,'English risk heading identifies the actual Bandits quest state');
+ assert.equal((await darkness.locator('.hubCheckpointAction').innerText()).includes('Alira and Oak'),true,'English risk action explains who must be heard while alive');
+ assert.equal((await darkness.locator('.hubCheckpointRowTrigger').first().innerText()).includes('Available when:'),true,'English per-dialogue unlock conditions visible in risk panel');
+ assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam and PoE Wiki differ'),true,'Act 2 conflicting-source warning is meaningful in English');
+ assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('First Bandit you killed'),true,'Bandit choice labels change to English without losing original choice state');
+ assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('Book of Reform'),true,'Bandit helper retains a historical uncertainty warning in English');
+ assert.equal(await darkness.locator('.hubOriginalThai').count()>0,true,'English risk panel allows review of historical Thai source without forcing it into the primary text');
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a2-first-kill"] .hubCheckpointAction').innerText()).includes('first Bandit'),true,'First-kill Eramir checkpoint names the relevant decision, not a fixed survivor');
+ await hub.locator('.hubActStrip [data-act="5"]').click();
+ const act5Risks=hub.locator('#hubView .hubHistoricalRisks');
+ if(!(await act5Risks.evaluate(x=>x.open)))await act5Risks.locator(':scope > summary').click();
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a5-utula"] .hubStopGate').innerText()).includes('STOP before:'),true,'English critical STOP still blocks premature Avarius transition');
+ assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a5-utula"]').innerText()).includes('Justicar Casticus'),true,'English STOP tells player exactly which NPC topic to hear');
+ await hub.locator('.hubActStrip [data-act="10"]').click();
+ assert.equal((await hub.locator('#hubView .hubPostQuests').innerText()).includes('After quest completion'),true,'English Act 10 post-quest reminders are visible');
+ assert.equal((await hub.locator('#hubView [data-post-stage="a10-safe-passage"] .hubCheckpointTitle').innerText()).includes('Lilly Roth'),true,'Act 10 post-quest card preserves NPC name');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Act 10: the 2025 source'),true,'Act 10 uncertainty notice is available in English');
+ const act10Rewards=hub.locator('#hubView details.hubRewards');
+ assert.equal((await act10Rewards.locator(':scope > summary').innerText()).includes('Quest rewards in this Act'),true,'Historical reward heading follows the guidance language');
+ await act10Rewards.locator(':scope > summary').click();
+ assert.equal((await act10Rewards.innerText()).includes('not an achievement'),true,'Reward section distinguishes rewards and tracked achievements in English');
+ await hub.locator('#hubNav [data-tab="collection"]').click();
+ await hub.locator('#hubToolbar [data-category="lore"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('140 historical Lore entries'),true,'Lore collection overview has English context');
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'English risk panels and collection summary fit the 375px layout');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
  assert.deepEqual(hubErrors,[],'single-page runtime errors');
  await browser.close();
  console.log('Browser smoke: PASS — 484 rows, persistence, multi-character, export/import, invalid JSON, patch gate, mobile width, walkthrough');

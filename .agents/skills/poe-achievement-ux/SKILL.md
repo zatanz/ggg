@@ -19,9 +19,19 @@ Help players manually complete the four tracked achievements: All Ears, No Stone
 ## Two independent languages
 - Guidance preference: Thai or English. Name preference: English, Thai or both. Default guidance Thai / game names English. Keep these independent in their own localStorage key, separate from player and backup data.
 - Official English names and canonical numerical IDs remain source truth. Thai names are editorial translations, not verified official game localization. Unknown names fall back to exact English, without invented Thai.
-- Act 5 has reviewed bilingual route actions; other Acts use conservative English help when full translation is unavailable and allow expansion of the original Thai source. Never hide a missable warning because of language choice.
+- All Acts 1–10 have authored Thai/English quest-stage headings, actions and STOPs. English translation of the early Acts lives in `poe-all-ears/poe-acts123-bilingual.js` and must cover all 31 original Act 1–3 phases; do not replace precise instructions with a generic English fallback. Row-level notes still originate in historical sources, and full human copy review of all 745 entries is not certified.
 - Search works with both language name variants. Preserve item/quest identity when language changes.
 - Avoid claiming that an English mode makes all 745 legacy row-level descriptions fully translated.
+
+## Editorial copy acceptance — Thai first, English complete
+
+- Each explanation should answer **what to do → which NPC/item/location → when → what must not happen first → when to mark complete**. Use short Thai conversational imperatives such as "กลับไปคุย", "ฟังให้จบ", "หยุดก่อน...", not a source-code-style sentence or an unexplained acronym. In English, use "After..., hear NPC: Topic BEFORE..." rather than filler like "Check the appropriate conditions."
+- Keep official English NPC, quest, item and area names inside player instructions; show editorial Thai translations only through the independent name-mode preference. Do not alter canonical item strings or local achievement IDs.
+- Never claim a Waypoint requires a manual click in every patch: newer PoE versions can activate Waypoints automatically. Instruct players to **verify that the map node is active** before marking it; keep historical ID/patch-count discrepancies visible.
+- In English mode, cover the **main 100%-checklist dashboard, quest-stage steps, per-item help, source notices, Labyrinth, Vaal Side Area finder, Epilogue, in-game-count comparison and backup instructions**. A language toggle that changes only the heading is incomplete. Ensure gameplay details do not disappear when switching.
+- Source-linked checklist rows should offer one action to navigate to the exact Act + source stage, without checking items or silently overwriting player state. If a row is only in Labyrinth/Vaal/Epilogue, keep its category's source detail rather than inventing a main-Act stage.
+- Do not blur **bookkeeping marks** with a game-side achievement unlock. Source questions and conflicting deadlines must remain explicitly historical, including Act 2 Bandits, Act 7 Yeena/Helena timing and Act 9 alternate Highgate ruler dialogue.
+- Verify **both languages in Chromium**, including search/filter, stop gates, linked quest steps, special-area Lore, source certification notices, and 375px layout. Check the meaningful instructions in both languages, not only whether the setting persists.
 
 ## Act 6 and later — source-state chronology
 

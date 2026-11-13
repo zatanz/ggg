@@ -14,7 +14,7 @@ function forEars(item,context){
 const r=routeByAct[item.act]?.get(item.id)||{},extra=legacy[item.id]||[],g=item.act===1?draft[String(item.id)]:null;
 const topic=stripTopic(item.dialog),npc=stripNpc(item.npc);
 let action;
-if(/Introduction/i.test(topic)){action="คุยกับ "+npc+" และฟังบทสนทนาแรก (Introduction)";}else{action="คุยกับ "+npc+" แล้วเลือกหัวข้อ “"+topic+"” ให้บทสนทนาแสดงในเกม";}
+if(/Introduction/i.test(topic)){action="ไปหา "+npc+" แล้วฟังหัวข้อ Introduction ให้จบ ก่อนทำเครื่องหมายว่าเก็บแล้ว";}else{action="คุยกับ "+npc+" เลือกหัวข้อ “"+topic+"” แล้วฟังให้จบ จึงค่อยทำเครื่องหมายว่าเก็บแล้ว";}
 if(g?.steps)action=g.steps;
 let displayLabel="";
 const bandits=["Alira","Oak","Kraityn"],first=bandits.includes(context?.first)?context.first:"",second=bandits.includes(context?.second)&&context.second!==first?context.second:"";
@@ -38,15 +38,15 @@ const caution=(r.before&&/^[A-Za-z]/.test(r.before)?translate[1]||extra[1]||"":r
 let location=r.area||"";
 if(!location&&item.act===1&&item.id>=2&&item.id<=15)location="Lioneye's Watch (อ้างอิงคำแนะนำ Act 1 เดิม)";
 const tags=[];
-if(item.dialog.includes("QC"))tags.push("QC: ตามตารางเก่า หมายถึงช่วงหลังจบเควสต์ที่เกี่ยวข้อง");
-if(item.dialog.includes("(!)"))tags.push("(!): ตารางเก่าระบุสัญลักษณ์ ! ของบทสนทนานี้");
-if(item.npc.includes("*"))tags.push("*: ต้นทางระบุ NPC อยู่นอกเมืองในช่วงนี้");
+if(item.dialog.includes("QC"))tags.push("QC เป็นสัญลักษณ์ในข้อมูลต้นทาง บอกว่าหัวข้อนี้อาจเปิดหลังจบเควสต์");
+if(item.dialog.includes("(!)"))tags.push("ต้นทางกำกับเครื่องหมาย (!) ไว้กับบทสนทนา ต้องตรวจว่า NPC มีหัวข้อนี้จริง");
+if(item.npc.includes("*"))tags.push("NPC คนนี้อาจอยู่ในพื้นที่ระหว่างเควสต์ ไม่ได้ยืนอยู่ในเมืองตลอด");
 if(!r.before&&!g?.warning&&!extra[1]&&item.note)tags.push("มีคำเตือนจากตาราง 3.9 ที่ยังไม่ได้เกลาและตรวจแยก ให้เปิด Wiki ก่อนเปลี่ยนสถานะเควสต์");
 return {action,displayLabel,location,unlock,caution,tip:tags.join(" · "),source:r.source||source+"#Act_"+item.act,sourceLabel:g||r.trigger||r.before?"PoE Wiki ปี 2025 + ร่างคำแนะนำ":"ชื่อหัวข้อจาก Wiki 2025 / เช็กลิสต์เก่า",status:g?.review_status||r.review||"historical-wiki-2025",patchCertified:false,detailsKnown:!!(g?.steps||r.trigger||r.before||extra[0]||extra[1])};
 }
 function forLore(item){
-let action="ไปที่ "+item.area+" และโต้ตอบกับวัตถุ “"+item.name+"” เพื่อบันทึก Lore";
-let tip="เมื่อคลิกวัตถุแล้ว ไม่จำเป็นต้องอ่านข้อความทั้งหมดจบ";
+let action="ไปที่ "+item.area+" หา “"+item.name+"” แล้วกดอ่านหรือโต้ตอบกับวัตถุในเกม ก่อนทำเครื่องหมายว่าเก็บแล้ว";
+let tip="ตรวจชื่อ Lore และยอดที่เกมนับหลังโต้ตอบ อย่าติ๊กจากการเดินผ่านหรือเห็นชื่อวัตถุเท่านั้น";
 let caution="";
 if(item.id<=15){action="ที่ Lioneye's Watch คลิก Letters of Exile ตามเสาหรือป้าย จนพบจดหมายของ "+item.name.replace("Letters of Exile - ","");tip="ชื่อจดหมายอาจออกซ้ำ: ติ๊กเฉพาะชิ้นที่เห็นและยังไม่เคยเก็บ อย่าติ๊กเพิ่มตามจำนวนครั้งที่คลิก";caution="ข้อความสุ่มและอาจต้องคลิกซ้ำหลายครั้ง";}
 else if(item.area==="The Library"){action="เข้า The Library แล้วสำรวจชุดหนังสือ “"+item.name+"”";tip="หนึ่ง Instance จะสุ่มหนังสือแต่ละชุด; สร้าง Instance ใหม่เพื่อหาหนังสือเล่มที่ยังไม่ได้เก็บ";caution="เล่มเดิมอาจออกซ้ำ อย่าเพิ่มยอดเมื่อพบซ้ำ";}
@@ -55,10 +55,10 @@ else if(item.act==="Vaal"){action="พบ Vaal Side Area ที่มีบั�
 return {action,location:item.area,unlock:"",caution,tip,source:loreSource,sourceLabel:"PoE Wiki 2025 / ชุดรายการประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:true};
 }
 function forWaypoint(item){
-return {action:"เดินทางเข้า "+item.name+" แล้วคลิก Waypoint เพื่อเปิดจุดวาร์ปของพื้นที่นั้น",location:item.name,unlock:"",caution:"ยังไม่ได้ตรวจในเกมว่า Waypoint นี้เป็นรายการที่นับในแพตช์ 3.30 หรือไม่",tip:"ต้องเปิด Waypoint ด้วยตัวละครที่ต้องการเก็บ Locomancer การเดินผ่านพื้นที่เพียงอย่างเดียวไม่ใช่การเปิดจุดวาร์ป",source:"https://www.poewiki.net/wiki/Waypoint",sourceLabel:"ชื่อพื้นที่จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
+return {action:"เดินทางไป "+item.name+" แล้วเปิดแผนที่เพื่อตรวจว่าจุดวาร์ปของพื้นที่นี้ใช้งานได้ จึงทำเครื่องหมายว่าเก็บแล้ว",location:item.name,unlock:"จุดวาร์ปบางแห่งเปิดให้อัตโนมัติในเกมรุ่นใหม่ ไม่จำเป็นต้องกดคลิกทุกจุด ให้ดูสถานะจริงในเกม",caution:"ฐานข้อมูลเดิมมี 91 จุด แต่จำนวนที่เกมรุ่นใหม่ต้องใช้อาจต่างออกไป ยังไม่รับรองกับแพตช์ 3.30",tip:"ต้องตรวจด้วยตัวละครที่ต้องการเก็บ Locomancer การเดินถึงพื้นที่แต่ยังใช้จุดวาร์ปไม่ได้ ไม่ถือว่าตรวจผ่าน",source:"https://www.poewiki.net/wiki/Waypoint",sourceLabel:"ชื่อพื้นที่จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
 }
 function forQuest(item){
-return {action:"เปิด Quest Log และทำเควสต์รอง “"+item.name+"” ใน Act "+item.act+" ให้จบ",location:"Act "+item.act+" (ยังไม่ยืนยัน NPC เริ่มเควสต์และเส้นทางตามแพตช์)",unlock:"",caution:"ยังไม่มีขั้นตอนหรือ NPC ที่รับเควสต์ซึ่งตรวจยืนยันรายรายการ อย่าสันนิษฐานว่าเพียงรับเควสต์แล้วนับว่าสำเร็จ",tip:"เมื่อตรวจว่าเควสต์สำเร็จแล้วจึงทำเครื่องหมาย แนะนำตรวจ Quest Log และยอด Achievement ในเกม",source:"https://www.poewiki.net/wiki/Quest",sourceLabel:"ชื่อเควสต์จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
+return {action:"เปิดบันทึกเควสต์ (Quest Log) แล้วทำ “"+item.name+"” ให้จบ รวมถึงกลับไปส่งเควสต์หรือรับรางวัลถ้ามี ก่อนทำเครื่องหมายว่าเก็บแล้ว",location:"Act "+item.act,unlock:"ให้ดูช่วงเควสต์ที่เชื่อมกับรายการนี้ในคู่มือ Act เพื่อทราบลำดับพื้นที่และ NPC ตามข้อมูลต้นทาง",caution:"รายละเอียดยังไม่ยืนยันกับแพตช์ 3.30 อย่าติ๊กว่าเสร็จเพียงเพราะรับเควสต์หรือสู้บอสแล้ว",tip:"ตรวจสถานะเควสต์และยอด No Loose Ends จากในเกมจริง เพราะเครื่องหมายบนเว็บเป็นการบันทึกด้วยตนเอง",source:"https://www.poewiki.net/wiki/Quest",sourceLabel:"ชื่อเควสต์จากเช็กลิสต์ประวัติศาสตร์ 3.9",status:"historical-patch-unverified",patchCertified:false,detailsKnown:false};
 }
 window.POE_ITEM_DESCRIPTIONS={schema:1,sourcePatch:"2025-wiki-and-3.9-legacy",certifiedFor330:false,get:function(type,item,context){if(!item)return null;return type==="ears"?forEars(item,context):type==="lore"?forLore(item):type==="waypoints"?forWaypoint(item):type==="sidequests"?forQuest(item):null}};
 })();

@@ -166,16 +166,16 @@ guide.acts[8]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "รับ Love is Dead จาก Clarissa แล้วไป The Quay หา Ankh of Eternity จาก Sealed Casket",
-      "ก่อนนำ Ankh ไปใช้ทำเควสต์จนเสร็จ ให้กลับเมืองคุย Hargan: The Ankh of Eternity (#407)",
-      "ยังไม่ฆ่า Tolman/จบ Love is Dead จนกว่าจะฟังหัวข้อ Hargan ตามสถานะเควสต์"
+      "รับเควสต์ Love is Dead จาก Clarissa แล้วไป The Quay เก็บ Ankh of Eternity จาก Sealed Casket",
+      "ก่อนนำ Ankh ไปใช้ปิดเควสต์ ให้กลับเมืองคุย Hargan หัวข้อ The Ankh of Eternity (ID 407)",
+      "ฟังหัวข้อ Hargan ให้จบก่อนสู้ Tolman หรือส่ง Love is Dead"
     ],
     "actionsEN": [
       "Start Love is Dead with Clarissa; in The Quay recover the Ankh of Eternity from the Sealed Casket.",
       "Before using the Ankh to finish the quest, return to town and hear Hargan: The Ankh of Eternity (Wiki #407).",
       "Do not finish Love is Dead or defeat Tolman before recording Hargan's dialogue."
     ],
-    "stop": "ห้ามทำ Love is Dead เสร็จก่อนฟัง Hargan: The Ankh of Eternity (#407)",
+    "stop": "หยุดก่อนจบ Love is Dead: ต้องฟัง Hargan: The Ankh of Eternity (ID 407) หลังรับเควสต์",
     "stopEN": "STOP: do not complete Love is Dead before hearing Hargan: The Ankh of Eternity (#407).",
     "stopIds": [
       407
@@ -201,16 +201,16 @@ guide.acts[8]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "นำ Ankh of Eternity ไปใช้ที่ Resurrection Site ใน The Quay และจัดการ Tolman ตามเควสต์",
-      "หลังสู้ให้คุย Clarissa: The Ankh of Eternity (#411) และ Tolman (#413 ของฐานข้อมูล, Wiki row 412) ที่ The Quay",
-      "ยังไม่ออกจาก The Quay จนกว่าจะตรวจทั้งสองหัวข้อ โดยเฉพาะ #411 ซึ่งคู่มือระบุเป็นจุดเสี่ยงพลาด"
+      "นำ Ankh of Eternity ไปใช้ที่ Resurrection Site ใน The Quay แล้วสู้ Tolman ตามเควสต์",
+      "หลังสู้ ให้คุย Clarissa ภายใน The Quay สองหัวข้อ คือ The Ankh of Eternity (ID 411) และ Tolman (ID 413 ตรงกับ Wiki row 412)",
+      "ฟังครบทั้งสองหัวข้อก่อนเดินออกจาก The Quay"
     ],
     "actionsEN": [
       "Use the Ankh of Eternity at the Resurrection Site in The Quay and complete the Tolman encounter.",
       "After the fight, speak with Clarissa: The Ankh of Eternity (local #411) and Tolman (local #413, Wiki row #412) while still in The Quay.",
       "Do not leave The Quay before checking both topics, particularly #411, which the source flags as missable."
     ],
-    "stop": "หลังฆ่า Tolman ต้องคุย Clarissa: The Ankh of Eternity (#411) ก่อนออกจาก The Quay",
+    "stop": "หยุดก่อนออกจาก The Quay: หลังสู้ Tolman ต้องฟัง Clarissa: The Ankh of Eternity (ID 411) และ Tolman (ID 413)",
     "stopEN": "STOP: after killing Tolman, hear Clarissa: The Ankh of Eternity (#411) before leaving The Quay.",
     "stopIds": [
       411,
@@ -414,16 +414,16 @@ guide.acts[8]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังจบ The Wings of Vastiri ให้คุย Sin: Yugul (#409) ที่เมือง",
-      "เมื่อคุย Sin แล้ว จึงคุย Hargan: Yugul (#410) ก่อนเข้าช่วงบอส",
-      "เดินทางผ่าน The Bath House เข้า The High Gardens แต่ห้ามฆ่า Yugul จนกว่าจะบันทึกว่าฟังทั้งสองบทสนทนา"
+      "ทำเควสต์ The Wings of Vastiri ให้เสร็จ แล้วคุย Sin หัวข้อ Yugul (ID 409) ที่เมือง",
+      "หลังคุย Sin ให้คุย Hargan หัวข้อ Yugul (ID 410) ต่อ",
+      "ฟังครบสองหัวข้อจึงเดินทางผ่าน The Bath House เข้า The High Gardens เพื่อสู้ Yugul"
     ],
     "actionsEN": [
       "After completing The Wings of Vastiri, listen to Sin: Yugul (#409) in town.",
       "Then hear Hargan: Yugul (#410) after Sin's topic becomes available.",
       "Travel via The Bath House to The High Gardens but do not kill Yugul until both conversations have been heard."
     ],
-    "stop": "ห้ามฆ่า Yugul ก่อนคุย Sin: Yugul (#409) และ Hargan: Yugul (#410) ตามลำดับ",
+    "stop": "หยุดก่อนฆ่า Yugul: ต้องฟัง Sin: Yugul (ID 409) แล้วต่อด้วย Hargan: Yugul (ID 410)",
     "stopEN": "STOP: do not kill Yugul before hearing Sin: Yugul (#409) AND Hargan: Yugul (#410), in that order.",
     "stopIds": [
       409,

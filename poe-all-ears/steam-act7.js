@@ -271,16 +271,16 @@ guide.acts[7]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "เมื่อเห็นทางไป The Forest Encampment เดิมถูกปิด ให้กลับคุย Helena: The Den (#365)",
-      "คุยให้จบก่อนเดินต่อผ่าน The Chamber of Sins Level 2 เข้า The Den",
-      "คำเตือนในไฟล์เก่าระบุ The Fellshrine Ruins แต่ PoE Wiki ระบุ 'ก่อนเดินต่อสู่ The Den' ให้ยึดเหตุการณ์ทางถูกปิดและตรวจในเกม"
+      "เมื่อพบทางกลับ The Forest Encampment เดิมถูกปิด ให้กลับไปคุย Helena หัวข้อ The Den (ID 365)",
+      "ฟังหัวข้อนี้ให้จบก่อนเดินผ่าน The Chamber of Sins Level 2 ไป The Den",
+      "คู่มือเก่าเตือนก่อน The Fellshrine Ruins แต่ PoE Wiki เตือนก่อน The Den จึงควรตรวจทันทีที่พบทางถูกปิด"
     ],
     "actionsEN": [
       "After discovering the blocked route to the old Forest Encampment, return to Helena for The Den (Wiki row #365).",
       "Complete that dialogue before proceeding through The Chamber of Sins Level 2 into The Den.",
       "Legacy notes mention The Fellshrine Ruins, while the Wiki specifies before continuing toward The Den. Treat this as a historical conflict requiring in-game verification."
     ],
-    "stop": "อย่าเข้า The Den ก่อนคุย Helena: The Den หลังเห็นทางถูกปิด",
+    "stop": "หยุดก่อนเข้า The Den: ต้องฟัง Helena: The Den (ID 365) หลังพบเส้นทางที่ถูกปิด",
     "stopEN": "STOP: do not enter The Den before hearing Helena: The Den after discovering the blocked passage.",
     "stopIds": [
       365
@@ -481,16 +481,16 @@ guide.acts[7]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "เก็บ Firefly ให้ครบเจ็ดชิ้นใน The Dread Thicket สำหรับ Lighting the Way",
-      "กลับไปหา Yeena ที่ Bridge Encampment และฟัง Arakaali's Temple (#382) ก่อนพบ Yeena ใน The Vaal City",
-      "หมายเหตุ Excel เก่าเตือนก่อนเข้า The Causeway ส่วน Wiki เตือนก่อนพบ Yeena ใน Vaal City ให้ตรวจหัวข้อนี้ทันทีหลัง Fireflies ครบ"
+      "เก็บ Firefly ให้ครบ 7 ชิ้นใน The Dread Thicket สำหรับเควสต์ Lighting the Way",
+      "กลับ Bridge Encampment คุย Yeena หัวข้อ Arakaali's Temple (ID 382) ก่อนพบเธอใน The Vaal City",
+      "ข้อมูลเดิมเตือนก่อนเข้า The Causeway แต่ PoE Wiki เตือนก่อนพบ Yeena ใน Vaal City เพื่อความปลอดภัยควรฟังทันทีที่เก็บ Fireflies ครบ"
     ],
     "actionsEN": [
       "Collect all seven Fireflies in The Dread Thicket for Lighting the Way.",
       "Return to Yeena in The Bridge Encampment and hear Arakaali's Temple (Wiki #382) BEFORE meeting Yeena in The Vaal City.",
       "An older workbook warns before entering The Causeway, whereas the Wiki warns before meeting Yeena in The Vaal City; check this dialogue as soon as you have all Fireflies."
     ],
-    "stop": "Fireflies ครบแล้ว อย่าไปพบ Yeena ใน The Vaal City ก่อนคุย Arakaali's Temple ที่เมือง",
+    "stop": "หยุดก่อนพบ Yeena ใน The Vaal City: หลังเก็บ Fireflies ครบ 7 ชิ้น ต้องคุย Yeena: Arakaali's Temple (ID 382) ที่เมือง",
     "stopEN": "STOP: once all seven Fireflies are found, hear Yeena: Arakaali's Temple in town BEFORE meeting her in The Vaal City.",
     "stopIds": [
       382
@@ -627,16 +627,16 @@ guide.acts[7]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "ก่อนสู้ Arakaali สำรวจ Shrine to Arakaali - Even As Our (Lore #120) ใน Temple of Decay Level 2",
-      "หลังฆ่า Arakaali, Spinner of Shadows ให้คุย Yeena: Arakaali (#384) ภายในพื้นที่ก่อนออก",
-      "ห้ามออกจาก Temple of Decay Level 2 จนกว่าจะยืนยันว่าฟังบทสนทนา Yeena หลังบอสจริง"
+      "ก่อนสู้ Arakaali ให้เก็บ Shrine to Arakaali - Even As Our (Lore ID 120) ที่ Temple of Decay Level 2",
+      "หลังชนะ Arakaali ให้คุย Yeena หัวข้อ Arakaali (ID 384) ภายในพื้นที่เดียวกัน",
+      "ฟังจนจบก่อนออกจาก Temple of Decay Level 2"
     ],
     "actionsEN": [
       "Discover Shrine to Arakaali - Even As Our (lore #120) in The Temple of Decay Level 2.",
       "After defeating Arakaali, Spinner of Shadows, speak to Yeena: Arakaali (Wiki #384) before leaving the area.",
       "Do not exit Temple of Decay Level 2 until you have actually listened to Yeena's post-boss dialogue."
     ],
-    "stop": "ห้ามออกจาก Temple of Decay Level 2 หลังฆ่า Arakaali ก่อนฟัง Yeena: Arakaali",
+    "stop": "หยุดก่อนออกจาก Temple of Decay Level 2: ต้องฟัง Yeena: Arakaali (ID 384) หลังสู้บอส",
     "stopEN": "STOP: after killing Arakaali, hear Yeena: Arakaali before leaving Temple of Decay Level 2.",
     "stopIds": [
       384

@@ -31,9 +31,13 @@ Scope: **four targeted PoE achievements only**. Not all game achievements.
 - Alternate Highgate Tasuni branch can't be represented faithfully by only the original Irasha-side IDs #443/#444. The 484-point counter must not be treated as a branch-independent proof.
 - Locomancer historical 91-vs-newer 90 discrepancy remains unresolved, requiring explicit patch-version mapping and backup-safe reconciliation.
 - Original sources differ on Act 2 Bandit quest state; reported Fairgraves Act 1 NPC issues on patch 3.29 require targeted runtime verification.
-- Earlier Acts 1–4 fine-grained English rows have conservative source references where not fully human-reviewed.
+- All Acts 1–10 now have authored bilingual quest-stage steps, including the Act 1–3 editorial pass, but fine-grained per-row historical conditions have not received 745 separate human reviews or patch certification.
 - A human user testing pass for color contrast, cognitive load and effective "what do I do next" is still valuable; browser smoke tests are not a substitute for player usability testing.
 
 Conclusion: **The web application's source-guided coverage of Acts 1–10 is implemented. Verified 100% achievement unlock rate is NOT established.**
 
 See [Acts 9–10 detailed evidence](./ACT9-ACT10-BILINGUAL-UX-AUDIT.md), [Act 8 evidence](./ACT8-BILINGUAL-UX-AUDIT.md) and [Road to 100%](./ROAD-TO-100-PERCENT.md).
+
+## Editorial language QA update (2026-11-13)
+
+Quest-stage bilingual copy covers Acts 1–10. The newest pass added 31 early-Act English stages, revised 20 high-risk Thai stages, improved four-category item explanations and linked items to their exact quest stage. It also translated the Labyrinth/Vaal/Epilogue guidance, game-count comparison, backup controls, main 100% summary and source-status notices. Check [LANGUAGE-EDITORIAL-QA.md](./LANGUAGE-EDITORIAL-QA.md) for acceptance criteria, source status and remaining limitations. Manual checks remain distinct from verified in-game achievement progress.

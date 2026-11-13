@@ -859,6 +859,66 @@ const assert=require('node:assert/strict');
  await hub.locator('.hubActStrip [data-act="10"]').click();
  assert.equal(await hub.locator('.hubActStrip [data-act="10"]').getAttribute('aria-pressed'),'true','Act 10 selected via mobile shortcut');
  assert.equal(await hub.locator('.hubActStrip [data-act="10"]').evaluate(e=>{const r=e.getBoundingClientRect();return r.width>=40&&r.left>=0&&r.right<=window.innerWidth}),true,'Mobile Act 10 visible without horizontal scrolling');
+
+ // Editorial language pass: English must carry the same quest actions and STOP timing as Thai for Acts 1–3.
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
+ assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('First incomplete'),true,'Main 100% dashboard next-action text is English');
+ assert.equal((await hub.locator('.tips').innerText()).includes('Source status:'),true,'Outdated Thai-only source-status warning now has complete English copy');
+ assert.equal((await hub.locator('#hubLanguagePanel .hubLanguageNote').innerText()).includes('All ten Acts'),true,'Language policy accurately describes full Act 1–10 bilingual coverage');
+
+ await hub.locator('.hubActStrip [data-act="1"]').click();
+ await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('7');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Allflame'),true,'Act 1 authored English guide covers Fairgraves item timing');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="fairgraves"]').innerText()).includes('STOP:'),true,'Act 1 English STOP preserves the Allflame risk');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
+
+ await hub.locator('.hubActStrip [data-act="2"]').click();
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Steam and PoE Wiki disagree'),true,'Act 2 English route retains conflicting Bandits source order');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 2 English route has no Thai text');
+
+ await hub.locator('.hubActStrip [data-act="3"]').click();
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes("Tolman's Bracelet"),true,'Act 3 English guide identifies the exact item and NPC hand-in state');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Clarissa'),true,'Act 3 English STOP retains the Clarissa prerequisite');
+
+ // Checklist explanation now points to a concrete, source-led stage instead of a generic instruction.
+ await hub.locator('#hubNav [data-tab="collection"]').click();
+ await hub.locator('#hubToolbar [data-category="lore"]').click();
+ await hub.locator('#hubToolbar .hubControls select').first().selectOption('1');
+ const firstGuide=hub.locator('#hubView .hubItem').filter({hasText:'Letters of Exile'}).first();
+ await firstGuide.locator('.hubItemHelp > summary').click();
+ assert.equal((await firstGuide.locator('.hubItemHelpBody').innerText()).includes('What to do'),true,'English individual-item help has actionable headings');
+ assert.equal(await firstGuide.locator('[data-open-stage="town"]').count(),1,'Act1 Letters of Exile lore links to its exact Lioneye town quest phase');
+ await firstGuide.locator('[data-open-stage="town"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').getAttribute('data-phase'),'town','Lore checklist-to-route jump reaches Act 1 source phase');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Nessa'),true,'Switching back to Thai restores original specific quest guidance');
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Linked stage navigation does not create mobile overflow at 375px');
+
+
+ // English wording is complete for the non-campaign scopes and count-comparison workflow.
+ const waypointCopy=await hub.evaluate(()=>{
+   const x=window.POE_EXTRA_TRACKERS.waypoints.find(x=>x.id===71);
+   return window.POE_ITEM_DESCRIPTIONS.get('waypoints',x).action;
+ });
+ assert.equal(waypointCopy.includes('เปิดแผนที่'),true,'Thai Waypoint explanation verifies active map status, not forced manual clicking');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ await hub.locator('.hubActStrip [data-act="Labyrinth"]').click();
+ assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes("Aspirants' Plaza"),true,'English Labyrinth route has authored, actionable Lore steps');
+ assert.equal((await hub.locator('#hubView .hubSpecialGroup').first().innerText()).includes('Before entering the Labyrinth'),true,'English Labyrinth section headings and evidence are translated');
+ await hub.locator('.hubActStrip [data-act="Vaal"]').click();
+ assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes('Side Area'),true,'English Vaal guidance is sourced and not Thai-only');
+ assert.equal((await hub.locator('#hubView .hubVaalGuide').innerText()).includes('Find the Vaal Side Area'),true,'English Vaal area lookup instructions are translated');
+ await hub.locator('.hubActStrip [data-act="Epilogue"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('remaining Waypoints'),true,'Epilogue instructions adapt to English');
+ await hub.locator('#hubNav [data-tab="review"]').click();
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Compare achievement counts'),true,'Achievement count comparison has English explanation');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Back up all tracked achievements'),true,'Combined backup has English instructions');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
  assert.deepEqual(hubErrors,[],'single-page runtime errors');
  await browser.close();
  console.log('Browser smoke: PASS — 484 rows, persistence, multi-character, export/import, invalid JSON, patch gate, mobile width, walkthrough');

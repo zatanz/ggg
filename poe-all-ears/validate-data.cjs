@@ -275,6 +275,7 @@ assert(sourceWarnings.wikiRows.every(id=>mappedRows.some(r=>r.wikiRow===id)),'Ex
 const canonicalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(canonicalSource.includes('src="./special-lore-guide.js"')&&canonicalSource.includes('src="./workbook-warnings.js"'),'New special guide/warning index not loaded in main page');
 load('steam-quest-walkthrough.js');
+load('poe-acts123-bilingual.js');
 load('steam-act4.js');
 load('steam-act5.js');
 load('steam-act6.js');
@@ -284,6 +285,24 @@ load('steam-act9.js');
 load('steam-act10.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
+assert(canonicalSource.includes('src="./poe-acts123-bilingual.js"'),'Early Acts bilingual guidance module must load after base route');
+for(const act of [1,2,3]){
+ const phases=steamWalk.acts[act];
+ const expected={1:9,2:10,3:12}[act];
+ assert(phases.length===expected,'Act '+act+' number of original route phases may not change during editorial pass');
+ for(const phase of phases){
+  assert(phase.headingEN&&phase.actionsEN?.length===phase.actions.length,'Act '+act+' '+phase.id+' requires complete English instructions, never generic English fallback');
+  assert(phase.actionsEN.every(x=>x.length>25&&!/[\u0E00-\u0E7F]/.test(x)),'Act '+act+' '+phase.id+' English guidance must be readable without Thai text');
+  assert(!phase.stop||phase.stopEN?.startsWith('STOP:'),'Act '+act+' '+phase.id+' source missable boundary needs a specific English STOP');
+ }
+}
+const earlyEN=steamWalk.acts[1].find(p=>p.id==='fairgraves');
+assert(earlyEN.actionsEN.some(t=>t.includes('Allflame'))&&earlyEN.stopEN.includes('Fairgraves'),'Act1 Allflame dialogue chain must survive English edit');
+assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('disagree')),'Act2 Bandit historical conflict must be retained in English');
+assert(steamWalk.acts[3].find(p=>p.id==='bracelet').stopEN.includes('Clarissa'),'Act3 Bracelet STOP still names its recipient and timing');
+const playerHelpSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act))'),'Checklist explanations must offer direct jump to exact quest-stage actions');
+assert(playerHelpSource.includes('statusNote.replaceChildren(overview,warning)'),'Header source caution must be bilingual and updated');
 const actOne=steamWalk.acts[1];
 assert(actOne.length===9,'Act 1 source timeline must expose nine player-oriented steps');
 const actOneIds=actOne.flatMap(p=>p.dialogueIds),actOneLore=actOne.flatMap(p=>p.loreIds);

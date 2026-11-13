@@ -104,9 +104,9 @@ guide.acts[10]=[
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังช่วย Bannon และจบ Safe Passage ให้กลับ Oriath Docks คุย Lilly Roth: Tsoatha (#471)",
-      "ฟัง Lilly Roth: The Teardrop (#472) หลังเปิดหัวข้อที่เกี่ยวข้อง แล้วรับ Map to Tsoatha",
-      "อย่าเข้าใจผิดว่า Map to Tsoatha คือการเก็บบทสนทนาเท่านั้น ยังต้องหา The Teardrop และกลับส่งให้ Lilly"
+      "หลังช่วย Bannon และทำ Safe Passage สำเร็จ ให้กลับ Oriath Docks แล้วคุย Lilly Roth หัวข้อ Tsoatha (ID 471)",
+      "ตรวจ Lilly Roth: The Teardrop (ID 472) เมื่อหัวข้อเปิด แล้วรับเควสต์ Map to Tsoatha",
+      "จากนั้นต้องไปหา The Teardrop และกลับมาส่ง Lilly อีกครั้ง จึงจะถือว่าเควสต์รองเสร็จ"
     ],
     "actionsEN": [
       "After rescuing Bannon and completing Safe Passage, return to Oriath Docks and hear Lilly Roth: Tsoatha (#471).",
@@ -243,9 +243,9 @@ guide.acts[10]=[
     ],
     "sidequestIds": [],
     "actions": [
-      "ผ่าน The Torched Courts ไป The Desecrated Chambers และเปิด Waypoint",
-      "อ่าน Cultist Tract - And Our Father (#123) แล้วค้น The Staff of Purity จาก Chamber of Innocence ที่ถูกทำลาย",
-      "นำ The Staff of Purity กลับไป Bannon เพื่อเดินเรื่อง Death and Rebirth; อย่าติ๊กบทสนทนาหลังเควสต์ก่อนจบจริง"
+      "ผ่าน The Torched Courts ไป The Desecrated Chambers แล้วตรวจ Waypoint",
+      "อ่าน Cultist Tract - And Our Father (Lore ID 123) และหา The Staff of Purity",
+      "นำ The Staff of Purity กลับไปให้ Bannon เพื่อดำเนินเควสต์ Death and Rebirth แล้วจึงตรวจบทสนทนาที่เปิดหลังจบเควสต์"
     ],
     "actionsEN": [
       "Enter The Desecrated Chambers via The Torched Courts and activate its Waypoint.",

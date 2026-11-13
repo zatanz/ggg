@@ -311,17 +311,17 @@ function englishHelp(type,item,guide){
  const act=item.act,base=String(item.name||item.dialog||""),where=String(item.area||"Act "+act);
  let action="",location="",unlock="",caution="",tip="";
  if(type==="ears"){
-   action="Listen to "+item.npc+" discussing \""+item.dialog+"\" in Act "+act+" before marking this dialogue as heard.";
+   action="Speak to "+String(item.npc||"").replace(/ \*$/,"")+", choose the \""+String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim()+"\" topic, and listen through the dialogue before checking it off.";
    location="Act "+act+" · "+item.npc;
-   unlock="The exact quest-state trigger varies. Check the historical source and current NPC options.";
+   unlock="Find this topic at the appropriate quest stage. If it is missing, review the linked Act route before changing quest state.";
    caution=highRisk[String(item.id)]||(guide?.caution?"Quest-state-sensitive dialogue: read the original Thai source note below before advancing.":"");
  }else if(type==="lore"){
    action="Read \""+base+"\" in "+where+"; mark it only after the in-game interaction.";
    location=where;unlock="Find and interact with the exact lore object.";
    caution=item.random?"This lore encounter can vary by instance. Check the in-game count.":"";
  }else if(type==="waypoints"){
-   action="Activate the Waypoint in "+base+" and check that it is available for travel.";
-   location="Act "+act+" · "+base;unlock="Reach this area and activate the Waypoint.";
+   action="Travel to "+base+" and verify that its Waypoint is active on the in-game map before marking it complete.";
+   location="Act "+act+" · "+base;unlock="Some Waypoints activate automatically in newer game versions. Confirm the actual active state rather than assuming that entering the area is enough.";
    if(act===8&&item.id===71){
      action="The Toxic Conduits world-map node is shared with the Waypoint you access AFTER defeating Doedre in Doedre's Cesspool. Mark it only when the waypoint is actually active.";
      location="The Toxic Conduits / Doedre's Cesspool";
@@ -329,8 +329,8 @@ function englishHelp(type,item,guide){
      caution="Historic node naming differs from the physical Doedre's Cesspool waypoint access. Check in-game before marking.";
    }
  }else{
-   action="Finish the optional quest \""+base+"\" in Act "+act+" before marking it completed.";
-   location="Act "+act;unlock="Confirm completion in the in-game quest journal.";
+   action="Open the Quest Log and finish \""+base+"\" in Act "+act+". Complete any turn-in or reward step before checking it off.";
+   location="Act "+act;unlock="Use the linked quest-stage route for area and NPC order. Verify completion in the in-game quest journal.";
  }
  if(type==="ears"&&(act===9||act===10)){
    const special={
@@ -501,7 +501,7 @@ function englishHelp(type,item,guide){
    const special={271:"Listen to Vilenta: Piety first to unlock Research.",275:"After defeating Justicar Casticus and before defeating Avarius.",277:"Immediately after defeating Innocence, before leaving the chamber.",295:"After obtaining the Sign of Purity in The Ossuary, before exiting."};
    unlock=special[item.id]||unlock;
  }
- tip=guide?.caution?"The detailed historical Thai caution is retained below; do not treat this English summary as patch 3.30 validation.":"This is a historical guide, not verified for patch 3.30.";
+ tip=guide?.caution?"Source-based timing only. Open the original Thai source note for additional detail; patch 3.30 has not been gameplay-verified.":"Historical guidance only: confirm the item and quest state in the game. Patch 3.30 has not been gameplay-verified.";
  return {action,location,unlock,caution,tip,source:guide?.source||"https://www.poewiki.net/wiki/Guide:All_Ears_achievement",sourceLabel:guide?.sourceLabel||"Source",detailsKnown:!!guide?.detailsKnown,patchCertified:false};
 }
 window.POE_LANGUAGE=Object.freeze({get:()=>({...prefs}),set,tr,term,entry,bilingualIndex,englishHelp,hasNameTranslation:s=>!!glossary[s],glossary:Object.freeze(glossary)});

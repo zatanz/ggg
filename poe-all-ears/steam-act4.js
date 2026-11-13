@@ -97,11 +97,11 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "อ่าน Voll's Confession ใน Dried Lake และจัดการ Voll เพื่อเปิดทางไป Mines",
-      "หลังรับ An Indomitable Spirit ให้กลับ Highgate ฟัง Kira: Deshret (ID 220) ก่อนปลดปล่อย Deshret ใน Mines Level 2",
-      "ตรวจบทสนทนาเกี่ยวกับ The Mines, Voll และ The Rapture Device"
+      "ที่ The Dried Lake อ่าน Voll's Confession และจัดการ Voll เพื่อเปิดทางเข้า The Mines",
+      "หลังรับเควสต์ An Indomitable Spirit ให้กลับ Highgate คุย Kira หัวข้อ Deshret (ID 220) ก่อนปลดปล่อย Deshret ใน The Mines Level 2",
+      "ตรวจหัวข้อเกี่ยวกับ The Mines, Voll และ The Rapture Device ที่เพิ่งเปิดก่อนเดินเรื่องต่อ"
     ],
-    "stop": "ยังไม่ควรปลดปล่อย Deshret ก่อนฟัง Kira: Deshret",
+    "stop": "หยุดก่อนปลดปล่อย Deshret: ต้องฟัง Kira: Deshret (ID 220) ให้จบก่อน",
     "stopIds": [
       220
     ],
@@ -321,11 +321,11 @@
     ],
     "sidequestIds": [],
     "actions": [
-      "เปิด Waypoint และอ่าน Malachai's Dedication",
-      "คุย Piety: Malachai (ID 247) ขณะที่ยังไม่ได้ส่งอวัยวะทั้งหมด",
-      "ฟังครบแล้วจึงส่งอวัยวะตามเควสต์"
+      "เข้า The Harvest เปิด Waypoint และอ่าน Malachai's Dedication",
+      "ก่อนส่งอวัยวะครบ ให้คุย Piety หัวข้อ Malachai (ID 247) และฟังให้จบ",
+      "ตรวจว่าบันทึกหัวข้อนี้แล้ว จึงค่อยส่งอวัยวะต่อให้ Piety"
     ],
-    "stop": "อย่าส่งอวัยวะทั้งหมดให้ Piety ก่อนฟัง Piety: Malachai",
+    "stop": "หยุดก่อนส่งอวัยวะชิ้นสุดท้าย: ต้องฟัง Piety: Malachai (ID 247) ก่อน",
     "stopIds": [
       247
     ],
@@ -351,10 +351,10 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังส่งอวัยวะทั้งหมดให้ Piety กลับตรวจ Lady Dialla: Malachai (ID 248)",
-      "เมื่อหัวข้อหลังส่งเปิดแล้วจึงไปสู้ Malachai"
+      "หลังส่งอวัยวะให้ Piety ครบแล้ว ให้กลับไปคุย Lady Dialla หัวข้อ Malachai (ID 248)",
+      "ตรวจว่าฟังหัวข้อหลังส่งอวัยวะจริงแล้ว จึงเข้าไปสู้ Malachai"
     ],
-    "stop": "อย่าฆ่า Malachai ก่อนฟัง Dialla: Malachai",
+    "stop": "หยุดก่อนฆ่า Malachai: ต้องฟัง Lady Dialla: Malachai (ID 248) หลังส่งอวัยวะครบก่อน",
     "stopIds": [
       248
     ],

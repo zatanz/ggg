@@ -70,7 +70,7 @@ function scopeSnapshot(scope){
 function openJourneyScope(scope){
  if(state.tab!=="route")openTab("route");
  state.act=String(scope);state.routeAct=String(scope);state.skippedRisk=null;state.status="all";state.search="";state.limit=12;
- renderToolbar();renderView();
+ renderToolbar();renderView();renderSummary();
 }
 function fairgravesCurrentRisk(){
  const card=el("section",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";

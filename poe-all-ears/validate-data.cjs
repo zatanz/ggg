@@ -280,6 +280,8 @@ load('steam-act5.js');
 load('steam-act6.js');
 load('steam-act7.js');
 load('steam-act8.js');
+load('steam-act9.js');
+load('steam-act10.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -367,6 +369,15 @@ assert(locale.englishHelp('ears',d.items.find(x=>x.id===407),{}).caution.include
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===411),{}).caution.includes('BEFORE leaving'),'Act 8 Clarissa post-Tolman Quay warning must be unambiguous in English');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===409),{}).caution.includes('BEFORE killing Yugul'),'Act 8 Sin pre-Yugul STOP must remain available in English');
 assert(locale.englishHelp('waypoints',extras.waypoints.find(x=>x.id===71),{}).unlock.includes('Doedre'),'Act 8 waypoint cannot be marked before the Cesspool exit after Doedre');
+
+assert(locale.set('names','both')&&locale.term('Sekhema Feather').includes('เซเคห์มา')&&locale.term('Sekhema Feather').includes('Sekhema Feather'),'Act9 name mode must show Feather in both English and editorial Thai');
+assert(locale.set('names','both')&&locale.term('The Teardrop').includes('หยดน้ำตา')&&locale.term('The Teardrop').includes('The Teardrop'),'Act10 Teardrop name must survive TH/EN mode');
+assert(locale.set('names','th')&&locale.term('The Staff of Purity').includes('คทา'),'Act10 Staff of Purity editorial term required');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===438),{}).caution.includes('Trarthan'),'Act9 Sin Dark Ember timing without powder must remain in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===443),{}).caution.includes('IRASHA'),'Act9 Feather branch never silently implies Tasuni support');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===448),{}).caution.includes('BEFORE travelling'),'Act9 pre-Act10 Weylam rescue caution missing in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===471),{}).unlock.includes('Safe Passage'),'Act10 Lilly Tsoatha must unlock after Safe Passage');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===481),{}).caution.includes('AFTER completing'),'Act10 Lilly Innocence must be tied to Death and Rebirth');
 const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
 assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
 assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');
@@ -443,6 +454,42 @@ const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(uiActEight.includes('["7","8"].includes(act)'),'Act 8 cannot silently skip prior unresolved STOPs in the phase picker');
 assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
 
+
+const actNine=steamWalk.acts[9],actTen=steamWalk.acts[10];
+const getActIDs=(arr,k)=>arr.flatMap(p=>p[k]||[]);
+for(const [act,phases,expectedStages] of [[9,actNine,11],[10,actTen,10]]){
+ assert(phases.length===expectedStages,'Acts 9–10 must expose all drafted quest phases');
+ assert(sameExactSet(getActIDs(phases,'dialogueIds'),d.items.filter(x=>x.act===act).map(x=>x.id)),'Every canonical Act '+act+' dialogue must appear once');
+ assert(sameExactSet(getActIDs(phases,'loreIds'),lore.entries.filter(x=>x.act===act).map(x=>x.id)),'Every canonical Act '+act+' lore must appear once');
+ assert(sameExactSet(getActIDs(phases,'waypointIds'),extras.waypoints.filter(x=>x.act===act).map(x=>x.id)),'Every canonical Act '+act+' Waypoint must appear once');
+ assert(sameExactSet(getActIDs(phases,'sidequestIds'),extras.sidequests.filter(x=>x.act===act).map(x=>x.id)),'Every canonical Act '+act+' sidequest must appear once');
+ assert(phases.every(p=>p.id&&p.place&&p.quest&&p.headingEN&&p.heading&&p.actions.length>=2&&p.actions.length===p.actionsEN.length&&p.stopIds.every(id=>p.dialogueIds.includes(id))),'Act '+act+' bilingual timing or STOP source IDs broken');
+ const rows=ctx.window['ALL_EARS_ROUTE_ACT'+act].records;
+ assert(sameExactSet(rows.map(x=>x.id),getActIDs(phases,'dialogueIds')),'Act '+act+' Wiki-row-to-original-ID map must cover source exactly');
+}
+assert(actNine.find(p=>p.id==='desert-storm-blade')?.stopIds.includes(436),'Act9 General Adus before Foothills must be guarded');
+assert(actNine.find(p=>p.id==='tunnel-quarry-prepowder')?.stopIds.includes(438),'Act9 Dark Ember must be heard without Trarthan Powder');
+assert(sameExactSet(actNine.find(p=>p.id==='garukhan-post')?.stopIds||[],[439,440]),'Act9 post-Garukhan two NPCs must precede ruler choice');
+assert(actNine.find(p=>p.id==='ruler-irasha-choice')?.branchChoice==='Irasha','Act9 old 484-ID tracker is only an Irasha branch; never claim Tasuni is equivalent');
+assert(actNine.find(p=>p.id==='ruler-irasha-choice')?.sourceNoteEN.includes('no stable')||actNine.find(p=>p.id==='ruler-irasha-choice')?.sourceNoteEN.includes('stable tracker'),'Act9 alternate path cannot invent two local IDs');
+assert(sameExactSet(actNine.find(p=>p.id==='ruler-irasha-choice')?.dialogueIds||[],[443,444,441,442]),'Act9 Irasha branch ID crosswalk must be exact even where Wiki source rows differ');
+assert(actNine.find(p=>p.id==='powder-acid')?.stopIds.includes(445),'Act9 Sin both ingredients BEFORE Belly guard missing');
+assert(sameExactSet(actNine.find(p=>p.id==='trinity-rescue')?.stopIds||[],[448,449]),'Act9 both Weylam lines BEFORE Act10 must be retained');
+assert(actNine.find(p=>p.id==='foothills-fortune')?.sidequestIds.includes(26),'Fastis Fortuna tied to Calendar of Fortune near Foothills');
+assert(actTen.find(p=>p.id==='safe-passage-docks')?.dialogueIds.includes(471),'Act10 after Safe Passage Tsoatha dialogue missing');
+assert(actTen.find(p=>p.id==='reliquary-teardrop')?.sidequestIds.includes(29),'Act10 The Teardrop must be retrieved from Reliquary');
+assert(actTen.find(p=>p.id==='ossuary-elixir')?.sidequestIds.includes(30),'Act10 Elixir of Allure must be retrieved from Ossuary');
+assert(actTen.find(p=>p.id==='vilenta-controls')?.sidequestIds.includes(28)&&actTen.find(p=>p.id==='vilenta-controls')?.waypointIds.includes(88),'Act10 Vilenta requires The Control Blocks and its Waypoint');
+assert(actTen.find(p=>p.id==='chamber-staff')?.loreIds.includes(123)&&actTen.find(p=>p.id==='chamber-staff')?.keyItems.includes('The Staff of Purity'),'Act10 Death and Rebirth Staff and Lore in Desecrated Chambers missing');
+assert(actTen.find(p=>p.id==='canals-tract')?.loreIds.includes(124),'Act10 Canals Cultist Tract must precede Kitava');
+assert(actTen.find(p=>p.id==='kitava-after')?.dialogueIds.includes(482),'Act10 Lilly after An End to Hunger not represented');
+const finalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+assert(finalSource.includes('src="./steam-act9.js"')&&finalSource.includes('src="./steam-act10.js"'),'Final Acts must load their historical source scripts');
+const finalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(finalHub.includes('["7","8","9","10"].includes(act)'),'Forward dropdown STOP protection must cover Acts 9 and 10');
+assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('data.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
+assert(steamWalk.patchCertified===false,'Act9 and Act10 cannot claim 3.30 gameplay certification');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -469,9 +516,14 @@ const visualTargets=[
  ["7","temple-arakaali-after","act7-arakaali-yeena-stop.svg","The Mother of Spiders"],
  ["8","doedre-cesspool","act8-doedre-sin-quest.svg","Essence of the Hag"],
  ["8","quay-tolman-after","act8-tolman-clarissa-quest.svg","Love is Dead"],
- ["8","yugul-before","act8-yugul-preboss-quest.svg","Reflection of Terror"]
+ ["8","yugul-before","act8-yugul-preboss-quest.svg","Reflection of Terror"],
+ ["9","garukhan-post","act9-feather-branch-decision.svg","The Ruler of Highgate"],
+ ["9","powder-acid","act9-ember-two-ingredients.svg","Recurring Nightmare"],
+ ["9","trinity-rescue","act9-rescue-before-act10.svg","Recurring Nightmare"],
+ ["10","safe-passage-docks","act10-lilly-tsoatha-quest.svg","Safe Passage / Map to Tsoatha"],
+ ["10","chamber-staff","act10-bannon-staff-quest.svg","Death and Rebirth"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly nineteen sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly twenty-four sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

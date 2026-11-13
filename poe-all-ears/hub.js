@@ -265,12 +265,16 @@ function itemCard(type,x){
      const next=fromCurrent&&wasChecked?document.querySelector('#hubView .hubInlineCurrentChecklist input[type="checkbox"]'):null;
      const same=[...document.querySelectorAll('#hubView input[data-track-type="'+type+'"][data-track-id="'+x.id+'"]')];
      const visible=same.find(node=>node.getClientRects().length>0);
-     const target=next||visible;
+     const advance=fromCurrent&&wasChecked?document.querySelector('#hubView .hubNextAction [data-inline-advance="true"]'):null;
+     const target=next||advance||visible;
      if(target){
        target.focus({preventScroll:true});
        if(fromCurrent&&wasChecked)target.closest(".hubNextAction")?.scrollIntoView({block:"nearest"});
      }else if(fromCurrent){
-       document.querySelector('#hubView .hubNextAction')?.scrollIntoView({block:"nearest"});
+       const summary=document.querySelector('#hubView .hubNextAction');
+       summary?.setAttribute("tabindex","-1");
+       summary?.focus({preventScroll:true});
+       summary?.scrollIntoView({block:"nearest"});
      }
    }
  });

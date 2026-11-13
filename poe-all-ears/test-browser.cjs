@@ -557,6 +557,116 @@ const assert=require('node:assert/strict');
  await hub.setViewportSize({width:1280,height:900});
 
 
+ // Act 9: 36 canonical dialogue + 6 Waypoints + 4 side quests, quest-state STOPs and per-character ruler choice.
+ await hub.locator('.hubActStrip [data-act="9"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="9"]').count(),1,'Act 9 source-led player route renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select option').count(),11,'Act 9 exposes eleven quest stages');
+ assert.equal((await hub.locator('#hubView [data-steam-act="9"]').innerText()).includes('36 บทสนทนา'),true,'Act 9 retains exactly 36 historical All Ears dialogues');
+ assert.equal(await hub.locator('#hubView [data-act-summary="9"]').evaluate(x=>x.open),false,'Act 9 detailed overview secondary to route');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),2,'Blood Aqueduct and Highgate Waypoints mapped');
+
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('1');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="desert-storm-blade"]').innerText()).includes('General Adus'),true,'General Adus pre-Foothills dialogue is a STOP');
+ const atAct9Stop=await hub.locator('#hubView [data-steam-act="9"]').getAttribute('data-phase');
+ hub.once('dialog',d=>d.dismiss());
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ assert.equal(await hub.locator('#hubView [data-steam-act="9"]').getAttribute('data-phase'),atAct9Stop,'Act 9 dropdown warns on unresolved STOPs');
+ assert.equal(await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').inputValue(),'1','Cancelled Act9 jump restores original selector');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ const rulers=hub.locator('#hubView .hubBranchChoice');
+ assert.equal(await rulers.count(),1,'Highgate irreversible branch has its own explicit choice control');
+ assert.equal(await rulers.locator('select').inputValue(),'undecided','No ruler inferred without player input');
+ assert.equal((await hub.locator('#hubView [data-phase="ruler-irasha-choice"]').innerText()).includes('Irasha'),true,'Irasha branch mapped to historic stable IDs');
+ assert.equal(await hub.locator('#hubView [data-phase="ruler-irasha-choice"] .hubWalkCategory .hubItem').count(),4,'Both post-Feather branch dialogs plus Irasha follow-ups remain inspectable');
+ await rulers.locator('select').selectOption('Tasuni');
+ assert.equal(await hub.locator('#hubView [data-ruler-branch="Tasuni"]').count(),1,'Tasuni choice is preserved as a distinct state');
+ assert.equal((await hub.locator('#hubView .hubBranchChoice').innerText()).includes('100%'),true,'Tasuni branch warns against asserting 100% from unsupported IDs');
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
+ assert.equal(await hub.locator('#hubView [data-ruler-integrity="Tasuni"]').count(),1,'Tasuni mismatch warning persists beyond the choice phase');
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ await hub.locator('#hubView .hubBranchChoice select').selectOption('Irasha');
+ assert.equal(await hub.locator('#hubView [data-ruler-branch="Irasha"]').count(),1,'Irasha choice matches existing local ID branch');
+ const act9Character=await hub.locator('#character').inputValue();
+ const otherCharacter=await hub.locator('#character option').first().getAttribute('value')===act9Character
+ ? await hub.locator('#character option').nth(1).getAttribute('value')
+ : await hub.locator('#character option').first().getAttribute('value');
+ await hub.locator('#character').selectOption(otherCharacter);
+ assert.equal(await hub.locator('#hubView .hubBranchChoice select').inputValue(),'undecided','Second character has independent ruler choice');
+ await hub.locator('#character').selectOption(act9Character);
+ assert.equal(await hub.locator('#hubView .hubBranchChoice select').inputValue(),'Irasha','Original character retains its selected ruler');
+ const featherArt=hub.locator('#hubView [data-visual-phase="garukhan-post"]');
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('5');
+ await featherArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const a=document.querySelector('[data-visual-phase="garukhan-post"] img');return !!a&&a.complete&&a.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await featherArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Feather decision diagram is clearly conceptual');
+ await hub.locator('#hubGameNames').selectOption('both');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Sekhema Feather'),true,'Act9 canonical Feather name retained');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('เซเคห์มา'),true,'Act9 editorial Thai item name visible');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="garukhan-post"]').innerText()).includes('STOP:'),true,'Act9 English STOP text visible');
+ await hub.locator('#hubGameNames').selectOption('en');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="powder-acid"]').innerText()).includes('The Belly of the Beast'),true,'Both ingredients before Belly STOP appears');
+ const emberArt=hub.locator('#hubView [data-visual-phase="powder-acid"]');
+ await emberArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const a=document.querySelector('[data-visual-phase="powder-acid"] img');return !!a&&a.complete&&a.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await emberArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act9 Dark Ember source image is conceptual');
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('9');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="trinity-rescue"]').innerText()).includes('Act 10'),true,'Act9 Weylam rescue before Act10 warning visible');
+ const rescueArt=hub.locator('#hubView [data-visual-phase="trinity-rescue"]');
+ await rescueArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const a=document.querySelector('[data-visual-phase="trinity-rescue"] img');return !!a&&a.complete&&a.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await rescueArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act9 pre-Act10 graphic labelled illustration');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),4,'Original Act9 four research checkpoints still inspectable');
+
+ // Act 10: 32 dialogues, three Cultist Tracts, five Waypoints, three side quests.
+ await hub.locator('.hubActStrip [data-act="10"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select option').count(),10,'Act10 source route has ten stages');
+ assert.equal((await hub.locator('#hubView [data-steam-act="10"]').innerText()).includes('32 บทสนทนา'),true,'Act10 all 32 dialogue IDs preserved');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('1');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),1,'Act10 first Cultist Tract in Ravaged Square');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('2');
+ assert.equal((await hub.locator('#hubView [data-phase="safe-passage-docks"] .hubWalkCategory').innerText()).includes('Lilly'),true,'Act10 Tsoatha dialogue requires post-Safe Passage Lilly');
+ const lillyVisual=hub.locator('#hubView [data-visual-phase="safe-passage-docks"]');
+ await lillyVisual.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="safe-passage-docks"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await lillyVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act10 Lilly quest-art is explicitly not an in-game screenshot');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('3');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'Act10 Map to Tsoatha optional quest correctly linked');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),1,'Act10 Reliquary Waypoint mapped');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Elixir of Allure'),true,'Act10 Ossuary quest item explicit');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('5');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),1,'Act10 Vilenta Vengeance optional quest linked');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),1,'Act10 Control Blocks Waypoint linked');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('6');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),1,'Act10 Desecrated Chambers Cultist Tract mapped');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('The Staff of Purity'),true,'Act10 Death and Rebirth correct item');
+ const staffArt=hub.locator('#hubView [data-visual-phase="chamber-staff"]');
+ await staffArt.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="chamber-staff"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await staffArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act10 Staff diagram is source-labelled mock');
+ await hub.locator('#hubGameNames').selectOption('both');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('คทา'),true,'Act10 independent Thai item translation works');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Bannon'),true,'Act10 English story instructions concrete');
+ assert.equal((await staffArt.locator('.hubVisualCheck').innerText()).includes('Staff of Purity'),true,'Act10 English visual check identifies item');
+ await hub.locator('#hubGameNames').selectOption('en');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('8');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),1,'Act10 final Cultist Tract linked to The Canals');
+ await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('9');
+ assert.equal((await hub.locator('#hubView [data-phase="kitava-after"] .hubWalkCategory').innerText()).includes('Lilly'),true,'Act10 post-Kitava Lilly dialogue present');
+ await hub.setViewportSize({width:375,height:812});
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Act9/10 source-guided route fits 375px mobile');
+ await hub.setViewportSize({width:1280,height:900});
+
+
  await hub.locator('.hubActStrip [data-act="1"]').click();
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
@@ -696,12 +806,11 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
- for(const [act,count] of [[9,4]]){
-  await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
-  assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act '+act+' shows one checkpoint in focus mode');
-  assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),count,'Act '+act+' retains all checkpoints in step picker');
- }
- await hub.locator('#hubView .hubStepNavigator select').selectOption('3');
+ await hub.locator('.hubActStrip [data-act="9"]').click();
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubCheckpoint').count(),1,'Act 9 legacy research checkpoint still accessible');
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),4,'Act 9 retains its four historical research checkpoint choices');
+ await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal((await hub.locator('#hubView .hubCheckpoint[data-stage="a9-rescue"]').innerText()).includes('Act 10'),true,'Act 9 rescue warning accessible by step navigation');
  await hub.locator('.hubActStrip [data-act="10"]').click();
  assert.equal(await hub.locator('#hubView .hubCritical:not(.hubPostQuests) .hubCheckpoint').count(),0,'Act 10 does not invent unsourced irreversible quest checkpoints');

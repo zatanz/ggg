@@ -87,7 +87,59 @@ function fairgravesCurrentRisk(){
  const community=el("a",tr("รายงานผู้เล่น Reddit","Player reports on Reddit"));community.href="https://www.reddit.com/r/pathofexile/comments/1v61ip0/dont_bother_trying_to_complete_the_all_ears/";community.target="_blank";community.rel="noopener noreferrer";
  actions.append(button,source,community);card.append(actions,el("small",tr("หลักฐาน: รายงานผู้เล่นเดือนกรกฎาคม 2026 ไม่ใช่ประกาศจาก GGG · ตัวละคร Standard อาจต่างจากลีก","Evidence: July 2026 player reports, not an official GGG confirmation. Standard characters may differ from league characters."),"hubSubtle"));return card;
 }
+function renderQuickStart(){
+ const card=$("hubQuickStart");if(!card)return;card.replaceChildren();
+ const scopes=journeyScopes,chosen=scopes.includes(state.routeAct)?state.routeAct:"1";
+ const current=scopeSnapshot(chosen),allChecked=Object.keys(names).reduce((n,t)=>n+progress(t),0);
+ const phases=window.POE_STEAM_WALK?.acts?.[chosen]||[];
+ const groups={ears:new Set(entries("ears")),lore:new Set(entries("lore")),waypoints:new Set(entries("waypoints")),sidequests:new Set(entries("sidequests"))};
+ const fields={ears:"dialogueIds",lore:"loreIds",waypoints:"waypointIds",sidequests:"sidequestIds"};
+ const index=phases.findIndex(p=>Object.entries(fields).some(([t,key])=>(p[key]||[]).some(id=>!groups[t].has(id))));
+ const phase=index>=0?phases[index]:phases[0];
+ const eyebrow=el("span",tr("เริ่มที่นี่ · สำหรับผู้เล่นครั้งแรก","START HERE · First-time completion guide"),"hubBeginnerEyebrow");
+ card.append(eyebrow,el("h2",tr("ทำ Achievement 100% แบบทีละขั้น","Your first 100% achievement run, step by step")));
+ card.append(el("p",tr("ไม่ต้องอ่านทุกตาราง เริ่มจากตัวละครที่เล่นอยู่ เลือก Act ที่กำลังทำ แล้วตรวจสิ่งที่ต้องเก็บก่อนเดินเรื่องต่อ","You do not need to learn the entire tracker. Choose your character and current Act, then check the next task before advancing."),"hubBeginnerIntro"));
+ const steps=el("div",undefined,"hubBeginnerSteps");
+ const first=el("div",undefined,"hubBeginnerStep");
+ first.append(el("b","1"),el("span",tr("ใช้ตัวละครเดียวสำหรับ All Ears","Use one character for All Ears")));
+ const second=el("div",undefined,"hubBeginnerStep");
+ second.append(el("b","2"),el("span",tr("เลือก Act ที่กำลังเล่น","Choose the Act you are playing")));
+ const third=el("div",undefined,"hubBeginnerStep");
+ third.append(el("b","3"),el("span",tr("ฟังหรือเก็บในเกมจริง แล้วค่อยติ๊ก","Collect in-game first; then check the box")));
+ steps.append(first,second,third);card.append(steps);
+ const picker=el("label",undefined,"hubBeginnerPicker");
+ picker.append(el("span",tr("ตอนนี้กำลังเล่นถึงไหน?","Where are you in the campaign?")));
+ const select=el("select");select.id="hubBeginnerAct";
+ select.setAttribute("aria-label",tr("เลือก Act ที่กำลังเล่นเพื่อดูขั้นตอนต่อไป","Choose your current Act for the next step"));
+ scopes.forEach(id=>{const o=el("option",scopeName(id));o.value=id;select.append(o)});
+ select.value=chosen;
+ select.onchange=()=>{state.routeAct=select.value;state.act=select.value;if(state.tab!=="route")openTab("route");else{renderToolbar();renderView();renderSummary();}document.querySelector("#hubBeginnerAct")?.focus({preventScroll:true});};
+ picker.append(select);card.append(picker);
+ const currentBox=el("div",undefined,"hubBeginnerCurrent");currentBox.dataset.beginnerScope=chosen;
+ currentBox.append(el("strong",tr("สิ่งที่ควรทำต่อ","What to do next")));
+ if(current.done===current.all){
+  currentBox.append(el("p",tr("ติ๊กครบในพื้นที่นี้แล้ว แต่ต้องตรวจยอดในเกมอีกครั้ง","Every item here is marked; verify the actual in-game counters before treating it as complete.")));
+ }else if(phase){
+  currentBox.append(el("p",(descEN()?(phase.headingEN||phase.place):phase.heading),"hubBeginnerQuest"));
+  currentBox.append(el("small",tr("เหลือ ","Remaining ")+(current.all-current.done)+tr(" รายการในพื้นที่นี้"," items in this area")));
+  if(phase.stop&&(phase.stopIds||[]).some(id=>!groups.ears.has(id))){
+   currentBox.append(el("p",tr("จุดที่ต้องระวังก่อนทำเควสต่อ: ","Before you advance, check: ")+(descEN()?(phase.stopEN||phase.stop):phase.stop),"hubBeginnerStop"));
+  }
+ }else{
+  currentBox.append(el("p",tr("ยังมีรายการค้างในพื้นที่นี้ เปิดคู่มือเพื่อดูรายการตามหมวด","Some entries remain here. Open the guide to review the available checklist categories.")));
+ }
+ card.append(currentBox);
+ const action=el("button",current.done===current.all?tr("ตรวจรายการในพื้นที่นี้","Review this area"):tr("เปิดขั้นตอนที่ต้องทำต่อ","Show my next step"),"hubBeginnerCTA");
+ action.type="button";action.dataset.beginnerContinue="true";
+ action.onclick=()=>{
+  if(index>=0)state.steamFocusByAct[chosen]=index;
+  openJourneyScope(chosen);
+  document.querySelector('[data-steam-act="'+chosen+'"]')?.scrollIntoView({block:"start"});
+ };
+ card.append(action,el("p",tr("คำเตือน STOP เป็นข้อควรระวังจากแหล่งข้อมูล ไม่ใช่หลักฐานยืนยันว่าเควสปลอดภัยใน 3.29 · ความคืบหน้า "+allChecked+" / 745 เป็นเพียงการติ๊กด้วยตัวเอง","STOP warnings are research-based, not proof of a safe 3.29 quest state. Your "+allChecked+" / 745 checks are manual, not game verification."),"hubBeginnerFineprint"));
+}
 function renderSummary(){
+ renderQuickStart();
  const target=$("hubStats");target.replaceChildren();
  const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
  const hero=el("div",undefined,"hubMissionTotal");
@@ -1107,11 +1159,12 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
        document.createTextNode(tr("All Ears ต้องเก็บกับตัวละครเดียว ระวังบทสนทนาที่หายหลังฆ่าบอส ส่งเควสต์ หรือเลือกทางแยก โดยเฉพาะ Act 2 Bandits, Act 3 Clarissa และ Act 9 Sekhema Feather","All Ears must be completed on one character. Some dialogue disappears after a boss fight, quest hand-in or irreversible choice. Pay particular attention to Act 2 Bandits, Act 3 Clarissa and Act 9 Sekhema Feather.")));
      statusNote.replaceChildren(overview,warning);
    }
-   [["route","ตาม Act","By Act"],["collection","เช็กลิสต์ทั้งหมด","All checklists"],["review","ตรวจยอด / สำรอง","Verify / Backup"]].forEach(([id,th,en])=>{const btn=nav.querySelector('[data-tab="'+id+'"]');if(btn)btn.textContent=tr(th,en);});
+   [["route","ทำตามเควส","Follow quests"],["collection","รายการทั้งหมด","All checklists"],["review","สำรองและตรวจยอด","Backup and verify"]].forEach(([id,th,en])=>{const btn=nav.querySelector('[data-tab="'+id+'"]');if(btn)btn.textContent=tr(th,en);});
    const manageTitle=document.querySelector("#hubManage>summary");if(manageTitle)manageTitle.textContent=tr("จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม","Manage characters and legacy All Ears backup");
    const overviewTitle=document.querySelector("#hubOverview>h2");if(overviewTitle)overviewTitle.textContent=tr("เส้นทางสู่ 100%","Path to 100%");
    const overviewSub=document.querySelector("#hubOverview>p");if(overviewSub)overviewSub.textContent=tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof");
-   const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.29","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.29");
+   const advancedSummary=document.querySelector("#hubAdvancedDashboard>summary");if(advancedSummary)advancedSummary.textContent=tr("ข้อมูลเพิ่มเติม · ความคืบหน้าทั้งหมดและแหล่งอ้างอิง","More tools · complete progress and references");
+ const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.29","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.29");
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
@@ -1126,8 +1179,15 @@ if(profileRows.length>=2){
   manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);
   profileRows[1].remove();profileRows[0].after(manage);
 }
-const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2",tr("เส้นทางสู่ 100%","Path to 100%")),el("p",tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof"),"hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);profile.after(overview);
-const controls=el("section",undefined);controls.id="hubToolbar";overview.after(controls);const view=el("section");view.id="hubView";controls.after(view);
+const beginner=el("section",undefined,"hubQuickStart");beginner.id="hubQuickStart";beginner.setAttribute("aria-label",tr("เริ่มทำ Achievement 100% สำหรับผู้เล่นครั้งแรก","Start a 100% achievement run for the first time"));
+const advanced=el("details",undefined,"hubAdvancedDashboard");advanced.id="hubAdvancedDashboard";
+advanced.open=localStorage.getItem("poe-guide-dashboard-details-v1")==="open";
+const advancedSummary=el("summary",tr("ข้อมูลเพิ่มเติม · ความคืบหน้าทั้งหมดและแหล่งอ้างอิง","More tools · complete progress and references"));
+advancedSummary.addEventListener("click",()=>{try{localStorage.setItem("poe-guide-dashboard-details-v1",advanced.open?"closed":"open");}catch(_){}});
+advanced.append(advancedSummary);
+const overview=el("section",undefined,"hubPanel");overview.id="hubOverview";overview.append(el("h2",tr("เส้นทางสู่ 100%","Path to 100%")),el("p",tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof"),"hubSubtle"));const stats=el("div",undefined,"hubStats");stats.id="hubStats";overview.append(stats);advanced.append(overview);
+profile.after(beginner);beginner.after(advanced);
+const controls=el("section",undefined);controls.id="hubToolbar";advanced.after(controls);const view=el("section");view.id="hubView";controls.after(view);
 const status=el("div",tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.29","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.29"),"hubNotice hubDataNotice");nav.after(status);
 $("patch").addEventListener("change",()=>{renderView();});
 $("character").addEventListener("change",()=>{setTimeout(refresh,0);});const obs=new MutationObserver(()=>{setTimeout(refresh,0);});obs.observe($("character"),{childList:true});window.addEventListener("storage",e=>{if([MAIN,LORE,EXTRA,HUB].includes(e.key))refresh();});

@@ -89,7 +89,7 @@ const translated={
       [
         "Speak with Eramir, Greust, Yeena, Silk and Helena. Revisit NPCs when introductions unlock additional topics.",
         "After starting The Great White Beast, hear Silk's pre-completion dialogue.",
-        "Do not decide the Bandits yet: historical Steam and Wiki guidance disagree on the first-talk order around the Ancient Seal."
+        "Do not kill or help the Bandits yet: PoE Wiki advises speaking before the Ancient Seal; Steam puts the kills after The Darkness without prohibiting earlier talks."
       ],
       "STOP: hear Silk's pre-completion Great White Beast dialogue. Do not kill or help any Bandit before reviewing the conflicting source timings."
     ],
@@ -150,7 +150,7 @@ const translated={
       [
         "Open the Ancient Seal to unlock the Darkness topics according to both historical guides.",
         "Return for Eramir, Helena, Silk, Greust and Yeena's Darkness conversations.",
-        "Do not kill or help the Bandits yet. The sources disagree about when the first Bandit conversations should happen relative to the Seal."
+        "Do not kill or help the Bandits yet. PoE Wiki recommends speaking before the Ancient Seal; Steam does not forbid early conversation, but schedules the kills after The Darkness."
       ],
       "STOP: hear the town's Darkness dialogues before killing or helping any Bandit."
     ],

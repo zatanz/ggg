@@ -113,7 +113,16 @@ guide.acts[8]=[
     "keyItems": [],
     "sourceNote": "หมายเหตุเดิมกำชับอย่าออกจาก Doedre's Cesspool ก่อนคุย Sin แต่ PoE Wiki 2025 ระบุเพียง 'หลังฆ่า Doedre'; Waypoint #71 ใช้ชื่อ The Toxic Conduits ขณะที่ทางเข้าถึง Waypoint อยู่ฝั่ง Cesspool หลังสู้",
     "sourceNoteEN": "The legacy source says do not leave Doedre's Cesspool before Sin, while Wiki 2025 only says after defeating Doedre. Waypoint #71 is historically named The Toxic Conduits, but its actual activation is reached on the Cesspool side after the fight.",
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act8-doedre-sin-quest.svg",
+      "title": "Essence of the Hag · AFTER BOSS · before exit",
+      "alt": "ภาพจำลองลำดับเควสต์ Essence of the Hag บอก NPC และบทสนทนาที่ต้องทำก่อนข้ามจุดเสี่ยง ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังชนะ Doedre ให้คุย Sin: Doedre (ID 403) ตามคำเตือนเก่า ก่อนออกจาก Doedre's Cesspool แล้วตรวจ Waypoint จากแผนที่เกม",
+      "checkEN": "After defeating Doedre, hear Sin: Doedre (ID 403) before leaving the Cesspool (legacy source caution). Confirm the shared Waypoint is actually active before checking it.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "doedre-town-orbs",
@@ -212,7 +221,16 @@ guide.acts[8]=[
     ],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act8-tolman-clarissa-quest.svg",
+      "title": "Love is Dead · AFTER TOLMAN · before exit",
+      "alt": "ภาพจำลองลำดับเควสต์ Love is Dead บอก NPC และบทสนทนาที่ต้องทำก่อนข้ามจุดเสี่ยง ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "ก่อนจบ Love is Dead ต้องคุย Hargan: The Ankh of Eternity (ID 407); หลังฆ่า Tolman ต้องคุย Clarissa: The Ankh of Eternity (ID 411) และ Tolman (ID 413) ก่อนออกจาก The Quay",
+      "checkEN": "Before finishing Love is Dead hear Hargan: The Ankh of Eternity (#407); after killing Tolman, hear Clarissa: The Ankh of Eternity (#411) and Tolman (#413) before leaving The Quay.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "love-return",
@@ -414,7 +432,16 @@ guide.acts[8]=[
     "keyItems": [],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act8-yugul-preboss-quest.svg",
+      "title": "Reflection of Terror · BEFORE BOSS · two NPCs",
+      "alt": "ภาพจำลองลำดับเควสต์ Reflection of Terror บอก NPC และบทสนทนาที่ต้องทำก่อนข้ามจุดเสี่ยง ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "จบ The Wings of Vastiri ก่อน แล้วคุย Sin: Yugul (ID 409) ตามด้วย Hargan: Yugul (ID 410) ก่อนฆ่า Yugul ใน The High Gardens",
+      "checkEN": "Complete The Wings of Vastiri, hear Sin: Yugul (#409) then Hargan: Yugul (#410), and only then kill Yugul in The High Gardens.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_8",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "yugul-after",

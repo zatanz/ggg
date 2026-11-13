@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Essence of the Hag · Act 8 conceptual NPC timeline</title>
+<desc id="desc">Original explanatory diagram showing the exact critical NPC dialogue between quest-state transitions for Essence of the Hag. Not an actual Path of Exile screenshot.</desc>
+<defs><linearGradient id="back" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#182f3f"/><stop offset="1" stop-color="#0d1420"/></linearGradient></defs>
+<rect width="960" height="540" fill="url(#back)"/>
+<rect x="19" y="19" width="922" height="500" rx="17" fill="none" stroke="#b6976b" stroke-width="2"/>
+<text x="47" y="65" font-family="Georgia,serif" font-size="31" fill="#f5dda8" font-weight="bold">Essence of the Hag</text>
+<text x="48" y="96" font-family="Arial,sans-serif" font-size="17" fill="#c6d5df">Act 8 · Doedre's Cesspool</text>
+<rect x="47" y="123" width="515" height="326" rx="12" fill="#1d3443" stroke="#79929f"/>
+<text x="72" y="169" font-family="Georgia,serif" font-size="26" fill="#ebd7b6">QUEST STATE ORDER</text>
+<rect x="70" y="187" width="465" height="64" rx="10" fill="#2e4656"/>
+<text x="87" y="227" font-family="Arial,sans-serif" font-size="18" fill="#ecf1f3">1. Defeat Doedre the Vile</text>
+<path d="M300 253 v14 m-6 -7 l6 7 l6 -7" stroke="#f0dbab" stroke-width="2" fill="none"/>
+<rect x="70" y="276" width="465" height="73" rx="10" fill="#3e5a46" stroke="#e1cd8c" stroke-width="2"/>
+<text x="86" y="317" font-family="Arial,sans-serif" font-size="17" fill="#fff1bc" font-weight="bold">2. Sin: Doedre  ·  #403</text>
+<path d="M300 351 v14 m-6 -7 l6 7 l6 -7" stroke="#f0dbab" stroke-width="2" fill="none"/>
+<rect x="70" y="370" width="465" height="57" rx="10" fill="#2e4656"/>
+<text x="86" y="405" font-family="Arial,sans-serif" font-size="18" fill="#ecf1f3">3. Then leave Doedre's Cesspool</text>
+<rect x="578" y="123" width="337" height="326" rx="12" fill="#242e3b" stroke="#79929f"/>
+<text x="596" y="167" font-family="Georgia,serif" font-size="25" fill="#f5d29a">STOP AND VERIFY</text>
+<rect x="594" y="189" width="303" height="128" rx="10" fill="#573237" stroke="#ecb19b" stroke-width="2"/>
+<text x="606" y="234" font-family="Arial,sans-serif" font-size="18" fill="#ffe9df" font-weight="bold">AFTER BOSS · before exit</text>
+<text x="607" y="280" font-family="Arial,sans-serif" font-size="16" fill="#f3d3c4">Do not skip the dialogue.</text>
+<text x="596" y="382" font-family="Arial,sans-serif" font-size="17" fill="#ccd8df">Historical Wiki / source notes</text>
+<text x="596" y="410" font-family="Arial,sans-serif" font-size="16" fill="#c4d1da">Patch 3.30 NOT verified</text>
+<rect x="47" y="468" width="868" height="34" fill="#253943"/>
+<text x="65" y="491" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffdfab">NOT AN IN-GAME SCREENSHOT · ILLUSTRATION ONLY</text>
+</svg>

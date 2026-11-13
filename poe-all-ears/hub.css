@@ -721,3 +721,12 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkthrough>.hubStepNavigator{background:transparent;border:0;border-top:1px solid #465963;border-radius:0;padding:12px 0 4px;margin-top:13px}
 .hubWalkthrough>.hubStopGate{margin:11px 0;border-left-width:4px}
 @media(max-width:720px){.hubBeginnerStep+.hubBeginnerStep{border-left:0;border-top:1px solid #4b5e55}#hubQuickStart{padding:15px 16px}.hubBeginnerCurrent{padding-bottom:12px}.hubWalkthrough .hubWalkActions li{font-size:14px}.hubWalkthrough>.hubNextAction>strong{font-size:17px}}
+
+/* First-time task specificity: readable action / location / timing without another card layer. */
+.hubCurrentTaskFacts{display:grid;gap:8px;margin:2px 0 6px;padding:0}
+.hubCurrentTaskFact{display:grid;grid-template-columns:minmax(110px,28%) minmax(0,1fr);gap:12px;padding:7px 0;border-bottom:1px solid #4a6558;min-width:0}
+.hubCurrentTaskFact dt{font-size:12px;font-weight:800;color:#c0e3ca;line-height:1.5}
+.hubCurrentTaskFact dd{font-size:14px;line-height:1.6;color:#edf2ea;margin:0;overflow-wrap:anywhere}
+.hubWalkthrough .hubNextAction button[data-open-current-item]{min-height:48px;max-width:100%;white-space:normal;text-align:left}
+.hubWalkCategory .hubItem:focus-within,.hubWalkLore .hubItem:focus-within{outline:2px solid #d7e9b6;outline-offset:3px}
+@media(max-width:600px){.hubCurrentTaskFact{grid-template-columns:1fr;gap:3px}.hubCurrentTaskFact dd{font-size:14px}.hubWalkthrough .hubNextAction button[data-open-current-item]{width:100%}}

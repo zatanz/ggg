@@ -726,7 +726,7 @@ function actSteamGuide(act){
  instructions.forEach(txt=>actions.append(el("li",txt)));
  // The instruction list is the primary task, not another card below the warnings and controls.
  focus.insertBefore(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),focus.querySelector("button"));
- focus.append(actions);
+ focus.insertBefore(actions,focus.querySelector("button"));
  if(descEN()&&!phase.actionsEN){
   const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
   original.append(el("summary","Original Thai step-by-step instructions"));

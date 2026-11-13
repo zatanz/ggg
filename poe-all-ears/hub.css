@@ -730,3 +730,18 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkthrough .hubNextAction button[data-open-current-item]{min-height:48px;max-width:100%;white-space:normal;text-align:left}
 .hubWalkCategory .hubItem:focus-within,.hubWalkLore .hubItem:focus-within{outline:2px solid #d7e9b6;outline-offset:3px}
 @media(max-width:600px){.hubCurrentTaskFact{grid-template-columns:1fr;gap:3px}.hubCurrentTaskFact dd{font-size:14px}.hubWalkthrough .hubNextAction button[data-open-current-item]{width:100%}}
+
+
+/* Single-task workflow: instructions, confirmation and next item remain together. */
+.hubWalkthrough .hubInlineCurrentChecklist{margin-top:5px;padding:12px 13px;border-top:1px solid #61776b;background:#263a31;border-radius:9px;display:grid;gap:8px;min-width:0}
+.hubWalkthrough .hubInlineChecklistTitle{font-size:13px;color:#d8f0dd}
+.hubWalkthrough .hubInlineCurrentChecklist .hubItem{margin:0;border:1px solid #718979;background:#1b3026;padding:13px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:10px;min-width:0}
+.hubWalkthrough .hubInlineCurrentChecklist .hubItem input[type="checkbox"]{width:23px;height:23px;min-width:23px;accent-color:#9bdbad;margin:2px 0 0}
+.hubWalkthrough .hubInlineCurrentChecklist .hubItem .hubText{min-width:0}
+.hubWalkthrough .hubInlineCurrentChecklist .hubItemState{font-weight:700;font-size:12px}
+.hubWalkthrough .hubInlineCurrentChecklist .hubItem:focus-within{outline:2px solid #e4f0b8;outline-offset:2px}
+.hubWalkArchive{margin:17px 0 0;border-top:1px solid #57625b;padding-top:12px}
+.hubWalkArchive>summary{cursor:pointer;color:#c6c9c3;font-size:13px;font-weight:650;padding:10px 4px}
+.hubWalkArchive>summary:hover{color:#e7e6d9}
+.hubWalkArchive>.hubWalkCategory,.hubWalkArchive>.hubWalkLore{margin-top:10px}
+@media(max-width:600px){.hubWalkthrough .hubInlineCurrentChecklist{padding:10px}.hubWalkthrough .hubInlineCurrentChecklist .hubItem{grid-template-columns:auto minmax(0,1fr);gap:9px}.hubWalkthrough .hubInlineCurrentChecklist .hubItemState{grid-column:2}}

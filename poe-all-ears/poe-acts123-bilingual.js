@@ -160,7 +160,7 @@ const translated={
         "While Alira and Oak are still alive, check their Darkness topics. The 2025 Wiki does not list a matching topic for Kraityn.",
         "For the kill-all route, return to Eramir after killing the first Bandit and again after the second, BEFORE killing the third.",
         "After all three are dead, hear Eramir: Bandit Lords and check the newly available Greust and Helena dialogue.",
-        "Steam and PoE Wiki disagree on when to first talk to the Bandits relative to the Seal. This timing is not patch-certified."
+        "PoE Wiki advises first talking to each Bandit before the Ancient Seal; Steam does not forbid early conversation, and places the kill sequence after The Darkness. Neither guide certifies patch 3.30."
       ],
       "STOP: collect the town, Alira and Oak Darkness topics before making irreversible Bandit decisions. Revisit Eramir BETWEEN kills."
     ],

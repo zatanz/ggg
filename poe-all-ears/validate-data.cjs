@@ -278,6 +278,7 @@ load('steam-quest-walkthrough.js');
 load('steam-act4.js');
 load('steam-act5.js');
 load('steam-act6.js');
+load('steam-act7.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 const actOne=steamWalk.acts[1];
@@ -351,6 +352,13 @@ assert(locale.entry('ears',d.items.find(x=>x.id===336)).includes('Lilly Roth'),'
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===321),{}).caution.includes('BEFORE using'),'Act 6 English before-Eye warning must be explicit');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===322),{}).unlock.includes('BEFORE entering'),'Act 6 post-Eye / pre-Fortress state must be distinct');
 assert(locale.englishHelp('ears',d.items.find(x=>x.id===338),{}).caution.includes('Tsoagoth'),'Act 6 Reef stop must remain in English');
+
+assert(locale.set('names','both')&&locale.term("Kishara's Star").includes('คิชารา')&&locale.term("Kishara's Star").includes("Kishara's Star"),'Act 7 Kishara quest-item English title must survive Thai+EN display');
+assert(locale.set('names','th')&&locale.term("Maligaro's Map").includes('แผนที่'),'Act 7 Thai quest-item title must be available');
+assert(locale.term("Nonexistent Lore Translation") === "Nonexistent Lore Translation",'Untranslated environmental lore must fall back to official English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===365),{}).caution.includes('Den'),'Act 7 Helena blocked-route STOP must remain available in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===382),{}).caution.includes('seven Fireflies'),'Act 7 Fireflies timing must remain precise in English');
+assert(locale.englishHelp('ears',d.items.find(x=>x.id===384),{}).caution.includes('BEFORE leaving'),'Act 7 post-Arakaali boundary must remain explicit');
 const skill=fs.readFileSync(path.join(dir,'../.agents/skills/poe-achievement-ux/SKILL.md'),'utf8');
 assert(skill.startsWith('---')&&skill.includes('poe-achievement-ux')&&skill.includes('mobile')&&skill.includes('bilingual'),'Project-specific UX/UI skill must exist with practical QA guidance');
 assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includes('src="./poe-language.js"'),'Act 5 and bilingual UI modules must both load before hub.js');
@@ -376,6 +384,31 @@ assert(actSix.find(p=>p.id==='beacon-flag')?.keyItems.includes('The Black Flag')
 assert(steamWalk.patchCertified===false,'Act 6 must remain historical and unverified for patch 3.30');
 assert(canonicalSource.includes('src="./steam-act6.js"'),'Act 6 data script must be loaded before UI');
 
+
+const actSeven=steamWalk.acts[7],actSevenEars=actSeven.flatMap(p=>p.dialogueIds),actSevenLore=actSeven.flatMap(p=>p.loreIds||[]);
+const actSevenWp=actSeven.flatMap(p=>p.waypointIds||[]),actSevenSide=actSeven.flatMap(p=>p.sidequestIds||[]);
+assert(actSeven.length===19,'Act 7 must have nineteen source- and quest-state-aware phases');
+assert(sameExactSet(actSevenEars,d.items.filter(x=>x.act===7).map(x=>x.id)),'Act 7 All Ears: all 45 original local IDs exactly once');
+assert(sameExactSet(actSevenLore,lore.entries.filter(x=>x.act===7).map(x=>x.id)),'Act 7 No Stone Unturned: all eight original IDs exactly once');
+assert(sameExactSet(actSevenWp,extras.waypoints.filter(x=>x.act===7).map(x=>x.id)),'Act 7 Locomancer: all nine original IDs exactly once');
+assert(sameExactSet(actSevenSide,extras.sidequests.filter(x=>x.act===7).map(x=>x.id)),'Act 7 No Loose Ends: all four original IDs exactly once');
+assert(actSeven.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actions.length>=2&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 7 bilingual source steps/STOP must be tied to local IDs in the correct phase');
+const actSevenRows=ctx.window.ALL_EARS_ROUTE_ACT7.records;
+assert(actSevenRows.length===45&&actSevenRows.every(r=>actSevenEars.includes(r.id)),'Act 7 every historical Wiki row must crosswalk to an original local item even with branched quest order');
+assert(actSeven.find(p=>p.id==='broken-bridge-crypt')?.sidequestIds.includes(16)&&actSeven.find(p=>p.id==='broken-bridge-crypt')?.keyItems.includes("Maligaro's Map"),'Silver Locket and Maligaro map must be linked to Broken Bridge/Crypt');
+assert(actSeven.find(p=>p.id==='maligaro-after')?.stopIds.includes(369),'Act 7 Sin after Maligaro must be a distinct post-boss STOP');
+assert(actSeven.find(p=>p.id==='den-before')?.stopIds.includes(365)&&actSeven.find(p=>p.id==='den-before')?.sourceNote.includes('Fellshrine'),'Helena before The Den and conflicting historical note must remain explicit');
+assert(actSeven.find(p=>p.id==='gruthkul-before')?.stopIds.includes(378),'Eramir before killing Gruthkul must use canonical ID 378');
+assert(actSeven.find(p=>p.id==='gruthkul-after')?.dialogueIds.includes(381),'Eramir after killing Gruthkul must be a separate stage');
+assert(actSeven.find(p=>p.id==='fireflies-return')?.stopIds.includes(382)&&actSeven.find(p=>p.id==='fireflies-return')?.sourceNoteEN.includes('Causeway'),'Seven Fireflies and Yeena-before-Vaal STOP must include source disagreement');
+assert(actSeven.find(p=>p.id==='temple-arakaali-after')?.stopIds.includes(384),'Yeena after killing Arakaali before leaving Temple Level 2 must be protected');
+assert(actSeven.filter(p=>p.dialogueIds.length===0).length>=3,'Lore/Waypoint-only Act 7 phases must not invent NPC dialogues');
+assert(canonicalSource.includes('src="./steam-act7.js"'),'Act 7 script must load in the main page');
+assert(steamWalk.patchCertified===false,'Act 7 guide must remain historical and not certified for patch 3.30');
+const uiSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('data.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(chosen,target)'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
+assert(uiSource.includes('if(phase.dialogueIds.length)')&&uiSource.includes('hubSourceDiscrepancy'),'Act 7 source differences need disclosure and zero-dialogue stages must not render fake NPC lists');
+
 const asset=fs.readFileSync(path.join(dir,'assets/quest-journal-illustration.svg'),'utf8');
 assert(asset.includes('ILLUSTRATION ONLY')&&asset.includes('WORLD  /  QUESTS'),'Quest-screen example must be explicitly marked as original illustration');
 const banditAsset=fs.readFileSync(path.join(dir,'assets/bandits-quest-illustration.svg'),'utf8');
@@ -396,9 +429,12 @@ const visualTargets=[
  ["5","innocence-sin","act5-innocence-sin.svg","Death to Purity"],
  ["5","ossuary-sin","act5-ossuary-sign.svg","The Ravenous God"],
  ["6","eye-after","act6-karui-eye-states.svg","The Father of War"],
- ["6","reef-weylam","act6-weylam-brine-reef.svg","The Brine King"]
+ ["6","reef-weylam","act6-weylam-brine-reef.svg","The Brine King"],
+ ["7","den-before","act7-den-helena-stop.svg","The Master of a Million Faces"],
+ ["7","fireflies-return","act7-fireflies-yeena-stop.svg","Lighting the Way"],
+ ["7","temple-arakaali-after","act7-arakaali-yeena-stop.svg","The Mother of Spiders"]
 ];
-assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly thirteen sourced high-risk phases');
+assert(Object.values(steamWalk.acts).flatMap(x=>x.filter(p=>p.visual)).length===visualTargets.length,'Quest image roster must cover exactly sixteen sourced high-risk phases');
 for(const [act,phaseId,file,quest] of visualTargets){
  const phase=steamWalk.acts[act].find(p=>p.id===phaseId),v=phase?.visual;
  assert(v?.asset==='./assets/'+file&&v.status==='mock-not-in-game'&&v.alt.includes('ภาพ')&&v.source.startsWith('https://www.poewiki.net/wiki/'),'Image must stay phase-specific, sourced and explicitly marked not a screenshot: '+phaseId);

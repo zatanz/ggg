@@ -901,7 +901,7 @@ const assert=require('node:assert/strict');
 
  // English wording is complete for the non-campaign scopes and count-comparison workflow.
  const waypointCopy=await hub.evaluate(()=>{
-   const x=window.POE_EXTRA.waypoints.find(x=>x.id===71);
+   const x=window.POE_EXTRA_TRACKERS.waypoints.find(x=>x.id===71);
    return window.POE_ITEM_DESCRIPTIONS.get('waypoints',x).action;
  });
  assert.equal(waypointCopy.includes('เปิดแผนที่'),true,'Thai Waypoint explanation verifies active map status, not forced manual clicking');

@@ -338,17 +338,18 @@ function specialLoreRoute(target,scope){
  const guide=window.POE_SPECIAL_LORE,info=scope==="Labyrinth"?guide?.labyrinth:guide?.vaal;
  if(!info)return;
  const items=records("lore",scope),checked=new Set(entries("lore")),done=items.filter(x=>checked.has(x.id)).length;
- const title=scope==="Labyrinth"?"The Labyrinth · สำรวจ Lore 10 ชิ้น":"Vaal Letter · สำรวจ Lore 16 ชิ้น";
+ const title=scope==="Labyrinth"?tr("The Labyrinth · เก็บ Lore 10 ชิ้น","The Labyrinth · collect 10 Lore entries"):tr("Vaal Side Areas · เก็บ Lore 16 ชิ้น","Vaal Side Areas · collect 16 Lore entries");
  const panel=section(title);panel.classList.add("hubSpecialRoute");
  const metric=el("div",undefined,"hubActProgress");
- metric.append(el("strong","เก็บแล้ว "+done+" / "+items.length+" รายการ"),el("span","นับรวมใน No Stone Unturned 140 ชิ้น · ไม่ใช่ Achievement ใหม่","hubSubtle"));panel.append(metric);
- const note=el("p",scope==="Labyrinth"?"จัดตามบริเวณที่พบ ไม่ใช่ผังห้องตายตัว Labyrinth เปลี่ยนผังเป็นระยะ จึงต้องเก็บตามพื้นที่ที่พบจริง":"Vaal Side Area เกิดแบบสุ่ม ไม่ควรฝืนเก็บตามลำดับตัวเลข รายการด้านล่างมีทั้ง Vaal Letter และ Research Journal","hubSubtle");panel.append(note);
+ metric.append(el("strong",tr("เก็บแล้ว ","Marked: ")+done+" / "+items.length+tr(" รายการ"," entries")),el("span",tr("รายการเหล่านี้นับรวมใน No Stone Unturned 140 ชิ้น ไม่ใช่ Achievement แยก","These entries count toward No Stone Unturned (140), not a separate achievement"),"hubSubtle"));panel.append(metric);
+ const note=el("p",scope==="Labyrinth"?tr("ตรวจตามห้องที่พบจริง ผัง Labyrinth เปลี่ยนได้ จึงไม่ใช่เส้นทางตายตัว","Follow the rooms you actually find; Labyrinth layouts can change, so this is not a fixed path."):tr("Vaal Side Area เกิดแบบสุ่ม ไม่ต้องเก็บตามลำดับ ID ด้านล่างมีทั้ง Vaal Letter และ Research Journal","Vaal Side Areas appear unpredictably. Do not follow ID order; check both Vaal Letters and Research Journals."),"hubSubtle");panel.append(note);
  const steps=el("ol",undefined,"hubSpecialSteps");
- info.steps.forEach((value,i)=>{const li=el("li");li.append(el("span","ขั้น "+(i+1),"hubSpecialStepNo"),el("span",value));steps.append(li);});panel.append(steps);
- panel.append(el("div",info.caveat,"hubNotice"));
- if(scope==="Vaal")panel.append(el("div","ข้อจำกัดโหมด: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดใน Ruthless ดังนั้นอย่าวางแผนเก็บ No Stone Unturned ครบ 140 ชิ้นด้วยคู่มือนี้ใน Ruthless โดยไม่ตรวจข้อมูลแพตช์และโหมดที่เล่น","hubResearchConflict"));
- const source=el("a","คู่มือ No Stone Unturned (PoE Wiki)");source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
- const refs=el("p",undefined,"hubSubtle");refs.append("ข้อมูลอ้างอิงปี 2025 · ยังไม่รับรองแพตช์ 3.30 · ",source);panel.append(refs);
+ const localizedSteps=descEN()?(info.stepsEN||info.steps):info.steps;
+ localizedSteps.forEach((value,i)=>{const li=el("li");li.append(el("span",tr("ขั้น ","Step ")+(i+1),"hubSpecialStepNo"),el("span",value));steps.append(li);});panel.append(steps);
+ panel.append(el("div",descEN()?(info.caveatEN||info.caveat):info.caveat,"hubNotice"));
+ if(scope==="Vaal")panel.append(el("div",tr("ข้อจำกัดโหมด: PoE Wiki ระบุว่า Vaal Side Areas ไม่เกิดใน Ruthless จึงยังใช้คู่มือนี้รับรอง No Stone Unturned 140 ชิ้นในโหมดนั้นไม่ได้","Mode limitation: the PoE Wiki states that Vaal Side Areas do not appear in Ruthless. This historical guide cannot certify all 140 No Stone Unturned entries in that mode."),"hubResearchConflict"));
+ const source=el("a",tr("คู่มือ No Stone Unturned (PoE Wiki)","No Stone Unturned guide (PoE Wiki)"));source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
+ const refs=el("p",undefined,"hubSubtle");refs.append(tr("อ้างอิง Wiki ปี 2025 · ยังไม่รับรองแพตช์ 3.30 · ","Wiki 2025 historical evidence · patch 3.30 not verified · "),source);panel.append(refs);
  function group(id,name,hint,ids,defaultOpen){
   const filtered=ids.map(id=>L.entries.find(x=>x.id===id)).filter(Boolean);
   const n=filtered.filter(x=>checked.has(x.id)).length;
@@ -359,7 +360,7 @@ function specialLoreRoute(target,scope){
   const body=el("div",undefined,"hubChapterBody");
   const rows=filtered.filter(x=>state.status==="all"||(state.status==="done"?checked.has(x.id):!checked.has(x.id)))
     .filter(x=>!state.search.trim()||(label(x,"lore")+" "+x.area).toLowerCase().includes(state.search.trim().toLowerCase()));
-  if(!rows.length)body.append(el("p","ไม่มีรายการตามตัวกรอง","hubEmpty"));
+  if(!rows.length)body.append(el("p",tr("ไม่มีรายการตรงกับตัวกรอง","No matching entries"),"hubEmpty"));
   else{const list=el("div",undefined,"hubList");rows.forEach(x=>list.append(itemCard("lore",x)));body.append(list);}
   chapter.append(body);
   chapter.addEventListener("toggle",()=>{if(chapter.open)specialOpen.add(id);else specialOpen.delete(id);});
@@ -367,24 +368,24 @@ function specialLoreRoute(target,scope){
  }
  if(scope==="Labyrinth"){
   const groups=info.groups;
-  groups.forEach((g,i)=>group("lab-"+g.id,(i+1)+". "+g.name,g.note,g.ids,i===0));
+  groups.forEach((g,i)=>{const en=info.groupEN?.[g.id];group("lab-"+g.id,(i+1)+". "+(descEN()&&en?en.name:g.name),descEN()&&en?en.note:g.note,g.ids,i===0);});
   const labWaypoints=records("waypoints","Labyrinth");
   if(labWaypoints.length){
    const chapter=el("details",undefined,"hubChapter hubSpecialGroup");
    chapter.dataset.specialGroup="lab-waypoint";
    const checkedWp=new Set(entries("waypoints"));
    const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
-   heading.append(el("strong","Waypoint ของ Labyrinth"),el("small","อีก "+labWaypoints.length+" จุดใน Locomancer · นับแยกจาก Lore"));
+   heading.append(el("strong",tr("Waypoint ของ Labyrinth","Labyrinth Waypoints")),el("small",tr("อีก ","")+labWaypoints.length+tr(" จุดใน Locomancer · นับแยกจาก Lore"," Locomancer locations · tracked separately from Lore")));
    summary.append(heading,el("span",labWaypoints.filter(x=>checkedWp.has(x.id)).length+" / "+labWaypoints.length,"hubChapterCount"));chapter.append(summary);
    const list=el("div",undefined,"hubChapterBody"),rows=el("div",undefined,"hubList");
    labWaypoints.forEach(x=>rows.append(itemCard("waypoints",x)));list.append(rows);chapter.append(list);panel.append(chapter);
   }
-  const lnk=el("a","ข้อมูลผังและ Trials — The Lord's Labyrinth");lnk.href=info.layoutSource;lnk.target="_blank";lnk.rel="noopener noreferrer";panel.append(lnk);
+  const lnk=el("a",tr("ข้อมูลผังและ Trials — The Lord's Labyrinth","Layout and Trials — The Lord's Labyrinth"));lnk.href=info.layoutSource;lnk.target="_blank";lnk.rel="noopener noreferrer";panel.append(lnk);
  }else{
   const finder=el("details",undefined,"hubChapter hubVaalGuide");finder.open=true;
-  finder.append(el("summary","1. ค้นหาชื่อ Vaal Side Area ที่พบ"),vaalPanel());panel.append(finder);
-  group("vaal-letters","2. Vaal Letter","12 ข้อความ · เช็กเฉพาะชิ้นที่พบจริง",info.letters,false);
-  group("vaal-journals","3. Research Journal","4 ข้อความ · นับใน No Stone Unturned เดียวกัน",info.journals,false);
+  finder.append(el("summary",tr("1. ค้นหาชื่อ Vaal Side Area ที่พบ","1. Find the Vaal Side Area you entered")),vaalPanel());panel.append(finder);
+  group("vaal-letters","2. Vaal Letter",tr("12 ข้อความ · ติ๊กเฉพาะชิ้นที่อ่านจริง","12 entries · mark only letters you have read in-game"),info.letters,false);
+  group("vaal-journals","3. Research Journal",tr("4 ข้อความ · นับรวมใน No Stone Unturned","4 entries · part of the same No Stone Unturned achievement"),info.journals,false);
  }
  target.append(panel);
 }
@@ -685,9 +686,9 @@ function journeyActGuide(act){
 }
 function epilogueRoute(target){
  const all=records("waypoints","Epilogue"),done=new Set(entries("waypoints"));
- const panel=section("Epilogue · Waypoint ที่ต้องตรวจ");panel.dataset.specialScope="Epilogue";
- panel.append(el("p","หลังจบ Act 10 ตรวจ Waypoint อีก 2 จุดจากฐานข้อมูล Locomancer เดิม ไม่เพิ่มจำนวน Achievement ใหม่ · รายการยังไม่ได้รับรองกับแพตช์ 3.30","hubSubtle"));
- const count=el("div","บันทึก "+all.filter(x=>done.has(x.id)).length+" / "+all.length+" · นับรวมใน Locomancer 91 จุด","hubActProgress");panel.append(count);
+ const panel=section(tr("Epilogue · ตรวจ Waypoint ที่เหลือ","Epilogue · remaining Waypoints"));panel.dataset.specialScope="Epilogue";
+ panel.append(el("p",tr("หลัง Act 10 ให้ตรวจ Waypoint อีก 2 จุดตามฐานข้อมูล Locomancer เดิม ทั้งสองจุดนับใน Achievement เดิม ไม่ใช่ Achievement ใหม่ · ยังไม่ยืนยันแพตช์ 3.30","After Act 10, verify the two remaining Waypoints in the legacy Locomancer list. These are not a new achievement, and their patch 3.30 requirements are unverified."),"hubSubtle"));
+ const count=el("div",tr("ติ๊กแล้ว ","Marked: ")+all.filter(x=>done.has(x.id)).length+" / "+all.length+tr(" · นับใน Locomancer 91 จุด (ฐานข้อมูลเก่า)"," · part of the 91-entry legacy Locomancer list"),"hubActProgress");panel.append(count);
  const list=el("div",undefined,"hubList");
  all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
 }

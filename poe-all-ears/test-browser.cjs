@@ -249,6 +249,8 @@ const assert=require('node:assert/strict');
  assert.equal(await currentInline.isVisible(),true,'current checkbox is visible without scrolling to the archive');
  assert.equal(await hub.locator('#hubStats .hubStat').first().innerText(),actionCountBefore,'displaying next-item checkbox does not auto-complete achievement data');
  assert.equal(await currentInline.getAttribute('data-track-type'),'ears','primary checkbox tracks the canonical achievement category');
+ assert.equal(await hub.locator('#hubView [data-next-action="mudflats"] .hubInlineMark .hubText').count(),0,'active task does not repeat a second full checklist card');
+ assert.equal(await hub.locator('#hubView [data-phase="mudflats"] .hubWalkArchive [data-walk-type="ears"]').count(),1,'historical dialogue inventory remains available without appearing beside the live task');
  const initialInlineId=await currentInline.getAttribute('data-track-id');
  hub.once('dialog',d=>d.accept());
  await currentInline.check();

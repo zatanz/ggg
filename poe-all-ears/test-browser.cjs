@@ -308,6 +308,13 @@ const assert=require('node:assert/strict');
  assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('Dialla'),true,'Post-organ Dialla STOP is separate');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),4,'Original Act 4 critical checkpoints preserved');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('AFTER handing in all organs but BEFORE killing Malachai'),true,'English Act 4 Piety/Dialla timing is fully authored');
+ await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('5');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="daresso-after"]').innerText()).includes('Entering Kaom\'s Dream alone is not the sourced deadline'),true,'Act 4 Daresso STOP deadline matches Wiki #231–232, not an invented Kaom deadline');
+ assert.equal((await hub.locator('#hubView [data-steam-act="4"] .hubWalkActions').innerText()).includes('BEFORE entering The Belly of the Beast'),true,'English Act 4 guidance follows exact current source condition');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
 
  // Act 5: 66 canonical items, source-bound decisions, images and persisted independent bilingual preferences.
  assert.equal(await hub.locator('#hubDescriptionLanguage').inputValue(),'th','Thai guidance is the initial default');

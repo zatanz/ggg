@@ -423,7 +423,7 @@ function actSteamGuide(act){
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
  jump.dataset.jumpIncomplete="true";jump.disabled=start<0||chosen===start;
  jump.onclick=()=>goto(start<0?0:start,true);
- control.append(position,select,prev,next,jump);box.append(control);
+ control.append(position,jump,select,prev,next);box.append(control);
  const head=el("div",undefined,"hubWalkFocus");
  head.append(el("h4",descEN()?(phase.headingEN||("Route step: "+phase.place)):phase.heading),
  el("p",tr("พื้นที่: ","Area: ")+gameName(phase.place)+" · "+tr("เควสต์: ","Quest: ")+gameName(phase.quest)));

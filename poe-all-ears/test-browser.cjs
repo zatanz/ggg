@@ -170,6 +170,17 @@ const assert=require('node:assert/strict');
  assert.equal(Math.min(contrast.active,contrast.inactive,contrast.act)>=4.5,true,'active and inactive menus must have at least 4.5:1 text contrast');
 
  assert.equal(await hub.locator('.hubActStrip button').count(),13,'quick picker exposes campaign Acts, Labyrinth, Vaal and Epilogue');
+ assert.equal(await hub.locator('#hubQuickStart').isVisible(),true,'first-time guide is the clear primary start surface');
+ assert.equal(await hub.locator('#hubQuickStart .hubBeginnerStep').count(),3,'onboarding shows only three actionable concepts');
+ assert.equal(await hub.locator('#hubQuickStart [data-beginner-continue]').count(),1,'one prominent primary next-step action is available without dashboard knowledge');
+ assert.equal(await hub.locator('#hubAdvancedDashboard').evaluate(x=>x.open),false,'long technical dashboard is collapsed by default for first-time players');
+ assert.equal((await hub.locator('#hubQuickStart').innerText()).includes('ทำ Achievement 100% แบบทีละขั้น'),true,'new beginner lead explains first-run goal');
+ await hub.locator('#hubQuickStart [data-beginner-continue]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').isVisible(),true,'first-time action opens relevant quest-stage guide');
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').evaluate(x=>document.activeElement===x),true,'first-time primary action transfers keyboard focus directly into the quest route');
+ assert.equal(await hub.locator('#hubQuickStart [data-beginner-scope="1"]').count(),1,'first-time starter follows the current campaign Act');
+ await hub.locator('#hubAdvancedDashboard > summary').click();
+ assert.equal(await hub.locator('#hubAdvancedDashboard').evaluate(x=>x.open),true,'advanced users can opt into all four completion dashboards');
  
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
  assert.equal(await hub.locator('#hubStats .hubMissionTotal').count(),1,'four-achievement 100% mission dashboard is prominent');
@@ -973,6 +984,7 @@ const assert=require('node:assert/strict');
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),false,'unified page mobile overflow');
+ assert.equal(await hub.locator('#hubQuickStart').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=window.innerWidth+1}),true,'mobile first-time card fits without horizontal scroll');
  await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'expanded reference drawer fits mobile viewport');
  await hub.locator('.hubActStrip [data-act="10"]').click();
@@ -982,6 +994,8 @@ const assert=require('node:assert/strict');
  // Editorial language pass: English must carry the same quest actions and STOP timing as Thai for Acts 1–3.
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
+ assert.equal((await hub.locator('#hubQuickStart').innerText()).includes('Your first 100%'),true,'beginner onboarding has full English guidance');
+ assert.equal((await hub.locator('#hubQuickStart [data-beginner-continue]').innerText()).includes('next step'),true,'English first-time primary action is actionable');
  assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('Viewing: Act 10'),true,'Main dashboard names the selected Act in English rather than a misleading global first-incomplete state');
  assert.equal((await hub.locator('#hubView').innerText()).includes('3.30'),false,'current route copy should not misdirect the player toward an unverified future patch');
  assert.equal((await hub.locator('.tips').innerText()).includes('Source status:'),true,'Outdated Thai-only source-status warning now has complete English copy');

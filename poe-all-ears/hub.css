@@ -671,3 +671,29 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubReferenceShelf>.hubActSummaryMore,.hubReferenceShelf>.hubHistoricalRisks,.hubReferenceShelf>.hubChapter,.hubReferenceShelf>.hubExcelWarnings,.hubReferenceShelf>.hubRewards,.hubReferenceShelf>.hubPostQuests,.hubReferenceShelf>.hubNotice{margin:10px 13px}
 .hubReferenceShelf .hubCritical{min-width:0}
 @media(max-width:600px){.hubReferenceShelf>summary{padding:12px}.hubReferenceShelf>.hubActSummaryMore,.hubReferenceShelf>.hubHistoricalRisks,.hubReferenceShelf>.hubChapter,.hubReferenceShelf>.hubExcelWarnings,.hubReferenceShelf>.hubRewards,.hubReferenceShelf>.hubPostQuests,.hubReferenceShelf>.hubNotice{margin:8px;max-width:calc(100% - 16px)}}
+
+
+/* First-time player path: one decision, one next step, advanced evidence on demand. */
+#hubQuickStart{display:grid;gap:13px;border:1px solid #9f8754;border-radius:16px;padding:21px;background:linear-gradient(135deg,#273329,#1b252d 65%);box-shadow:0 8px 24px #0003;margin:16px 0 12px;min-width:0}
+.hubBeginnerEyebrow{color:#f1d59c;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:800}
+#hubQuickStart h2{font-size:clamp(21px,3.5vw,28px);line-height:1.25;color:#f8ead1;margin:0;max-width:32ch}
+.hubBeginnerIntro{color:#e1e8de;font-size:14px;line-height:1.65;margin:0;max-width:68ch}
+.hubBeginnerSteps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.hubBeginnerStep{background:#293b37;border:1px solid #536f62;border-radius:10px;padding:11px;display:flex;align-items:flex-start;gap:8px;min-width:0;line-height:1.45;color:#e9eee7;font-size:12px}
+.hubBeginnerStep b{flex:0 0 25px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#d8ebd7;color:#173527;font-size:13px}
+.hubBeginnerPicker{display:grid;gap:6px;min-width:0;color:#f3e4c6;font-weight:700;font-size:14px}
+.hubBeginnerPicker select{width:100%;min-width:0;max-width:410px;min-height:48px;background:#141d26;color:#fff2d6;border:1px solid #849a88}
+.hubBeginnerCurrent{border:1px solid #648477;border-left:4px solid #a7d9af;border-radius:10px;background:#20372e;padding:13px 15px;min-width:0}
+.hubBeginnerCurrent strong{display:block;color:#cbe8d2;margin-bottom:6px}
+.hubBeginnerQuest{font-weight:700;font-size:17px;color:#fbf5e8;margin:0 0 5px;line-height:1.5;overflow-wrap:anywhere}
+.hubBeginnerCurrent small{display:block;color:#c7d8cf}
+.hubBeginnerStop{background:#422d23;border:1px solid #ab7952;color:#fff0d1;border-radius:8px;padding:10px 12px;margin:10px 0 0;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.hubBeginnerCTA{background:#d8ebd7!important;color:#163122!important;border:1px solid #d4eed8!important;font-weight:850;font-size:16px;min-height:52px;width:100%;padding:12px 18px}
+.hubBeginnerCTA:hover{background:#e9f9e7!important}
+.hubBeginnerFineprint{font-size:11px;line-height:1.55;color:#bfcfc4;margin:0;max-width:85ch}
+#hubAdvancedDashboard{margin:10px 0 13px;border:1px solid #4e5a59;border-radius:12px;background:#1c2428}
+#hubAdvancedDashboard>summary{cursor:pointer;list-style-position:inside;font-size:13px;font-weight:700;color:#dde8e0;padding:13px 16px}
+#hubAdvancedDashboard[open]>summary{border-bottom:1px solid #4e5a59}
+#hubAdvancedDashboard .hubPanel{margin:11px}
+#hubAdvancedDashboard>summary:focus-visible{outline:3px solid #f3dc9d;outline-offset:-3px}
+@media(max-width:720px){#hubQuickStart{padding:15px;gap:12px}.hubBeginnerSteps{grid-template-columns:1fr}.hubBeginnerStep{padding:8px 10px;align-items:center}.hubBeginnerStep b{width:23px;height:23px;flex-basis:23px}.hubBeginnerQuest{font-size:16px}#hubAdvancedDashboard .hubPanel{margin:7px;padding:10px}}

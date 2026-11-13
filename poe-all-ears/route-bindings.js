@@ -352,7 +352,7 @@ window.POE_ROUTE_BINDINGS = [
     "type": "waypoints",
     "id": 34,
     "act": 3,
-    "phase": "after-dominus"
+    "phase": "library"
   },
   {
     "type": "sidequests",
@@ -405,7 +405,7 @@ window.POE_ROUTE_BINDINGS = [
 ];
 for (const binding of window.POE_ROUTE_BINDINGS) {
   const field = {lore: "loreIds", waypoints: "waypointIds", sidequests: "sidequestIds"}[binding.type];
-  const phaseId = binding.type === "waypoints" && binding.id === 34 ? "library" : binding.phase;
+  const phaseId = binding.phase;
   const phases = window.POE_STEAM_WALK.acts[String(binding.act)];
   const phase = phases.find(entry => entry.id === phaseId);
   if (!field || !phase) throw new Error("Invalid route binding: " + binding.type + ":" + binding.id);

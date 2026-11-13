@@ -832,7 +832,7 @@ const acts=[["all",tr("ทุก Act","All Acts")],...[1,2,3,4,5,6,7,8,9,10].map
 acts.filter(([v])=>state.tab!=="route"||v!=="all").forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
 if(state.tab==="route"&&state.act==="all")state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
 act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder=tr("ค้นหาชื่อ NPC หัวข้อ หรือพื้นที่","Search NPCs, dialogue topics or areas");search.setAttribute("aria-label",tr("ค้นหา","Search"));search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
-[["all",tr("ทั้งหมด (พร้อมสถานะ)","All items and statuses")],["todo",tr("ยังไม่เก็บ","Not collected")],["done",tr("เก็บแล้ว","Collected")]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label",tr("กรองตามสถานะ","Filter by collection status"));status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
+[["all",tr("ทั้งหมด (พร้อมสถานะ)","All items and statuses")],["todo",tr("ยังไม่เก็บ","Not collected")],["done",tr("เก็บแล้ว","Collected")]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label",tr("ตัวกรองสถานะ","Filter by collection status"));status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
 if(state.tab==="route")controls.append(search,status);else controls.append(act,search,status);t.append(controls);}
 function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";
 const previous=state.tab==="route"?"route":state.tab==="review"?"review":"collection";

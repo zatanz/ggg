@@ -673,20 +673,13 @@ function actSteamGuide(act){
    if(facts.childElementCount)focus.append(facts);
    else focus.append(el("p",tr("เปิดรายการด้านล่างเพื่อดูชื่อที่ต้องตรวจในเกม ไม่มีเงื่อนไขรายรายการที่ยืนยันได้เพิ่ม","Open the exact checklist entry below to verify its in-game name. No additional verified per-item conditions are available."),"hubSubtle"));
   }
-  const button=el("button",tr("ไปยังรายการนี้เพื่อติ๊กหลังทำจริง","Go to this exact item to mark it after playing"));button.type="button";
-  button.dataset.openCurrentItem=current.type+":"+current.id;
-  button.onclick=()=>{
-   const area=box.querySelector('[data-walk-type="'+current.type+'"]');
-   if(!area)return;
-   if(area.tagName==="DETAILS")area.open=true;
-   const row=area.querySelector('input[data-track-type="'+current.type+'"][data-track-id="'+current.id+'"]');
-   if(!row)return;
-   const hidden= row.closest("details");
-   if(hidden&&!hidden.open)hidden.open=true;
-   row.focus({preventScroll:true});
-   row.closest(".hubItem")?.scrollIntoView({block:"center"});
-  };
-  focus.append(button);
+  // The checklist action belongs next to its gameplay instruction. Both views
+  // use the same persisted item ID and writeMarks handler, never separate state.
+  const inline=el("div",undefined,"hubInlineCurrentChecklist");
+  inline.dataset.inlineChecklist=current.type+":"+current.id;
+  inline.append(el("strong",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game"),"hubInlineChecklistTitle"));
+  inline.append(itemCard(current.type,item));
+  focus.append(inline);
  }else{
   focus.append(el("p",tr("เครื่องหมายในเว็บไม่ใช่หลักฐานว่า Achievement สำเร็จ ตรวจยอดจริงในเกมก่อนเดินเรื่องต่อ","Manual marks are not proof that the achievement unlocked. Compare against the actual game before advancing."),"hubSubtle"));
  }
@@ -766,8 +759,9 @@ function actSteamGuide(act){
  const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
  instructions.forEach(txt=>actions.append(el("li",txt)));
  // The instruction list is the primary task, not another card below the warnings and controls.
- focus.insertBefore(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),focus.querySelector("button"));
- focus.insertBefore(actions,focus.querySelector("button"));
+ const inlineChecklist=focus.querySelector(".hubInlineCurrentChecklist");
+ focus.insertBefore(el("strong",tr("ทำตามขั้นตอนนี้ในเกม","Do this in-game, in order"),"hubActionInstructionsLabel"),inlineChecklist);
+ focus.insertBefore(actions,inlineChecklist);
  if(descEN()&&!phase.actionsEN){
   const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
   original.append(el("summary","Original Thai step-by-step instructions"));

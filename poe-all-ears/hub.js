@@ -72,6 +72,16 @@ function openJourneyScope(scope){
  state.act=String(scope);state.routeAct=String(scope);state.status="all";state.search="";state.limit=12;
  renderToolbar();renderView();
 }
+function fairgravesCurrentRisk(){
+ const card=el("section",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";
+ card.append(el("strong",tr("ก่อนเริ่ม All Ears ใน 3.29: มีรายงานว่าคุยกับ Fairgraves ไม่ได้","Before starting All Ears in 3.29: Fairgraves dialogue may be inaccessible")),
+ el("p",tr("ผู้เล่นหลายคนและผู้จัดทำคู่มือ Steam รายงานว่าคุย Fairgraves ไม่ได้ในลีก 3.29 ส่งผลต่อบทสนทนา #34–38 ทั้ง 5 รายการ ซึ่งอาจทำให้ All Ears ไม่สำเร็จในลีกดังกล่าว ยังไม่ยืนยันว่าปัญหาเกิดกับทุกตัวละครหรือแก้ไขแล้ว","Players and the Steam guide author reported that Fairgraves dialogue in the 3.29 league may be unavailable, affecting five entries (#34–38). This may block All Ears on affected characters. It is not established whether every character is affected or the issue was fixed.")));
+ const actions=el("div",undefined,"hubCurrentRiskActions"),button=el("button",tr("ตรวจ Fairgraves ใน Act 1","Review Fairgraves in Act 1"));button.type="button";
+ button.onclick=()=>{openJourneyScope("1");const detail=document.querySelector('[data-evidence-act="1"]');if(detail)detail.open=true;detail?.scrollIntoView({block:"start"});};
+ const source=el("a",tr("คู่มือและรายงาน Steam","Steam guide and reports"));source.href="https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869";source.target="_blank";source.rel="noopener noreferrer";
+ const community=el("a",tr("รายงานผู้เล่น Reddit","Player reports on Reddit"));community.href="https://www.reddit.com/r/pathofexile/comments/1v61ip0/dont_bother_trying_to_complete_the_all_ears/";community.target="_blank";community.rel="noopener noreferrer";
+ actions.append(button,source,community);card.append(actions,el("small",tr("หลักฐาน: รายงานผู้เล่นเดือนกรกฎาคม 2026 ไม่ใช่ประกาศจาก GGG · ตัวละคร Standard อาจต่างจากลีก","Evidence: July 2026 player reports, not an official GGG confirmation. Standard characters may differ from league characters."),"hubSubtle"));return card;
+}
 function renderSummary(){
  const target=$("hubStats");target.replaceChildren();
  const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
@@ -81,6 +91,7 @@ function renderSummary(){
  const score=el("div",undefined,"hubMissionScore");
  score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+tr("% ที่บันทึกในเว็บ","% marked in this guide")));
  const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label",tr("ความคืบหน้า 4 Achievement ที่บันทึกไว้ในเว็บ","Progress marked for four tracked achievements"));hero.append(intro,score,bar);
+ hero.append(fairgravesCurrentRisk());
  if(rulerChoice()==="Tasuni"){
    const integrity=el("div",undefined,"hubBranchWarning");integrity.dataset.rulerIntegrity="Tasuni";
    integrity.append(el("strong",tr("ข้อมูลไม่ครอบคลุมทางเลือก Tasuni ของ Act 9","Act 9 Tasuni branch is not represented in the legacy tracker")),
@@ -717,8 +728,8 @@ function epilogueRoute(target){
 // Show conflicts where a player decides what to do, not only in the footer.
 function routeEvidencePanel(act){
  const issues={
-  "1":[["Fairgraves · 3.29 report","Fairgraves · รายงานปัญหา 3.29","A reported Fairgraves issue in 3.29 still lacks a reproducible in-game confirmation in this project's evidence log.","มีรายงานว่าบทสนทนา Fairgraves มีปัญหาใน 3.29 แต่โปรเจกต์ยังไม่มีหลักฐานจากเกมที่ทำซ้ำได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
-  "2":[["Bandits / The Darkness","Bandits / The Darkness","Steam 3.28 explicitly warns not to TALK TO or kill any Bandit before triggering The Darkness; the 2025 PoE Wiki lists different prerequisite paths. Do not assume an early conversation is harmless. Eramir #101–103 are dependent on the actual first/second kills.","คู่มือ Steam 3.28 เตือนชัดเจนว่าอย่าเพิ่งแม้แต่คุยกับ Bandits หรือฆ่าใครก่อนเปิดเหตุการณ์ The Darkness แต่ PoE Wiki ปี 2025 มีเงื่อนไขต่างออกไป อย่าสมมติว่าคุยก่อนจะปลอดภัย หัวข้อ Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the Steam route against the Wiki before advancing; neither is fully gameplay-verified for 3.29.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนเล่นต่อ ทั้งคู่ยังไม่ผ่านการทดสอบครบใน 3.29","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "1":[["Fairgraves #34–38 · current 3.29 reports","Fairgraves #34–38 · รายงานใน 3.29","Community reports describe five inaccessible Fairgraves/Bestel dialogues after the Act 1 rework. If the NPC cannot be spoken to, do not mark these as heard or assume the achievement is possible on this league character.","มีรายงานว่าการปรับเควสต์ Act 1 ทำให้บทสนทนา Fairgraves/Bestel 5 รายการเข้าไม่ถึง หากคุยไม่ได้ อย่าติ๊กว่าได้ฟังแล้ว และอย่าสรุปว่าตัวละครในลีกนี้เก็บ All Ears ได้แน่นอน","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","PoE Wiki: TALK to every Bandit BEFORE opening the Ancient Seal, but do not kill before The Darkness. Steam 3.28: do NOT TALK TO or kill Bandits until AFTER triggering The Darkness. These instructions directly conflict; neither is verified as universally safe for 3.29. Eramir #101–103 depend on the first/second kill order.","PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal แต่ห้ามฆ่าก่อน The Darkness ส่วน Steam 3.28: ห้ามแม้แต่คุยหรือฆ่า Bandits ก่อนเปิด The Darkness ทั้งสองแหล่งขัดกันโดยตรง ยังไม่มีหลักฐานรับรองว่าลำดับใดปลอดภัยเสมอสำหรับ 3.29 ส่วน Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the Steam route against the Wiki before advancing; neither is fully gameplay-verified for 3.29.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนเล่นต่อ ทั้งคู่ยังไม่ผ่านการทดสอบครบใน 3.29","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
   "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
   "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
  };
@@ -727,7 +738,7 @@ function routeEvidencePanel(act){
  const box=el("details",undefined,"hubEvidencePanel");
  box.dataset.evidenceAct=String(act);
  // The initial message stays compact; explicit differences remain one click away.
- box.open=String(act)==="2"||String(act)==="9";
+ box.open=["1","2","9"].includes(String(act));
  const summary=el("summary");
  summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่มีหลักฐานเกม 3.29 ยืนยันทุกเงื่อนไข · "+list.length+" ประเด็น","Not fully verified in live 3.29 · "+list.length+" issue(s)")));
  box.append(summary);
@@ -802,8 +813,8 @@ function safetyPanel(){
      "Steam and PoE Wiki disagree on when to first speak with Bandits relative to the Ancient Seal. Both require checking Darkness dialogue before making an irreversible kill/help choice. These are manual notes, not proof of a patch-safe route."),"hubSubtle")
  );
  wrap.append(el("p",tr(
-   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30",
-   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. Whether Book of Reform repairs missed topics in patch 3.30 is unverified."
+   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.29 ได้",
+   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. No in-game 3.29 evidence here establishes that Book of Reform can restore missed dialogue."
  ),"hubCheckpointRisk"));
  const s=getSafety(),grid=el("div",undefined,"hubCheckGrid");
  const checks=[
@@ -872,8 +883,8 @@ const vaalMap=[
 ["Sealed Corridors","For Seven Years","The Sceptre of God"],["Sealed Repository","I Had Nothing","The Crypt (Act 7)"],["Secluded Canal","The Artefacts Which","Oriath Square / Canals"],["Secluded Copse","Our Queen Has","Northern Forest / Dread Thicket"],
 ["Secret Laboratory","There Was No","Chamber of Sins"],["Shifting Sands","I Had Nothing","The Vastiri Desert"],["Side Chapel","My Beautiful Queen","Cathedral Rooftop"],["Stagnant Canal","There Was No","The Docks"],["Strange Sinkhole","Atziri Promises Us","Cavern of Wrath / Coast"],["Sunken Shingle","I Had Nothing","The Ship Graveyard / Reef"],["Twisted Inquisitorium","I Have Been","Chamber of Innocence"],["Walled-off Ducts","I Had Nothing","The Sewers / Toxic Conduits"]
 ];
-function vaalPanel(){const box=el("div",undefined,"hubPanel");box.append(el("h3",tr("Vaal Letter / Research Journal · ค้นหาตามชื่อพื้นที่","Vaal Letter / Research Journal · search by Side Area name")),el("p",tr("Vaal Side Area เกิดแบบสุ่ม ชื่อพื้นที่ด้านล่างอ้างอิง Wiki ปี 2025 และยังไม่ยืนยันกับแพตช์ 3.30","Vaal Side Areas appear at random. These area-to-lore associations come from the 2025 Wiki and have not been verified for patch 3.30."),"hubSubtle"));
-box.append(el("div",tr("แพตช์ 3.30: อย่าใช้วิธีเปิด Vaal Side Area ด้วย Map Device ตามคู่มือเก่า ให้ค้นหาพื้นที่ที่เกิดจริงระหว่าง Campaign","Patch 3.30: do not follow older Map Device methods for opening Vaal Side Areas. Search for naturally occurring entrances during the campaign."),"hubNotice"));
+function vaalPanel(){const box=el("div",undefined,"hubPanel");box.append(el("h3",tr("Vaal Letter / Research Journal · ค้นหาตามชื่อพื้นที่","Vaal Letter / Research Journal · search by Side Area name")),el("p",tr("Vaal Side Area เกิดแบบสุ่ม ข้อมูลชื่อพื้นที่มาจาก PoE Wiki ปี 2025 ต้องเทียบสิ่งที่พบจริงใน 3.29 ก่อนทำเครื่องหมาย","Vaal Side Areas appear at random. This area-to-lore mapping is from the 2025 Wiki; confirm what you encounter in 3.29 before marking it."),"hubSubtle"));
+box.append(el("div",tr("สำหรับ 3.29: ตารางนี้แสดง Lore ตามชื่อพื้นที่ ไม่ใช่การรับรองวิธีฟาร์มผ่าน Map Device ตรวจพื้นที่และ Lore ที่พบจริงก่อนติ๊ก","For 3.29: this area-to-lore table is not a certified Map Device farming route. Verify the actual area and lore before checking it."),"hubNotice"));
 const input=el("input");input.type="search";input.placeholder=tr("พิมพ์ชื่อ เช่น Concealed Caldarium","Type an area name, e.g. Concealed Caldarium");input.value=state.vaalQuery;input.setAttribute("aria-label",tr("ค้นหาชื่อ Vaal Side Area","Search Vaal Side Area name"));const result=el("div",undefined,"hubList");box.append(input,result);
 const show=()=>{result.replaceChildren();const q=input.value.trim().toLowerCase();if(q.length<2){result.append(el("p",tr("พิมพ์ชื่อพื้นที่อย่างน้อย 2 ตัวอักษร","Enter at least 2 characters to search for an area"),"hubSubtle"));return;}const entries=vaalMap.filter(x=>(x[0]+" "+x[2]).toLowerCase().includes(q)).slice(0,10);
 entries.forEach(m=>{const lore=L.entries.find(x=>x.act==="Vaal"&&x.name.toLowerCase().includes(m[1].toLowerCase()));const r=el("div",undefined,"hubItem"),info=el("div",undefined,"hubText");info.append(el("div",m[0],"hubName"),el("div",m[2]+" · "+(lore?lore.name+" · Wiki #"+(lore.wikiRow||"?"):tr("ยังไม่พบรายการที่ตรงกัน","No exact lore match yet")),"hubMeta"));if(lore){const b=el("button",entriesForVaal(lore)?tr("สำรวจแล้ว · ยกเลิก","Marked · undo"):tr("บันทึกว่าสำรวจแล้ว","Mark as collected"));b.onclick=()=>writeMarks("lore",lore.id,!entriesForVaal(lore));r.append(b);}r.prepend(info);result.append(r)});

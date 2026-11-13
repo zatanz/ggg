@@ -70,7 +70,7 @@ function scopeSnapshot(scope){
 function openJourneyScope(scope){
  if(state.tab!=="route")openTab("route");
  state.act=String(scope);state.routeAct=String(scope);state.skippedRisk=null;state.status="all";state.search="";state.limit=12;
- renderToolbar();renderView();
+ renderToolbar();renderView();renderSummary();
 }
 function fairgravesCurrentRisk(){
  const card=el("section",undefined,"hubCurrentPatchRisk");card.dataset.currentRisk="fairgraves-329";
@@ -100,13 +100,38 @@ function renderSummary(){
  }
  const snapshots=journeyScopes.map(scopeSnapshot);
  const first=snapshots.find(x=>x.done<x.all);
- const next=el("div",undefined,"hubMissionNext");
- if(first){
-  const action=el("span",undefined);action.append(el("strong",tr("จุดค้างแรก: ","First incomplete area: ")+scopeName(first.scope)),el("small",tr("เหลือ ","Remaining: ")+(first.all-first.done)+tr(" รายการ · เช็กจุดที่พลาดได้ก่อนทำเควสต์ต่อ"," items · review missable steps before advancing")));
-  const jump=el("button",tr("ไปดูรายการที่ยังขาด","Open remaining tasks"));jump.type="button";jump.onclick=()=>openJourneyScope(first.scope);
-  next.append(action,jump);
- }else next.append(el("strong",tr("ติ๊กครบทุกช่องแล้ว · ยังต้องเทียบยอดกับเกมจริงทีละ Achievement","All checklist boxes are marked. Compare each achievement counter in-game before claiming completion.")));
+ const next=el("div",undefined,"hubMissionNext");next.dataset.missionScope="selected";
+ const scope=journeyScopes.includes(state.routeAct)?state.routeAct:"1";
+ const selected=snapshots.find(x=>x.scope===scope);
+ const left=selected?selected.all-selected.done:0;
+ const text=el("span",undefined);
+ if(selected){
+  text.append(el("strong",tr("กำลังดู: ","Viewing: ")+scopeName(scope)+" · "+selected.done+" / "+selected.all),
+    el("small",left?tr("ยังไม่ได้ทำเครื่องหมาย ","Not yet marked: ")+left+tr(" รายการในพื้นที่นี้"," items in this area"):tr("ติ๊กครบในพื้นที่นี้ · ตรวจยอดในเกมก่อนเดินต่อ","All marked in this area · verify in-game progress")));
+  const phases=window.POE_STEAM_WALK?.acts?.[scope]||[];
+  const checked={ears:new Set(entries("ears")),lore:new Set(entries("lore")),waypoints:new Set(entries("waypoints")),sidequests:new Set(entries("sidequests"))};
+  const fields={ears:"dialogueIds",lore:"loreIds",waypoints:"waypointIds",sidequests:"sidequestIds"};
+  const pendingIndex=phases.findIndex(p=>Object.entries(fields).some(([type,key])=>(p[key]||[]).some(id=>!checked[type].has(id))));
+  if(left&&pendingIndex>=0){
+    const phase=phases[pendingIndex];
+    text.append(el("small",tr("ช่วงที่ควรตรวจต่อ: ","Next step to review: ")+(descEN()?(phase.headingEN||phase.place):phase.heading),"hubMissionPhase"));
+    const risk=phases.find((p,i)=>i<=pendingIndex&&p.stop&&(p.stopIds||[]).some(id=>!checked.ears.has(id)));
+    if(risk)text.append(el("small",tr("มีจุด STOP ที่ยังไม่ตรวจ: ","Unchecked STOP checkpoint: ")+(descEN()?(risk.stopEN||risk.headingEN):risk.stop),"hubMissionRisk"));
+  }
+  const jump=el("button",left?tr("เปิดช่วงที่ต้องทำต่อ","Open next quest step"):tr("ตรวจรายการในพื้นที่นี้","Review this area"));jump.type="button";
+  jump.onclick=()=>{if(pendingIndex>=0)state.steamFocusByAct[scope]=pendingIndex;openJourneyScope(scope);};
+  next.append(text,jump);
+ }else next.append(el("strong",tr("ยังไม่พบพื้นที่ที่เลือก","No selected area found")));
  hero.append(next);
+ if(first&&first.scope!==scope){
+  const earliest=el("div",undefined,"hubFirstMissing");earliest.dataset.firstMissing=first.scope;
+  earliest.append(el("span",tr("จุดค้างแรกของทั้งเส้นทาง: ","Earliest unchecked area across the route: ")+scopeName(first.scope)+tr(" · เหลือ "," · remaining ")+(first.all-first.done)),
+    el("button",tr("กลับไปตรวจจุดแรก","Review earliest incomplete area")));
+  const go=earliest.querySelector("button");go.type="button";go.onclick=()=>openJourneyScope(first.scope);
+  hero.append(earliest);
+ }else if(!first){
+  hero.append(el("p",tr("ติ๊กครบทุกช่องแล้ว แต่ยังต้องเทียบยอด Achievement กับเกมจริง","All manual checklist entries are checked; verify actual achievements in-game."),"hubSubtle"));
+ }
  const sourceAlert=el("details",undefined,"hubEvidencePanel hubGlobalEvidence");
  sourceAlert.dataset.evidenceScope="global";
  const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจข้อมูลที่อาจทำให้พลาด: Waypoint / Bandits / Vaal","Check potentially missable steps: Waypoints / Bandits / Vaal")),
@@ -123,7 +148,7 @@ function renderSummary(){
  prep.append(el("summary",tr("เช็กก่อนเริ่ม · จุดที่อาจพลาดและข้อจำกัดของแพตช์","Before you start · missable steps and patch limitations")));
  const checklist=el("ul",undefined);
  [[ "Ruthless: คู่มือ PoE Wiki ระบุว่า Vaal Side Area ไม่เกิดในโหมดนี้ จึงไม่ควรใช้เส้นทางนี้เป็นหลักฐานว่าจะเก็บ No Stone Unturned ครบ", "Ruthless: the PoE Wiki says Vaal Side Areas do not spawn in this mode. This route cannot certify No Stone Unturned here." ],
- [ "Act 1: มีรายงานว่า Fairgraves อาจคุยไม่ได้ในแพตช์ 3.29 ทำให้ All Ears ขาดหัวข้อ #34–38 · ยังไม่ยืนยันกับ 3.30", "Act 1: Fairgraves dialogue #34–38 was reportedly unavailable in patch 3.29; patch 3.30 is not verified." ],
+ [ "Act 1: มีรายงานว่า Fairgraves อาจคุยไม่ได้ในแพตช์ 3.29 ทำให้ All Ears ขาดหัวข้อ #34–38 · ยังไม่มีผลตรวจเกม 3.29 ครบทุกสถานะ", "Act 1: Fairgraves dialogue #34–38 was reportedly unavailable in patch 3.29; the issue is not fully reproduced across all 3.29 character states." ],
  [ "Act 2: คู่มือ Steam กับ PoE Wiki ให้ลำดับคุย Bandits / Ancient Seal ต่างกัน ต้องตรวจบทสนทนา The Darkness ก่อนตัดสินใจฆ่าหรือช่วย", "Act 2: Steam and PoE Wiki disagree on the Bandits / Ancient Seal order. Check the Darkness topics before choosing whom to kill or help." ],
  [ "เปิด Quest Log และหน้า Achievement ในเกมเพื่อเทียบยอดจริง · เครื่องหมายในเว็บเป็นเพียงบันทึกของคุณ", "Open the in-game Quest Log and Achievement panel to compare real counts. Website checkmarks are manual notes, not game verification." ]].forEach(([th,en])=>checklist.append(el("li",tr(th,en))));
  prep.append(checklist);
@@ -971,12 +996,12 @@ if(state.tab==="route"){
   const strip=el("div",undefined,"hubActStrip");strip.setAttribute("role","group");strip.setAttribute("aria-label",tr("เลือก Act","Select Act"));
   for(let i=1;i<=10;i++){
     const b=el("button","Act "+i);b.type="button";b.dataset.act=String(i);b.setAttribute("aria-pressed",String(state.act===String(i)));
-    b.onclick=()=>{state.act=String(i);state.limit=12;strip.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));renderView();};
+    b.onclick=()=>{state.act=String(i);state.routeAct=state.act;state.limit=12;strip.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));renderView();renderSummary();};
     strip.append(b);
   }
   [["Labyrinth","Labyrinth · 10"],["Vaal","Vaal Letter · 16"],["Epilogue","Epilogue · 2"]].forEach(([id,name])=>{
     const btn=el("button",name);btn.type="button";btn.dataset.act=id;btn.setAttribute("aria-pressed",String(state.act===id));
-    btn.onclick=()=>{state.act=id;state.routeAct=id;state.limit=12;state.search="";renderToolbar();renderView();};
+    btn.onclick=()=>{state.act=id;state.routeAct=id;state.limit=12;state.search="";renderToolbar();renderView();renderSummary();};
     strip.append(btn);
   });
   t.append(strip);
@@ -987,7 +1012,7 @@ act.setAttribute("aria-label",tr("เลือก Act หรือพื้น�
 const acts=[["all",tr("ทุก Act","All Acts")],...[1,2,3,4,5,6,7,8,9,10].map(a=>[String(a),"Act "+a]),["Labyrinth","Labyrinth"],["Vaal","Vaal Side Areas"],["Epilogue","Epilogue"]];
 acts.filter(([v])=>state.tab!=="route"||v!=="all").forEach(([v,label])=>{const o=el("option",label);o.value=v;act.append(o);});
 if(state.tab==="route"&&state.act==="all")state.act="1";act.value=state.act;if(act.selectedIndex<0){act.value="all";state.act=act.value;}
-act.onchange=()=>{state.act=act.value;state.limit=40;renderView();};search.type="search";search.value=state.search;search.placeholder=tr("ค้นหาชื่อ NPC หัวข้อ หรือพื้นที่","Search NPCs, dialogue topics or areas");search.setAttribute("aria-label",tr("ค้นหา","Search"));search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
+act.onchange=()=>{state.act=act.value;if(state.tab==="route")state.routeAct=state.act;state.limit=40;renderView();renderSummary();};search.type="search";search.value=state.search;search.placeholder=tr("ค้นหาชื่อ NPC หัวข้อ หรือพื้นที่","Search NPCs, dialogue topics or areas");search.setAttribute("aria-label",tr("ค้นหา","Search"));search.oninput=()=>{state.search=search.value;state.limit=40;renderView();};
 [["all",tr("ทั้งหมด (พร้อมสถานะ)","All items and statuses")],["todo",tr("ยังไม่เก็บ","Not collected")],["done",tr("เก็บแล้ว","Collected")]].forEach(([v,l])=>{const o=el("option",l);o.value=v;status.append(o);});status.value=state.status;status.setAttribute("aria-label",tr("ตัวกรองสถานะ","Filter by collection status"));status.onchange=()=>{state.status=status.value;state.limit=40;renderView();};
 if(state.tab==="route")controls.append(search,status);else controls.append(act,search,status);t.append(controls);}
 function openTab(tab){if(tab==="collection")tab=state.collectionType||"ears";

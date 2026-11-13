@@ -634,3 +634,18 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkthrough>.hubStopGate{margin:9px 0}
 .hubWalkthrough>.hubStepNavigator{margin-top:12px}
 @media(max-width:600px){.hubNextAction{padding:12px}.hubNextAction button{width:100%;justify-self:stretch;white-space:normal}.hubWalkFocus{padding:11px}.hubWalkNavigator select{min-width:0;max-width:100%}}
+
+
+/* Current-act primary action and compact cross-route recovery. */
+.hubMissionNext{border:1px solid #6e857c;border-left:4px solid #abd2b7;background:#223630;min-width:0}
+.hubMissionNext>span{flex:1 1 auto;gap:6px}
+.hubMissionNext strong{font-size:14px;color:#e6f4e6}
+.hubMissionNext .hubMissionPhase{font-size:13px;color:#e2eadd;font-weight:650;overflow-wrap:anywhere}
+.hubMissionNext .hubMissionRisk{font-size:12px;color:#ffe0b3;background:#403024;border:1px solid #936e48;padding:7px 9px;border-radius:7px;overflow-wrap:anywhere}
+.hubMissionNext button{background:#cee6d1;color:#193025;border-color:#b3d4bb;min-height:44px;font-weight:750}
+.hubMissionNext button:hover{background:#e2f4e4}
+.hubFirstMissing{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#d2d5cf;padding:9px 12px;border:1px solid #4c5557;border-radius:9px}
+.hubFirstMissing button{min-height:44px;padding:8px 12px;background:#303b44;border:1px solid #6c7a84;border-radius:8px;color:#f2e6d5;font-weight:650}
+.hubFirstMissing button:hover{background:#40515c}
+.hubFirstMissing button:focus-visible,.hubMissionNext button:focus-visible{outline:3px solid #ffe1a6;outline-offset:3px}
+@media(max-width:600px){.hubMissionNext{flex-direction:column;align-items:stretch}.hubMissionNext button{width:100%}.hubFirstMissing{align-items:stretch;flex-direction:column}.hubFirstMissing button{width:100%}}

@@ -52,7 +52,7 @@ function writeMarks(type,id,done){if(type==="ears"){const ok=B.mark(id,done);if(
 const key=type==="lore"?LORE:EXTRA, char=active();if(!char)return;
 const s=getBackupState(key),rec=s.byCharacter[char.id]||{},before=validIDs(type,rec[type]),next=done?[...new Set(before.concat(id))]:before.filter(i=>i!==id);
 rec[type]=validIDs(type,next);s.byCharacter[char.id]=rec;
-try{localStorage.setItem(key,JSON.stringify(s));refresh();}catch(e){alert("บันทึกข้อมูลไม่ได้ กรุณาสำรองข้อมูลและตรวจพื้นที่เก็บข้อมูลเบราว์เซอร์");}}
+try{localStorage.setItem(key,JSON.stringify(s));refresh();}catch(e){alert(tr("บันทึกข้อมูลไม่ได้ กรุณาสำรองข้อมูลและตรวจพื้นที่เก็บข้อมูลเบราว์เซอร์","Could not save progress. Back up your data and check browser storage availability."));}}
 function getRisk(x){if(x.type!=="ears")return null;return (routes[x.act]||[]).find(r=>r.id===x.id)||null;}
 function sortedAllEars(act){const base=E.items.filter(x=>String(x.act)===String(act)),r=routes[Number(act)]||[];if(!r.length)return base;
 const byId=new Map(base.map(x=>[x.id,x]));return r.map(x=>byId.get(x.id)).filter(Boolean);}
@@ -96,6 +96,18 @@ function renderSummary(){
   next.append(action,jump);
  }else next.append(el("strong",tr("ติ๊กครบทุกช่องแล้ว · ยังต้องเทียบยอดกับเกมจริงทีละ Achievement","All checklist boxes are marked. Compare each achievement counter in-game before claiming completion.")));
  hero.append(next);
+ const sourceAlert=el("details",undefined,"hubEvidencePanel hubGlobalEvidence");
+ sourceAlert.dataset.evidenceScope="global";
+ const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจความเสี่ยงด้านข้อมูล: Waypoint / Vaal / Bandits","Check source conflicts: Waypoints / Vaal / Bandits")),
+ el("small",tr("ข้อมูลเดิมบางส่วนไม่ตรงกับเวอร์ชันใหม่ · เปิดอ่านก่อนทำตาม","Some old instructions may be obsolete · review before following")));
+ sourceAlert.append(sourceTitle);
+ const sourceBody=el("div",undefined,"hubEvidenceBody");
+ [
+ [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ตรวจยอดในเกม 3.30","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. Current 3.30 in-game count is not certified."),"https://www.poewiki.net/wiki/Waypoint"],
+ [tr("Vaal Side Area: แหล่งข้อมูลเก่าแนะนำ Sacrifice Fragment กับ Map Device แต่ 3.30 เปลี่ยนระบบ Fragment และนำ Vaal Side Area ออกจากแผนที่ Map · ไม่ควรทำตามวิธีเก่า","Vaal Side Areas: old guides suggest Sacrifice Fragments in the Map Device. Patch 3.30 changes Fragments and removes Vaal Side Areas from Maps. Do not follow that old method."),"https://poedb.tw/us/Version_3.30.0"],
+ [tr("Act 2: ลำดับ Bandits / The Darkness ใน Steam และ PoE Wiki ไม่ตรงกัน · ดูคำเตือนใน Act 2 ก่อนเลือกช่วยหรือฆ่า","Act 2: Steam and PoE Wiki disagree on Bandit / Darkness ordering. Open Act 2 warnings before choosing to help or kill."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
+ ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
+ sourceAlert.append(sourceBody);hero.append(sourceAlert);
  const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
  prep.append(el("summary",tr("เช็กก่อนเริ่ม · จุดที่อาจพลาดและข้อจำกัดของแพตช์","Before you start · missable steps and patch limitations")));
  const checklist=el("ul",undefined);
@@ -179,7 +191,7 @@ function itemCard(type,x){
 }
 function filterRows(type,act){const done=new Set(entries(type)),query=state.search.toLowerCase();return records(type,act).filter(x=> (state.status==="all"||(state.status==="done"?done.has(x.id):!done.has(x.id)))&&(!query||(LANG.bilingualIndex(type==="ears"?x.dialog:x.name)+" "+label(x,type)+" "+area(x,type)+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x,type==="ears"&&x.act===2?getSafety():undefined)?.action||"")+" "+(window.POE_ITEM_DESCRIPTIONS?.get(type,x)?.caution||"")).toLowerCase().includes(query)));}
 function addList(target,type,act,max,compact=false){const list=filterRows(type,act),shown=max?list.slice(0,max):list;
-if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",categoryName(type)),el("span",list.length+" รายการที่แสดง","hubSubtle"));target.append(heading);}
+if(!compact){const heading=el("div",undefined,"hubInlineRow");heading.append(el("h3",categoryName(type)),el("span",list.length+tr(" รายการที่แสดง"," visible entries"),"hubSubtle"));target.append(heading);}
 if(!list.length){target.append(el("div",tr("ไม่มีรายการตามตัวกรอง","No matching items"),"hubEmpty"));return;}
 const container=el("div",undefined,"hubList");let oldArea="";
 shown.forEach(x=>{
@@ -423,7 +435,7 @@ function actSteamGuide(act){
  const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0);
  const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0);
  header.append(el("span","ACT "+act+" · "+tr("เส้นทางตามพื้นที่ · คู่มือประวัติศาสตร์","Source-led route · historical guide"),"hubWalkEyebrow"),
-   el("h3",tr("ทำตามลำดับเพื่อเก็บ All Ears ","Follow the route for all ")+phases.reduce((sum,p)=>sum+p.dialogueIds.length,0)+tr(" บทสนทนา"," NPC dialogues")),
+   el("h3",tr("ตรวจเส้นทางอ้างอิง All Ears ","Review source-led route for ")+phases.reduce((sum,p)=>sum+p.dialogueIds.length,0)+tr(" บทสนทนา"," NPC dialogues")),
    el("p",tr("แสดงทีละช่วงพร้อม 4 Achievement · ไม่ใช่เส้นทางที่ทดสอบในแพตช์ 3.30","One step at a time across four achievements · not gameplay-tested for patch 3.30"),"hubSubtle"));
  const status=el("div",undefined,"hubWalkStageProgress");status.dataset.phaseProgress=phase.id;
  status.append(el("strong",tr("ช่วงนี้เก็บแล้ว ","This step: ")+phaseDone+" / "+phaseTotal),
@@ -495,9 +507,11 @@ function actSteamGuide(act){
  }
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
-   conflict.append(el("strong","ลำดับ Bandits จากสองคู่มือไม่ตรงกัน"),el("p",phase.sourceConflict));
+   conflict.append(el("strong",tr("ลำดับ Bandits จากสองคู่มือไม่ตรงกัน","Bandit quest order differs between sources")),
+ el("p",descEN()?"Steam 3.28 and PoE Wiki 2025 describe different quest timing. Do not assume either is patch 3.30-certified; inspect the original Thai source note below.":phase.sourceConflict));
+   if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai source note"),el("p",phase.sourceConflict));conflict.append(original);}
    const links=el("div",undefined,"hubConflictLinks");
-   const steam=el("a","คู่มือ Steam");steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
+   const steam=el("a",tr("คู่มือ Steam","Steam walkthrough"));steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
    const wiki=el("a","PoE Wiki");wiki.href=data.wiki;wiki.target="_blank";wiki.rel="noopener noreferrer";
    links.append(steam,wiki);conflict.append(links);box.append(conflict);
  }
@@ -536,7 +550,19 @@ function actSteamGuide(act){
  }
  if(phase.patchProblem){
    const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";
-   alert.append(el("strong","ปัญหาที่มีรายงานจากแพตช์ 3.29"),el("p",phase.patchProblem),el("p","หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","hubSubtle"));box.append(alert);
+   alert.append(el("strong",tr("ปัญหาที่มีรายงานจากแพตช์ 3.29","Reported issue from patch 3.29")),
+ el("p",descEN()?"A historical report describes unavailable NPC dialogue; this still requires a fresh patch 3.30 game test.":phase.patchProblem),
+ el("p",tr("หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","If an NPC topic is unavailable, do not mark it heard or assume this character can complete All Ears."),"hubSubtle"));
+ if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai report"),el("p",phase.patchProblem));alert.append(original);}
+ box.append(alert);
+ }
+ const actions=el("ol",undefined,"hubWalkActions");
+ const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
+ instructions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
+ if(descEN()&&!phase.actionsEN){
+  const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
+  original.append(el("summary","Original Thai step-by-step instructions"));
+  const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
  }
  const taskNav=el("div",undefined,"hubWalkTaskNav");taskNav.setAttribute("aria-label",tr("รายการในช่วงปัจจุบัน","Tasks in this step"));
  for(const [type,ids] of Object.entries(phaseCount)){
@@ -555,14 +581,6 @@ function actSteamGuide(act){
    taskNav.append(button);
  }
  if(taskNav.childElementCount){box.append(el("p",tr("เปิดรายการที่ต้องเก็บในช่วงนี้:","Jump to this step’s required tasks:"),"hubSubtle hubTaskNavLead"),taskNav);}
- const actions=el("ol",undefined,"hubWalkActions");
- const instructions=descEN()?(phase.actionsEN||["Check all source-linked NPC and lore entries in this stage.","Review the original Thai quest-state conditions below before changing game state."]):phase.actions;
- instructions.forEach(txt=>actions.append(el("li",txt)));box.append(actions);
- if(descEN()&&!phase.actionsEN){
-  const original=el("details",undefined,"hubOriginalThai hubWalkSource");original.lang="th";
-  original.append(el("summary","Original Thai step-by-step instructions"));
-  const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
- }
  if(phase.visual){
    const v=phase.visual;
    const visual=el("details",undefined,"hubQuestVisual");
@@ -696,6 +714,34 @@ function epilogueRoute(target){
  const list=el("div",undefined,"hubList");
  all.forEach(x=>list.append(itemCard("waypoints",x)));panel.append(list);target.append(panel);
 }
+// Show conflicts where a player decides what to do, not only in the footer.
+function routeEvidencePanel(act){
+ const issues={
+  "1":[["Fairgraves · 3.29 report","Fairgraves · รายงานปัญหา 3.29","Dialogue availability was disputed in 3.29; no 3.30 gameplay reproduction is recorded.","มีรายงานว่าบทสนทนา Fairgraves ใช้ไม่ได้ใน 3.29 แต่ยังไม่มีผลทดสอบกับเกม 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","Steam 3.28 explicitly warns not to TALK TO or kill any Bandit before triggering The Darkness; the 2025 PoE Wiki lists different prerequisite paths. Do not assume an early conversation is harmless. Eramir #101–103 are dependent on the actual first/second kills.","คู่มือ Steam 3.28 เตือนชัดเจนว่าอย่าเพิ่งแม้แต่คุยกับ Bandits หรือฆ่าใครก่อนเปิดเหตุการณ์ The Darkness แต่ PoE Wiki ปี 2025 มีเงื่อนไขต่างออกไป อย่าสมมติว่าคุยก่อนจะปลอดภัย หัวข้อ Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare its original route, but do not assume its timing is valid in 3.30.","เทียบลำดับจากคู่มือ Steam โดยไม่ถือว่ายืนยันกับแพตช์ 3.30 แล้ว","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
+  "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
+ };
+ const list=issues[String(act)]||[];
+ if(!list.length)return null;
+ const box=el("details",undefined,"hubEvidencePanel");
+ box.dataset.evidenceAct=String(act);
+ // The initial message stays compact; explicit differences remain one click away.
+ box.open=String(act)==="2"||String(act)==="9";
+ const summary=el("summary");
+ summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่ตรวจยืนยันในเกมแพตช์ 3.30 · "+list.length+" ประเด็น","Not gameplay-certified for 3.30 · "+list.length+" issue(s)")));
+ box.append(summary);
+ const body=el("div",undefined,"hubEvidenceBody");
+ list.forEach(([en,th,detailEN,detailTH,href])=>{
+  const entry=el("div",undefined,"hubEvidenceIssue");
+  entry.append(el("strong",tr(th,en)),el("p",tr(detailTH,detailEN)));
+  const source=el("a",tr("เปิดหลักฐานต้นทาง","Read original source"));
+  source.href=href;source.target="_blank";source.rel="noopener noreferrer";
+  entry.append(source);body.append(entry);
+ });
+ body.append(el("p",tr("ระดับหลักฐาน: คู่มือประวัติศาสตร์ / ยังไม่มีภาพจากเกม 3.30 · ห้ามใช้เป็นการรับรองว่าจะไม่พลาด","Evidence level: historical guides only / no 3.30 gameplay captures. This is not a missable-safe certification."),"hubSubtle"));
+ box.append(body);return box;
+}
 function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · "+tr("รายการเก็บ Achievement","Achievement route"));
 panel.append(el("p",tr("ทำเครื่องหมายหลังเก็บในเกมแล้ว · รายการจะยังอยู่ที่เดิมและเปลี่ยนเป็น “เก็บแล้ว” · คำเตือนสำคัญแสดงก่อนรายละเอียดอื่น","Check only after collecting in-game. Completed entries remain in place; important STOP warnings appear before details."),"hubSubtle"));
 const countAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+records(type,act).length,0);
@@ -703,6 +749,7 @@ const doneAll=["ears","lore","waypoints","sidequests"].reduce((sum,type)=>sum+re
 const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.get("ears",x,act==="2"?getSafety():undefined)?.caution&&!entries("ears").includes(x.id)).length;
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
+const evidence=routeEvidencePanel(act);if(evidence)panel.append(evidence);
 const actMission=journeyActGuide(act);
 if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
@@ -746,7 +793,7 @@ const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary"
 addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
-try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
+try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert(tr("บันทึกคำเตือน Act 2 ไม่ได้","Could not save Act 2 quest preflight."));}}
 function safetyPanel(){
  const wrap=el("div",undefined,"hubPanel");
  wrap.append(
@@ -948,6 +995,10 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
      statusNote.replaceChildren(overview,warning);
    }
    [["route","ตาม Act","By Act"],["collection","เช็กลิสต์ทั้งหมด","All checklists"],["review","ตรวจยอด / สำรอง","Verify / Backup"]].forEach(([id,th,en])=>{const btn=nav.querySelector('[data-tab="'+id+'"]');if(btn)btn.textContent=tr(th,en);});
+   const manageTitle=document.querySelector("#hubManage>summary");if(manageTitle)manageTitle.textContent=tr("จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม","Manage characters and legacy All Ears backup");
+   const overviewTitle=document.querySelector("#hubOverview>h2");if(overviewTitle)overviewTitle.textContent=tr("เส้นทางสู่ 100%","Path to 100%");
+   const overviewSub=document.querySelector("#hubOverview>p");if(overviewSub)overviewSub.textContent=tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof");
+   const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30");
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
@@ -956,7 +1007,7 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){
   const manage=el("details",undefined,"hubManage");manage.id="hubManage";
-  manage.append(el("summary","จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม"));
+  manage.append(el("summary",tr("จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม","Manage characters and legacy All Ears backup")));
   const tools=el("div",undefined,"ctrls");
   ["renameChar","deleteChar","export","import","reset"].forEach(id=>{const button=$(id);if(button)tools.append(button);});
   manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);

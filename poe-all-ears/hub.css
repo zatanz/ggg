@@ -745,3 +745,8 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkArchive>summary:hover{color:#e7e6d9}
 .hubWalkArchive>.hubWalkCategory,.hubWalkArchive>.hubWalkLore{margin-top:10px}
 @media(max-width:600px){.hubWalkthrough .hubInlineCurrentChecklist{padding:10px}.hubWalkthrough .hubInlineCurrentChecklist .hubItem{grid-template-columns:auto minmax(0,1fr);gap:9px}.hubWalkthrough .hubInlineCurrentChecklist .hubItemState{grid-column:2}}
+
+/* Compact action row: no second title or duplicated instructions. */
+.hubWalkthrough .hubInlineCurrentChecklist .hubInlineMark{grid-template-columns:28px minmax(0,1fr);align-items:center;min-height:54px}
+.hubWalkthrough .hubInlineCurrentChecklist .hubInlineMark .hubItemState{grid-column:2;font-size:14px}
+@media(max-width:600px){.hubWalkthrough .hubInlineCurrentChecklist .hubInlineMark .hubItemState{grid-column:2}}

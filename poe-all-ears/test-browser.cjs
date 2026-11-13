@@ -242,7 +242,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubToolbar select[aria-label="ตัวกรองสถานะ"]').inputValue(),'all','default filter must show both completed and incomplete rows');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
- assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่ยืนยันกับแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+ assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่รับรองครบทุกกรณีของ 3.29'),true,'Every guide discloses current patch uncertainty');
  await hub.locator('#hubView .hubActSummaryMore > summary').click();
  await hub.locator('#hubView .hubActMissionGate > summary').click();
  await hub.locator('#hubView [data-goal-category="sidequests"]').click();

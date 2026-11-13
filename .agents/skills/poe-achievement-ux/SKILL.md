@@ -23,6 +23,16 @@ Help players manually complete the four tracked achievements: All Ears, No Stone
 - Search works with both language name variants. Preserve item/quest identity when language changes.
 - Avoid claiming that an English mode makes all 745 legacy row-level descriptions fully translated.
 
+## Act 6 and later — source-state chronology
+
+- Crosswalk Wiki row numbers to the original local IDs before building phases. Wiki numbers and local IDs can differ.
+- Model **before using / after using / before entering** as separate phases whenever a quest object changes dialogue availability, especially Eye of Conquest.
+- Show all categories present in the current stage via compact labeled jump controls. A tap must open the relevant group; never force the user to hunt through collapsed panels.
+- Keep the active quest phase above all secondary Act-wide statistics and historical-risk research panels. Put redundant checklists under a clearly titled collapsed overview.
+- When a user checks Lore, Waypoints or side quests, preserve that expanded group across re-renders so they can complete several tasks without reopening the same accordion.
+- Keep bilingual stage headlines, step actions and STOP reasons paired. If an English translation of an older Act is incomplete, retain conservative English guidance and an expandable original Thai evidence note.
+- Maintain phase-specific illustrations with explicit disclaimer and source link; visual design must make **which NPC to talk to BEFORE which irreversible action** legible without needing to interpret the illustration alone.
+
 ## UX and accessibility
 - One task per phase as primary surface; present progressive disclosure. Keep explicit Previous and Next; warn but do not permanently block when stepping past unchecked STOP lines.
 - Maintain 44px minimum interactive target and visible keyboard focus, legible contrast, labelled controls, correct language semantics and mobile 375px with no horizontal document overflow.

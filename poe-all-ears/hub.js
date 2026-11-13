@@ -4,7 +4,7 @@
 const E=window.ALL_EARS_DATA,L=window.NO_STONE_DATA,X=window.POE_EXTRA_TRACKERS,B=window.POE_HUB_BRIDGE,LANG=window.POE_LANGUAGE;
 if(!E||!L||!X||!B||!LANG){return;}
 const tr=(th,en)=>LANG.tr(th,en),gameName=s=>LANG.term(s),descEN=()=>LANG.get().description==="en";
-const MAIN="poe-all-ears-user-data-v1",LORE="poe-companion-lore-v1",EXTRA="poe-companion-extras-v1",HUB="poe-unified-review-v2";
+const MAIN="poe-all-ears-user-data-v1",LORE="poe-companion-lore-v1",EXTRA="poe-companion-extras-v1",HUB="poe-unified-review-v2",RULER="poe-act9-ruler-choice-v1";
 const collections={ears:E.items,lore:L.entries,waypoints:X.waypoints,sidequests:X.sidequests};
 const totals={ears:484,lore:140,waypoints:91,sidequests:30};
 const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
@@ -32,6 +32,17 @@ function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefine
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
 function validIDs(type,ids){const max=totals[type];return Array.isArray(ids)?[...new Set(ids.filter(i=>Number.isInteger(i)&&i>=1&&i<=max))].sort((a,b)=>a-b):[];}
 function active(){const s=B.read(),id=$("character").value;return s.characters.find(c=>c.id===id)||s.characters.find(c=>c.id===s.active)||s.characters[0];}
+function rulerChoice(){
+ const char=active();
+ const stored=safeParse(RULER);
+ return char&&stored&&["Irasha","Tasuni"].includes(stored[char.id])?stored[char.id]:"undecided";
+}
+function saveRulerChoice(choice){
+ const char=active();if(!char||!["undecided","Irasha","Tasuni"].includes(choice))return;
+ const stored=safeParse(RULER)||{};
+ if(choice==="undecided")delete stored[char.id];else stored[char.id]=choice;
+ try{localStorage.setItem(RULER,JSON.stringify(stored));renderView();}catch(_){alert(tr("ไม่สามารถบันทึกตัวเลือกผู้ปกครองได้","Could not save the ruler choice."));}
+}
 function entries(type){const char=active();if(!char)return [];if(type==="ears")return validIDs("ears",char.checked);
 const raw=safeParse(type==="lore"?LORE:EXTRA),rec=raw&&raw.version===1&&raw.byCharacter&&raw.byCharacter[char.id];
 return validIDs(type,rec&&rec[type]);}
@@ -394,7 +405,7 @@ function actSteamGuide(act){
  select.value=String(chosen);
  const goto=(i,reviewSkip=false)=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
-  if(reviewSkip&&["7","8"].includes(act)&&target>chosen){
+  if(reviewSkip&&["7","8","9","10"].includes(act)&&target>chosen){
    const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
    if(outstanding.length){
     const first=outstanding[0];
@@ -457,6 +468,29 @@ function actSteamGuide(act){
    const steam=el("a","คู่มือ Steam");steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
    const wiki=el("a","PoE Wiki");wiki.href=data.wiki;wiki.target="_blank";wiki.rel="noopener noreferrer";
    links.append(steam,wiki);conflict.append(links);box.append(conflict);
+ }
+ if(act==="9"&&phase.branchChoice){
+ const chosenRuler=rulerChoice();
+ const frame=el("section",undefined,"hubBranchChoice");frame.dataset.rulerBranch=chosenRuler;
+ const heading=el("strong",tr("ตัดสินใจครั้งเดียว · ผู้ปกครอง Highgate","Irreversible choice · Highgate ruler"));
+ const label=el("label",tr("ผู้ที่ได้รับ Sekhema Feather:","Who received the Sekhema Feather:"));
+ const select=el("select");select.setAttribute("aria-label",tr("ผู้ปกครอง Highgate ที่เลือก","Chosen Highgate ruler"));
+ [["undecided",tr("ยังไม่เลือก","Not chosen yet")],["Irasha","Irasha"],["Tasuni","Tasuni"]].forEach(([value,name])=>{const o=el("option",name);o.value=value;select.append(o);});
+ select.value=chosenRuler;select.onchange=()=>saveRulerChoice(select.value);label.append(select);
+ const msg=chosenRuler==="Tasuni"?
+ tr("เส้นทาง Tasuni ไม่ตรงกับ ID #443/#444 ในฐานข้อมูลเก่า: ห้ามติ๊กสองรายการนั้นแทนบทสนทนา Irasha และยังยืนยัน All Ears 100% จากรายการนี้ไม่ได้","Tasuni route is NOT represented by historic IDs #443/#444. Do not check these as substitutes. This tracker cannot certify All Ears 100% for the Tasuni branch."):
+ chosenRuler==="Irasha"?
+ tr("ตรงกับฐานข้อมูลเดิม: หลังส่ง Feather ให้ Irasha ตรวจ Tasuni: Feather, Petarus and Vanja: Irasha ก่อนติ๊ก ID #443/#444","Matches the original tracker: after giving the Feather to Irasha, hear Tasuni: Feather and Petarus and Vanja: Irasha before marking #443/#444."):
+ tr("ยังไม่เลือก: สำรวจบทสนทนาก่อนส่ง Feather ให้ฝ่ายใดฝ่ายหนึ่ง เพราะฐานข้อมูลเดิมมี ID สำหรับ Irasha เท่านั้น","No choice yet: check dialogue before handing in the Feather. The historical dataset has stable IDs for Irasha's branch only.");
+ frame.append(heading,label,el("p",msg));
+ const citation=el("a",tr("ดูผลของการเลือกทั้งสองแบบจาก PoE Wiki","Compare both ruler branches on PoE Wiki"));
+ citation.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9";citation.target="_blank";citation.rel="noopener noreferrer";frame.append(citation);
+ box.append(frame);
+ }
+ if(act==="9"&&rulerChoice()==="Tasuni"&&!phase.branchChoice){
+ const banner=el("div",undefined,"hubBranchWarning");banner.dataset.rulerIntegrity="Tasuni";
+ banner.append(el("strong",tr("คำเตือน: ตัวละครนี้เลือก Tasuni","Warning: this character chose Tasuni")),el("p",tr("Checklist ประวัติศาสตร์มี #443/#444 ของทาง Irasha เท่านั้น ไม่รองรับการยืนยัน All Ears 100% ในทาง Tasuni","Historical #443/#444 represent the Irasha path only; the tracker cannot certify the Tasuni path as 100%.")));
+ box.append(banner);
  }
  if(phase.sourceNote){
    const caution=el("details",undefined,"hubSourceDiscrepancy");caution.dataset.sourceNote=phase.id;
@@ -585,7 +619,7 @@ function journeyActGuide(act){
    const top=el("div",undefined,"hubActMissionWarning");
    const text=el("div",undefined);text.append(el("strong",tr("จุดเสี่ยงจากคู่มือเก่าที่ยังไม่บันทึกครบ: ","Unchecked historical risk groups: ")+risk.length),el("span",tr("ตรวจเหตุการณ์ก่อนเปลี่ยนสถานะเควสต์ · ไม่ใช่ลำดับเดินเกมที่รับรอง","Review quest transitions before acting. This is not a certified safe route.")));
    const jump=el("button",tr("ดูจุดตรวจที่ยังขาด","Open next risk checkpoint"));jump.type="button";jump.onclick=()=>{
-      if(["1","2","3","4","5","6","7","8"].includes(act)){const phases=window.POE_STEAM_WALK?.acts?.[act]||[];const found=phases.findIndex(p=>p.dialogueIds.some(id=>risk[0].ids.includes(id)));state.steamFocusByAct[act]=Math.max(0,found);renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});return;}
+      if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){const phases=window.POE_STEAM_WALK?.acts?.[act]||[];const found=phases.findIndex(p=>p.dialogueIds.some(id=>risk[0].ids.includes(id)));state.steamFocusByAct[act]=Math.max(0,found);renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});return;}
       const stages=window.POE_CRITICAL_CHECKPOINTS?.acts?.[act]||[];
       state.focusByAct[act]=stages.findIndex(s=>s.id===risk[0].id);renderView();
       const section=document.querySelector('[data-critical-act="'+act+'"]');section?.scrollIntoView({block:"start"});
@@ -635,12 +669,12 @@ const riskRemaining=records("ears",act).filter(x=>window.POE_ITEM_DESCRIPTIONS?.
 const quick=el("div",undefined,"hubActProgress");
 quick.append(el("strong",tr("เก็บแล้ว ","Checked: ")+doneAll+" / "+countAll+tr(" รายการ"," entries")),el("span",riskRemaining+tr(" บทสนทนามีคำเตือนที่ต้องตรวจ"," dialogue warnings to review"),"hubSubtle"));panel.append(quick);
 const actMission=journeyActGuide(act);
-if(["1","2","3","4","5","6","7","8"].includes(act)){
+if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
  const moreMission=el("details",undefined,"hubActSummaryMore");moreMission.dataset.actSummary=act;
  moreMission.append(el("summary",tr("ดูภาพรวม 4 Achievement / รายการที่ยังขาด","View four-achievement overview and remaining tasks")),actMission);
  panel.append(moreMission);
- if(["2","3","4","5","6","7","8"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
+ if(["2","3","4","5","6","7","8","9","10"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{panel.append(actMission);const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
 if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}

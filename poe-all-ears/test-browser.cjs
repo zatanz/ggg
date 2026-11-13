@@ -826,6 +826,8 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#results').isVisible(),true,'classic list still usable in unified page');
  await hub.locator('#hubNav [data-tab="route"]').click();
  await hub.locator('.hubActStrip [data-act="2"]').click();
+ assert.equal(await hub.locator('#hubView .hubReferenceShelf').evaluate(x=>x.open),false,'Backup import resets transient reference drawer to a compact default');
+ await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal'),true,'Act 2 clearly describes Wiki pre-Seal talk order');
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28: ห้ามแม้แต่คุย'),true,'Act 2 clearly distinguishes Steam post-Darkness talk order');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 opens with zone-based source chronology rather than seven stacked risk groups');

@@ -875,7 +875,19 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    );
    const title=header.querySelector("h1"),intro=header.querySelector("p");
    if(title)title.textContent=tr("บันทึก Achievement","Achievement Companion");
-   if(intro)intro.textContent=tr("เช็กสิ่งที่ต้องทำทีละช่วงเควสต์ เพื่อเก็บบทสนทนา Lore Waypoint และเควสต์รอง โดยไม่ข้ามจุดเสี่ยง","Follow each quest step, collect NPC dialogue, Lore, Waypoints and side quests, and review missable checkpoints before advancing.");
+   if(intro)intro.textContent=tr("ทำตามช่วงเควสต์ทีละขั้น เก็บบทสนทนา Lore จุดวาร์ป และเควสต์รอง โดยดูคำเตือนก่อนข้ามเหตุการณ์ที่พลาดได้","Follow one quest stage at a time, collecting dialogue, Lore, Waypoints and side quests. Review STOP warnings before changing irreversible quest states.");
+   const statusNote=wrap.querySelector(".tips");
+   if(statusNote){
+     const overview=el("p");
+     const wiki=el("a","PoE Wiki");wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement";wiki.target="_blank";wiki.rel="noopener noreferrer";
+     overview.append(el("strong",tr("สถานะข้อมูล: ","Source status: ")),
+       document.createTextNode(tr("มีคู่มือตามช่วงเควสต์ Act 1–10 ครบสองภาษาแล้ว แต่ยังไม่ได้ยืนยันด้วยตัวเกมแพตช์ 3.30 ตรวจบทสนทนาที่เสี่ยงพลาดเทียบกับ ","Acts 1–10 have bilingual quest-stage guidance, but patch 3.30 has not been verified in-game. Compare missable dialogue against ")),
+       wiki,document.createTextNode(tr(" ก่อนเดินเรื่องต่อ"," before advancing")));
+     const warning=el("p");
+     warning.append(el("strong",tr("จุดที่ต้องระวัง: ","Important: ")),
+       document.createTextNode(tr("All Ears ต้องเก็บกับตัวละครเดียว ระวังบทสนทนาที่หายหลังฆ่าบอส ส่งเควสต์ หรือเลือกทางแยก โดยเฉพาะ Act 2 Bandits, Act 3 Clarissa และ Act 9 Sekhema Feather","All Ears must be completed on one character. Some dialogue disappears after a boss fight, quest hand-in or irreversible choice. Pay particular attention to Act 2 Bandits, Act 3 Clarissa and Act 9 Sekhema Feather.")));
+     statusNote.replaceChildren(overview,warning);
+   }
    [["route","ตาม Act","By Act"],["collection","เช็กลิสต์ทั้งหมด","All checklists"],["review","ตรวจยอด / สำรอง","Verify / Backup"]].forEach(([id,th,en])=>{const btn=nav.querySelector('[data-tab="'+id+'"]');if(btn)btn.textContent=tr(th,en);});
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};

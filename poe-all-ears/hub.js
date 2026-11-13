@@ -114,8 +114,8 @@ function renderSummary(){
  sourceAlert.append(sourceTitle);
  const sourceBody=el("div",undefined,"hubEvidenceBody");
  [
- [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ตรวจยอดในเกม 3.30","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. Current 3.30 in-game count is not certified."),"https://www.poewiki.net/wiki/Waypoint"],
- [tr("Vaal Side Area: คำแนะนำเก่าบางแหล่งเกี่ยวกับ Fragment/Map Device อาจใช้ไม่ได้ในเวอร์ชันปัจจุบัน ควรตรวจพื้นที่จริงและเงื่อนไข Lore จากคู่มือปัจจุบัน ก่อนใช้เส้นทางนั้น","Vaal Side Areas: older Fragment / Map Device instructions may be version-specific. Verify actual lore availability and areas for the current playable patch rather than assuming an old farming route still works."),"https://poedb.tw/us/Version_3.30.0"],
+ [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ได้ยืนยันยอดจริงจากเกม 3.29","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. The exact live 3.29 count is not independently certified."),"https://www.poewiki.net/wiki/Waypoint"],
+ [tr("Vaal Side Area: คำแนะนำเก่าบางแหล่งเกี่ยวกับ Fragment/Map Device อาจใช้ไม่ได้ในเวอร์ชันปัจจุบัน ควรตรวจพื้นที่จริงและเงื่อนไข Lore จากคู่มือปัจจุบัน ก่อนใช้เส้นทางนั้น","Vaal Side Areas: older Fragment / Map Device instructions may be version-specific. Verify actual lore availability and areas for the current playable patch rather than assuming an old farming route still works."),"https://www.poewiki.net/wiki/Vaal_side_area"],
  [tr("Act 2: ลำดับ Bandits / The Darkness ใน Steam และ PoE Wiki ไม่ตรงกัน · ดูคำเตือนใน Act 2 ก่อนเลือกช่วยหรือฆ่า","Act 2: Steam and PoE Wiki disagree on Bandit / Darkness ordering. Open Act 2 warnings before choosing to help or kill."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
  ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
  sourceAlert.append(sourceBody);hero.append(sourceAlert);
@@ -506,7 +506,7 @@ function actSteamGuide(act){
    const review=el("button",tr("กลับไปตรวจจุดแรก","Review first missed checkpoint"));review.type="button";
    review.onclick=()=>{state.skippedRisk=null;state.steamFocusByAct[act]=first;renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});};
    notice.append(review,el("small",tr("การเลื่อนหน้าคู่มือไม่เปลี่ยนสถานะเควสต์ในเกม · ยังไม่ใช่หลักฐานว่าเก็บครบ","Guide navigation does not change game quest states or certify achievement completion.")));
-   box.append(notice);
+   box.insertBefore(notice,control);
   }
  }
  const head=el("div",undefined,"hubWalkFocus");
@@ -521,7 +521,25 @@ function actSteamGuide(act){
  const count=el("span",phase.dialogueIds.length?
     complete+"/"+phase.dialogueIds.length+tr(" บทสนทนาที่บันทึก"," NPC dialogues checked"):
     tr("ช่วงนี้มีเฉพาะ Lore / Waypoint / เควสต์รอง","This step contains Lore / Waypoints / side quests only"),"hubWalkCount");
- head.append(count);box.append(head);
+ head.append(count);box.insertBefore(head,control);
+ // Focus on the first unmarked task within the selected stage, prioritizing an unchecked STOP.
+ const unchecked=Object.entries(phaseCount).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
+ const urgent=unchecked.find(x=>x.type==="ears"&&(phase.stopIds||[]).includes(x.id));
+ const current=urgent||unchecked[0];
+ const focus=el("section",undefined,"hubNextAction");focus.dataset.nextAction=phase.id;
+ const focusTitle=el("strong",current?tr("รายการที่ควรตรวจต่อในช่วงนี้","Next item to verify in this step"):tr("รายการในช่วงนี้ทำเครื่องหมายครบแล้ว","All items in this step are checked"));
+ focus.append(focusTitle);
+ if(current){
+  const item=collections[current.type].find(x=>x.id===current.id);
+  const typeName=current.type==="ears"?"All Ears":current.type==="lore"?"No Stone Unturned":current.type==="waypoints"?"Locomancer":"No Loose Ends";
+  focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+typeName,"hubNextActionItem"));
+  const button=el("button",tr("เปิดรายการเพื่อยืนยันด้วยตัวเอง","Open item for manual verification"));button.type="button";
+  button.onclick=()=>{const area=box.querySelector('[data-walk-type="'+current.type+'"]');if(!area)return;if(area.tagName==="DETAILS")area.open=true;area.scrollIntoView({block:"center"});};
+  focus.append(button);
+ }else{
+  focus.append(el("p",tr("เครื่องหมายในเว็บไม่ใช่หลักฐานว่า Achievement สำเร็จ ตรวจยอดจริงในเกมก่อนเดินเรื่องต่อ","Manual marks are not proof that the achievement unlocked. Compare against the actual game before advancing."),"hubSubtle"));
+ }
+ box.insertBefore(focus,control);
  const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id));
  if(phase.stop){
    const gate=el("div",undefined,"hubStopGate"+(pending.length?" blocked":" reviewed"));
@@ -533,7 +551,7 @@ function actSteamGuide(act){
      const who=pending.map(id=>{const x=E.items.find(z=>z.id===id);return x?label(x,"ears"):"ID "+id;});
      gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pending.length+tr(" บทสนทนา: "," dialogue(s): ")+who.slice(0,3).join(" / ")+(who.length>3?tr(" และอีก "," and ")+(who.length-3)+" more":""),"hubStopPending"));
    }
-   box.append(gate);
+   box.insertBefore(gate,focus);
  }
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
@@ -625,7 +643,7 @@ function actSteamGuide(act){
    const body=el("div",undefined,"hubQuestVisualBody");
    const label=el("div",undefined,"hubVisualSourceWarning");
    label.append(el("strong",tr("ภาพจำลองเพื่ออธิบาย — ไม่ใช่ภาพหน้าจอเกมจริง","Concept illustration — NOT an actual in-game screenshot")),
-     el("span",tr("รูปแบบ UI เป็นภาพประกอบ ไม่ใช่หลักฐานยืนยันเควสต์ในแพตช์ 3.30","Mock interface only; not evidence that the quest works on patch 3.30.")));
+     el("span",tr("รูปแบบ UI เป็นภาพประกอบ ไม่ใช่หลักฐานยืนยันเงื่อนไขเควสต์ใน 3.29","Mock interface only; not evidence that the quest works in 3.29.")));
    body.append(label);
    const figure=el("figure",undefined,"hubQuestFigure");
    const img=el("img");img.src=v.asset;img.alt=v.alt;img.loading="lazy";img.decoding="async";
@@ -1020,7 +1038,7 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
      const overview=el("p");
      const wiki=el("a","PoE Wiki");wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement";wiki.target="_blank";wiki.rel="noopener noreferrer";
      overview.append(el("strong",tr("สถานะข้อมูล: ","Source status: ")),
-       document.createTextNode(tr("มีคู่มือตามช่วงเควสต์ Act 1–10 ครบสองภาษาแล้ว แต่ยังไม่ได้ยืนยันด้วยตัวเกมแพตช์ 3.30 ตรวจบทสนทนาที่เสี่ยงพลาดเทียบกับ ","Acts 1–10 have bilingual quest-stage guidance, but patch 3.30 has not been verified in-game. Compare missable dialogue against ")),
+       document.createTextNode(tr("มีคู่มือตามช่วงเควสต์ Act 1–10 ครบสองภาษาแล้ว แต่ยังไม่ได้ยืนยันเงื่อนไขทั้งหมดด้วยเกม 3.29 ตรวจบทสนทนาที่เสี่ยงพลาดเทียบกับ ","Acts 1–10 have bilingual quest-stage guidance, but the 3.29 conditions are not fully gameplay-certified. Compare missable dialogue against ")),
        wiki,document.createTextNode(tr(" ก่อนเดินเรื่องต่อ"," before advancing")));
      const warning=el("p");
      warning.append(el("strong",tr("จุดที่ต้องระวัง: ","Important: ")),

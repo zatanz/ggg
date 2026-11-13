@@ -689,7 +689,8 @@ function actSteamGuide(act){
   const inline=el("div",undefined,"hubInlineCurrentChecklist");
   inline.dataset.inlineChecklist=current.type+":"+current.id;
   inline.append(el("strong",tr("ทำในเกมแล้วจึงติ๊กตรงนี้","Mark here after completing in-game"),"hubInlineChecklistTitle"));
-  inline.append(itemCard(current.type,item));
+  if(item)inline.append(itemCard(current.type,item));
+  else inline.append(el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle"));
   focus.append(inline);
  }else{
   focus.append(el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing."),"hubSubtle"));
@@ -885,11 +886,11 @@ function actSteamGuide(act){
   const archivedCount=Object.values(phaseCount).reduce((sum,ids)=>sum+ids.length,0);
   shelf.append(el("summary",tr("ตรวจรายการทั้งหมดของช่วงนี้ · ","Review every item in this step · ")+archivedCount+tr(" รายการ"," items")));
   shelf.append(el("p",tr("ใช้เมื่ออยากย้อนตรวจหลายรายการพร้อมกัน ไม่จำเป็นต้องเปิดเพื่อทำรายการปัจจุบัน","Optional bulk review. You do not need this section to mark the current task."),"hubSubtle"));
+  const navLead=box.querySelector(".hubTaskNavLead");
+  if(navLead) shelf.append(navLead);
+  if(taskNav.childElementCount) shelf.append(taskNav);
   archived.forEach(node=>shelf.append(node));
   box.append(shelf);
-  // These shortcuts previously duplicated the primary next-item interface.
-  taskNav.remove();
-  box.querySelector(".hubTaskNavLead")?.remove();
  }
  const foot=el("div",undefined,"hubWalkFooter");
  const ref=el("a",tr("ตรวจลำดับกับคู่มือ Steam","Review historical Steam route"));ref.href=data.source;ref.target="_blank";ref.rel="noopener noreferrer";

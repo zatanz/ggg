@@ -48,7 +48,42 @@ const glossary={
   "Kitava's Hunger II": "ความหิวโหยของคิทาวา II",
   "Kitava's Hunger III": "ความหิวโหยของคิทาวา III",
   "The Slave Pens Waypoint": "จุดวาร์ปคอกทาส",
-  "The Ossuary Waypoint": "จุดวาร์ปสุสานกระดูก"
+  "The Ossuary Waypoint": "จุดวาร์ปสุสานกระดูก",
+  "Lioneye's Watch": "ที่พักไลออนอาย",
+  "The Twilight Strand": "ชายฝั่งทไวไลต์",
+  "The Coast": "ชายฝั่ง",
+  "The Tidal Island": "เกาะน้ำขึ้น",
+  "The Mud Flats": "ที่ราบโคลน",
+  "The Karui Fortress": "ป้อมคารุย",
+  "The Karui Fortress entrance": "ทางเข้าป้อมคารุย",
+  "The Ridge": "สันเขา",
+  "The Prison": "เรือนจำ",
+  "Shavronne's Tower": "หอคอยชาฟรอน",
+  "Prisoner's Gate": "ประตูนักโทษ",
+  "The Western Forest": "ป่าตะวันตก",
+  "The Wetlands": "พื้นที่ชุ่มน้ำ",
+  "The Riverways": "เส้นทางริมแม่น้ำ",
+  "The Valley of the Fire Drinker": "หุบเขาผู้ดื่มไฟ",
+  "The Southern Forest": "ป่าทางใต้",
+  "The Cavern of Anger": "ถ้ำแห่งโทสะ",
+  "The Beacon": "หอประภาคาร",
+  "The Brine King's Reef": "แนวปะการังราชาแห่งทะเลเค็ม",
+  "The Ship Graveyard": "สุสานเรือ",
+  "Fallen from Grace": "ผู้พลัดจากความศักดิ์สิทธิ์",
+  "Bestel's Epic": "มหากาพย์ของเบสเทล",
+  "The Father of War": "บิดาแห่งสงคราม",
+  "Essence of Umbra": "แก่นแท้แห่งอัมบรา",
+  "The Cloven One": "ผู้มีกีบแยก",
+  "The Puppet Mistress": "นายหญิงเชิดหุ่น",
+  "The Brine King": "ราชาแห่งทะเลเค็ม",
+  "The Black Flag": "ธงดำ",
+  "Eye of Conquest": "ดวงตาแห่งชัยชนะ",
+  "Message in a Bottle": "สาส์นในขวด",
+  "Leatherbound Logbook": "สมุดบันทึกปกหนัง",
+  "Shavronne's Manifesto": "คำประกาศของชาฟรอน",
+  "Letter Fragment": "เศษจดหมาย",
+  "Templar Report": "รายงานเทมพลาร์",
+  "Shrine to the Brine King": "ศาลเจ้าราชาแห่งทะเลเค็ม"
 };
 const highRisk={
   "21": "Before entering The Fetid Pool, collect the relevant Oozeback Bloom dialogue.",
@@ -69,7 +104,19 @@ const highRisk={
   "254": "Check Utula before defeating High Templar Avarius, since he can become unavailable.",
   "275": "After defeating Justicar Casticus, talk to Utula BEFORE killing High Templar Avarius.",
   "277": "After defeating Innocence, speak with Sin inside the Chamber of Innocence before leaving.",
-  "295": "After picking up the Sign of Purity, speak to Sin inside The Ossuary before leaving."
+  "295": "After picking up the Sign of Purity, speak to Sin inside The Ossuary before leaving.",
+  "318": "After seeing the Karui Fortress entrance and talking to Tarkleigh, hear Sin: The Father of War.",
+  "320": "Hear Bestel: Tukohama after receiving The Father of War and BEFORE killing Tukohama.",
+  "321": "Talk to Tarkleigh: The Eye of Conquest after obtaining the Eye, BEFORE using it.",
+  "322": "Talk to Tarkleigh: The Karui Fortress AFTER using the Eye of Conquest, BEFORE entering the fortress. Check hidden quest dialogue options.",
+  "324": "After defeating Tukohama, talk to Bestel: Shavronne of Umbra BEFORE defeating Shavronne.",
+  "326": "After defeating Shavronne, talk to Sin before leaving The Prison (historic source warning).",
+  "328": "After starting The Cloven One with Bestel, speak to Sin BEFORE entering The Valley of the Fire Drinker.",
+  "330": "After Essence of Umbra, hear Sin: The Puppet Mistress BEFORE killing Ryslatha.",
+  "333": "After meeting Nessa in Prisoner's Gate, hear Tarkleigh: The Ship Graveyard BEFORE entering The Cavern of Anger.",
+  "336": "After collecting The Black Flag, talk to Lilly Roth BEFORE burning the flag at The Beacon.",
+  "338": "After arriving at The Brine King's Reef, talk to Weylam Roth BEFORE killing Tsoagoth.",
+  "339": "After arriving at The Brine King's Reef, hear Weylam Roth: The Brine King BEFORE killing Tsoagoth."
 };
 const valid={description:["th","en"],names:["en","both","th"]};
 let prefs={description:"th",names:"en"};
@@ -91,7 +138,7 @@ function bilingualIndex(value){
  return (t+" "+(translated||"")).toLowerCase();
 }
 function entry(type,item,label){
- if(type==="ears")return item.npc+" — "+term(item.dialog);
+ if(type==="ears"){const npc=item.npc==="Lily Roth"?"Lilly Roth":String(item.npc||"").replace(/ \*$/,"");return npc+" — "+term(item.dialog);}
  return term(label||item.name);
 }
 function englishHelp(type,item,guide){
@@ -112,6 +159,35 @@ function englishHelp(type,item,guide){
  }else{
    action="Finish the optional quest \""+base+"\" in Act "+act+" before marking it completed.";
    location="Act "+act;unlock="Confirm completion in the in-game quest journal.";
+ }
+ if(type==="ears"&&act===6){
+   const special={
+     318:"After finding the Karui Fortress gate and speaking to Tarkleigh.",
+     319:"After Sin: The Father of War.",
+     320:"After receiving The Father of War, BEFORE killing Tukohama.",
+     321:"After obtaining the Eye of Conquest, BEFORE using it.",
+     322:"AFTER using the Eye of Conquest but BEFORE entering The Karui Fortress; check hidden quest dialogue.",
+     323:"After using the Eye of Conquest.",
+     324:"After defeating Tukohama, BEFORE defeating Shavronne.",
+     325:"After defeating Tukohama.",
+     326:"AFTER defeating Shavronne; speak to Sin before leaving The Prison.",
+     327:"After completing Essence of Umbra.",
+     328:"After receiving The Cloven One from Bestel, BEFORE entering The Valley of the Fire Drinker.",
+     329:"After hearing Sin: The Cloven One.",
+     330:"After completing Essence of Umbra, BEFORE killing Ryslatha.",
+     331:"After Sin: The Puppet Mistress.",
+     332:"After speaking with Nessa in Prisoner's Gate.",
+     333:"After meeting Nessa in Prisoner's Gate, BEFORE entering The Cavern of Anger.",
+     334:"After talking to Nessa in The Cavern of Anger.",
+     335:"After Sin: The Brine King, when the next option appears.",
+     336:"After obtaining The Black Flag, BEFORE burning it at The Beacon.",
+     337:"After first entering The Beacon.",
+     338:"Upon arriving at The Brine King's Reef, BEFORE killing Tsoagoth.",
+     339:"Upon arriving at The Brine King's Reef, BEFORE killing Tsoagoth.",
+     340:"After completing The Brine King.",
+     341:"After completing The Brine King."
+   };
+   unlock=special[item.id]||unlock;
  }
  if(type==="ears"&&act===5){
    const special={271:"Listen to Vilenta: Piety first to unlock Research.",275:"After defeating Justicar Casticus and before defeating Avarius.",277:"Immediately after defeating Innocence, before leaving the chamber.",295:"After obtaining the Sign of Purity in The Ossuary, before exiting."};

@@ -243,6 +243,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView details[data-group="ears"] .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('The Twilight Strand'),true,'Act 1 contextual instructions include source location');
  assert.equal((await hub.locator('#hubView details[data-group="ears"] .hubItemHelpBody').first().innerText()).includes('ยังไม่ยืนยันกับแพตช์ 3.30'),true,'Every guide discloses patch uncertainty');
+ await hub.locator('#hubView .hubActSummaryMore > summary').click();
  await hub.locator('#hubView .hubActMissionGate > summary').click();
  await hub.locator('#hubView [data-goal-category="sidequests"]').click();
  assert.equal(await hub.locator('#hubView [data-group="sidequests"]').evaluate(x=>x.open),true,'100% goal shortcut expands its specific missing category');
@@ -352,6 +353,71 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubDescriptionLanguage').selectOption('th');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),3,'Act 5 old critical checkpoint groups preserved');
+
+ // Act 6: original 44 dialogue, 6 lore, 10 Waypoint, 4 side quest records in 15 bilingual stages.
+ await hub.locator('.hubActStrip [data-act="6"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="6"]').count(),1,'Act 6 quest journey renders');
+ assert.equal(await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select option').count(),15,'Act 6 has 15 phases');
+ assert.equal((await hub.locator('#hubView [data-steam-act="6"]').innerText()).includes('44 บทสนทนา'),true,'Act 6 source route has 44 dialogues');
+ assert.equal(await hub.locator('#hubView [data-act-summary="6"]').evaluate(x=>x.open),false,'Secondary achievement overview starts collapsed');
+ assert.equal(await hub.locator('#hubView [data-steam-act="6"]').evaluate(x=>!!(x.compareDocumentPosition(document.querySelector('[data-act-summary="6"]'))&Node.DOCUMENT_POSITION_FOLLOWING)),true,'Current quest step is ordered before detailed overview');
+ assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),1,'Current step has task-specific jumps');
+
+ await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('1');
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"] .hubItem').count(),2,'Early Act 6 source-backed lore');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').count(),2,'Fallen from Grace and Bestel Epic optional quests');
+ await hub.locator('#hubView [data-jump-type="lore"]').click();
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"]').evaluate(x=>x.open),true,'Jump to Lore opens its section');
+ const act6Lore=hub.locator('#hubView [data-walk-type="lore"] input[type="checkbox"]').first();
+ if(await act6Lore.isChecked())await act6Lore.uncheck();
+ await act6Lore.check();
+ assert.equal(await hub.locator('#hubView [data-walk-type="lore"]').evaluate(x=>x.open),true,'Expanded Lore remains open after checking an item');
+ await hub.locator('#hubView [data-jump-type="sidequests"]').click();
+ assert.equal(await hub.locator('#hubView [data-walk-type="sidequests"]').evaluate(x=>x.open),true,'Side quest jump expands correct section');
+ const act6Character=await hub.locator('#character').inputValue();
+
+ await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('3');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="eye-before"]').innerText()).includes('Eye of Conquest'),true,'Before using the Eye: STOP visible');
+ const phaseBefore=await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase');
+ hub.once('dialog',d=>d.dismiss());
+ await hub.locator('#hubView .hubWalkNavigator button').last().click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),phaseBefore,'Next cannot silently skip unchecked STOP');
+ await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('4');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="eye-after"]').innerText()).includes('The Karui Fortress'),true,'After-using Eye before-entering Fortress is a separate STOP');
+ const karuiImage=hub.locator('#hubView [data-visual-phase="eye-after"]');
+ await karuiImage.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="eye-after"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await karuiImage.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Eye quest diagram is not represented as a real screenshot');
+ await hub.locator('#hubGameNames').selectOption('both');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Eye of Conquest'),true,'English item name persists alongside Thai translation');
+ assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('ดวงตา'),true,'Thai Eye term appears in bilingual name mode');
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Return to Tarkleigh'),true,'English Act 6 guidance is phase-specific');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="eye-after"]').innerText()).includes('STOP:'),true,'English critical warning is explicit');
+ await hub.locator('#hubGameNames').selectOption('th');
+ assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),'Eye of Conquest','Thai-only display preserves original English source term');
+ assert.equal(await hub.locator('#character').inputValue(),act6Character,'Language change preserves selected character');
+ assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'eye-after','Language change preserves Act 6 phase');
+ await hub.locator('#hubGameNames').selectOption('en');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+
+ await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('13');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('Weylam Roth'),true,'Reef pre-Tsoagoth STOP names Weylam');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('2 บทสนทนา'),true,'Weylam requires two distinct dialogue entries');
+ const reefImage=hub.locator('#hubView [data-visual-phase="reef-weylam"]');
+ await reefImage.locator(':scope > summary').click();
+ await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="reef-weylam"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
+ assert.equal((await reefImage.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Reef quest diagram marked as conceptual');
+ await hub.locator('#hubView [data-jump-type="lore"]').click();
+ assert.equal((await hub.locator('#hubView [data-walk-type="lore"]').innerText()).includes('Shrine to the Brine King'),true,'Reef lore linked in correct phase');
+ assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"] .hubItem').count(),1,'Reef Waypoint linked in correct phase');
+ await hub.locator('#hubView .hubHistoricalRisks > summary').click();
+ assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),6,'Act 6 historical risk panel still accessible');
+ await hub.setViewportSize({width:375,height:812});
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Act 6 does not overflow narrow mobile viewport');
+ assert.equal(await hub.locator('.hubActStrip [data-act="10"]').evaluate(x=>{const r=x.getBoundingClientRect();return r.width>=40&&r.left>=0&&r.right<=window.innerWidth}),true,'Mobile Act 10 is directly visible in the Act grid');
+ await hub.setViewportSize({width:1280,height:900});
+
  await hub.locator('.hubActStrip [data-act="1"]').click();
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
@@ -491,7 +557,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-safety="oak"]').isChecked(),true,'Act 2 safety persists after reload');
- for(const [act,count] of [[6,6],[7,5],[8,2],[9,4]]){
+ for(const [act,count] of [[7,5],[8,2],[9,4]]){
   await hub.locator('.hubActStrip [data-act="'+act+'"]').click();
   assert.equal(await hub.locator('#hubView .hubCheckpoint').count(),1,'Act '+act+' shows one checkpoint in focus mode');
   assert.equal(await hub.locator('#hubView .hubStepNavigator select option').count(),count,'Act '+act+' retains all checkpoints in step picker');

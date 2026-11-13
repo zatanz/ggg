@@ -550,7 +550,11 @@ function actSteamGuide(act){
  }
  if(phase.patchProblem){
    const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";
-   alert.append(el("strong","ปัญหาที่มีรายงานจากแพตช์ 3.29"),el("p",phase.patchProblem),el("p","หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","hubSubtle"));box.append(alert);
+   alert.append(el("strong",tr("ปัญหาที่มีรายงานจากแพตช์ 3.29","Reported issue from patch 3.29")),
+ el("p",descEN()?"A historical report describes unavailable NPC dialogue; this still requires a fresh patch 3.30 game test.":phase.patchProblem),
+ el("p",tr("หากคุย NPC ไม่ได้ ห้ามติ๊กว่าฟังแล้ว และอย่าสรุปว่าตัวละครนี้สามารถทำ All Ears ครบได้","If an NPC topic is unavailable, do not mark it heard or assume this character can complete All Ears."),"hubSubtle"));
+ if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai report"),el("p",phase.patchProblem));alert.append(original);}
+ box.append(alert);
  }
  const taskNav=el("div",undefined,"hubWalkTaskNav");taskNav.setAttribute("aria-label",tr("รายการในช่วงปัจจุบัน","Tasks in this step"));
  for(const [type,ids] of Object.entries(phaseCount)){
@@ -999,7 +1003,7 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){
   const manage=el("details",undefined,"hubManage");manage.id="hubManage";
-  manage.append(el("summary","จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม"));
+  manage.append(el("summary",tr("จัดการตัวละครและสำรองข้อมูล All Ears แบบเดิม","Manage characters and legacy All Ears backup")));
   const tools=el("div",undefined,"ctrls");
   ["renameChar","deleteChar","export","import","reset"].forEach(id=>{const button=$(id);if(button)tools.append(button);});
   manage.append(tools);const fileInput=$("file");if(fileInput)manage.append(fileInput);

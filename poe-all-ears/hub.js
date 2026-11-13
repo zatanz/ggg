@@ -534,7 +534,7 @@ function actSteamGuide(act){
   const typeName=current.type==="ears"?"All Ears":current.type==="lore"?"No Stone Unturned":current.type==="waypoints"?"Locomancer":"No Loose Ends";
   focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+typeName,"hubNextActionItem"));
   const button=el("button",tr("เปิดรายการเพื่อยืนยันด้วยตัวเอง","Open item for manual verification"));button.type="button";
-  button.onclick=()=>{const area=box.querySelector('[data-walk-type="'+current.type+'"]');if(!area)return;if(area.tagName==="DETAILS")area.open=true;area.scrollIntoView({block:"center"});};
+  button.onclick=()=>{const area=box.querySelector('[data-walk-type="'+current.type+'"]');if(!area)return;if(area.tagName==="DETAILS")area.open=true;area.tabIndex=-1;area.focus({preventScroll:true});area.scrollIntoView({block:"center"});};
   focus.append(button);
  }else{
   focus.append(el("p",tr("เครื่องหมายในเว็บไม่ใช่หลักฐานว่า Achievement สำเร็จ ตรวจยอดจริงในเกมก่อนเดินเรื่องต่อ","Manual marks are not proof that the achievement unlocked. Compare against the actual game before advancing."),"hubSubtle"));

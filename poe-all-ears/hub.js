@@ -541,6 +541,9 @@ function actSteamGuide(act){
    const v=phase.visual;
    const visual=el("details",undefined,"hubQuestVisual");
    visual.dataset.visualPhase=phase.id;
+   const visualKey=act+":"+phase.id+":visual";
+   visual.open=walkExpanded.has(visualKey);
+   visual.addEventListener("toggle",()=>{if(!visual.isConnected)return;if(visual.open)walkExpanded.add(visualKey);else walkExpanded.delete(visualKey);});
    visual.append(el("summary",tr("ดูภาพจำลองหน้า Quest · ","Show concept quest UI · ")+gameName(v.title)));
    const body=el("div",undefined,"hubQuestVisualBody");
    const label=el("div",undefined,"hubVisualSourceWarning");

@@ -650,6 +650,19 @@ assert(locale.englishHelp('sidequests',extras.sidequests[0],descriptions.get('si
 const enCaveat=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(enCaveat.includes('hint.displayLabelEN'),'Act2 branch label must obey the selected guidance language');
 
+
+const sourceWarnings=[];
+for(let act=1;act<=10;act++){
+ for(const sourceRow of ctx.window['ALL_EARS_ROUTE_ACT'+act].records.filter(r=>r.before)){
+   const item=d.items.find(x=>x.id===sourceRow.id);
+   const extraContext=act===2&&[89,101].includes(sourceRow.id)?{first:"Alira",second:"Kraityn"}:undefined;
+   const copy=locale.englishHelp('ears',item,descriptions.get('ears',item,extraContext));
+   assert(copy.caution&&!copy.caution.startsWith("Potentially missable")&&!copy.caution.startsWith("Quest-state-sensitive"),'Source-flagged missable warning must have specific English text: Act '+act+' / ID '+item.id);
+   assert(!/[\u0E00-\u0E7F]/.test(copy.caution||''),'Untranslated Thai source warning in English: Act '+act+' / ID '+item.id);
+   sourceWarnings.push(item.id);
+ }
+}
+assert(sourceWarnings.length===62,'All 62 historical source-flagged warnings must retain English context across ten Acts');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

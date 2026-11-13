@@ -595,11 +595,24 @@ function actSteamGuide(act){
  prev.type="button";next.type="button";prev.dataset.stepNav="prev";next.dataset.stepNav="next";prev.disabled=chosen===0;next.disabled=chosen===phases.length-1;
  prev.onclick=()=>goto(chosen-1,false,"prev");
  next.onclick=()=>{
+  // The primary Next action must not silently bypass ordinary unfinished tasks.
+  // Keep navigation possible for review, but distinguish it from in-game completion.
+  const missing=Object.entries(phaseCount).flatMap(([type,ids])=>
+   ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
   const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id));
-  if(phase.stop&&stillMissing.length&&!confirm(tr(
-   "จุดเสี่ยงนี้ยังไม่ได้ติ๊กครบ: "+phase.stop+"\n\nปุ่มถัดไปเป็นเพียงการเปลี่ยนหน้า ไม่ได้ยืนยันว่าเควสต์ปลอดภัย ต้องการดูช่วงถัดไปหรือไม่?",
-   "You still have an unresolved STOP warning: "+(phase.stopEN||phase.stop)+"\n\nNext only changes the guide step. It does not prove the quest is safe. Continue?"
-  )))return;
+  if(phase.stop&&stillMissing.length){
+   if(!confirm(tr(
+    "หยุดตรวจจุดเสี่ยงก่อน: "+phase.stop+"\n\nยังไม่ได้บันทึก "+missing.length+" รายการในช่วงนี้ การไปหน้าถัดไปไม่ได้ทำให้เควสต์ปลอดภัย ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
+    "STOP checkpoint unresolved: "+(phase.stopEN||phase.stop)+"\n\n"+missing.length+" task(s) remain unchecked in this step. Viewing the next step does not make the quest safe. Skip for review?"
+   )))return;
+  }else if(missing.length){
+   const first=missing[0],entry=collections[first.type].find(x=>x.id===first.id);
+   const nextName=entry?label(entry,first.type):"ID "+first.id;
+   if(!confirm(tr(
+    "ยังมี "+missing.length+" รายการที่ไม่ได้ติ๊กในช่วงนี้\nรายการแรก: "+nextName+"\n\nควรตรวจในเกมก่อนเดินเรื่องต่อ ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
+    missing.length+" unchecked task(s) remain in this step.\nFirst: "+nextName+"\n\nCheck these in-game before progressing. Skip to preview the next step?"
+   )))return;
+  }
   goto(chosen+1,false,"next");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";

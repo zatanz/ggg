@@ -36,6 +36,14 @@ Help players manually complete the four tracked achievements: All Ears, No Stone
 - Do not blur **bookkeeping marks** with a game-side achievement unlock. Source questions and conflicting deadlines must remain explicitly historical, including Act 2 Bandits, Act 7 Yeena/Helena timing and Act 9 alternate Highgate ruler dialogue.
 - Verify **both languages in Chromium**, including search/filter, stop gates, linked quest steps, special-area Lore, source certification notices, and 375px layout. Check the meaningful instructions in both languages, not only whether the setting persists.
 
+## Historical quest risk panels — bilingual source integrity
+
+- Keep `critical-checkpoints.js` as the **historical source-of-truth** for 39 NPC risk groups, 3 post-quest reminders and original local IDs. English editorial metadata lives in `poe-critical-language.js`, loaded directly after historical checkpoints. Do not rewrite canonical source IDs to accommodate translations.
+- English critical cards must translate not only titles but **each quest-state deadline, STOP action, source-conflict caveat, per-dialogue unlock/caution and checkbox confirmation**. The original Thai evidence remains under a clearly labelled secondary disclosure, never as the primary English instructions.
+- Act 2 Bandit UI includes independently persisted per-character first/second kill choices. Translate checkboxes, option labels and surviving-Bandit explanations, but preserve the original stored values and note Steam versus PoE Wiki disagreement.
+- Quest rewards are **not** achievement checkmarks. When translating reward headings, passive/refund recommendations or quest categories, explicitly distinguish rewards from the four tracked achievement corpora.
+- New editorial copy is tested with real Chromium interactions in both languages. Match exactly 39 risk group IDs and three post-quest IDs; do not treat passing browser tests as gameplay evidence for patch 3.30.
+
 ## Act 6 and later — source-state chronology
 
 - Crosswalk Wiki row numbers to the original local IDs before building phases. Wiki numbers and local IDs can differ.

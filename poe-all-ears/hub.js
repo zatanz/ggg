@@ -26,7 +26,7 @@ const walkExpanded=new Set(); // Current-step Lore/Waypoint/sidequest disclosure
 const historicalOpen=new Set();
 const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
-const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{}};
+const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null};
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
@@ -69,7 +69,7 @@ function scopeSnapshot(scope){
 }
 function openJourneyScope(scope){
  if(state.tab!=="route")openTab("route");
- state.act=String(scope);state.routeAct=String(scope);state.status="all";state.search="";state.limit=12;
+ state.act=String(scope);state.routeAct=String(scope);state.skippedRisk=null;state.status="all";state.search="";state.limit=12;
  renderToolbar();renderView();
 }
 function fairgravesCurrentRisk(){
@@ -460,7 +460,7 @@ function actSteamGuide(act){
  select.value=String(chosen);
  const goto=(i,reviewSkip=false)=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
-  if(reviewSkip&&["1","2","3","4","5","6","7","8","9","10"].includes(act)&&target>chosen){
+  if(reviewSkip&&["7","8","9","10"].includes(act)&&target>chosen){
    const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
    if(outstanding.length){
     const first=outstanding[0];
@@ -471,6 +471,12 @@ function actSteamGuide(act){
     if(!confirm(msg)){select.value=String(chosen);return;}
    }
   }
+  // In early Acts, navigation is a preview: preserve an explicit, reviewable skip notice
+  // instead of falsely treating a UI jump as quest-state completion.
+  if(reviewSkip&&["1","2","3","4","5","6"].includes(act)&&target>chosen){
+   const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
+   state.skippedRisk=outstanding.length?{act,from:outstanding[0].id,count:outstanding.length}:null;
+  }else if(state.skippedRisk?.act===act&&target<=chosen){state.skippedRisk=null;}
   state.steamFocusByAct[act]=target;renderView();
   document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});
  };
@@ -490,6 +496,19 @@ function actSteamGuide(act){
  jump.dataset.jumpIncomplete="true";jump.disabled=start<0||chosen===start;
  jump.onclick=()=>goto(start<0?0:start,true);
  control.append(position,jump,select,prev,next);box.append(control);
+ if(state.skippedRisk?.act===act){
+  const skipped=state.skippedRisk,first=phases.findIndex(p=>p.id===skipped.from),origin=phases[first];
+  if(origin&&first>=0){
+   const notice=el("section",undefined,"hubSkippedRisk");
+   notice.dataset.skippedRisk=act;notice.setAttribute("role","status");
+   notice.append(el("strong",tr("คุณข้ามจุดตรวจที่ยังไม่ได้บันทึก "+skipped.count+" ช่วง","You skipped "+skipped.count+" unchecked STOP checkpoint(s)")),
+    el("p",tr("จุดแรก: ","First unresolved step: ")+(descEN()?(origin.stopEN||origin.headingEN||origin.place):origin.stop||origin.heading)));
+   const review=el("button",tr("กลับไปตรวจจุดแรก","Review first missed checkpoint"));review.type="button";
+   review.onclick=()=>{state.skippedRisk=null;state.steamFocusByAct[act]=first;renderView();document.querySelector('[data-steam-act="'+act+'"]')?.scrollIntoView({block:"start"});};
+   notice.append(review,el("small",tr("การเลื่อนหน้าคู่มือไม่เปลี่ยนสถานะเควสต์ในเกม · ยังไม่ใช่หลักฐานว่าเก็บครบ","Guide navigation does not change game quest states or certify achievement completion.")));
+   box.append(notice);
+  }
+ }
  const head=el("div",undefined,"hubWalkFocus");
  head.append(el("h4",descEN()?(phase.headingEN||("Route step: "+phase.place)):phase.heading),
  el("p",tr("พื้นที่: ","Area: ")+gameName(phase.place)+" · "+tr("เควสต์: ","Quest: ")+gameName(phase.quest)));

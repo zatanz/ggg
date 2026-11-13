@@ -85,3 +85,7 @@
 - Independent language controls: guidance TH/EN and quest/area/item names EN/TH/both. Canonical English source always recoverable; Thai names are explicitly editorial, not official.
 - Stage-level four-achievement progress, STOP Next confirmation and visible mobile Act grid reduce missing quest information and horizontal-navigation confusion.
 - 2 original conceptual Act 5 images bring total to 11. Project-scoped skill: `../.agents/skills/poe-achievement-ux/SKILL.md`. See [Act 5 bilingual/UX evidence](./ACT5-BILINGUAL-UX-AUDIT.md). Acts 6–10 still need source-led stages; no patch 3.30 in-game certification yet.
+
+## Act 6 interleaved bilingual quest route (2026-11-13)
+
+Act 6 is implemented as **15 source-led quest-state phases** with exactly **44 original All Ears NPC dialogue, 6 Lore, 10 Waypoints and 4 No Loose Ends quests = 64 original IDs**, no new checklist data or backup schema changes. It includes distinct before/after Eye of Conquest decisions, Shavronne and Ryslatha dialogue checks and Weylam's two topics before Tsoagoth. Guidance actions and warnings exist in Thai and English; source game names are available in English, editorial Thai or both. Players see the current stage before the optional overall mission panel, use category jumps and keep expanded task lists open when checking an item. Two original conceptual images bring total to **13**. See [ACT6-GUIDED-UX-AUDIT.md](./ACT6-GUIDED-UX-AUDIT.md). Not certified for 3.30 gameplay; Act 7–10 remain.

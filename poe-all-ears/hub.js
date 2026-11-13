@@ -10,7 +10,7 @@ const totals={ears:484,lore:140,waypoints:91,sidequests:30};
 const rewardIndex=window.POE_QUEST_REWARDS?.acts||[];
 const rewardsByQuest=new Map(rewardIndex.flatMap(a=>a.quests.map(q=>[String(a.act)+"|"+q.name,q])));
 const rewardTypes={passive:"Passive Skill Point",refund:"Passive Refund Point",gem:"Skill / Support Gem",item:"ไอเทม / อุปกรณ์",choice:"ตัวเลือก Bandits"};
-const rewardPriority=q=>q.type==="passive"?"ควรเก็บ · Passive Point":q.type==="refund"?"ควรเก็บ · Refund Point":q.type==="choice"?"ระวัง · มีผลต่อทางเลือก":"ตามความต้องการ · ไม่ใช่รางวัล Achievement";
+const rewardPriority=q=>q.type==="passive"?tr("ควรเก็บ · Passive Point","Useful · Passive Skill Point"):q.type==="refund"?tr("ควรเก็บ · Refund Point","Useful · Passive Refund Point"):q.type==="choice"?tr("ระวัง · มีผลต่อทางเลือก","Choice affects your character"):tr("ตามความต้องการ · ไม่ใช่รางวัล Achievement","Optional reward · not an achievement unlock");
 const itemPriority=(type,item,guide)=>type==="ears"&&(guide?.caution||(window.POE_WORKBOOK_WARNINGS?.wikiRows||[]).includes(getRisk({type:"ears",id:item.id,act:item.act})?.wikiRow))?"ระวังพลาด":type==="sidequests"?"จำเป็นต่อ No Loose Ends":type==="ears"?"จำเป็นต่อ All Ears":type==="lore"?"จำเป็นต่อ No Stone Unturned":"จำเป็นต่อ Locomancer";
 
 const names={ears:"All Ears",lore:"No Stone Unturned",waypoints:"Locomancer",sidequests:"No Loose Ends"};
@@ -192,20 +192,20 @@ const group=rewardIndex.find(x=>String(x.act)===String(act));if(!group||!group.q
 const chapter=el("details",undefined,"hubChapter hubRewards");chapter.dataset.extra="rewards";
 const summary=el("summary"),heading=el("span",undefined,"hubChapterTitle");
 const major=group.quests.filter(q=>q.type==="passive"||q.type==="refund").length;
-heading.append(el("strong","รางวัลเควสต์ใน Act นี้"),el("small",major+" เควสต์ให้ Passive/Refund Point · "+group.quests.length+" เควสต์ในฐานข้อมูล"));
-summary.append(heading,el("span","เปิดดูรางวัล","hubChapterCount"));chapter.append(summary);
+heading.append(el("strong",tr("รางวัลเควสต์ใน Act นี้","Quest rewards in this Act")),el("small",major+tr(" เควสต์ให้ Passive/Refund Point · "," quests grant Passive / Refund Points · ")+group.quests.length+tr(" เควสต์ในฐานข้อมูล"," quests in the historical reward index")));
+summary.append(heading,el("span",tr("เปิดดูรางวัล","View rewards"),"hubChapterCount"));chapter.append(summary);
 const content=el("div",undefined,"hubChapterBody");
-content.append(el("p","แสดงรางวัลตามเควสต์ (ข้อมูลอ้างอิงเดิม) · ไม่ใช่รายการที่นับใน Achievement · คำว่า ควรเก็บ หมายถึงรางวัล Passive/Refund Point ไม่ได้ยืนยันว่าเป็นเควสต์จำเป็นต่อเนื้อเรื่อง","hubSubtle"));
+content.append(el("p",tr("แสดงรางวัลตามเควสต์ (ข้อมูลอ้างอิงเดิม) · ไม่ใช่รายการที่นับใน Achievement · คำว่า ควรเก็บ หมายถึงรางวัล Passive/Refund Point ไม่ได้ยืนยันว่าเป็นเควสต์จำเป็นต่อเนื้อเรื่อง","Historical quest rewards are listed for convenience and do not count as achievement checklist entries. Useful means it grants Passive or Refund Points, not that the quest is mandatory for story progression."),"hubSubtle"));
 const list=el("div",undefined,"hubRewardList");
 for(const q of [...group.quests].sort((a,b)=>Number(["passive","refund","choice"].includes(b.type))-Number(["passive","refund","choice"].includes(a.type)))){
 const card=el("div",undefined,"hubRewardRow"),title=el("div",undefined,"hubRewardName");
 title.append(el("strong",q.name),el("span",rewardPriority(q),"hubRewardKind"));
 card.append(title,el("p",q.reward,"hubRewardText"));
 const achievement=collections.sidequests.some(item=>String(item.act)===String(act)&&item.name===q.name);
-card.append(el("p",achievement?"จำเป็นต่อ No Loose Ends · เมื่อทำเควสต์นี้สำเร็จ ให้ทำเครื่องหมายในหมวดเควสต์รอง":"ไม่อยู่ในรายการ No Loose Ends ที่ใช้อ้างอิง · ไม่ได้หมายความว่าข้ามเควสต์เนื้อเรื่องได้","hubSubtle"));
+card.append(el("p",achievement?tr("จำเป็นต่อ No Loose Ends · เมื่อทำเควสต์นี้สำเร็จ ให้ทำเครื่องหมายในหมวดเควสต์รอง","Tracked by No Loose Ends · mark the side-quest checklist only after finishing the quest"):tr("ไม่อยู่ในรายการ No Loose Ends ที่ใช้อ้างอิง · ไม่ได้หมายความว่าข้ามเควสต์เนื้อเรื่องได้","Not in the historical No Loose Ends checklist · this does not mean you can skip a story quest"),"hubSubtle"));
 list.append(card);}
 content.append(list);
-const source=el("a","ตรวจรางวัลตามแพตช์จาก PoE Wiki");source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
+const source=el("a",tr("ตรวจรางวัลตามแพตช์จาก PoE Wiki","Check current quest rewards on PoE Wiki"));source.href=window.POE_QUEST_REWARDS.source;source.target="_blank";source.rel="noopener noreferrer";content.append(source);chapter.append(content);return chapter;
 }
 function criticalPanel(act){
  const all=window.POE_CRITICAL_CHECKPOINTS;
@@ -214,21 +214,21 @@ function criticalPanel(act){
  const section=el("section",undefined,"hubCritical");
  section.dataset.criticalAct=act;
  const title=el("div",undefined,"hubCriticalTitle");
- title.append(el("h3","ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด"),el("p","กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.30","hubSubtle"));
+ title.append(el("h3",tr("ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด","Before advancing · missable dialogue checkpoints")),el("p",tr("กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.30","Historical 2025 risk groups. Individual dialogue topics can unlock at different quest stages; check each condition before acting. This is not a patch 3.30-certified complete route."),"hubSubtle"));
  section.append(title);
  const already=new Set(entries("ears"));
  const sorted=[...stages]; // Preserve authored stage/source grouping; urgency is a label, never reorders quest timing.
  const riskLeft=sorted.filter(s=>!s.ids.every(id=>already.has(id))).length;
- section.append(el("div","ยังมี "+riskLeft+" / "+stages.length+" กลุ่มที่ทำเครื่องหมายไม่ครบ (บันทึกด้วยมือ)","hubCriticalCount"));
+ section.append(el("div",tr("ยังมี ","Still unchecked: ")+riskLeft+" / "+stages.length+tr(" กลุ่ม (ติ๊กเองในเว็บ)"," historical checkpoint groups · manual marks only"),"hubCriticalCount"));
  const index=Math.max(0,Math.min(stages.length-1,Number(state.focusByAct[act])||0));
  state.focusByAct[act]=index;
  const nav=el("div",undefined,"hubStepNavigator");
- const position=el("div","ขั้นตรวจ "+(index+1)+" / "+stages.length,"hubStepPosition");
- const select=el("select");select.setAttribute("aria-label","เลือกขั้นตรวจสำคัญ");
- stages.forEach((stage,i)=>{const option=el("option",(i+1)+". "+stage.heading);option.value=String(i);select.append(option);});
+ const position=el("div",tr("ขั้นตรวจ ","Checkpoint ")+(index+1)+" / "+stages.length,"hubStepPosition");
+ const select=el("select");select.setAttribute("aria-label",tr("เลือกขั้นตรวจสำคัญ","Select historical risk checkpoint"));
+ stages.forEach((stage,i)=>{const eng=window.POE_CRITICAL_LANGUAGE?.acts?.[stage.id];const option=el("option",(i+1)+". "+(descEN()&&eng?eng[0]:stage.heading));option.value=String(i);select.append(option);});
  select.value=String(index);
  select.onchange=()=>{state.focusByAct[act]=Number(select.value);renderView();};
- const previous=el("button","ก่อนหน้า"),next=el("button","ถัดไป");
+ const previous=el("button",tr("ก่อนหน้า","Previous")),next=el("button",tr("ถัดไป","Next"));
  previous.type="button";previous.disabled=index===0;next.type="button";next.disabled=index===stages.length-1;
  previous.onclick=()=>{state.focusByAct[act]=index-1;renderView();};
  next.onclick=()=>{state.focusByAct[act]=index+1;renderView();};
@@ -236,11 +236,12 @@ function criticalPanel(act){
  const idToEntry=new Map(E.items.map(x=>[x.id,x]));
  for(const stage of [sorted[index]]){
   const n=stage.ids.filter(id=>already.has(id)).length;
+  const en=descEN()?window.POE_CRITICAL_LANGUAGE?.acts?.[stage.id]:null;
   const details=el("details",undefined,"hubCheckpoint");details.dataset.stage=stage.id;
   details.open=true;
   const summary=el("summary"),heading=el("span",undefined,"hubCheckpointTitle");
-  heading.append(el("strong",stage.heading),el("small",stage.before));
-  const stateText=el("span",n===stage.ids.length?"เก็บครบในเว็บ":"ยังขาด "+(stage.ids.length-n),"hubCheckpointState"+(n===stage.ids.length?" complete":""));
+  heading.append(el("strong",en?en[0]:stage.heading),el("small",en?en[1]:stage.before));
+  const stateText=el("span",n===stage.ids.length?tr("เก็บครบในเว็บ","All marked in this guide"):tr("ยังขาด ","Still unchecked: ")+(stage.ids.length-n),"hubCheckpointState"+(n===stage.ids.length?" complete":""));
   summary.append(heading,stateText);details.append(summary);
   const inside=el("div",undefined,"hubCheckpointBody");
   const rule=stage.stopRule;
@@ -248,57 +249,60 @@ function criticalPanel(act){
     const missing=rule.requiredIds.filter(id=>!already.has(id));
     const guard=el("div",undefined,"hubStopGate"+(missing.length?" blocked":" reviewed"));
     guard.dataset.stopStage=stage.id;guard.dataset.stopState=missing.length?"hold":"review";
-    guard.append(el("strong",missing.length?"ยังไม่ควรทำ: "+rule.action:"รายการก่อนผ่านจุดนี้บันทึกครบแล้ว — ตรวจในเกมอีกครั้ง"));
-    guard.append(el("p",rule.note));
-    guard.append(el("div",missing.length?"ขาดอีก "+missing.length+" บทสนทนาก่อนผ่านจุดนี้":"การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.30","hubStopPending"));
+    guard.append(el("strong",missing.length?tr("ยังไม่ควรทำ: ","STOP before: ")+(en?en[2]:rule.action):tr("รายการก่อนผ่านจุดนี้บันทึกครบแล้ว — ตรวจในเกมอีกครั้ง","All required topics are marked · verify in-game before advancing")));
+    guard.append(el("p",en?en[1]:rule.note));
+    guard.append(el("div",missing.length?tr("ขาดอีก ","Still unchecked: ")+missing.length+tr(" บทสนทนาก่อนผ่านจุดนี้"," dialogues before this transition"):tr("การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.30","Checkmarks do not certify the correct quest state for patch 3.30."),"hubStopPending"));
     inside.append(guard);
   }
   if(stage.sourceConflict){
     const conflict=el("div",undefined,"hubResearchConflict");
     conflict.dataset.conflict=stage.sourceConflict.kind;
-    conflict.append(el("strong","ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย"),el("p",stage.sourceConflict.summary));
-    const steam=el("a","คู่มือ Steam");steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
+    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"Steam and PoE Wiki differ about the Bandits / Ancient Seal sequence. Confirm the actual dialogue in-game before making an irreversible choice; this route is not patch-certified.":stage.sourceConflict.summary));
+    const steam=el("a",tr("คู่มือ Steam","Steam guide"));steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
   }
-  if(stage.patchAlert)inside.append(el("div",stage.patchAlert,"hubResearchConflict"));
-  inside.append(el("p",stage.action,"hubCheckpointAction"));
+  if(stage.patchAlert){inside.append(el("div",en?(stage.id==="a1-fairgraves"?"Patch 3.29 reports describe Fairgraves dialogue #34–38 as unavailable. Patch 3.30 is unverified; do not mark these topics unless actually heard.":"A historical NPC dialogue availability report exists; patch 3.30 is unverified."):stage.patchAlert,"hubResearchConflict"));if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai patch report"),el("p",stage.patchAlert));inside.append(original);}}
+  inside.append(el("p",en?en[1]:stage.action,"hubCheckpointAction"));
   const detailsWhy=el("details",undefined,"hubCheckpointWhy");
-  detailsWhy.append(el("summary","ทำไมต้องระวัง / เงื่อนไขเพิ่มเติม"),el("p",stage.risk,"hubCheckpointRisk"));
+  detailsWhy.append(el("summary",tr("ทำไมต้องระวัง / เงื่อนไขเพิ่มเติม","Why this can be missed / source conditions")),el("p",en?en[3]:stage.risk,"hubCheckpointRisk"));
   inside.append(detailsWhy);
   if(act==="2"&&stage.id==="a2-darkness"){
     const safety=el("details",undefined,"hubCheckpointSafety");
     safety.open=true;
-    safety.append(el("summary","บันทึกว่าคุยกับ Bandits / เปิด Ancient Seal แล้ว"),safetyPanel());
+    safety.append(el("summary",tr("บันทึกว่าคุยกับ Bandits / เปิด Ancient Seal แล้ว","Record Bandit conversations / Ancient Seal state")),safetyPanel());
     inside.append(safety);
   }
   const req=el("div",undefined,"hubCheckpointRows");
   for(const id of stage.ids){
     const item=idToEntry.get(id);
     if(!item)continue;
-    const line=el("label",undefined,"hubCheckpointRow"),check=el("input"),info=el("span",undefined,"hubCheckpointItemInfo"),name=el("span",label(item,"ears"),"hubCheckpointItemName"),marked=el("span",already.has(id)?"ฟังแล้ว":"ยังไม่ฟัง","hubCheckpointRowState");
+    const line=el("label",undefined,"hubCheckpointRow"),check=el("input"),info=el("span",undefined,"hubCheckpointItemInfo"),name=el("span",label(item,"ears"),"hubCheckpointItemName"),marked=el("span",already.has(id)?tr("ฟังแล้ว","Heard in-game"):tr("ยังไม่ฟัง","Not heard yet"),"hubCheckpointRowState");
     const guide=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
     const fromSource=getRisk({type:"ears",id,act:Number(act)});
-    const condition=guide?.unlock||fromSource?.trigger||"";
-    const caution=guide?.caution||fromSource?.before||"";
+    const displayed=descEN()?LANG.englishHelp("ears",item,guide):guide;
+    const condition=displayed?.unlock||(descEN()?"":fromSource?.trigger)||"";
+    const caution=displayed?.caution||(descEN()?"":fromSource?.before)||"";
     info.append(name);
-    if(condition)info.append(el("small","เปิดเมื่อ: "+condition,"hubCheckpointRowTrigger"));
-    if(caution)info.append(el("small","ต้องตรวจ: "+caution,"hubCheckpointRowWarning"));
-    if(!condition&&!caution)info.append(el("small","ยังไม่มีเงื่อนไขรายบรรทัดในไฟล์ต้นทาง · ตรวจคู่มือก่อนเดินต่อ","hubCheckpointRowUnknown"));
+    if(condition)info.append(el("small",tr("เปิดเมื่อ: ","Available when: ")+condition,"hubCheckpointRowTrigger"));
+    if(caution)info.append(el("small",tr("ต้องตรวจ: ","Do not miss: ")+caution,"hubCheckpointRowWarning"));
+    if(!condition&&!caution)info.append(el("small",tr("ยังไม่มีเงื่อนไขรายบรรทัดในไฟล์ต้นทาง · ตรวจคู่มือก่อนเดินต่อ","No verified per-topic trigger is available in the historical source; check before advancing."),"hubCheckpointRowUnknown"));
     check.type="checkbox";check.checked=already.has(id);check.dataset.checkpointId=String(id);
-    check.setAttribute("aria-label","ฟังบทสนทนาแล้ว — "+label(item,"ears"));
+    check.setAttribute("aria-label",tr("ฟังบทสนทนาแล้ว — ","Dialogue heard in-game — ")+label(item,"ears"));
     check.addEventListener("change",()=>{
       const hint=window.POE_ITEM_DESCRIPTIONS?.get("ears",item,act==="2"?getSafety():undefined);
-      if(check.checked&&hint?.caution&&!confirm("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n"+hint.caution+"\n\nฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?")){check.checked=false;return;}
+      const displayedHint=descEN()?LANG.englishHelp("ears",item,hint):hint;
+      if(check.checked&&hint?.caution&&!confirm(tr("จุดที่อาจพลาดตาม Wiki ปี 2025 (ยังไม่รับรอง 3.30):\n","Missable topic in the 2025 Wiki (not verified for patch 3.30):\n")+(displayedHint?.caution||hint.caution)+"\n\n"+tr("ฟังบทสนทนานี้ในเกมจริงแล้วใช่หรือไม่?","Did you finish listening to this topic in-game?"))){check.checked=false;return;}
       writeMarks("ears",id,check.checked);
     });
     line.append(check,info,marked);req.append(line);
   }
   inside.append(req);
   const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
-  if(reward){inside.append(el("div","เควสต์ที่เกี่ยวข้อง: "+stage.quest+" · รางวัลอ้างอิง: "+reward.reward,"hubCheckpointReward"));}
-  const ref=el("a","ตรวจเงื่อนไขกับ PoE Wiki");ref.href=stage.source;ref.target="_blank";ref.rel="noopener noreferrer";
-  inside.append(el("p","ข้อมูลปี 2025 · ต้องตรวจซ้ำในเกมตามแพตช์ที่เล่น","hubSubtle"),ref);
+  if(reward){inside.append(el("div",tr("เควสต์ที่เกี่ยวข้อง: ","Related quest: ")+stage.quest+tr(" · รางวัลอ้างอิง: "," · historical reward: ")+reward.reward,"hubCheckpointReward"));}
+  const ref=el("a",tr("ตรวจเงื่อนไขกับ PoE Wiki","Verify conditions on PoE Wiki"));ref.href=stage.source;ref.target="_blank";ref.rel="noopener noreferrer";
+  inside.append(el("p",tr("ข้อมูลปี 2025 · ต้องตรวจซ้ำในเกมตามแพตช์ที่เล่น","2025 historical source · verify dialogue and quest state in your actual patch"),"hubSubtle"),ref);
+  if(en){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai source notes"),el("p",stage.before),el("p",stage.action),el("p",stage.risk));inside.append(original);}
   details.append(inside);
   details.addEventListener("toggle",()=>{if(details.open)criticalOpen.add(stage.id);else criticalOpen.delete(stage.id);});
   section.append(details);
@@ -311,22 +315,22 @@ function postQuestPanel(act){
  const section=el("section",undefined,"hubCritical hubPostQuests");
  section.dataset.postAct=String(act);
  const head=el("div",undefined,"hubCriticalTitle");
- head.append(el("h3","หลังจบเควสต์ · กลับไปคุย NPC"),el("p","รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","hubSubtle"));section.append(head);
+ head.append(el("h3",tr("หลังจบเควสต์ · กลับไปคุย NPC","After quest completion · revisit the NPC")),el("p",tr("รายการที่คู่มือปี 2025 ระบุว่าเปิดหลังส่งเควสต์ ไม่ใช่คำเตือนว่าพลาดถาวรหรือเส้นทางที่ตรวจแล้วในแพตช์ 3.30","These 2025 source topics unlock after a quest turn-in. They are not automatically permanently missable and have not been gameplay-verified for patch 3.30."),"hubSubtle"));section.append(head);
  const entriesDone=new Set(entries("ears"));
  const lookup=new Map(E.items.map(x=>[x.id,x]));
  for(const stage of stages){
   const detail=el("details",undefined,"hubCheckpoint hubPostQuest"),summary=el("summary");
   detail.dataset.postStage=stage.id;detail.open=postQuestOpen.has(stage.id);
-  const title=el("span",undefined,"hubCheckpointTitle");title.append(el("strong",stage.title),el("small",stage.timing));
+  const title=el("span",undefined,"hubCheckpointTitle"),en=descEN()?window.POE_CRITICAL_LANGUAGE?.postQuest?.[stage.id]:null;title.append(el("strong",en?en[0]:stage.title),el("small",en?en[1]:stage.timing));
   const complete=stage.ids.every(id=>entriesDone.has(id));
-  summary.append(title,el("span",complete?"บันทึกแล้ว":"ยังไม่บันทึก","hubCheckpointState"+(complete?" complete":"")));
+  summary.append(title,el("span",complete?tr("บันทึกแล้ว","Marked in guide"):tr("ยังไม่บันทึก","Not marked yet"),"hubCheckpointState"+(complete?" complete":"")));
   detail.append(summary);
   const body=el("div",undefined,"hubCheckpointBody");
-  body.append(el("p","หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
+  body.append(el("p",en?en[1]: "หลังจบเควสต์แล้ว ให้กลับไปคุย NPC ตามหัวข้อในรายการด้านล่าง และทำเครื่องหมายเมื่อฟังในเกมจริง","hubCheckpointAction"));
   for(const id of stage.ids){const x=lookup.get(id);if(x)body.append(itemCard("ears",x));}
   const reward=rewardsByQuest.get(String(act)+"|"+stage.quest);
-  if(reward)body.append(el("p","รางวัลอ้างอิง "+stage.quest+": "+reward.reward+" · ข้อมูลเก่า ยังไม่รับรอง 3.30","hubCheckpointReward"));
-  const link=el("a","ตรวจต้นทางบน PoE Wiki");link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
+  if(reward)body.append(el("p",tr("รางวัลอ้างอิง ","Historical reward for ")+stage.quest+": "+reward.reward+tr(" · ข้อมูลเก่า ยังไม่รับรอง 3.30"," · not patch 3.30-certified"),"hubCheckpointReward"));
+  const link=el("a",tr("ตรวจต้นทางบน PoE Wiki","Check the original PoE Wiki entry"));link.href=stage.source;link.target="_blank";link.rel="noopener noreferrer";
   body.append(link);detail.append(body);
   detail.addEventListener("toggle",()=>{if(detail.open)postQuestOpen.add(stage.id);else postQuestOpen.delete(stage.id)});
   section.append(detail);
@@ -397,10 +401,10 @@ function supplementalWarnings(act){
  const chapter=el("details",undefined,"hubChapter hubExcelWarnings");
  chapter.dataset.excelAct=String(act);
  const sum=el("summary"),label=el("span",undefined,"hubChapterTitle");
- label.append(el("strong","คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม"),el("small","อีก "+unmatched.length+" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"));
+ label.append(el("strong",tr("คำเตือนจาก Excel ที่ต้องตรวจเพิ่ม","More historical spreadsheet warnings")),el("small",tr("อีก ","Still outside the main checkpoints: ")+unmatched.length+tr(" บทสนทนายังไม่อยู่ในขั้นตรวจหลัก · ไม่ได้ยืนยันแพตช์ 3.30"," NPC topics · patch 3.30 not verified")));
  sum.append(label,el("span",unmatched.filter(r=>entries("ears").includes(r.id)).length+" / "+unmatched.length,"hubChapterCount"));chapter.append(sum);
  const body=el("div",undefined,"hubChapterBody");
- body.append(el("p","ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","hubSubtle"));
+ body.append(el("p",tr("ไฟล์อ้างอิงติด WARNING ให้รายการเหล่านี้ แต่ยังไม่มีหลักฐานเพียงพอจะวางตำแหน่งในลำดับเควสต์หลักได้อย่างปลอดภัย โปรดตรวจเงื่อนไขก่อนเดินเรื่องต่อ","The original spreadsheet flags these topics, but we lack enough evidence to place them safely in the main quest sequence. Read each source-linked condition before changing quest state."),"hubSubtle"));
  const items=new Map(E.items.map(x=>[x.id,x])),list=el("div",undefined,"hubList");
  unmatched.forEach(r=>{const item=items.get(r.id);if(item)list.append(itemCard("ears",item));});
  body.append(list);chapter.append(body);return chapter;
@@ -708,7 +712,7 @@ if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  if(["2","3","4","5","6","7","8","9","10"].includes(act)){const more=el("details",undefined,"hubHistoricalRisks");more.dataset.historicalRisks=act;more.open=historicalOpen.has(act);const summary=el("summary",tr("ตรวจจุดเสี่ยงรายเควสต์เพิ่มเติม · แหล่งอ้างอิง PoE Wiki","More historic quest warnings · PoE Wiki evidence"));summary.onclick=()=>{if(more.open)historicalOpen.delete(act);else historicalOpen.add(act);};more.append(summary);const critical=criticalPanel(act);if(critical)more.append(critical);more.addEventListener("toggle",()=>{if(!more.isConnected)return;if(more.open)historicalOpen.add(act);else historicalOpen.delete(act);});panel.append(more);}
  }else{panel.append(actMission);const critical=criticalPanel(act);if(critical)panel.append(critical);}
 const extraWarn=supplementalWarnings(act);if(extraWarn)panel.append(extraWarn);
-if(act==="10"){panel.append(el("p","Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
+if(act==="10"){panel.append(el("p",tr("Act 10: ยังไม่พบคำเตือนชนิดก่อนเปลี่ยนสถานะเควสต์ในฐานข้อมูลปี 2025 ไม่ได้หมายความว่า Act 10 ปลอดภัย หรือใช้ยืนยันแพตช์ 3.30 ได้","Act 10: the 2025 source has no separate pre-transition STOP groups for this Act. That does not prove Act 10 is safe or certify completion in patch 3.30."),"hubNotice"));const followup=postQuestPanel(act);if(followup)panel.append(followup);}
 ["ears","lore","waypoints","sidequests"].forEach(type=>{
 const rows=records(type,act),count=rows.filter(x=>entries(type).includes(x.id)).length;
 const chapter=el("details",undefined,"hubChapter");chapter.dataset.group=type;
@@ -723,39 +727,93 @@ summary.addEventListener("click",()=>{if(state.search.trim())return;const key=ac
 chapter.addEventListener("toggle",()=>{if(!chapter.isConnected||state.search.trim())return;const key=act+":"+type;if(chapter.open)routeOpen.add(key);else routeOpen.delete(key);});
 panel.append(chapter);
 });const rewardChapter=renderActRewards(act);if(rewardChapter)panel.append(rewardChapter);target.append(panel);}
-function renderCategory(target,type){const panel=section(uiNames[type]+" · "+names[type]);
-const desc={lore:"Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่",
-waypoints:"รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด",
-sidequests:"Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง",
-ears:"All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)"};
+function renderCategory(target,type){const panel=section(categoryName(type)+" · "+names[type]);
+const desc={lore:tr("Lore 140 รายการ มีทั้ง Letters of Exile, หนังสือ Library, Labyrinth และ Vaal Side Areas; ชื่อ/ตำแหน่งจากคู่มือเก่า อาจต่างจากแพตช์ใหม่","140 historical Lore entries, including Letters of Exile, Library books, Labyrinth and Vaal Side Areas. Names and locations may have changed in later patches."),
+waypoints:tr("รายการ Waypoint 91 จุดจากชุดอ้างอิง 3.9 อาจไม่ตรงกับแพตช์ใหม่ทุกจุด","91 legacy Waypoint entries from patch 3.9 data. The actual current patch requirements may differ."),
+sidequests:tr("Side Quest 30 รายการจากชุดอ้างอิง 3.9 ต้องตรวจ quest-state ก่อนรับรอง","30 historical optional quest entries. Confirm each quest state and turn-in in-game before marking it."),
+ears:tr("All Ears 484 บทสนทนา (รายการเดิมแสดงด้านล่าง)","All Ears: 484 historical dialogue topics. Mark only conversations actually heard in-game.")};
 panel.append(el("p",desc[type],"hubSubtle"));
 if(type==="lore"){
  const specialPick=el("div",undefined,"hubLoreNavigation");
- specialPick.append(el("p","No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (รวม 140 ชิ้น)","hubSubtle"));
- [["Labyrinth","เปิดขั้นตอน The Labyrinth · 10"],["Vaal","เปิดคู่มือ Vaal Letter · 16"]].forEach(([scope,txt])=>{
+ specialPick.append(el("p",tr("No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (รวม 140 ชิ้น)","No Stone Unturned: Campaign 114 · Labyrinth 10 · Vaal Side Areas 16 (total 140 Lore entries)"),"hubSubtle"));
+ [["Labyrinth",tr("เปิดขั้นตอน The Labyrinth · 10","Open Labyrinth guide · 10")],["Vaal",tr("เปิดคู่มือ Vaal Letter · 16","Open Vaal Letter guide · 16")]].forEach(([scope,txt])=>{
   const btn=el("button",txt);btn.type="button";btn.onclick=()=>{state.routeAct=scope;openTab("route");};specialPick.append(btn);
  });
  panel.append(specialPick);
-const tips=el("p","สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","hubNotice");panel.append(tips);
-const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary","ค้นหา Vaal Letter ตามชื่อ Vaal Side Area"),vaalPanel());panel.append(vaal);
+const tips=el("p",tr("สำรวจ Lore ในเกมโดยคลิกวัตถุให้ระบบนับ ไม่จำเป็นต้องอ่านข้อความจนจบ · Letters of Exile และหนังสือใน The Library อาจต้องเข้า Instance ใหม่เพื่อให้พบทุกชิ้น","Interact with each Lore object in-game and verify the counter; you do not need to read every line. Letters of Exile and Library books may repeat across instances, so revisit until you find each distinct entry."),"hubNotice");panel.append(tips);
+const vaal=el("details",undefined,"hubChapter hubVaal");vaal.append(el("summary",tr("ค้นหา Vaal Letter ตามชื่อ Vaal Side Area","Find Vaal Letters by Side Area name")),vaalPanel());panel.append(vaal);
 }
 addList(panel,type,state.act,state.limit);target.append(panel);}
 function getSafety(){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};return r.safety&&typeof r.safety==="object"?r.safety:{};}
 function updateSafety(key,value){const c=active(),s=getBackupState(LORE),r=s.byCharacter[c.id]||{};r.safety=Object.assign({},r.safety||{}, {[key]:value});s.byCharacter[c.id]=r;
 try{localStorage.setItem(LORE,JSON.stringify(s));refresh();}catch(e){alert("บันทึกคำเตือน Act 2 ไม่ได้");}}
-function safetyPanel(){const wrap=el("div",undefined,"hubPanel");wrap.append(el("h3","ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness"),el("p","แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์","hubSubtle"));
-wrap.append(el("p","สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30","hubCheckpointRisk"));
-const grid=el("div",undefined,"hubCheckGrid"),checks=[["alira","เคยคุย Alira (ยังไม่รับรองเวลา)"],["oak","เคยคุย Oak (ยังไม่รับรองเวลา)"],["kraityn","เคยคุย Kraityn (ยังไม่รับรองเวลา)"],["seal","เปิด Ancient Seal แล้ว"],["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว"]];
-const s=getSafety();
-checks.forEach(([id,title])=>{const lab=el("label"),inp=el("input");inp.type="checkbox";inp.checked=s[id]===true;inp.dataset.safety=id;inp.onchange=()=>updateSafety(id,inp.checked);lab.append(inp,document.createTextNode(title));grid.append(lab);});
-wrap.append(grid);
-const choices=el("div",undefined,"hubControls");[["first","Bandit ที่ฆ่าคนแรก"],["second","Bandit ที่ฆ่าคนที่สอง"]].forEach(([k,l])=>{const div=el("div");const labelNode=el("label",l),sel=el("select");sel.dataset.kill=k;[["","ยังไม่ได้ฆ่า / ไม่แน่ใจ"],["Alira","Alira"],["Oak","Oak"],["Kraityn","Kraityn"]].forEach(([v,t])=>{const o=el("option",t);o.value=v;sel.append(o);});sel.value=s[k]||"";sel.onchange=()=>{const v=sel.value,other=k==="first"?"second":"first";if(v&&v===getSafety()[other]){alert("Bandits ที่ฆ่าคนแรกและคนที่สองต้องต่างกัน");sel.value=s[k]||"";return;}updateSafety(k,v);};div.append(labelNode,sel);choices.append(div);});wrap.append(choices);
-const status=el("div",undefined,"hubNotice"),ss=getSafety(),intro=["alira","oak","kraityn"].every(k=>ss[k]),before=ss.seal&&ss.darkness;
-let text=!before?"ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ — อย่าเพิ่งฆ่าหรือช่วย Bandits":"บันทึก Ancient Seal และ The Darkness แล้ว แต่ยังมีข้อขัดแย้งเรื่องลำดับคุย Bandits; ตรวจในเกมก่อนเลือกเส้นทาง";
-if((ss.first||ss.second)&&!before)text="ระวัง: บันทึกว่าฆ่า Bandit แล้วแต่ยังไม่ยืนยัน Ancient Seal / The Darkness — อาจพลาดบทสนทนา";
-status.className="hubNotice";status.textContent=text;wrap.append(status);
-if(ss.first||ss.second){const remaining=["Alira","Oak","Kraityn"].filter(k=>k!==ss.first&&k!==ss.second);wrap.append(el("p","หลังฆ่า Bandit ตัวแรก หัวข้อ Eramir จะเปลี่ยนตามตัวที่ฆ่า; หลังตัวที่สองขึ้นกับตัวที่รอด ("+(remaining.join(", ")||"ไม่มี")+") ตรวจหัวข้อจริงในเกม (Wiki แถว 101–103)","hubSubtle"));}
-const ref=el("a","อ่านเงื่อนไข Act 2 จาก PoE Wiki");ref.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2";ref.target="_blank";ref.rel="noopener noreferrer";wrap.append(ref);return wrap;}
+function safetyPanel(){
+ const wrap=el("div",undefined,"hubPanel");
+ wrap.append(
+   el("h3",tr("ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness","Before choosing Bandits · check The Darkness")),
+   el("p",tr("แหล่งอ้างอิงยังขัดแย้งเรื่องคุย Bandits ก่อนหรือหลัง Ancient Seal แต่เห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness ให้ทำเครื่องหมายเฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช้เครื่องหมายเหล่านี้รับรองลำดับเควสต์",
+     "Steam and PoE Wiki disagree on when to first speak with Bandits relative to the Ancient Seal. Both require checking Darkness dialogue before making an irreversible kill/help choice. These are manual notes, not proof of a patch-safe route."),"hubSubtle")
+ );
+ wrap.append(el("p",tr(
+   "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบการแก้ไขด้วย Book of Reform ในแพตช์ 3.30",
+   "All Ears caution: the 2025 route includes distinct Eramir topics after your first kill, second kill and all three kills. Helping a Bandit does not follow the same route. Whether Book of Reform repairs missed topics in patch 3.30 is unverified."
+ ),"hubCheckpointRisk"));
+ const s=getSafety(),grid=el("div",undefined,"hubCheckGrid");
+ const checks=[
+  ["alira","เคยคุย Alira (ยังไม่รับรองเวลา)","Spoke to Alira (timing unverified)"],
+  ["oak","เคยคุย Oak (ยังไม่รับรองเวลา)","Spoke to Oak (timing unverified)"],
+  ["kraityn","เคยคุย Kraityn (ยังไม่รับรองเวลา)","Spoke to Kraityn (timing unverified)"],
+  ["seal","เปิด Ancient Seal แล้ว","Opened the Ancient Seal"],
+  ["darkness","ฟัง The Darkness ครบตามเงื่อนไขแล้ว","Heard all applicable Darkness topics"]
+ ];
+ checks.forEach(([id,th,en])=>{
+   const label=el("label"),checkbox=el("input");
+   checkbox.type="checkbox";checkbox.checked=s[id]===true;checkbox.dataset.safety=id;
+   checkbox.onchange=()=>updateSafety(id,checkbox.checked);
+   label.append(checkbox,document.createTextNode(tr(th,en)));grid.append(label);
+ });
+ wrap.append(grid);
+ const choices=el("div",undefined,"hubControls");
+ [["first","Bandit ที่ฆ่าคนแรก","First Bandit you killed"],["second","Bandit ที่ฆ่าคนที่สอง","Second Bandit you killed"]].forEach(([key,th,en])=>{
+   const group=el("div"),name=el("label",tr(th,en)),select=el("select");
+   select.dataset.kill=key;
+   [["",tr("ยังไม่ได้ฆ่า / ไม่แน่ใจ","Not killed / unsure")],["Alira","Alira"],["Oak","Oak"],["Kraityn","Kraityn"]].forEach(([value,title])=>{
+      const opt=el("option",title);opt.value=value;select.append(opt);
+   });
+   select.value=s[key]||"";
+   select.onchange=()=>{
+     const value=select.value,other=key==="first"?"second":"first";
+     if(value&&value===getSafety()[other]){
+       alert(tr("Bandits ที่ฆ่าคนแรกและคนที่สองต้องต่างกัน","Your first and second defeated Bandits must be different."));
+       select.value=s[key]||"";return;
+     }
+     updateSafety(key,value);
+   };
+   group.append(name,select);choices.append(group);
+ });
+ wrap.append(choices);
+ const state=el("div",undefined,"hubNotice"),saved=getSafety(),sealed=!!(saved.seal&&saved.darkness);
+ let message=sealed?
+   tr("บันทึก Ancient Seal และ The Darkness แล้ว แต่คู่มือยังขัดแย้งเรื่องลำดับคุย Bandits · ตรวจในเกมก่อนเลือกเส้นทาง",
+      "Ancient Seal and Darkness are marked, but the historical guides still disagree on first-talk order. Check in-game before choosing."):
+   tr("ยังไม่ได้บันทึก Ancient Seal และ The Darkness ครบ · อย่าเพิ่งฆ่าหรือช่วย Bandits",
+      "Ancient Seal and Darkness are not both marked. Do not kill or help Bandits yet.");
+ if((saved.first||saved.second)&&!sealed)message=tr(
+   "ระวัง: บันทึกว่าฆ่า Bandit แล้ว แต่ยังไม่ยืนยัน Ancient Seal / The Darkness · อาจพลาดบทสนทนา",
+   "Warning: a Bandit kill was recorded before Seal / Darkness verification. Dialogue may already have been missed."
+ );
+ state.textContent=message;wrap.append(state);
+ if(saved.first||saved.second){
+   const remaining=["Alira","Oak","Kraityn"].filter(n=>n!==saved.first&&n!==saved.second);
+   wrap.append(el("p",tr(
+     "หลังฆ่าตัวแรก ให้คุย Eramir ตามชื่อ Bandit ที่ฆ่า; หลังฆ่าตัวที่สอง ให้คุยตามชื่อ Bandit ที่ยังรอด (",
+     "After your first kill, hear Eramir's topic for the defeated Bandit. After your second, hear the topic for the survivor ("
+   )+(remaining.join(", ")||tr("ไม่มี","none"))+tr(") · ต้องตรวจหัวข้อจริงในเกม (Wiki แถว 101–103)",") · verify actual in-game topics (Wiki rows 101–103)."),"hubSubtle"));
+ }
+ const wiki=el("a",tr("อ่านเงื่อนไข Act 2 จาก PoE Wiki","Review Act 2 requirements on PoE Wiki"));
+ wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2";wiki.target="_blank";wiki.rel="noopener noreferrer";wrap.append(wiki);
+ return wrap;
+}
 const vaalMap=[
 ["Abandoned Dam","Atziri Is My","The Dried Lake"],["Ancient Catacomb","Queen Atziri Forfeited","The Dried Lake"],["Arcane Chambers","What Did I","The Lunaris Temple"],["Blind Alley","Atziri Is My","The Quay / Grain Gate"],
 ["Clouded Ledge","I Had Nothing","The Ridge"],["Concealed Caldarium","I Had Nothing","The Bath House"],["Concealed Cavity","Atziri Promises Us","The Coast / Tidal Island (Act 6)"],["Covered-up Hollow","There Was No","The Den / Fellshrine Ruins"],["Cremated Archives","I Am Templar","The Torched Courts"],["Deathly Chambers","I Have Been","The Ossuary"],

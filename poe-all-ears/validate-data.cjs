@@ -554,7 +554,29 @@ for(const [act,phaseId,file,quest] of visualTargets){
 
 
 load('critical-checkpoints.js');
+load('poe-critical-language.js');
 const checkpointData=ctx.window.POE_CRITICAL_CHECKPOINTS;
+const checkpointLanguage=ctx.window.POE_CRITICAL_LANGUAGE;
+assert(checkpointLanguage.schema===1&&checkpointLanguage.patchCertified===false,'Critical EN captions must preserve historical non-certified status');
+const originalRisk=Object.values(checkpointData.acts).flat(),allRiskIds=originalRisk.map(x=>x.id);
+const englishRisk=Object.keys(checkpointLanguage.acts);
+assert(allRiskIds.length===39&&englishRisk.length===39&&sameExactSet(allRiskIds,englishRisk),'Exactly 39 canonical historical risk panels must have unique English copies');
+for(const stage of originalRisk){
+ const text=checkpointLanguage.acts[stage.id];
+ assert(Array.isArray(text)&&text.length===4&&text.every(v=>typeof v==='string'&&v.length>25&&!/[\u0E00-\u0E7F]/.test(v)),'English historical risk title, timing, gate and source caveat must be specific: '+stage.id);
+ assert(stage.ids.every(id=>d.items.some(item=>item.id===id)),'Historical source IDs cannot be changed for '+stage.id);
+ if(stage.stopRule)assert(text[2].length>25,'Missable STOP action cannot be omitted: '+stage.id);
+}
+const postQuestIds=Object.values(checkpointData.postQuest).flat().map(x=>x.id);
+assert(postQuestIds.length===3&&sameExactSet(postQuestIds,Object.keys(checkpointLanguage.postQuest)),'Three original Act 10 post-quest panels must have English copies');
+assert(postQuestIds.every(id=>checkpointLanguage.postQuest[id].length===2),'Post-quest English timing must accompany its title');
+const criticalHTML=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+assert(criticalHTML.includes('src="./poe-critical-language.js"'),'Critical language module must load in the live page');
+const criticalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
+assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.acts?.[stage.id]')&&criticalHub.includes('displayed?.unlock')&&criticalHub.includes('displayed?.caution'),'Critical UI must translate per-dialogue timing as well as panel headings');
+assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.postQuest?.[stage.id]'),'Act10 post-quest notes must use the English source text');
+assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Second Bandit you killed'),'Bandit safety selector must use the guidance language');
+
 assert(checkpointData.acts[2].find(x=>x.id==='a2-darkness')?.sourceConflict?.kind==='steam-vs-wiki','Bandit timing contradiction must remain prominently visible');
 const guarded=Object.values(checkpointData.acts).flatMap(stages=>stages.filter(s=>s.stopRule));
 assert(guarded.length>=20&&guarded.every(s=>s.stopRule.requiredIds.length&&s.stopRule.requiredIds.every(id=>s.ids.includes(id))),'Stop-before quest rules must tie to real per-stage dialogue IDs');

@@ -61,3 +61,18 @@ Specific cases include:
 Additional per-item English writing now distinguishes **15 randomly repeated Letters of Exile**, Library books that repeat by instance, changing Labyrinth room layouts, Vaal Side Area availability and obsolete Map Device instructions, and the separate requirement to complete a side quest's hand-in. It also identifies each NPC's actual **source-led Act, quest-stage headline and area** instead of the generic "find this topic at the appropriate quest stage."
 
 Browser QA now checks English Bandit names tied to selected Alira / Kraityn with Oak surviving, while leaving historic Thai source evidence available inside the original-source disclosure. No canonical ID, checked progress, locale setting key, ruler metadata or backup/export schema is changed. None of these editorial improvements establish 3.30 game-side achievement certification.
+
+## Bilingual historical risk-panel completion (November 13, 2026)
+
+Previously the standard source-led walkthrough was bilingual, but opening **More historic quest warnings** exposed an older Thai-only secondary interface. That undermined player comprehension at the most sensitive irreversible quest points. This follow-up addresses the presentation gap without treating historical events as patch-3.30 facts.
+
+- Added `poe-critical-language.js` with editorial English **title, exact event/timing, action to avoid and risk explanation** for **39 historic NPC risk groups** in Acts 1–9. Three Act 10 post-quest cards now also have specific English NPC and quest timing. The 39+3 group ID crosswalk is checked against the unchanged source file `critical-checkpoints.js`.
+- Per-topic source-linked cards now show **Available when** and **Do not miss** in English, using the existing source-specific English caution where supported. The original Thai source text remains available in a collapsed disclosure. The STOP gate still uses the same required canonical dialogue IDs and does not auto-complete or bypass a warning.
+- The **Bandits / Ancient Seal safety helper** has specific Thai/English wording for first and second Bandit kills, Darkness conversation checks, uncertain order across Steam/Wiki, and unsupported Book of Reform recovery. It keeps the current character's existing saved choices and does not assume one survivor.
+- The secondary reward panel now distinguishes useful Passive/Refund Point rewards from entries actually counted in **No Loose Ends**. English-mode headings, hints and links are translated; no quest reward is marked as an achievement by opening the panel.
+- The combined Lore, Waypoint, optional-quest and All Ears collection category descriptions are also bilingual. The 91 versus newer 90 Locomancer discrepancy remains explicitly unresolved.
+- **Act 10** now explains in both languages that the absence of a separate historic STOP group does not prove its current quest state is safe.
+
+Tests: a static validation checks all **39/39** risk-group captions, three post-quest captions, correspondence to unchanged source IDs, absence of Thai script inside English captions and absence of claims of patch certification. Chromium tests cover Act 2 Darkness/Safety and the survivor-specific Eramir gate, Act 5 Utula STOP, Act 10 post-quest notes and reward copy, and Lore collection text on 375px mobile. The suite also retains legacy route, backup, character isolation and original 745-record integrity tests.
+
+**Remaining acceptance holds:** patch 3.30 gameplay reproduction, source disagreements and the live Achievement-counter proof are not completed by editorial changes. Some other historical source-note disclosures may intentionally preserve Thai for provenance. Their presence is not evidence of a verified in-game localization.

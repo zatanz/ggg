@@ -119,7 +119,16 @@ guide.acts[10]=[
     "keyItems": [],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act10-lilly-tsoatha-quest.svg",
+      "title": "Safe Passage / Map to Tsoatha · QUEST CHANGES AVAILABLE TOPICS",
+      "alt": "ภาพจำลองลำดับเควสต์ Safe Passage / Map to Tsoatha บอกว่าต้องตรวจบทสนทนาเมื่อใด ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังทำ Safe Passage สำเร็จ ให้คุย Lilly Roth: Tsoatha (#471) และ The Teardrop (#472) ก่อนหา The Teardrop ใน Reliquary และกลับส่งเควสต์",
+      "checkEN": "After completing Safe Passage, hear Lilly Roth: Tsoatha (#471) and The Teardrop (#472). Then retrieve The Teardrop from the Reliquary and turn in Map to Tsoatha.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "reliquary-teardrop",
@@ -251,7 +260,16 @@ guide.acts[10]=[
     ],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act10-bannon-staff-quest.svg",
+      "title": "Death and Rebirth · KEEP QUEST-STATE ORDER",
+      "alt": "ภาพจำลองลำดับเควสต์ Death and Rebirth บอกว่าต้องตรวจบทสนทนาเมื่อใด ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "อ่าน Lore Cultist Tract #123 ใน Desecrated Chambers หา Staff of Purity ให้ Bannon และตรวจบทสนทนา Sin: Kitava/Bannon (#479–480), Lilly: Innocence (#481) หลังเควสต์",
+      "checkEN": "Read Cultist Tract lore #123, deliver Staff of Purity to Bannon, then check Sin: Kitava / Bannon (#479–480) and Lilly: Innocence (#481) after Death and Rebirth.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "bannon-sacrifice",

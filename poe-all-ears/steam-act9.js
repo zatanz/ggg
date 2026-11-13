@@ -229,7 +229,16 @@ guide.acts[9]=[
     ],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act9-feather-branch-decision.svg",
+      "title": "The Ruler of Highgate · CHOICE CHANGES DIALOGUE",
+      "alt": "ภาพจำลองลำดับเควสต์ The Ruler of Highgate บอกว่าต้องตรวจบทสนทนาเมื่อใด ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังฆ่า Garukhan ให้คุย Sin และ Petarus and Vanja (ID 439/440) ก่อนเลือกผู้รับ Feather เส้นทาง Irasha เท่านั้นที่ตรงกับ ID 443/444 ของ Checklist เดิม",
+      "checkEN": "After Garukhan, hear Sin #439 and Petarus and Vanja #440 BEFORE handing in the Feather. Only IRASHA's route matches the old tracker IDs #443/#444.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "ruler-irasha-choice",
@@ -303,7 +312,16 @@ guide.acts[9]=[
     ],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act9-ember-two-ingredients.svg",
+      "title": "Recurring Nightmare · BEFORE BELLY OF THE BEAST",
+      "alt": "ภาพจำลองลำดับเควสต์ Recurring Nightmare บอกว่าต้องตรวจบทสนทนาเมื่อใด ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "ได้ Basilisk Acid และ Trarthan Powder ครบแล้ว ต้องตรวจ Sin: The Dark Ember (ID 445) ที่ The Quarry และ Highgate ก่อนเข้าท้องอสูร",
+      "checkEN": "After collecting BOTH Basilisk Acid and Trarthan Powder, check Sin: The Dark Ember (#445) in The Quarry AND Highgate BEFORE entering The Belly of the Beast.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "black-core",
@@ -368,7 +386,16 @@ guide.acts[9]=[
     "keyItems": [],
     "sourceNote": null,
     "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "visual": {
+      "asset": "./assets/act9-rescue-before-act10.svg",
+      "title": "Recurring Nightmare · DO NOT ENTER ACT 10 YET",
+      "alt": "ภาพจำลองลำดับเควสต์ Recurring Nightmare บอกว่าต้องตรวจบทสนทนาเมื่อใด ไม่ใช่ภาพหน้าจอเกมจริง",
+      "check": "หลังฆ่า The Depraved Trinity ต้องฟัง Weylam Roth: Rescue (#448) และ Lilly (#449) ก่อนเดินทางไป Act 10",
+      "checkEN": "After defeating The Depraved Trinity, hear Weylam Roth: Rescue (#448) and Lilly (#449) BEFORE travelling to Act 10.",
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9",
+      "status": "mock-not-in-game"
+    }
   },
   {
     "id": "post-beast-town",

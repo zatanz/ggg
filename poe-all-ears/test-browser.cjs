@@ -213,7 +213,7 @@ const assert=require('node:assert/strict');
  const actionCountBefore=await hub.locator('#hubStats .hubStat').first().innerText();
  await hub.locator('#hubView [data-next-action="mudflats"] button').click();
  assert.equal(await hub.locator('#hubStats .hubStat').first().innerText(),actionCountBefore,'next-item shortcut does not auto-complete achievement data');
- assert.equal(await hub.locator('#hubView [data-phase="mudflats"] [data-walk-type="ears"]').evaluate(node=>node.open),true,'next-item shortcut expands relevant checklist without changing state');
+ assert.equal(await hub.locator('#hubView [data-phase="mudflats"] [data-walk-type="ears"]').evaluate(node=>document.activeElement===node),true,'next-item shortcut moves keyboard focus to relevant checklist without changing state');
  await hub.locator('#hubView .hubQuestVisual > summary').click();
  await hub.waitForFunction(()=>{const img=document.querySelector('#hubView .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
  assert.equal(await hub.locator('#hubView .hubQuestVisual img').getAttribute('alt')!==null,true,'illustrative quest journal asset has accessible alt text');

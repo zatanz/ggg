@@ -174,7 +174,7 @@
   {
     "id": "daresso-after",
     "place": "The Grand Arena / Highgate",
-    "heading": "หลัง Daresso · กลับเมืองก่อนเข้า Kaom's Dream",
+    "heading": "หลัง Daresso · เก็บบทสนทนาก่อนเข้า Belly of the Beast",
     "quest": "The King of Desire",
     "dialogueIds": [
       231,
@@ -191,9 +191,9 @@
     "sidequestIds": [],
     "actions": [
       "เปิด Waypoint Grand Arena และอ่าน Plaque 3 รายการ",
-      "หลังสังหาร Daresso และส่ง The Eye of Desire ให้ Dialla ให้กลับเมืองฟัง Petarus and Vanja และ Tasuni: Daresso"
+      "หลังสังหาร Daresso และส่ง The Eye of Desire ให้ Dialla กลับ Highgate คุย Petarus and Vanja กับ Tasuni: Daresso ก่อนเข้า The Belly of the Beast"
     ],
-    "stop": "ยังไม่ควรเข้า Kaom's Dream ก่อนเก็บบทสนทนาหลัง Daresso",
+    "stop": "ตาม PoE Wiki #231–232 ต้องฟัง Petarus and Vanja / Tasuni: Daresso หลังจบ The King of Desire และก่อนเข้า The Belly of the Beast (ไม่ใช่ก่อนเข้า Kaom's Dream)",
     "stopIds": [
       231,
       232

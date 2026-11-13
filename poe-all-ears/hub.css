@@ -500,3 +500,32 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
  .hubWalkNavigator button{width:100%}
  .hubQuestItems{padding:8px;gap:5px}
 }
+
+/* Act 6 UX: current quest step precedes secondary overview; achievement groups stay easy to reach. */
+.hubActSummaryMore{border:1px solid #536172;border-radius:11px;margin:12px 0;background:#202832;overflow:hidden}
+.hubActSummaryMore>summary{cursor:pointer;list-style:inside;min-height:48px;display:flex;align-items:center;padding:11px 15px;font-size:13px;line-height:1.45;font-weight:750;color:#f4deb2;background:#26323d}
+.hubActSummaryMore>summary::-webkit-details-marker{display:none}
+.hubActSummaryMore>summary::before{content:"▸";display:inline-block;min-width:20px;font-size:17px;color:#e7c78b}
+.hubActSummaryMore[open]>summary::before{content:"▾"}
+.hubActSummaryMore[open]>summary{border-bottom:1px solid #566576}
+.hubActSummaryMore .hubActMission{margin:11px;border-color:#536172}
+.hubActSummaryMore>summary:focus-visible{outline:3px solid #eac480;outline-offset:-3px}
+.hubWalkTaskNav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:3px 0 17px}
+.hubTaskNavLead{font-weight:700;color:#e7d5b3;font-size:12px;margin:12px 0 6px}
+.hubWalkTaskJump{min-width:0;min-height:54px;padding:7px 11px;border:1px solid #647484;border-radius:9px;background:#2b3948;display:flex;flex-direction:column;gap:2px;justify-content:center;align-items:flex-start;text-align:left}
+.hubWalkTaskJump:hover{background:#344a5c;border-color:#dbba85}
+.hubWalkTaskJump span{color:#dfebf0;font-size:12px;line-height:1.3}
+.hubWalkTaskJump strong{color:#f8dda1;font-size:15px;line-height:1.4;font-variant-numeric:tabular-nums}
+.hubWalkTaskJump.isDone{background:#21392f;border-color:#649e7c}
+.hubWalkTaskJump.isDone strong{color:#b9e4c9}
+.hubWalkTaskJump:focus-visible{outline:3px solid #f9d593;outline-offset:2px}
+.hubWalkCategory,.hubWalkLore{scroll-margin-top:105px}
+.hubWalkthrough{scroll-margin-top:85px}
+@media(max-width:720px){
+ .hubActSummaryMore>summary{font-size:12px;padding:11px 12px}
+ .hubActSummaryMore .hubActMission{margin:8px}
+ .hubWalkTaskNav{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .hubWalkTaskJump{min-height:52px;padding:8px 10px}
+ .hubWalkTaskJump span{font-size:11px}
+ .hubWalkCategory,.hubWalkLore{scroll-margin-top:95px}
+}

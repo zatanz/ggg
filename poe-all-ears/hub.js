@@ -574,22 +574,13 @@ function actSteamGuide(act){
  select.value=String(chosen);
  const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
-  if(reviewSkip&&target>chosen){
-   const skipped=phases.slice(chosen,target);
-   const unresolved=skipped.flatMap(p=>Object.entries({
-    ears:p.dialogueIds||[],lore:p.loreIds||[],
-    waypoints:p.waypointIds||[],sidequests:p.sidequestIds||[]
-   }).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id,phase:p}))));
-   const outstanding=skipped.filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
-   if(unresolved.length||outstanding.length){
-    const first=outstanding[0],next=unresolved[0];
-    const entry=next&&collections[next.type].find(item=>item.id===next.id);
-    const msg=first?tr(
+  if(reviewSkip&&["7","8","9","10"].includes(act)&&target>chosen){
+   const outstanding=phases.slice(chosen,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
+   if(outstanding.length){
+    const first=outstanding[0];
+    const msg=tr(
       "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+outstanding.length+" ช่วง\\nจุดแรก: "+first.stop+"\\n\\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
-      "You are skipping "+outstanding.length+" unresolved STOP checkpoint(s).\\nFirst: "+(first.stopEN||first.stop)+"\\n\\nNavigation does not make the quest safe. Skip for preview?"
-    ):tr(
-      "มีรายการที่ยังไม่บันทึก "+unresolved.length+" รายการในช่วงที่กำลังข้าม\\nรายการแรก: "+(entry?label(entry,next.type):"ID "+next.id)+"\\n\\nต้องการข้ามเพื่อดูข้อมูลอย่างเดียวหรือไม่?",
-      "You are skipping "+unresolved.length+" unchecked task(s).\\nFirst: "+(entry?label(entry,next.type):"ID "+next.id)+"\\n\\nSkip only to preview later steps?"
+      "You are skipping "+outstanding.length+" unchecked STOP checkpoint(s).\\nFirst: "+(first.stopEN||first.stop)+"\\n\\nNavigation is not proof of quest safety. Jump anyway?"
     );
     if(!confirm(msg)){select.value=String(chosen);return;}
    }

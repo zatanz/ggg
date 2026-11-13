@@ -17,7 +17,7 @@ Main URL: https://zatanz.github.io/ggg/poe-all-ears/
 
 ## 3.30 patch notes review
 
-- Official release announced for **2026-11-13 (PST)**; release has not yet occurred at this 2026-11-12 checkpoint.
+- At the original **2026-11-12** checkpoint, release had not occurred. GGG scheduled 3.30 for **2026-11-13 19:00 UTC / 2026-11-14 02:00 Bangkok**, a time that has now passed. This is an archived checkpoint, **not an in-game 3.30 validation**.
 - Public 3.30.0 Patch Notes are available, including significant endgame and Atziri/Fragment changes. Notes say **Vaal Side Areas no longer spawn in Maps** and remove associated Atlas modifiers; modifiers for Vaal Side Areas in Campaign are discussed separately, indicating campaign instances remain relevant. Old fragment / Map Device instructions must not be offered as applicable to 3.30.
 - A note about skill rewards in the campaign is not proof NPC optional dialogue is unchanged. No row-by-row comparison with a running 3.30 game is available. No current-patch routeSafe flag may be enabled.
 - Sources:

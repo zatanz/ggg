@@ -839,7 +839,7 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView .hubPostQuests .hubPostQuest').count(),3,'Act 10 has three post-quest reminders sourced from Wiki');
  assert.equal(await hub.locator('#hubView .hubPostQuests [data-post-stage="a10-safe-passage"]').evaluate(x=>x.open),true,'Act 10 post-quest reminder opens by default');
  assert.equal((await hub.locator('#hubView .hubPostQuests').innerText()).includes('Safe Passage'),true,'Act 10 Safe Passage dialogue reminder visible');
- assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่า Act 10 ปลอดภัย'),true,'Act 10 missing historic warning markers is explicitly disclosed');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่าปลอดภัยในเกม 3.29'),true,'Act 10 missing historic warning markers is explicitly disclosed');
  await hub.locator('.hubActStrip [data-act="Epilogue"]').click();
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'two Epilogue waypoints included for Locomancer');
  assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Locomancer 91'),true,'Epilogue waypoints are part of same achievement');

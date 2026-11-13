@@ -21,9 +21,20 @@ async function verifyGuidedEntry(browser,url){
    assert.equal(await page.locator('#hubView').evaluate(node=>node===document.activeElement),true,'skip link moves focus to the active workspace');
    await page.locator('#hubCampaignAct').selectOption('2');
    await page.locator('.hubWalkNavigator select').selectOption('1');
+   const confirmedPhase=await page.locator('.hubWalkthrough').getAttribute('data-phase');
+   const confirmation=page.locator('.hubQuestConfirmation input');
+   assert.equal(await page.locator('[data-stop-phase="old-fields"] button').getByText('กลับไปตรวจบทสนทนาที่ยังค้าง').count(),1,'Silk pre-quest dialogue is directly reachable from the unresolved STOP');
+   await confirmation.check();
+   const report=page.locator('.hubNextAction > .hubReport');
+   const reportUrl=new URL(await report.getAttribute('href'));
+   assert.equal(reportUrl.host,'github.com','feedback uses GitHub');
+   assert.match(reportUrl.searchParams.get('body'),/Act: 2/,'report includes the current Act');
+   assert.match(reportUrl.searchParams.get('body'),/ID: /,'report includes an ID field');
+   assert.match(await report.innerText(),/GitHub/,'report discloses GitHub login');
    await page.reload();
    assert.equal(await page.locator('#hubCampaignAct').inputValue(),'2','reload restores the selected Act for this character');
    assert.equal(await page.locator('.hubWalkNavigator select').inputValue(),'1','reload restores the selected quest step for this character');
+   assert.equal(await page.locator('.hubQuestConfirmation input').isChecked(),true,'manual quest confirmation survives reload');
    const layout=await task.evaluate(node=>{
      const selector=node.querySelector('.hubWalkNavigator select');
      const nav=selector.parentElement;
@@ -37,6 +48,24 @@ async function verifyGuidedEntry(browser,url){
    assert.equal(await page.locator('#hubCampaignAct').inputValue(),'1','a new character starts in Act 1');
    await page.locator('#character').selectOption(firstCharacter);
    assert.equal(await page.locator('.hubWalkNavigator select').inputValue(),'1','switching back restores that character’s last position');
+   assert.equal(await page.locator('.hubQuestConfirmation input').isChecked(),true,'manual confirmation is restored for the original character');
+   await page.locator('#hubNav [data-tab="review"]').click();
+   const pendingDownload=page.waitForEvent('download');
+   await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
+   const saved=await pendingDownload;
+   const chunks=[];for await(const chunk of await saved.createReadStream())chunks.push(chunk);
+   const backup=JSON.parse(Buffer.concat(chunks).toString('utf8'));
+   assert.equal(backup.characters[0].confirmedStages['2:'+confirmedPhase],true,'combined export preserves manual quest confirmation');
+   const reloaded=page.waitForEvent('load');
+   page.once('dialog',dialog=>dialog.accept());
+   await page.locator('#hubView input[type="file"]').setInputFiles({name:'roundtrip.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+   await reloaded;
+   const imported=await page.locator('#character option').nth(2).getAttribute('value');
+   await page.locator('#character').selectOption(imported);
+   await page.locator('#hubNav [data-tab="route"]').click();
+   await page.locator('#hubCampaignAct').selectOption('2');
+   await page.locator('.hubWalkNavigator select').selectOption('1');
+   assert.equal(await page.locator('.hubQuestConfirmation input').isChecked(),true,'import restores manually confirmed quest steps');
  }finally{await context.close();}
 }
 
@@ -80,6 +109,35 @@ async function verifyEditorialGuidance(browser,url){
  }finally{await context.close();}
 }
 
+async function verifyHistoricalWaypointBackup(browser,url){
+ const context=await browser.newContext({viewport:{width:1280,height:900},acceptDownloads:true});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  const backup={app:'poe-unified-companion',schema:2,characters:[{name:'Legacy waypoint QA',ears:[],lore:[],waypoints:[90,91],sidequests:[]}]};
+  const reload=page.waitForEvent('load');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#hubView input[type="file"]').setInputFiles({name:'legacy.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+  await reload;
+  await page.locator('#character').selectOption({label:'Legacy waypoint QA'});
+  await page.locator('#hubAdvancedDashboard > summary').click();
+  const score=await page.locator('.hubMissionScore b').innerText();
+  assert.equal(score,'0 / 743','historical waypoints do not increase active progress');
+  await page.locator('#hubNav [data-tab="route"]').click();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  await page.locator('[data-special-scope="Epilogue"] > details > summary').click();
+  assert.equal(await page.locator('[data-special-scope="Epilogue"] input:checked').count(),2,'legacy waypoints survive import');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  const pending=page.waitForEvent('download');
+  await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
+  const saved=await pending;
+  const chunks=[];for await(const chunk of await saved.createReadStream())chunks.push(chunk);
+  const exported=JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  assert.deepEqual(exported.characters.find(c=>c.name==='Legacy waypoint QA').waypoints,[90,91],'legacy waypoint IDs survive export');
+ }finally{await context.close();}
+}
+
 (async()=>{
  const browser=await chromium.launch({
    headless:true,args:['--no-sandbox'],
@@ -94,6 +152,7 @@ async function verifyEditorialGuidance(browser,url){
  const url=pathToFileURL(path.join(__dirname,'index.html')).href;
  await verifyGuidedEntry(browser,url);
  await verifyEditorialGuidance(browser,url);
+ await verifyHistoricalWaypointBackup(browser,url);
  await page.goto(url);
  await page.locator('#hubNav [data-tab="collection"]').click();
  await page.locator('#results input[type="checkbox"]').first().waitFor();
@@ -279,9 +338,9 @@ async function verifyEditorialGuidance(browser,url){
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Ruthless'),true,'difficulty caveat warns about Vaal Side Areas in Ruthless');
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Fairgraves'),true,'pre-run warning surfaces unresolved 3.29 Fairgraves condition');
 
- assert.equal(await hub.locator('#hubStats .hubMissionStage').count(),13,'full journey has 10 Acts plus Labyrinth, Vaal and Epilogue');
+ assert.equal(await hub.locator('#hubStats .hubMissionStage').count(),12,'active journey has 10 Acts plus Labyrinth and Vaal');
  const coverage=await hub.locator('#hubStats .hubMissionStage span').allTextContents();
- assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),745,'goal journey covers all 745 items exactly once');
+ assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),743,'active journey excludes the two historical Epilogue entries');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').count(),1,'3.29 player-reported Fairgraves blocker appears before walkthrough');
  assert.equal((await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').innerText()).includes('#34–38'),true,'community-sourced Fairgraves warning identifies exact five entries');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),2,'Fairgraves warning links two source reports');
@@ -294,9 +353,9 @@ async function verifyEditorialGuidance(browser,url){
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('กำลังดู: Act 1'),true,'dashboard describes actively selected Act, not only first globally incomplete Act');
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('ช่วงที่ควรตรวจต่อ'),true,'dashboard exposes next actionable quest step for current Act');
  await hub.locator('#hubStats .hubMissionRoadmap > summary').click();
- await hub.locator('#hubStats [data-scope="Epilogue"]').click();
+ await hub.locator('#hubCampaignAct').selectOption('Epilogue');
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"]').count(),1,'journey roadmap opens selected milestone and its matching view');
- assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Epilogue'),true,'roadmap selection immediately updates global active-area summary');
+ assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Epilogue'),true,'summary identifies the historical area');
  assert.equal(await hub.locator('#hubStats [data-first-missing="1"]').count(),1,'earliest overall incomplete Act remains accessible as compact fallback');
  await hub.locator('#hubStats [data-first-missing="1"] button').click();
  assert.equal(await hub.locator('#hubView [data-steam-act="1"]').count(),1,'compact earliest-missing button returns to original pending Act');
@@ -514,7 +573,7 @@ async function verifyEditorialGuidance(browser,url){
  assert.equal(await stageItems('waypoints'),1,'The Slave Pens Waypoint is included');
  await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('2');
  assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('Utula'),true,'Utula Casticus checkpoint STOP visible');
- assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('ก่อนเข้า Oriath Square'),true,'Act 5 uses earliest legacy warning for Utula #275');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('ก่อนฆ่า Avarius'),true,'Act 5 uses the source-reviewed Utula #275 deadline');
  await hub.locator('#hubView [data-source-note="casticus-return"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="casticus-return"]').innerText()).includes('PoE Wiki'),true,'Act 5 explains difference between legacy and Wiki deadline');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Miasmeter'),true,'Act 5 source item names appear in the quest phase');
@@ -663,7 +722,7 @@ async function verifyEditorialGuidance(browser,url){
  hub.once('dialog',d=>d.accept());
  await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('7');
  assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('Helena'),true,'Helena: The Den before-entry STOP is visible');
- assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('ก่อนเข้า The Fellshrine Ruins'),true,'Act 7 Helena warning uses conservative earlier legacy boundary');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('ก่อนเดินต่อสู่ The Den'),true,'Act 7 Helena warning uses the reviewed boundary');
  const denSources=hub.locator('#hubView [data-source-note="den-before"]');
  await denSources.locator(':scope > summary').click();
  assert.equal((await denSources.innerText()).includes('Fellshrine'),true,'Legacy Den timing conflict is disclosed');
@@ -816,6 +875,13 @@ async function verifyEditorialGuidance(browser,url){
  await rulers.locator('select').selectOption('Tasuni');
  assert.equal(await rulers.locator('select').evaluate(x=>document.activeElement===x),true,'Tasuni record retains focus after rendering branch-specific guidance');
  assert.equal(await hub.locator('#hubView [data-ruler-branch="Tasuni"]').count(),1,'Tasuni choice is preserved as a distinct state');
+ const irashaEntry=hub.locator('#hubView [data-track-type="ears"][data-track-id="443"]').first();
+ await irashaEntry.evaluate(node=>{for(let parent=node.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
+ if(!await irashaEntry.isChecked()){
+  hub.once('dialog',d=>d.accept());
+  await irashaEntry.click();
+  assert.equal(await irashaEntry.isChecked(),false,'Tasuni choice cannot mark an Irasha-branch entry as a substitute');
+ }
  assert.equal((await hub.locator('#hubView .hubBranchChoice').innerText()).includes('100%'),true,'Tasuni branch warns against asserting 100% from unsupported IDs');
  await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
  assert.equal(await hub.locator('#hubView [data-ruler-integrity="Tasuni"]').count(),1,'Tasuni mismatch warning persists beyond the choice phase');
@@ -955,7 +1021,7 @@ async function verifyEditorialGuidance(browser,url){
  await hub.locator('#hubView .hubItemHelp > summary').first().click();
  assert.equal((await hub.locator('#hubView .hubItemHelpBody').first().innerText()).includes('ยังไม่มีรายละเอียดเงื่อนไขรายรายการ'),true,'Unverified quest details clearly labelled');
  await hub.locator('#hubToolbar select').nth(1).selectOption('all');
- const dirtyJob=hub.locator('#hubView .hubItem').filter({hasText:'A Dirty Job'});
+ const dirtyJob=hub.locator('#hubView .hubSection > .hubList > .hubItem').filter({hasText:'A Dirty Job'}).first();
  await dirtyJob.locator('.hubItemHelp > summary').click();
  assert.equal((await dirtyJob.locator('.hubItemHelpBody').innerText()).includes('รางวัลเควสต์'),true,'matching side quest shows reward reference');
  assert.equal((await dirtyJob.locator('.hubItemHelpBody').innerText()).includes('Passive Refund'),true,'A Dirty Job sidequest reward shown');

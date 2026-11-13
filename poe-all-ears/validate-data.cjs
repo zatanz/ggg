@@ -284,7 +284,27 @@ load('steam-act7.js');
 load('steam-act8.js');
 load('steam-act9.js');
 load('steam-act10.js');
+load('route-bindings.js');
 const steamWalk=ctx.window.POE_STEAM_WALK;
+const routeMappings=JSON.parse(fs.readFileSync(path.join(dir,'route-mapping-67.json'),'utf8'));
+assert(routeMappings.records.length===67,'Expected 67 handoff route bindings');
+assert(new Set(routeMappings.records.map(item=>item.type+':'+item.id)).size===67,'Route bindings must be unique');
+assert(['lore','waypoints','sidequests'].every((type,index)=>routeMappings.records.filter(item=>item.type===type).length===[25,34,8][index]),'Route bindings must include 25 lore, 34 waypoints and 8 sidequests');
+assert(Object.values(steamWalk.acts).reduce((count,phases)=>count+phases.length,0)===127,'Expected 127 campaign stages');
+for(const item of routeMappings.records){
+ const field={lore:'loreIds',waypoints:'waypointIds',sidequests:'sidequestIds'}[item.type];
+ const destination=item.type==='waypoints'&&item.id===34?'library':item.phase;
+ const stages=steamWalk.acts[String(item.act)]||[];
+ const matching=stages.filter(stage=>(stage[field]||[]).includes(item.id));
+ assert(matching.length===1&&matching[0].id===destination,'Invalid route binding '+item.type+':'+item.id);
+ const source={lore:lore.entries,waypoints:extras.waypoints,sidequests:extras.sidequests}[item.type];
+ assert(source.some(entry=>entry.id===item.id&&String(entry.act)===String(item.act)),'Route binding does not resolve '+item.type+':'+item.id);
+}
+assert(steamWalk.acts[1].find(p=>p.id==='mudflats').stopIds.includes(21),'Submerged Passage waypoint must remain behind Bestel #21 STOP');
+assert(steamWalk.acts[2].find(p=>p.id==='old-fields').stopIds.includes(57),'Great White Beast must retain Silk #57 STOP');
+assert(steamWalk.acts[2].find(p=>p.id==='vaal-oversoul').waypointIds.includes(20),'Caverns waypoint must remain in Vaal Oversoul route');
+assert(steamWalk.acts[3].findIndex(p=>p.waypointIds.includes(34))<steamWalk.acts[3].findIndex(p=>p.id==='after-dominus'),'Sceptre waypoint must appear before the post-Dominus phase');
+assert(steamWalk.acts[5].filter(p=>p.stopIds?.includes(277)).length===1&&!steamWalk.acts[5].find(p=>p.id==='innocence-lore').stop,'Sin #277 must have exactly one STOP phase');
 assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source.includes('2948321869'),'Steam companion guide must cite historical user-supplied reference and avoid patch certification');
 assert(canonicalSource.includes('src="./poe-acts123-bilingual.js"'),'Early Acts bilingual guidance module must load after base route');
 for(const act of [1,2,3]){
@@ -309,7 +329,7 @@ assert(actOne.length===9,'Act 1 source timeline must expose nine player-oriented
 const actOneIds=actOne.flatMap(p=>p.dialogueIds),actOneLore=actOne.flatMap(p=>p.loreIds);
 assert(actOneIds.length===41&&new Set(actOneIds).size===41,'Act 1 nine-step guide must cover 41 dialogue IDs exactly once');
 assert(actOneIds.every(id=>d.items.some(i=>i.id===id&&i.act===1)),'Act 1 Steam timeline has invalid dialogue ID');
-assert(actOneLore.length===15&&new Set(actOneLore).size===15&&actOneLore.every(id=>lore.entries.some(x=>x.id===id&&x.act===1)),'Act 1 Letters of Exile lore must use 15 existing No Stone IDs');
+assert(actOneLore.length===29&&new Set(actOneLore).size===29&&actOneLore.every(id=>lore.entries.some(x=>x.id===id&&x.act===1)),'Act 1 route must include all 29 lore entries');
 assert(actOne.every(p=>p.actions.length>0&&p.place&&p.heading&&(!p.stopIds||p.stopIds.every(id=>p.dialogueIds.includes(id)))),'Act 1 guide boundary must reference only items within its source phase');
 assert(actOne.find(p=>p.id==='fairgraves').patchProblem.includes('3.29'),'Historical source must warn of Fairgraves reported breakage in 3.29');
 const actTwo=steamWalk.acts[2],actTwoIds=actTwo.flatMap(p=>p.dialogueIds);

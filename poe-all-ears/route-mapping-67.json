@@ -1,0 +1,678 @@
+{
+  "title": "PoE Achievement Companion 67 missing inline links",
+  "source": "zatanz/ggg master",
+  "date": "2026-11-14",
+  "note": "Proposed route bindings for 25 Lore, 34 legacy Waypoint, 8 Side Quest. NOT an in-game patch 3.30 verification. Do not duplicate canonical checked-state controls.",
+  "records": [
+    {
+      "type": "lore",
+      "id": 16,
+      "act": 1,
+      "entry": "Weathered Carving - Kaom's Canoe Struck",
+      "area": "The Coast",
+      "phase": "medicine",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 17,
+      "act": 1,
+      "entry": "Weathered Carving - Kaom Has Removed",
+      "area": "The Tidal Island",
+      "phase": "medicine",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 18,
+      "act": 1,
+      "entry": "Weathered Carving - Black Storms Descend",
+      "area": "The Mud Flats",
+      "phase": "mudflats",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 19,
+      "act": 1,
+      "entry": "Weathered Carving - The Earth of",
+      "area": "The Ledge",
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 20,
+      "act": 1,
+      "entry": "Weathered Carving - The Black Spirit",
+      "area": "The Climb",
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 21,
+      "act": 1,
+      "entry": "Lioneye's Standard",
+      "area": "The Climb",
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 22,
+      "act": 1,
+      "entry": "Bronze Monograph - The Prison",
+      "area": "The Lower Prison",
+      "phase": "prison",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 23,
+      "act": 1,
+      "entry": "Shavronne's Journal",
+      "area": "The Warden's Quarters",
+      "phase": "prison",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 24,
+      "act": 1,
+      "entry": "Order of Protection",
+      "area": "The Warden's Quarters",
+      "phase": "prison",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 25,
+      "act": 1,
+      "entry": "Letter of Instruction",
+      "area": "The Warden's Chambers",
+      "phase": "prison",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 26,
+      "act": 1,
+      "entry": "Weathered Carving - Kaom Stands Before",
+      "area": "The Ship Graveyard",
+      "phase": "fairgraves",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 27,
+      "act": 1,
+      "entry": "Weathered Carving - Kaom Is Gone",
+      "area": "The Ship Graveyard",
+      "phase": "fairgraves",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 28,
+      "act": 1,
+      "entry": "Sailor's Skin",
+      "area": "The Cavern of Wrath",
+      "phase": "merveil",
+      "review": "Place before Merveil at The Cavern of Wrath; no fabricated STOP.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 29,
+      "act": 1,
+      "entry": "Damp Diary",
+      "area": "Merveil's Lair",
+      "phase": "merveil",
+      "review": "Damp Diary in Merveil’s Lair may be read after killing Merveil; not a pre-boss STOP.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 30,
+      "act": 2,
+      "entry": "Proclamation",
+      "area": "The Western Forest",
+      "phase": "western-forest",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 31,
+      "act": 2,
+      "entry": "Arteri's Letter",
+      "area": "The Western Forest",
+      "phase": "western-forest",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 32,
+      "act": 2,
+      "entry": "Etchings on Wood I",
+      "area": "The Crossroads",
+      "phase": "western-forest",
+      "review": "Show Crossroads substep for Etchings on Wood I–IV, individually.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 33,
+      "act": 2,
+      "entry": "Etchings on Wood II",
+      "area": "The Crossroads",
+      "phase": "western-forest",
+      "review": "Show Crossroads substep for Etchings on Wood I–IV, individually.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 34,
+      "act": 2,
+      "entry": "Etchings on Wood III",
+      "area": "The Crossroads",
+      "phase": "western-forest",
+      "review": "Show Crossroads substep for Etchings on Wood I–IV, individually.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 35,
+      "act": 2,
+      "entry": "Etchings on Wood IV",
+      "area": "The Crossroads",
+      "phase": "western-forest",
+      "review": "Show Crossroads substep for Etchings on Wood I–IV, individually.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 36,
+      "act": 2,
+      "entry": "Ancient Reverie Device",
+      "area": "The Chamber of Sins Level 1",
+      "phase": "sins-before-helena",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 37,
+      "act": 2,
+      "entry": "Bronze Monograph - The Chamber of Sins",
+      "area": "The Chamber of Sins Level 2",
+      "phase": "sins-after-helena",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 38,
+      "act": 2,
+      "entry": "Transmutia Device",
+      "area": "The Chamber of Sins Level 2",
+      "phase": "sins-after-helena",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 39,
+      "act": 2,
+      "entry": "Plaque",
+      "area": "The Fellshrine Ruins",
+      "phase": "crypt",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "lore",
+      "id": 40,
+      "act": 2,
+      "entry": "Bronze Monograph - The Crypt",
+      "area": "The Crypt Level 1",
+      "phase": "crypt",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 1,
+      "act": 1,
+      "entry": "Lioneye's Watch",
+      "area": null,
+      "phase": "town",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 2,
+      "act": 1,
+      "entry": "The Coast",
+      "area": null,
+      "phase": "medicine",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 3,
+      "act": 1,
+      "entry": "The Submerged Passage",
+      "area": null,
+      "phase": "mudflats",
+      "review": "Do not enter The Submerged Passage until Bestel Undead Rhoas All Ears #21 has been heard.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 4,
+      "act": 1,
+      "entry": "The Ledge",
+      "area": null,
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 5,
+      "act": 1,
+      "entry": "The Climb",
+      "area": null,
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 6,
+      "act": 1,
+      "entry": "The Prison",
+      "area": null,
+      "phase": "prison",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 7,
+      "act": 1,
+      "entry": "Prisoner's Gate",
+      "area": null,
+      "phase": "prisoners-gate",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 8,
+      "act": 1,
+      "entry": "The Ship Graveyard",
+      "area": null,
+      "phase": "fairgraves",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 9,
+      "act": 1,
+      "entry": "Merveil's Caverns",
+      "area": null,
+      "phase": "merveil",
+      "review": "Place on pre-Merveil route; reconcile legacy label Merveil's Caverns with actual waypoint name.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 10,
+      "act": 2,
+      "entry": "The Southern Forest",
+      "area": null,
+      "phase": "forest-encampment",
+      "review": "Place on Act 1->2 arrival (The Southern Forest) prior to Forest Encampment.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 11,
+      "act": 2,
+      "entry": "The Forest Encampment",
+      "area": null,
+      "phase": "forest-encampment",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 12,
+      "act": 2,
+      "entry": "The Riverways",
+      "area": null,
+      "phase": "western-forest",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 13,
+      "act": 2,
+      "entry": "The Western Forest",
+      "area": null,
+      "phase": "western-forest",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 14,
+      "act": 2,
+      "entry": "The Crossroads",
+      "area": null,
+      "phase": "western-forest",
+      "review": "Show The Crossroads area explicitly alongside 4 wood etchings.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 15,
+      "act": 2,
+      "entry": "The Chamber of Sins Level 1",
+      "area": null,
+      "phase": "sins-before-helena",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 16,
+      "act": 2,
+      "entry": "The Crypt",
+      "area": null,
+      "phase": "crypt",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 17,
+      "act": 2,
+      "entry": "The Wetlands",
+      "area": null,
+      "phase": "roots",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 18,
+      "act": 2,
+      "entry": "The Northern Forest",
+      "area": null,
+      "phase": "roots",
+      "review": "Make Northern Forest waypoint explicit on the route to The Caverns.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 19,
+      "act": 2,
+      "entry": "The Broken Bridge",
+      "area": null,
+      "phase": "bandit-decisions",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 20,
+      "act": 2,
+      "entry": "The Caverns",
+      "area": null,
+      "phase": "vaal-oversoul",
+      "review": "Place The Caverns waypoint BEFORE Vaal Oversoul, not post-boss.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 21,
+      "act": 3,
+      "entry": "The City of Sarn",
+      "area": null,
+      "phase": "sarn-entry",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 22,
+      "act": 3,
+      "entry": "The Sarn Encampment",
+      "area": null,
+      "phase": "sarn-entry",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 23,
+      "act": 3,
+      "entry": "The Crematorium",
+      "area": null,
+      "phase": "bracelet",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 24,
+      "act": 3,
+      "entry": "The Sewers",
+      "area": null,
+      "phase": "sewer-blockage",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 25,
+      "act": 3,
+      "entry": "The Marketplace",
+      "area": null,
+      "phase": "market-battlefront",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 26,
+      "act": 3,
+      "entry": "The Battlefront",
+      "area": null,
+      "phase": "market-battlefront",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 27,
+      "act": 3,
+      "entry": "The Solaris Temple Level 1",
+      "area": null,
+      "phase": "dialla-intro",
+      "review": "Add Solaris Temple Level 1 subsection before reaching Level 2.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 28,
+      "act": 3,
+      "entry": "The Solaris Temple Level 2",
+      "area": null,
+      "phase": "dialla-intro",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 29,
+      "act": 3,
+      "entry": "The Docks",
+      "area": null,
+      "phase": "docks-fairgraves",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 30,
+      "act": 3,
+      "entry": "The Ebony Barracks",
+      "area": null,
+      "phase": "ebony-pre-gravicius",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 31,
+      "act": 3,
+      "entry": "The Lunaris Temple",
+      "area": null,
+      "phase": "gravicius-before-piety",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 32,
+      "act": 3,
+      "entry": "The Imperial Gardens",
+      "area": null,
+      "phase": "library",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 33,
+      "act": 3,
+      "entry": "The Library",
+      "area": null,
+      "phase": "library",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "waypoints",
+      "id": 34,
+      "act": 3,
+      "entry": "The Sceptre of God",
+      "area": null,
+      "phase": "after-dominus",
+      "review": "Sceptre of God waypoint must be shown BEFORE Dominus, not only in after-dominus stage.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 1,
+      "act": 1,
+      "entry": "A Dirty Job",
+      "area": null,
+      "phase": "pool",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 2,
+      "act": 1,
+      "entry": "The Dweller of the Deep",
+      "area": null,
+      "phase": "pool",
+      "review": "Add explicit detour to The Flooded Depths for The Dweller of the Deep.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 3,
+      "act": 1,
+      "entry": "The Marooned Mariner",
+      "area": null,
+      "phase": "fairgraves",
+      "review": "Complete Marooned Mariner after preserving Fairgraves/Bestel dialogues #34-38 and pre-Allflame checks.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 4,
+      "act": 2,
+      "entry": "The Great White Beast",
+      "area": null,
+      "phase": "old-fields",
+      "review": "Hear Silk: The Great White Beast All Ears #57 BEFORE completing the sidequest.",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 5,
+      "act": 2,
+      "entry": "Through Sacred Ground",
+      "area": null,
+      "phase": "crypt",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 6,
+      "act": 3,
+      "entry": "Victario's Secrets",
+      "area": null,
+      "phase": "sewer-blockage",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 7,
+      "act": 3,
+      "entry": "A Swig of Hope",
+      "area": null,
+      "phase": "docks-fairgraves",
+      "review": "Separate A Swig of Hope completion from Fairgraves introductory dialogue (All Ears #142).",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    },
+    {
+      "type": "sidequests",
+      "id": 8,
+      "act": 3,
+      "entry": "A Fixture of Fate",
+      "area": null,
+      "phase": "library",
+      "review": "Attach by location to canonical record; no duplicate checkmark or invented STOP",
+      "status": "PROPOSED_NOT_IMPLEMENTED"
+    }
+  ]
+}

@@ -101,16 +101,16 @@
     ],
     "actions": [
       "เข้า The Control Blocks เพื่อทำ The Key to Freedom และหา Miasmeter ของเควสต์ In Service to Science",
-      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula: Justicar Casticus (ID 275) ก่อนเข้า Oriath Square ตามคำเตือนในข้อมูลเดิม; PoE Wiki เตือนว่าต้องฟังก่อนฆ่า Avarius",
+      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula: Justicar Casticus (ID 275) ก่อนฆ่า Avarius",
       "ส่ง Miasmeter ให้ Vilenta และติ๊กเควสต์รองเมื่อเกมแสดงว่าสำเร็จจริง"
     ],
     "actionsEN": [
       "Enter The Control Blocks for The Key to Freedom and recover the Miasmeter for In Service to Science.",
-      "After defeating Justicar Casticus, return to Overseer's Tower to hear Utula: Justicar Casticus (ID 275) before entering Oriath Square as the legacy data cautions; the 2025 Wiki gives a later deadline before killing Avarius.",
+      "After defeating Justicar Casticus, return to Overseer's Tower to hear Utula: Justicar Casticus (ID 275) before killing Avarius.",
       "Return the Miasmeter to Vilenta and mark No Loose Ends only once the optional quest has actually completed."
     ],
-    "stop": "หยุดก่อนเข้า Oriath Square: หลังฆ่า Casticus ต้องกลับไปฟัง Utula: Justicar Casticus (ID 275) ก่อน ข้อมูลเดิมเตือนเร็วกว่าจุดฆ่า Avarius ใน Wiki",
-    "stopEN": "STOP: hear Utula: Justicar Casticus (ID 275) after Casticus and before entering Oriath Square (legacy early caution). The Wiki's later deadline is before killing Avarius.",
+    "stop": "หยุดก่อนฆ่า Avarius: หลังฆ่า Casticus ให้กลับไปฟัง Utula: Justicar Casticus (ID 275)",
+    "stopEN": "STOP: hear Utula: Justicar Casticus (ID 275) after Casticus and before killing Avarius.",
     "stopIds": [
       275
     ],
@@ -118,8 +118,8 @@
       "Miasmeter",
       "Eyes of Zeal"
     ],
-    "sourceNote": "ข้อควรระวังเรื่องกำหนดเวลา: ข้อมูลเดิมของ ID 275 ระบุว่าให้ฟัง Utula ก่อนเข้า Oriath Square ขณะที่ PoE Wiki ปี 2025 ระบุเพียงก่อนฆ่า Avarius จึงใช้จุดที่เร็วกว่าเป็นข้อควรระวัง ไม่ใช่การยืนยันว่าบทสนทนาหายเมื่อเข้าเมืองใน 3.29",
-    "sourceNoteEN": "Deadline discrepancy: legacy checklist ID 275 cautions before entering Oriath Square; the 2025 PoE Wiki says before killing Avarius. The earlier stop is precautionary, not proof that the line disappears on entering the Square in 3.29.",
+    "sourceNote": "ข้อมูลเดิมของ ID 275 เตือนก่อนเข้า Oriath Square ขณะที่ PoE Wiki ปี 2025 ระบุก่อนฆ่า Avarius ข้อมูลทั้งสองยังไม่ได้ตรวจยืนยันในเกม 3.29",
+    "sourceNoteEN": "Legacy ID 275 cautions before entering Oriath Square; the 2025 PoE Wiki says before killing Avarius. Neither boundary has been independently verified in patch 3.29.",
     "confidence": "historical-source-only"
   },
   {
@@ -187,8 +187,8 @@
       "Check each lore title individually; different stained-glass panels are not interchangeable.",
       "After defeating Innocence, stop and speak to Sin before leaving the chamber."
     ],
-    "stop": "หลังชนะ Innocence ต้องกลับตรวจบทสนทนา Sin ในห้องนี้ก่อนออก",
-    "stopEN": "After defeating Innocence, speak to Sin inside the same chamber before leaving.",
+    "stop": null,
+    "stopEN": null,
     "stopIds": [],
     "keyItems": [],
     "confidence": "historical-source-only"

@@ -1,21 +1,48 @@
 /* Shared shell and guided quest. hub.css owns the legacy and reference views. */
 .companionApp {
-  --canvas: #141918;
-  --journal: #1d2522;
-  --field: #29332e;
-  --rule: #45534a;
-  --paper: #f4eee0;
-  --secondary: #c3cbbd;
-  --brass: #eac88d;
+  --bg: #15130f;
+  --surface: #211d17;
+  --surface2: #302b23;
+  --line: #74634b;
+  --text: #f4ead5;
+  --muted: #d0c5b1;
+  --gold: #e7c58d;
+  --ok: #a5c59b;
+  --canvas: #15130f;
+  --journal: #211d17;
+  --field: #302b23;
+  --rule: #74634b;
+  --paper: #f4ead5;
+  --secondary: #d0c5b1;
+  --brass: #e7c58d;
   --ink: #252015;
   --warning: #f2ab96;
-  background: var(--canvas);
+  background: radial-gradient(ellipse at 50% 0, #30281c, transparent 650px), var(--canvas);
   color: var(--paper);
   font-family: "Source Sans 3", "Segoe UI", Tahoma, sans-serif;
   font-size: 16px;
 }
 
 .companionApp .wrap { max-width: 1056px; padding: 24px 24px 60px; }
+.companionApp :is(.hubPanel,.hubItem,.hubChapter,.hubReferenceShelf,.hubLanguagePanel,.panel) {
+  background: #211d17;
+  border-color: #74634b;
+  color: #f4ead5;
+  border-radius: 4px;
+}
+.companionApp :is(.hubChapter > summary,.hubReferenceShelf > summary,.hubItem.done) {
+  background: #302b23;
+  color: #f4ead5;
+}
+.companionApp :is(button,select,input[type="search"],input[type="text"]) {
+  background-color: #302b23;
+  border-color: #74634b;
+  color: #f4ead5;
+}
+.companionApp :is(.hubInlineAdvance,.primary) {
+  background-color: #e7c58d;
+  color: #252015;
+}
 .companionApp [hidden] { display: none !important; }
 .companionApp :is(button, select, summary) { touch-action: manipulation; }
 .companionApp :is(select, input[type="search"]) { min-width: 0; max-width: 100%; }
@@ -136,6 +163,8 @@
 }
 .hubProfile #addChar { flex: 0 0 auto; white-space: nowrap; }
 .hubCampaignField { display: block; min-width: 0; }
+.hubStageLinks .hubResume { border-color:var(--brass); color:var(--brass); background:transparent; }
+.hubStageLinks .hubResume:hover { background:#3a3022; }
 :is(.hubProfile, .hubCampaignField, .hubWalkNavigator) :is(select, button) {
   min-height: 44px;
   border: 1px solid #627267;
@@ -152,8 +181,9 @@
   padding: 0 var(--journal-gutter) 15px;
   border: 1px solid var(--rule);
   border-top: 3px solid var(--brass);
-  border-radius: 8px;
+  border-radius: 3px;
   background: var(--journal);
+  box-shadow: inset 0 0 0 3px #15130f, inset 0 0 0 4px #51422c;
 }
 .hubCampaignRoute .hubWalkHeader { padding: 0; border: 0; }
 .hubCampaignRoute .hubWalkNavigator {
@@ -209,7 +239,7 @@
 .hubCampaignRoute .hubWalkActions li::before {
   top: 8px;
   left: 0;
-  background: #36473e;
+  background: #42392c;
   color: var(--brass);
   font-size: .77rem;
 }
@@ -221,6 +251,10 @@
 .hubCampaignRoute .hubCurrentTaskFact dt { color: var(--secondary); font-size: .82rem; }
 .hubCampaignRoute .hubCurrentTaskFact dd { color: var(--paper); font-size: .94rem; max-width: 74ch; }
 .hubCampaignRoute .hubStopGate { border-color: #ad6a59; background: #3c2926; }
+.hubReport { display: inline-block; width: fit-content; padding: 10px 0; color: #e7c58d; font-size: .85rem; text-decoration: underline; }
+.hubReport:hover { color: #fff0cc; }
+.hubQuestConfirmation { display:flex; gap:10px; align-items:center; min-height:44px; margin-top:12px; color:var(--secondary); font-size:.9rem; cursor:pointer; }
+.hubQuestConfirmation input { width:20px; height:20px; accent-color:var(--brass); flex:none; }
 .hubCampaignRoute .hubStopGate.reviewed { border-color: #7c9986; background: #24332b; }
 .hubCampaignRoute .hubStopGate strong { font-size: 1rem; }
 .hubCampaignRoute .hubStopGate p { font-size: .93rem; line-height: 1.55; max-width: 78ch; }

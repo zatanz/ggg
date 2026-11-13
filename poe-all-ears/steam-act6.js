@@ -306,13 +306,13 @@ guide.acts[6]=[
       15
     ],
     "actions": [
-      "เริ่ม The Puppet Mistress แล้วคุย Sin: The Puppet Mistress (#328) ก่อนฆ่า Ryslatha",
-      "เมื่อฟังแล้วจึงคุย Sin: Ryslatha (#329) ตามหัวข้อที่ปลดล็อก",
+      "เริ่ม The Puppet Mistress แล้วคุย Sin: The Puppet Mistress (#330) ก่อนฆ่า Ryslatha",
+      "เมื่อฟังแล้วจึงคุย Sin: Ryslatha (#331) ตามหัวข้อที่ปลดล็อก",
       "เดินผ่าน The Western Forest เปิด Waypoint และติ๊ก The Puppet Mistress หลังทำเควสต์สำเร็จจริง"
     ],
     "actionsEN": [
-      "After receiving The Puppet Mistress, hear Sin: The Puppet Mistress (Wiki #328) before killing Ryslatha.",
-      "Then check Sin: Ryslatha (Wiki #329), which unlocks from the earlier dialogue.",
+      "After receiving The Puppet Mistress, hear Sin: The Puppet Mistress (local #330) before killing Ryslatha.",
+      "Then check Sin: Ryslatha (local #331), which unlocks from the earlier dialogue.",
       "Activate The Western Forest Waypoint and mark The Puppet Mistress only after completing the quest."
     ],
     "stop": "ห้ามฆ่า Ryslatha ก่อนคุย Sin: The Puppet Mistress",
@@ -341,13 +341,13 @@ guide.acts[6]=[
       14
     ],
     "actions": [
-      "รับเควสต์ The Cloven One จาก Bestel แล้วกลับคุย Sin: The Cloven One (#330)",
-      "ตรวจ Sin: Abberath (#331) หลังเปิดบทสนทนาแรก",
+      "รับเควสต์ The Cloven One จาก Bestel แล้วกลับคุย Sin: The Cloven One (#328)",
+      "ตรวจ Sin: Abberath (#329) หลังเปิดบทสนทนาแรก",
       "ก่อนเข้า The Valley of the Fire Drinker ให้ฟังครบ แล้วเปิด The Riverways Waypoint; ติ๊กเควสต์รองหลังสำเร็จจริง"
     ],
     "actionsEN": [
-      "Start The Cloven One from Bestel, then listen to Sin: The Cloven One (Wiki #330).",
-      "Listen to Sin: Abberath (#331) after the first topic unlocks.",
+      "Start The Cloven One from Bestel, then listen to Sin: The Cloven One (local #328).",
+      "Listen to Sin: Abberath (#329) after the first topic unlocks.",
       "Before entering The Valley of the Fire Drinker, check these conversations. Activate The Riverways Waypoint and mark the quest only when completed."
     ],
     "stop": "อย่าเข้า The Valley of the Fire Drinker ก่อนฟัง Sin: The Cloven One",

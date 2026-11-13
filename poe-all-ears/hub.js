@@ -464,8 +464,8 @@ function actSteamGuide(act){
    caution.append(summary,el("p",descEN()?(phase.sourceNoteEN||"Review the original Thai source difference before advancing."):phase.sourceNote));
    const links=el("div",undefined,"hubConflictLinks");
    const wiki=el("a","PoE Wiki · All Ears Act "+act);wiki.href="https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_"+act;wiki.rel="noopener noreferrer";wiki.target="_blank";
-   const steam=el("a","Steam · historical guide");steam.href=data.source;steam.rel="noopener noreferrer";steam.target="_blank";
-   links.append(wiki,steam);caution.append(links);box.append(caution);
+   const legacy=el("a",tr("หมายเหตุเดิมใน Act 7 Inventory","Legacy Act 7 source notes"));legacy.href="./act7-inventory.json";legacy.rel="noopener noreferrer";legacy.target="_blank";
+   links.append(wiki,legacy);caution.append(links);box.append(caution);
  }
  if(phase.patchProblem){
    const alert=el("div",undefined,"hubResearchConflict");alert.dataset.fairgravesAlert="true";

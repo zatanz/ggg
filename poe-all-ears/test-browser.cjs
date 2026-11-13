@@ -1064,7 +1064,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal(await hub.locator('#hubView .hubReferenceShelf').evaluate(x=>x.open),false,'Backup import resets transient reference drawer to a compact default');
  await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal'),true,'Act 2 clearly describes Wiki pre-Seal talk order');
- assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28: ห้ามแม้แต่คุย'),true,'Act 2 clearly distinguishes Steam post-Darkness talk order');
+ assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal'),true,'Act 2 accurately states Steam does not ban earlier talks');
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),false,'player can close detailed contradictory-source disclosure');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('1');

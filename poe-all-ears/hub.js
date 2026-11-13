@@ -98,13 +98,13 @@ function renderSummary(){
  hero.append(next);
  const sourceAlert=el("details",undefined,"hubEvidencePanel hubGlobalEvidence");
  sourceAlert.dataset.evidenceScope="global";
- const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจความเสี่ยงด้านข้อมูล: Waypoint / Vaal / Bandits","Check source conflicts: Waypoints / Vaal / Bandits")),
+ const sourceTitle=el("summary");sourceTitle.append(el("strong",tr("ตรวจข้อมูลที่อาจทำให้พลาด: Waypoint / Bandits / Vaal","Check potentially missable steps: Waypoints / Bandits / Vaal")),
  el("small",tr("ข้อมูลเดิมบางส่วนไม่ตรงกับเวอร์ชันใหม่ · เปิดอ่านก่อนทำตาม","Some old instructions may be obsolete · review before following")));
  sourceAlert.append(sourceTitle);
  const sourceBody=el("div",undefined,"hubEvidenceBody");
  [
  [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ตรวจยอดในเกม 3.30","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. Current 3.30 in-game count is not certified."),"https://www.poewiki.net/wiki/Waypoint"],
- [tr("Vaal Side Area: แหล่งข้อมูลเก่าแนะนำ Sacrifice Fragment กับ Map Device แต่ 3.30 เปลี่ยนระบบ Fragment และนำ Vaal Side Area ออกจากแผนที่ Map · ไม่ควรทำตามวิธีเก่า","Vaal Side Areas: old guides suggest Sacrifice Fragments in the Map Device. Patch 3.30 changes Fragments and removes Vaal Side Areas from Maps. Do not follow that old method."),"https://poedb.tw/us/Version_3.30.0"],
+ [tr("Vaal Side Area: คำแนะนำเก่าบางแหล่งเกี่ยวกับ Fragment/Map Device อาจใช้ไม่ได้ในเวอร์ชันปัจจุบัน ควรตรวจพื้นที่จริงและเงื่อนไข Lore จากคู่มือปัจจุบัน ก่อนใช้เส้นทางนั้น","Vaal Side Areas: older Fragment / Map Device instructions may be version-specific. Verify actual lore availability and areas for the current playable patch rather than assuming an old farming route still works."),"https://poedb.tw/us/Version_3.30.0"],
  [tr("Act 2: ลำดับ Bandits / The Darkness ใน Steam และ PoE Wiki ไม่ตรงกัน · ดูคำเตือนใน Act 2 ก่อนเลือกช่วยหรือฆ่า","Act 2: Steam and PoE Wiki disagree on Bandit / Darkness ordering. Open Act 2 warnings before choosing to help or kill."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
  ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
  sourceAlert.append(sourceBody);hero.append(sourceAlert);
@@ -184,7 +184,7 @@ function itemCard(type,x){
    }
    if(!guide.detailsKnown)body.append(el("p",tr("ยังไม่มีรายละเอียดเงื่อนไขรายรายการที่ยืนยันกับเกม 3.30","Exact conditions have not been verified in-game for patch 3.30"),"hubUnverifiedText"));
    const source=el("a",tr("ดูแหล่งอ้างอิง","Open source"));source.href=guide.source;source.target="_blank";source.rel="noopener noreferrer";
-   body.append(el("p",tr("ข้อมูลอ้างอิงเก่า · ยังไม่ยืนยันกับแพตช์ 3.30","Historical source only · not verified for patch 3.30"),"hubSubtle"),source);detail.append(body);info.append(detail);
+   body.append(el("p",tr("ข้อมูลจากคู่มือเก่า · ยังไม่รับรองครบทุกกรณีของ 3.29","Historical source · not fully verified for 3.29"),"hubSubtle"),source);detail.append(body);info.append(detail);
  }
  row.append(box,info,el("span",done?tr("เก็บแล้ว","Done"):tr("ยังไม่เก็บ","To do"),"hubItemState"));
  return row;
@@ -717,8 +717,8 @@ function epilogueRoute(target){
 // Show conflicts where a player decides what to do, not only in the footer.
 function routeEvidencePanel(act){
  const issues={
-  "1":[["Fairgraves · 3.29 report","Fairgraves · รายงานปัญหา 3.29","Dialogue availability was disputed in 3.29; no 3.30 gameplay reproduction is recorded.","มีรายงานว่าบทสนทนา Fairgraves ใช้ไม่ได้ใน 3.29 แต่ยังไม่มีผลทดสอบกับเกม 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
-  "2":[["Bandits / The Darkness","Bandits / The Darkness","Steam 3.28 explicitly warns not to TALK TO or kill any Bandit before triggering The Darkness; the 2025 PoE Wiki lists different prerequisite paths. Do not assume an early conversation is harmless. Eramir #101–103 are dependent on the actual first/second kills.","คู่มือ Steam 3.28 เตือนชัดเจนว่าอย่าเพิ่งแม้แต่คุยกับ Bandits หรือฆ่าใครก่อนเปิดเหตุการณ์ The Darkness แต่ PoE Wiki ปี 2025 มีเงื่อนไขต่างออกไป อย่าสมมติว่าคุยก่อนจะปลอดภัย หัวข้อ Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare its original route, but do not assume its timing is valid in 3.30.","เทียบลำดับจากคู่มือ Steam โดยไม่ถือว่ายืนยันกับแพตช์ 3.30 แล้ว","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "1":[["Fairgraves · 3.29 report","Fairgraves · รายงานปัญหา 3.29","A reported Fairgraves issue in 3.29 still lacks a reproducible in-game confirmation in this project's evidence log.","มีรายงานว่าบทสนทนา Fairgraves มีปัญหาใน 3.29 แต่โปรเจกต์ยังไม่มีหลักฐานจากเกมที่ทำซ้ำได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","Steam 3.28 explicitly warns not to TALK TO or kill any Bandit before triggering The Darkness; the 2025 PoE Wiki lists different prerequisite paths. Do not assume an early conversation is harmless. Eramir #101–103 are dependent on the actual first/second kills.","คู่มือ Steam 3.28 เตือนชัดเจนว่าอย่าเพิ่งแม้แต่คุยกับ Bandits หรือฆ่าใครก่อนเปิดเหตุการณ์ The Darkness แต่ PoE Wiki ปี 2025 มีเงื่อนไขต่างออกไป อย่าสมมติว่าคุยก่อนจะปลอดภัย หัวข้อ Eramir #101–103 ขึ้นกับลำดับการฆ่าจริง","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the Steam route against the Wiki before advancing; neither is fully gameplay-verified for 3.29.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนเล่นต่อ ทั้งคู่ยังไม่ผ่านการทดสอบครบใน 3.29","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
   "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
   "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
  };
@@ -729,7 +729,7 @@ function routeEvidencePanel(act){
  // The initial message stays compact; explicit differences remain one click away.
  box.open=String(act)==="2"||String(act)==="9";
  const summary=el("summary");
- summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่ตรวจยืนยันในเกมแพตช์ 3.30 · "+list.length+" ประเด็น","Not gameplay-certified for 3.30 · "+list.length+" issue(s)")));
+ summary.append(el("strong",tr("แหล่งข้อมูลมีข้อขัดแย้ง · ตรวจลำดับก่อนเล่นต่อ","Source disagreement · verify before advancing")),el("small",tr("ยังไม่มีหลักฐานเกม 3.29 ยืนยันทุกเงื่อนไข · "+list.length+" ประเด็น","Not fully verified in live 3.29 · "+list.length+" issue(s)")));
  box.append(summary);
  const body=el("div",undefined,"hubEvidenceBody");
  list.forEach(([en,th,detailEN,detailTH,href])=>{
@@ -739,7 +739,7 @@ function routeEvidencePanel(act){
   source.href=href;source.target="_blank";source.rel="noopener noreferrer";
   entry.append(source);body.append(entry);
  });
- body.append(el("p",tr("ระดับหลักฐาน: คู่มือประวัติศาสตร์ / ยังไม่มีภาพจากเกม 3.30 · ห้ามใช้เป็นการรับรองว่าจะไม่พลาด","Evidence level: historical guides only / no 3.30 gameplay captures. This is not a missable-safe certification."),"hubSubtle"));
+ body.append(el("p",tr("ระดับหลักฐาน: คู่มือเก่าและ Wiki · ยังไม่มีหลักฐาน 3.29 ครบทุกทางเลือก ห้ามถือว่าเป็นเส้นทางปลอดภัยที่รับรองแล้ว","Evidence: historical guides and Wiki; no complete 3.29 branch-by-branch gameplay verification. Not a certified missable-safe route."),"hubSubtle"));
  box.append(body);return box;
 }
 function renderRoute(target){if(state.act==="Labyrinth"||state.act==="Vaal"){specialLoreRoute(target,state.act);return;}if(state.act==="Epilogue"){epilogueRoute(target);return;}const act=state.act==="all"?"1":state.act, panel=section("Act "+act+" · "+tr("รายการเก็บ Achievement","Achievement route"));
@@ -904,7 +904,7 @@ try{localStorage.setItem(MAIN,JSON.stringify(newMain));localStorage.setItem(LORE
 row.append(exp,imp,file);panel.append(row);return panel;}
 function renderView(){const panel=$("hubView");panel.replaceChildren();if(state.tab==="ears")return;
 if($("patch").value!=="legacy-3.9"&&state.tab!=="review"){
-  const warning=el("div",undefined,"hubPanel");warning.append(el("h2",tr("ยังไม่มีรายการที่ตรวจรับรองสำหรับแพตช์นี้","No patch-certified guide is available")),el("p",tr("ข้อมูลมาจาก PoE Wiki ปี 2025 และรายการเก่า 3.9 จึงยังยืนยันไม่ได้ว่าใช้กับ 3.29 หรือ 3.30 โดยไม่พลาดบทสนทนา","This guide uses 2025 PoE Wiki and historical 3.9 data. It cannot certify a missable-safe route for patches 3.29 or 3.30."),"hubNotice"));
+  const warning=el("div",undefined,"hubPanel");warning.append(el("h2",tr("ยังไม่มีคู่มือรับรองแยกสำหรับแพตช์นี้","No separately certified guide for this patch")),el("p",tr("ข้อมูลอ้างอิงจาก PoE Wiki ปี 2025 และชุดเก่า 3.9 สามารถเปิดตรวจขั้นตอนได้ แต่ยังไม่ใช่ผลทดสอบการเล่นครบทุกทางเลือกใน 3.29","This historical reference uses 2025 PoE Wiki and legacy 3.9 records. It is not a fully verified 3.29 missable-safe playthrough."),"hubNotice"));
   const button=el("button",tr("ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)","View historical guide (not patch-certified)"));button.onclick=()=>{$("patch").value="legacy-3.9";$("patch").dispatchEvent(new Event("change",{bubbles:true}));renderView();};warning.append(button);panel.append(warning);return;
 }
 if(state.tab==="route"){renderRoute(panel);return;}if(state.tab==="review"){if($("patch").value!=="legacy-3.9")panel.append(el("div",tr("หมายเหตุ: ตัวเลขและข้อมูลอ้างอิงยังเป็นชุดประวัติศาสตร์ ไม่รับรองสำหรับแพตช์ที่เลือก แต่ยังสำรองข้อมูลได้ตามปกติ","Note: counts and references are historical, not certified for the selected patch. You can still back up your progress."),"hubNotice"));panel.append(reviewPanel());return;}renderCategory(panel,state.tab);}

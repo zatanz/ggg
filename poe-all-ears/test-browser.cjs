@@ -1189,6 +1189,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="ears"]').click();
  await selectSetting('patch','3.30');
+ assert.equal((await hub.locator('#patch option[value="3.30"]').innerText()).includes('แพตช์ล่าสุด'),true,'3.30 selector is current but remains not certified');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'backup always accessible when a patch is unverified');
  await hub.locator('#hubNav [data-tab="route"]').click();
@@ -1197,7 +1198,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await hub.getByRole('button',{name:'ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)'}).click();
  assert.equal(await hub.locator('#patch').inputValue(),'legacy-3.9','switch back to explicitly historical data');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'historical preview works after deliberate switch');
- assert.equal((await hub.locator('.hubDataNotice').innerText()).includes('3.29'),true,'data evidence notice clearly qualifies current 3.29 play instead of the deferred 3.30 version');
+ assert.equal((await hub.locator('.hubDataNotice').innerText()).includes('3.30'),true,'data evidence notice distinguishes current 3.30 from historical records');
 
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();

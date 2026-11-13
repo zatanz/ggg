@@ -608,6 +608,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubGameNames').selectOption('en');
  await hub.locator('#hubDescriptionLanguage').selectOption('th');
 
+ hub.once('dialog',d=>d.accept());
  await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
  assert.equal((await hub.locator('#hubView [data-stop-phase="powder-acid"]').innerText()).includes('The Belly of the Beast'),true,'Both ingredients before Belly STOP appears');
  const emberArt=hub.locator('#hubView [data-visual-phase="powder-acid"]');

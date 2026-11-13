@@ -775,9 +775,13 @@ const assert=require('node:assert/strict');
 
  const firstLore=hub.locator('#hubView .hubSection > .hubList > .hubItem input[type="checkbox"]').first();
  if(await firstLore.isChecked())await firstLore.uncheck();
+ assert.equal((await firstLore.getAttribute('aria-label')).startsWith('ทำเครื่องหมายว่าเก็บแล้ว'),true,'unchecked checkbox must announce a mark action, not falsely say already completed');
+ await firstLore.focus();
  const prev=await hub.locator('#hubStats .hubStat').nth(1).innerText();
  await firstLore.check();
  const next=await hub.locator('#hubStats .hubStat').nth(1).innerText();
+ assert.equal((await firstLore.getAttribute('aria-label')).startsWith('ยกเลิกเครื่องหมายว่าเก็บแล้ว'),true,'checked checkbox now announces the unmark action');
+ assert.equal(await firstLore.evaluate(el=>document.activeElement===el),true,'keyboard focus returns to the item after checklist rerender');
  assert.notEqual(next,prev,'inline Lore checkbox updates dashboard');
  assert.equal(await hub.locator('#hubView .hubSection > .hubList > .hubItem').first().getAttribute('data-state'),'done','completed item remains in place and clearly marked');
  assert.equal((await hub.locator('#hubView .hubSection > .hubList > .hubItem .hubItemState').first().innerText()).includes('เก็บแล้ว'),true,'checklist shows explicit done label');
@@ -955,6 +959,7 @@ const assert=require('node:assert/strict');
  await hub.getByRole('button',{name:'ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)'}).click();
  assert.equal(await hub.locator('#patch').inputValue(),'legacy-3.9','switch back to explicitly historical data');
  assert.equal((await hub.locator('#hubView').innerText()).includes('All Ears'),true,'historical preview works after deliberate switch');
+ assert.equal((await hub.locator('#hubView .hubDataNotice').innerText()).includes('3.29'),true,'data evidence notice clearly qualifies current 3.29 play instead of the deferred 3.30 version');
 
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();
@@ -969,6 +974,7 @@ const assert=require('node:assert/strict');
  await hub.locator('#hubDescriptionLanguage').selectOption('en');
  assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
  assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('Viewing: Act 10'),true,'Main dashboard names the selected Act in English rather than a misleading global first-incomplete state');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('3.30'),false,'current route copy should not misdirect the player toward an unverified future patch');
  assert.equal((await hub.locator('.tips').innerText()).includes('Source status:'),true,'Outdated Thai-only source-status warning now has complete English copy');
  assert.equal((await hub.locator('#hubLanguagePanel .hubLanguageNote').innerText()).includes('All ten Acts'),true,'Language policy accurately describes full Act 1–10 bilingual coverage');
 

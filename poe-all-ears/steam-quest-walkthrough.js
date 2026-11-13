@@ -515,7 +515,7 @@ window.POE_STEAM_WALK = {
           102
         ],
         "confidence": "conflict",
-        "sourceConflict": "ข้อขัดแย้งยังไม่คลี่คลาย: Steam ให้รอคุย Bandits หลังเปิด The Darkness แต่ PoE Wiki แนะนำคุยก่อนเปิด Ancient Seal จึงต้องตรวจในเกมก่อนทำขั้นที่เปลี่ยนสถานะ Bandits",
+        "sourceConflict": "ข้อมูลหลักฐานต่างกัน: PoE Wiki แนะนำคุย Bandits ทุกคนก่อนเปิด Ancient Seal ส่วน Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้สั่งห้ามคุยก่อน Seal ยังไม่มีผลทดสอบ 3.30 ที่รับรองลำดับปลอดภัย ให้ตรวจบทสนทนาก่อนตัดสินใจฆ่าหรือช่วย",
         "visual": {
           "asset": "./assets/bandits-quest-illustration.svg",
           "title": "Deal with the Bandits · ก่อนตัดสินใจ",

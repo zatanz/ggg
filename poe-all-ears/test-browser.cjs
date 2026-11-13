@@ -228,6 +228,16 @@ const assert=require('node:assert/strict');
  assert.equal(await hub.locator('#hubView [data-evidence-act="1"]').evaluate(x=>x.open),true,'current-league Fairgraves evidence is expanded by default');
  assert.equal(await hub.locator('#hubView [data-steam-act="1"]').count(),1,'Act 1 has source-backed area walkthrough');
  assert.equal(await hub.locator('#hubView .hubWalkNavigator select option').count(),9,'Act 1 has nine source-ordered player phases');
+ // A one-item step must shift keyboard focus to the next-stage action rather than
+ // leaving it on a checkbox removed during the render.
+ const strandMark=hub.locator('#hubView [data-phase="strand"] .hubInlineCurrentChecklist input[type="checkbox"]');
+ await strandMark.check();
+ const strandAdvance=hub.locator('#hubView [data-phase="strand"] [data-inline-advance="true"]');
+ assert.equal(await strandAdvance.count(),1,'completed one-item stage offers in-place next-step action');
+ assert.equal(await strandAdvance.evaluate(x=>document.activeElement===x),true,'after final inline mark keyboard focus moves to next-step action');
+ await hub.locator('#hubView [data-phase="strand"] .hubWalkArchive > summary').click();
+ await hub.locator('#hubView [data-phase="strand"] .hubWalkArchive input[data-track-type="ears"][data-track-id="1"]').uncheck();
+ assert.equal(await hub.locator('#hubView [data-phase="strand"] .hubInlineCurrentChecklist input[data-track-id="1"]').count(),1,'undo brings first item back without changing the saved stage');
  await hub.locator('#hubView .hubWalkNavigator select').selectOption('3');
  assert.equal(await hub.locator('#hubView [data-phase="mudflats"]').count(),1,'Mud Flats focus is selected');
  assert.equal(await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').evaluate(x=>document.activeElement===x),true,'quest-stage selector retains keyboard focus after replacing route DOM');

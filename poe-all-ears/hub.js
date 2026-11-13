@@ -77,7 +77,7 @@ function renderSummary(){
  const marked=Object.keys(names).reduce((sum,type)=>sum+progress(type),0),overall=Object.values(totals).reduce((a,b)=>a+b,0);
  const hero=el("div",undefined,"hubMissionTotal");
  const intro=el("div",undefined,"hubMissionHeading");
- intro.append(el("strong",tr("เป้าหมาย: เก็บ 4 Achievement ที่ติดตามให้ครบ","Goal: finish all four tracked achievements")),el("span",tr("ติ๊กเฉพาะสิ่งที่เก็บแล้วในเกม และเทียบยอด Achievement จริงอีกครั้ง · เว็บไม่ตรวจให้อัตโนมัติ","Mark only items you have collected in-game, then compare actual achievement counts. This site cannot detect your game progress."),"hubSubtle"));
+ intro.append(el("strong",tr("เป้าหมาย: ติ๊ก Checklist ให้ครบ 100% ของ 4 Achievement ที่ติดตาม","Goal: mark 100% of the four tracked achievement checklists")),el("span",tr("ติ๊กเฉพาะสิ่งที่เก็บแล้วในเกม และเทียบยอด Achievement จริงอีกครั้ง · เว็บไม่ตรวจให้อัตโนมัติ","Mark only items you have collected in-game, then compare actual achievement counts. This site cannot detect your game progress."),"hubSubtle"));
  const score=el("div",undefined,"hubMissionScore");
  score.append(el("b",marked+" / "+overall),el("span",Math.floor(marked/overall*100)+tr("% ที่บันทึกในเว็บ","% marked in this guide")));
  const bar=el("progress");bar.max=overall;bar.value=marked;bar.setAttribute("aria-label",tr("ความคืบหน้า 4 Achievement ที่บันทึกไว้ในเว็บ","Progress marked for four tracked achievements"));hero.append(intro,score,bar);

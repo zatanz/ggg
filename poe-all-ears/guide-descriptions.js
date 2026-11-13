@@ -16,19 +16,27 @@ const topic=stripTopic(item.dialog),npc=stripNpc(item.npc);
 let action;
 if(/Introduction/i.test(topic)){action="ไปหา "+npc+" แล้วฟังหัวข้อ Introduction ให้จบ ก่อนทำเครื่องหมายว่าเก็บแล้ว";}else{action="คุยกับ "+npc+" เลือกหัวข้อ “"+topic+"” แล้วฟังให้จบ จึงค่อยทำเครื่องหมายว่าเก็บแล้ว";}
 if(g?.steps)action=g.steps;
-let displayLabel="";
+let displayLabel="",displayLabelEN="",actionEN="",cautionEN="";
 const bandits=["Alira","Oak","Kraityn"],first=bandits.includes(context?.first)?context.first:"",second=bandits.includes(context?.second)&&context.second!==first?context.second:"";
 if(item.act===2&&r.wikiRow===101){
  displayLabel="Eramir — หัวข้อ Bandit ที่ฆ่าคนแรก"+(first?" ("+first+")":"");
+ displayLabelEN="Eramir — First defeated Bandit"+(first?" ("+first+")":"");
+ actionEN=first?"After killing "+first+" as the FIRST Bandit, return to Eramir and hear the “"+first+"” topic BEFORE fighting the second Bandit.":"After killing the first Bandit, return to Eramir and listen to the topic named after the Bandit you defeated (Alira, Oak or Kraityn) BEFORE fighting the second.";
+ cautionEN="Before killing the second Bandit, hear Eramir's topic for the FIRST Bandit you killed.";
  action=first?"หลังฆ่า "+first+" เป็น Bandit คนแรก ให้กลับมาคุยกับ Eramir แล้วเลือกหัวข้อ “"+first+"” ก่อนฆ่าคนที่สอง":"หลังฆ่า Bandit คนแรก ให้กลับมาคุยกับ Eramir แล้วเลือกหัวข้อชื่อ Bandit ตัวที่ฆ่า (Alira / Oak / Kraityn) ก่อนฆ่าคนถัดไป";
 }
 if(item.act===2&&r.wikiRow===102){
  const survivor=first&&second?bandits.find(n=>n!==first&&n!==second):"";
  displayLabel="Eramir — หัวข้อ Bandit ที่ยังมีชีวิต"+(survivor?" ("+survivor+")":"");
+ displayLabelEN="Eramir — Surviving Bandit"+(survivor?" ("+survivor+")":"");
+ actionEN=survivor?"After killing your SECOND Bandit, return to Eramir and hear the “"+survivor+"” topic while "+survivor+" is still alive, BEFORE fighting the third.":"After killing the second Bandit, return to Eramir and hear the topic named after the ONE Bandit still alive (Alira, Oak or Kraityn) BEFORE killing the third.";
+ cautionEN="Before killing the third Bandit, return to Eramir for the topic naming the Bandit who is still alive.";
  action=survivor?"หลังฆ่า Bandit ตัวที่สอง ให้คุยกับ Eramir หัวข้อ “"+survivor+"” เพราะ "+survivor+" ยังมีชีวิตอยู่ ก่อนฆ่าคนสุดท้าย":"หลังฆ่า Bandit ตัวที่สอง ให้คุย Eramir หัวข้อชื่อ Bandit ที่ยังมีชีวิตอยู่ (Alira / Oak / Kraityn) ก่อนฆ่าคนสุดท้าย";
 }
 if(item.act===2&&r.wikiRow===103){
  displayLabel="Eramir — Bandit Lords (หลังฆ่าทั้งสาม)";
+ displayLabelEN="Eramir — Bandit Lords (after all three)";
+ actionEN="After defeating Alira, Oak and Kraityn, return to Eramir and hear the “Bandit Lords” topic.";
  action="หลังฆ่า Alira, Oak และ Kraityn ครบทั้งสาม ให้กลับไปคุย Eramir หัวข้อ “Bandit Lords”";
 }
 
@@ -42,7 +50,7 @@ if(item.dialog.includes("QC"))tags.push("QC เป็นสัญลักษณ
 if(item.dialog.includes("(!)"))tags.push("ต้นทางกำกับเครื่องหมาย (!) ไว้กับบทสนทนา ต้องตรวจว่า NPC มีหัวข้อนี้จริง");
 if(item.npc.includes("*"))tags.push("NPC คนนี้อาจอยู่ในพื้นที่ระหว่างเควสต์ ไม่ได้ยืนอยู่ในเมืองตลอด");
 if(!r.before&&!g?.warning&&!extra[1]&&item.note)tags.push("มีคำเตือนจากตาราง 3.9 ที่ยังไม่ได้เกลาและตรวจแยก ให้เปิด Wiki ก่อนเปลี่ยนสถานะเควสต์");
-return {action,displayLabel,location,unlock,caution,tip:tags.join(" · "),source:r.source||source+"#Act_"+item.act,sourceLabel:g||r.trigger||r.before?"PoE Wiki ปี 2025 + ร่างคำแนะนำ":"ชื่อหัวข้อจาก Wiki 2025 / เช็กลิสต์เก่า",status:g?.review_status||r.review||"historical-wiki-2025",patchCertified:false,detailsKnown:!!(g?.steps||r.trigger||r.before||extra[0]||extra[1])};
+return {action,actionEN,displayLabel,displayLabelEN,cautionEN,location,unlock,caution,tip:tags.join(" · "),source:r.source||source+"#Act_"+item.act,sourceLabel:g||r.trigger||r.before?"PoE Wiki ปี 2025 + ร่างคำแนะนำ":"ชื่อหัวข้อจาก Wiki 2025 / เช็กลิสต์เก่า",status:g?.review_status||r.review||"historical-wiki-2025",patchCertified:false,detailsKnown:!!(g?.steps||r.trigger||r.before||extra[0]||extra[1])};
 }
 function forLore(item){
 let action="ไปที่ "+item.area+" หา “"+item.name+"” แล้วกดอ่านหรือโต้ตอบกับวัตถุในเกม ก่อนทำเครื่องหมายว่าเก็บแล้ว";

@@ -282,7 +282,28 @@ const highRisk={
   "481": "AFTER completing Death and Rebirth, hear Lilly Roth: Innocence.",
   "482": "AFTER completing An End to Hunger, hear Lilly Roth: Kitava.",
   "483": "Check Innocence: Exile during the Act 10 ending.",
-  "484": "Check Innocence: Sin during the Act 10 ending."
+  "484": "Check Innocence: Sin during the Act 10 ending.",
+  "27": "After entering The Prison and hearing Tarkleigh: Brutus, speak to Bestel: Brutus BEFORE defeating Brutus.",
+  "48": "After accepting Deal with the Bandits, hear Greust: Bandit Lords and review all available Darkness dialogue BEFORE making any kill/help decision. Historical Steam and Wiki order differs.",
+  "57": "After starting The Great White Beast, hear Silk: The Great White Beast BEFORE completing the quest. Check the later dialogue separately.",
+  "69": "After starting Intruders in Black, check Greust: Chamber of Sins before progressing all the way through Chamber of Sins; the old guide also mentions reopening the Western Forest route.",
+  "75": "After FIRST entering The Chamber of Sins, return for Yeena: Chamber of Sins BEFORE rescuing Helena and completing Intruders in Black.",
+  "77": "Listen to Eramir: The Baleful Gem while you have the Baleful Gem but DO NOT yet have Maligaro's Spike in your inventory.",
+  "91": "With both Baleful Gem and Maligaro's Spike, hear Eramir: Maligaro's Creation BEFORE using the items to clear the Tree Roots / deal with Lorrata.",
+  "92": "After finding Lorrata at the blocked Tree Roots, hear Eramir: Ancient Gateway BEFORE removing the obstruction or dealing with Lorrata.",
+  "100": "After the Ancient Seal opens the Darkness topics, speak to Alira: The Darkness while she is alive, BEFORE killing her or committing to a Bandit decision.",
+  "102": "After the Ancient Seal opens the Darkness topics, speak to Oak: The Darkness while he is alive, BEFORE killing him or committing to a Bandit decision.",
+  "103": "AFTER defeating all three Bandits, return to Eramir and listen to Bandit Lords. Do not substitute the earlier conditional Eramir conversations.",
+  "118": "After obtaining Tolman's Bracelet, hear Hargan: Introduction BEFORE handing the Bracelet to Clarissa.",
+  "142": "At your first meeting with Fairgraves in The Docks, hear Introduction while NEITHER Decanter Spiritus NOR Chitus' Plum is in your inventory.",
+  "148": "Hear Lady Dialla: Introduction at your first meeting BEFORE obtaining either Thaumetic Sulphite or Ribbon Spool.",
+  "153": "After showing Lady Dialla the Thaumetic Sulphite, hear her Thaumetic Sulphite topic while Ribbon Spool is NOT in your inventory.",
+  "158": "After entering The Ebony Barracks, return to Maramoa: Crossing the River BEFORE defeating General Gravicius.",
+  "161": "After completing Sever the Right Hand and collecting Maramoa's reward, hear Maramoa: Piety BEFORE killing Piety.",
+  "164": "After defeating General Gravicius, hear Grigor: The Lunaris Temple BEFORE killing Piety.",
+  "231": "After completing The King of Desire, hear Petarus and Vanja: Daresso BEFORE entering The Belly of the Beast.",
+  "233": "After activating the Rapture Device, hear Kira: Dialla BEFORE entering The Belly of the Beast.",
+  "237": "After completing The King of Fury, hear Oyun: Kaom BEFORE entering The Belly of the Beast."
 };
 const valid={description:["th","en"],names:["en","both","th"]};
 let prefs={description:"th",names:"en"};
@@ -311,14 +332,35 @@ function englishHelp(type,item,guide){
  const act=item.act,base=String(item.name||item.dialog||""),where=String(item.area||"Act "+act);
  let action="",location="",unlock="",caution="",tip="";
  if(type==="ears"){
-   action="Speak to "+String(item.npc||"").replace(/ \*$/,"")+", choose the \""+String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim()+"\" topic, and listen through the dialogue before checking it off.";
-   location="Act "+act+" · "+item.npc;
-   unlock="Find this topic at the appropriate quest stage. If it is missing, review the linked Act route before changing quest state.";
-   caution=highRisk[String(item.id)]||(guide?.caution?"Quest-state-sensitive dialogue: read the original Thai source note below before advancing.":"");
+   const topic=String(item.dialog||"").replace(/\s*-\s*QC\b/g,"").replace(/\s*-\s*\(!\)/g,"").trim();
+   const phases=window.POE_STEAM_WALK?.acts?.[act]||[];
+   const phase=phases.find(p=>(p.dialogueIds||[]).includes(item.id));
+   action=guide?.actionEN||("Speak to "+String(item.npc||"").replace(/ \*$/,"")+", select \""+topic+"\", and listen until the dialogue finishes before marking it collected.");
+   location=phase?"Act "+act+" · "+phase.place+" · "+String(item.npc||"").replace(/ \*$/,""):"Act "+act+" · "+item.npc;
+   unlock=phase?.headingEN?"At quest step: "+phase.headingEN+". Open the linked quest-stage instructions before changing quest state.":"Check the Act guide for the event that makes this topic available before moving forward.";
+   caution=highRisk[String(item.id)]||guide?.cautionEN||(guide?.caution?"Potentially missable topic. Review the linked source note and STOP timing before advancing.":"");
  }else if(type==="lore"){
-   action="Read \""+base+"\" in "+where+"; mark it only after the in-game interaction.";
-   location=where;unlock="Find and interact with the exact lore object.";
-   caution=item.random?"This lore encounter can vary by instance. Check the in-game count.":"";
+   location=where;
+   action="Find \""+base+"\" in "+where+", interact with it in-game, and only then mark this exact Lore entry.";
+   unlock="Match the object's exact name and confirm your in-game progress.";
+   caution=item.random?"This Lore can vary or repeat across instances; do not mark the same entry twice.":"";
+   if(Number.isInteger(item.id)&&item.id>=1&&item.id<=15){
+     action="In Lioneye's Watch, interact with the Letters of Exile plaques until you find \""+base+"\". Mark this exact letter only when it appears.";
+     unlock="Each interaction may produce a letter you have already seen. Continue searching for missing distinct names.";
+     caution="Letters of Exile are random: repeated letters do not add new entries to your checklist.";
+   }else if(item.area==="The Library"){
+     action="Explore the book collections in The Library and read the exact book \""+base+"\" before marking it collected.";
+     unlock="The Library's books may be distributed randomly by instance. Check the title and seek missing books in another instance if needed.";
+     caution="Do not mark a book again when the same title appears twice.";
+   }else if(item.act==="Labyrinth"){
+     action="Explore the Labyrinth and interact with \""+base+"\" where it appears on your current route.";
+     unlock="Use the Labyrinth lore section to check which area or Trial stage contains this entry.";
+     caution="Labyrinth rooms and object positions may vary. The historical route is not a fixed room-by-room map.";
+   }else if(item.act==="Vaal"){
+     action="Find a Vaal Side Area that contains \""+base+"\" and interact with that exact Letter or Journal.";
+     unlock="Search the Side Area name in the Vaal finder; entrances and available areas may vary between instances.";
+     caution="Do not rely on the old Map Device method. Area-to-Lore matches remain historical and are unverified for patch 3.30.";
+   }
  }else if(type==="waypoints"){
    action="Travel to "+base+" and verify that its Waypoint is active on the in-game map before marking it complete.";
    location="Act "+act+" · "+base;unlock="Some Waypoints activate automatically in newer game versions. Confirm the actual active state rather than assuming that entering the area is enough.";
@@ -329,8 +371,9 @@ function englishHelp(type,item,guide){
      caution="Historic node naming differs from the physical Doedre's Cesspool waypoint access. Check in-game before marking.";
    }
  }else{
-   action="Open the Quest Log and finish \""+base+"\" in Act "+act+". Complete any turn-in or reward step before checking it off.";
-   location="Act "+act;unlock="Use the linked quest-stage route for area and NPC order. Verify completion in the in-game quest journal.";
+   action="Open the Quest Log and complete \""+base+"\" in Act "+act+". Return for the quest hand-in or reward if required, then mark it complete.";
+   location="Act "+act;unlock="Use the linked quest-stage route for the area and NPC order. Confirm completion in the in-game Quest Log.";
+   caution="An accepted quest, boss kill or unclaimed reward alone does not guarantee the side quest is completed. Historical conditions are not patch-certified.";
  }
  if(type==="ears"&&(act===9||act===10)){
    const special={

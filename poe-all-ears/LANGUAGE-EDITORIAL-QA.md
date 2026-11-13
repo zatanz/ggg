@@ -47,3 +47,17 @@ Certification: **historical PoE Wiki 2025 / legacy 3.9 source only**. No PoE 3.3
 ## Relevant files
 
 `poe-acts123-bilingual.js`, `steam-act4.js`–`steam-act10.js`, `guide-descriptions.js`, `poe-language.js`, `special-lore-guide.js`, `hub.js`, `hub.css`, `index.html`, `validate-data.cjs`, `test-browser.cjs`, and the project-scoped skill `.agents/skills/poe-achievement-ux/SKILL.md`.
+
+## Additional source-specific bilingual quality pass — November 13, 2026
+
+The next review found 23 original historical NPC source warnings without corresponding English row-specific timing. **Twenty-one** are now explicitly translated at their unchanged local IDs in the English risk table (Acts 1–4), and **two** conditional Eramir entries in Act 2 (first Bandit killed and Bandit still alive) instead use **per-character dynamic English wording**. Source-wide validation covers all **62** historical flagged NPC dialogues, preserving both irreversible timing and the 2025/3.9 evidence limitation.
+
+Specific cases include:
+- Before Brutus, return to Bestel; before completing The Great White Beast, hear Silk; before finishing Intruders in Black, hear Yeena.
+- Do not let Maligaro's Spike or Ribbon Spool enter the inventory before their relevant Eramir or Dialla dialogue. Before destroying Tree Roots / fighting Lorrata, hear the relevant Eramir topics.
+- Alira and Oak each have a *living NPC* Darkness topic. Act 2 Eramir's first-kill topic and surviving-Bandit topic depend on the player's actual chosen first and second kills; they cannot safely be represented by fixed example names.
+- Before handing Tolman's Bracelet to Clarissa, hear Hargan. Before collecting Decanter Spiritus / Chitus' Plum, hear Fairgraves. Before Piety, hear Maramoa and Grigor. Before entering The Belly of the Beast, hear the source-flagged Act 4 follow-up conversations.
+
+Additional per-item English writing now distinguishes **15 randomly repeated Letters of Exile**, Library books that repeat by instance, changing Labyrinth room layouts, Vaal Side Area availability and obsolete Map Device instructions, and the separate requirement to complete a side quest's hand-in. It also identifies each NPC's actual **source-led Act, quest-stage headline and area** instead of the generic "find this topic at the appropriate quest stage."
+
+Browser QA now checks English Bandit names tied to selected Alira / Kraityn with Oak surviving, while leaving historic Thai source evidence available inside the original-source disclosure. No canonical ID, checked progress, locale setting key, ruler metadata or backup/export schema is changed. None of these editorial improvements establish 3.30 game-side achievement certification.

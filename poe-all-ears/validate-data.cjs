@@ -493,6 +493,13 @@ assert(actNine.find(p=>p.id==='ruler-irasha-choice')?.branchChoice==='Irasha','A
 assert(actNine.find(p=>p.id==='ruler-irasha-choice')?.sourceNoteEN.includes('no stable')||actNine.find(p=>p.id==='ruler-irasha-choice')?.sourceNoteEN.includes('stable tracker'),'Act9 alternate path cannot invent two local IDs');
 assert(sameExactSet(actNine.find(p=>p.id==='ruler-irasha-choice')?.dialogueIds||[],[443,444,441,442]),'Act9 Irasha branch ID crosswalk must be exact even where Wiki source rows differ');
 assert(actNine.find(p=>p.id==='powder-acid')?.stopIds.includes(445),'Act9 Sin both ingredients BEFORE Belly guard missing');
+assert(sameExactSet(actNine.find(p=>p.id==='powder-acid')?.stopIds||[],[445,446,447]),'Act9 all 3 Sin dialogues must be checked BEFORE entering Belly of the Beast');
+assert(sameExactSet(actNine.find(p=>p.id==='powder-acid')?.dialogueIds||[],[445,446,447]),'Act9 Powder step must own all 3 pre-Belly Sin dialogues exactly once');
+assert((actNine.find(p=>p.id==='black-core')?.dialogueIds||[]).length===0,'Act9 cannot instruct player to first find #446/#447 AFTER entering the Belly');
+assert(actNine.find(p=>p.id==='ruler-irasha-choice')?.sourceNoteEN.includes('3.29'),'Act9 current-player source note should prioritize 3.29');
+assert(["safe-passage-docks","bannon-sacrifice","kitava-after"].every(id=>{
+ const p=actTen.find(x=>x.id===id);return p?.postQuestReview===true&&p.sourceNote&&p.sourceNoteEN&&!p.stop&&!(p.stopIds||[]).length;
+}),'Act10 three post-quest reminders need bilingual source explanation without invented irreversible STOPs');
 assert(sameExactSet(actNine.find(p=>p.id==='trinity-rescue')?.stopIds||[],[448,449]),'Act9 both Weylam lines BEFORE Act10 must be retained');
 assert(actNine.find(p=>p.id==='foothills-fortune')?.sidequestIds.includes(26),'Fastis Fortuna tied to Calendar of Fortune near Foothills');
 assert(actTen.find(p=>p.id==='safe-passage-docks')?.dialogueIds.includes(471),'Act10 after Safe Passage Tsoatha dialogue missing');

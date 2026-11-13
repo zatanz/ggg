@@ -859,6 +859,44 @@ const assert=require('node:assert/strict');
  await hub.locator('.hubActStrip [data-act="10"]').click();
  assert.equal(await hub.locator('.hubActStrip [data-act="10"]').getAttribute('aria-pressed'),'true','Act 10 selected via mobile shortcut');
  assert.equal(await hub.locator('.hubActStrip [data-act="10"]').evaluate(e=>{const r=e.getBoundingClientRect();return r.width>=40&&r.left>=0&&r.right<=window.innerWidth}),true,'Mobile Act 10 visible without horizontal scrolling');
+
+ // Editorial language pass: English must carry the same quest actions and STOP timing as Thai for Acts 1–3.
+ await hub.locator('#hubDescriptionLanguage').selectOption('en');
+ assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
+ assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('First incomplete'),true,'Main 100% dashboard next-action text is English');
+ assert.equal((await hub.locator('.tips').innerText()).includes('Source status:'),true,'Outdated Thai-only source-status warning now has complete English copy');
+ assert.equal((await hub.locator('#hubLanguagePanel .hubLanguageNote').innerText()).includes('All ten Acts'),true,'Language policy accurately describes full Act 1–10 bilingual coverage');
+
+ await hub.locator('.hubActStrip [data-act="1"]').click();
+ await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('7');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Allflame'),true,'Act 1 authored English guide covers Fairgraves item timing');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="fairgraves"]').innerText()).includes('STOP:'),true,'Act 1 English STOP preserves the Allflame risk');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
+
+ await hub.locator('.hubActStrip [data-act="2"]').click();
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Steam and PoE Wiki disagree'),true,'Act 2 English route retains conflicting Bandits source order');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
+ assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').innerText()),false,'Act 2 English route has no Thai text');
+
+ await hub.locator('.hubActStrip [data-act="3"]').click();
+ await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes("Tolman's Bracelet"),true,'Act 3 English guide identifies the exact item and NPC hand-in state');
+ assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Clarissa'),true,'Act 3 English STOP retains the Clarissa prerequisite');
+
+ // Checklist explanation now points to a concrete, source-led stage instead of a generic instruction.
+ await hub.locator('#hubNav [data-tab="collection"]').click();
+ await hub.locator('#hubToolbar [data-category="ears"]').click();
+ const firstGuide=hub.locator('#hubView .hubItem').filter({hasText:'Dying Exile'}).first();
+ await firstGuide.locator('.hubItemHelp > summary').click();
+ assert.equal((await firstGuide.locator('.hubItemHelpBody').innerText()).includes('What to do'),true,'English individual-item help has actionable headings');
+ assert.equal(await firstGuide.locator('[data-open-stage="strand"]').count(),1,'Dying Exile item is linked to its exact quest phase');
+ await firstGuide.locator('[data-open-stage="strand"]').click();
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').getAttribute('data-phase'),'strand','Checklist-to-route jump reaches exact Act 1 source phase');
+ await hub.locator('#hubDescriptionLanguage').selectOption('th');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Dying Exile'),true,'Switching back to Thai restores original specific quest guidance');
+ assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'Linked stage navigation does not create mobile overflow at 375px');
+
  assert.deepEqual(hubErrors,[],'single-page runtime errors');
  await browser.close();
  console.log('Browser smoke: PASS — 484 rows, persistence, multi-character, export/import, invalid JSON, patch gate, mobile width, walkthrough');

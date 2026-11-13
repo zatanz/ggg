@@ -660,3 +660,14 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubCurrentPatchRisk>p,.hubCurrentPatchRisk>.hubCurrentRiskActions,.hubCurrentPatchRisk>.hubSubtle{margin-left:14px;margin-right:14px}
 .hubCurrentPatchRisk>summary:focus-visible{outline:3px solid #ffe3a1;outline-offset:-4px}
 @media(max-width:600px){.hubCurrentPatchRisk>summary{padding:10px 12px;gap:5px}.hubCurrentPatchRisk>p,.hubCurrentPatchRisk>.hubCurrentRiskActions,.hubCurrentPatchRisk>.hubSubtle{margin-left:12px;margin-right:12px}}
+
+/* Act reference shelf: keep the active quest flow visible; progressively disclose secondary material. */
+.hubReferenceShelf{margin:18px 0 7px;border:1px solid #63737b;border-radius:12px;background:#1e2930;min-width:0;overflow-wrap:anywhere}
+.hubReferenceShelf>summary{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:14px 16px;background:#27343c;color:#f5e7ca;line-height:1.5}
+.hubReferenceShelf>summary strong{font-size:14px;font-weight:750}
+.hubReferenceShelf>summary small{color:#b7c8c7;font-size:12px;line-height:1.5}
+.hubReferenceShelf[open]>summary{border-bottom:1px solid #63737b;background:#324149}
+.hubReferenceShelf>summary:focus-visible{outline:3px solid #ffdf9c;outline-offset:-3px}
+.hubReferenceShelf>.hubActSummaryMore,.hubReferenceShelf>.hubHistoricalRisks,.hubReferenceShelf>.hubChapter,.hubReferenceShelf>.hubExcelWarnings,.hubReferenceShelf>.hubRewards,.hubReferenceShelf>.hubPostQuests,.hubReferenceShelf>.hubNotice{margin:10px 13px}
+.hubReferenceShelf .hubCritical{min-width:0}
+@media(max-width:600px){.hubReferenceShelf>summary{padding:12px}.hubReferenceShelf>.hubActSummaryMore,.hubReferenceShelf>.hubHistoricalRisks,.hubReferenceShelf>.hubChapter,.hubReferenceShelf>.hubExcelWarnings,.hubReferenceShelf>.hubRewards,.hubReferenceShelf>.hubPostQuests,.hubReferenceShelf>.hubNotice{margin:8px;max-width:calc(100% - 16px)}}

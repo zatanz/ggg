@@ -63,5 +63,8 @@ check(hubSource.includes('hubGlobalEvidence')&&hubSource.includes('https://www.p
 check(hubSource.includes('Source disagreement · verify before advancing')&&hubSource.includes('Original Thai source note'),'bilingual source comparison / inspectable original missing');
 check(hubSource.includes('Bandits / The Darkness')&&hubSource.includes('Irasha / Tasuni branch'),'critical quest disagreement indicators missing');
 check(hubCSS.includes('.hubEvidencePanel>summary:focus-visible')&&hubCSS.includes('@media(max-width:600px)'),'source panel focus / responsive styles missing');
+const walkSection=hubSource.slice(hubSource.indexOf('function actSteamGuide('),hubSource.indexOf('function renderRoute('));
+check(walkSection.indexOf('const actions=el("ol"')>=0&&walkSection.indexOf('const actions=el("ol"')<walkSection.indexOf('const taskNav=el('),'what-to-do instructions should precede detailed checklist navigation');
+check(hubSource.includes('const manageTitle=document.querySelector("#hubManage>summary")')&&hubSource.includes('const notice=document.querySelector(".hubDataNotice")'),'legacy help and patch label not updated on language switch');
 console.log(JSON.stringify({tested:['index.html','walkthrough.html'],errors},null,2));
 if(errors.length)process.exitCode=1;

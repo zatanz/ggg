@@ -643,8 +643,36 @@ function actSteamGuide(act){
   const item=collections[current.type].find(x=>x.id===current.id);
   const typeName=current.type==="ears"?"All Ears":current.type==="lore"?"No Stone Unturned":current.type==="waypoints"?"Locomancer":"No Loose Ends";
   focus.append(el("p",(item?label(item,current.type):"ID "+current.id)+" · "+typeName,"hubNextActionItem"));
-  const button=el("button",tr("ดูรายการที่ต้องติ๊กหลังทำเสร็จ","See what to mark after completing the steps"));button.type="button";
-  button.onclick=()=>{const area=box.querySelector('[data-walk-type="'+current.type+'"]');if(!area)return;if(area.tagName==="DETAILS")area.open=true;area.tabIndex=-1;area.focus({preventScroll:true});area.scrollIntoView({block:"center"});};
+  // Tell the player what this exact entry requires, not just which achievement category contains it.
+  if(item){
+   const original=window.POE_ITEM_DESCRIPTIONS?.get(current.type,item,current.type==="ears"&&item.act===2?getSafety():undefined);
+   const guide=descEN()?LANG.englishHelp(current.type,item,original):original;
+   const facts=el("dl",undefined,"hubCurrentTaskFacts");
+   for(const [caption,value] of [
+     [tr("ต้องทำอะไร","Do this"),guide?.action],
+     [tr("ไปที่ไหน / คุยกับใคร","Where / who"),guide?.location],
+     [tr("ทำเมื่อไร","When"),guide?.unlock]
+   ]){
+    if(!value)continue;
+    const pair=el("div",undefined,"hubCurrentTaskFact");
+    pair.append(el("dt",caption),el("dd",value));facts.append(pair);
+   }
+   if(facts.childElementCount)focus.append(facts);
+   else focus.append(el("p",tr("เปิดรายการด้านล่างเพื่อดูชื่อที่ต้องตรวจในเกม ไม่มีเงื่อนไขรายรายการที่ยืนยันได้เพิ่ม","Open the exact checklist entry below to verify its in-game name. No additional verified per-item conditions are available."),"hubSubtle"));
+  }
+  const button=el("button",tr("ไปยังรายการนี้เพื่อติ๊กหลังทำจริง","Go to this exact item to mark it after playing"));button.type="button";
+  button.dataset.openCurrentItem=current.type+":"+current.id;
+  button.onclick=()=>{
+   const area=box.querySelector('[data-walk-type="'+current.type+'"]');
+   if(!area)return;
+   if(area.tagName==="DETAILS")area.open=true;
+   const row=area.querySelector('input[data-track-type="'+current.type+'"][data-track-id="'+current.id+'"]');
+   if(!row)return;
+   const hidden= row.closest("details");
+   if(hidden&&!hidden.open)hidden.open=true;
+   row.focus({preventScroll:true});
+   row.closest(".hubItem")?.scrollIntoView({block:"center"});
+  };
   focus.append(button);
  }else{
   focus.append(el("p",tr("เครื่องหมายในเว็บไม่ใช่หลักฐานว่า Achievement สำเร็จ ตรวจยอดจริงในเกมก่อนเดินเรื่องต่อ","Manual marks are not proof that the achievement unlocked. Compare against the actual game before advancing."),"hubSubtle"));

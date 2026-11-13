@@ -1,4 +1,4 @@
-/* Act 10: historical source-led stages, not 3.30 gameplay-certified. Karui Shores dialogue excluded from original 484. */
+/* Act 10: historical source-led stages, not fully gameplay-certified for 3.29. Karui Shores dialogue excluded from original 484. */
 (function(){
 "use strict";const guide=window.POE_STEAM_WALK;if(!guide||guide.patchCertified!==false||guide.acts[10])throw Error("Cannot attach Act10 guide");
 guide.acts[10]=[
@@ -117,8 +117,8 @@ guide.acts[10]=[
     "stopEN": null,
     "stopIds": [],
     "keyItems": [],
-    "sourceNote": null,
-    "sourceNoteEN": null,
+    "sourceNote": "All Ears #471 เป็นหัวข้อที่เปิดหลังทำ Safe Passage สำเร็จ ไม่ใช่ก่อนรับเควสต์ และ #472 เป็นหัวข้อคนละรายการของ Lilly ต้องฟังจริงจึงติ๊ก การทำ Map to Tsoatha ยังต้องนำ The Teardrop ไปส่ง แยกจากการติ๊กบทสนทนา",
+    "sourceNoteEN": "All Ears #471 unlocks AFTER Safe Passage, not merely after accepting it. #472 is a separate Lilly topic. Check each only when heard, and keep Map to Tsoatha's Teardrop turn-in separate from dialogue progress.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act10-lilly-tsoatha-quest.svg",
@@ -128,7 +128,8 @@ guide.acts[10]=[
       "checkEN": "After completing Safe Passage, hear Lilly Roth: Tsoatha (#471) and The Teardrop (#472). Then retrieve The Teardrop from the Reliquary and turn in Map to Tsoatha.",
       "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_10",
       "status": "mock-not-in-game"
-    }
+    },
+    "postQuestReview": true
   },
   {
     "id": "reliquary-teardrop",
@@ -299,9 +300,10 @@ guide.acts[10]=[
     "stopEN": null,
     "stopIds": [],
     "keyItems": [],
-    "sourceNote": null,
-    "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "sourceNote": "PoE Wiki ยืนยันว่า Lilly Roth: Innocence (#481) เปิดหลัง Death and Rebirth; #479–480 เป็นบทสนทนาต่างหัวข้อ จึงควรตรวจตามสถานะจริง ไม่ถือว่าฟังอัตโนมัติเมื่อส่ง Staff of Purity",
+    "sourceNoteEN": "PoE Wiki lists Lilly Roth: Innocence (#481) only AFTER Death and Rebirth. Sin #479 and #480 are distinct topics. Do not auto-mark them from turning in the Staff of Purity.",
+    "confidence": "historical-source-only",
+    "postQuestReview": true
   },
   {
     "id": "canals-tract",
@@ -361,9 +363,10 @@ guide.acts[10]=[
     "stopEN": null,
     "stopIds": [],
     "keyItems": [],
-    "sourceNote": null,
-    "sourceNoteEN": null,
-    "confidence": "historical-source-only"
+    "sourceNote": "Lilly Roth: Kitava (#482) เปิดหลัง An End to Hunger ส่วน Innocence #483–484 ต้องฟังแยกกันในช่วงท้ายเกม คู่มือ 2025 ไม่รวมบทสนทนา Karui Shores ในยอด 484 การติ๊กครบในเว็บไม่ได้รับรอง Steam Achievement",
+    "sourceNoteEN": "Lilly Roth: Kitava (#482) unlocks AFTER An End to Hunger. Innocence #483–484 are separate topics. The 2025 All Ears 484-count excludes Karui Shores; completing manual checkmarks does not certify the Steam achievement.",
+    "confidence": "historical-source-only",
+    "postQuestReview": true
   }
 ];
 })();

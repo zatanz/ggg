@@ -566,3 +566,9 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubBranchWarning strong{font-size:13px;color:#ffe1cc}
 .hubBranchChoice select:focus-visible,.hubBranchChoice a:focus-visible{outline:3px solid #ffdfab;outline-offset:3px}
 @media(max-width:720px){.hubBranchChoice{padding:12px 11px}.hubBranchChoice label{display:flex;flex-direction:column;align-items:stretch}.hubBranchChoice select{width:100%}}
+
+/* Bilingual contextual checklist guide · linked action to the exact source-led quest phase. */
+.hubItemHelpBody .hubOpenLinkedStage{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:44px;max-width:100%;padding:9px 15px;border:1px solid #b49b69;border-radius:9px;color:#ffdfad;background:#2e382f;font-size:13px;font-weight:750;line-height:1.5;margin:0 0 10px}
+.hubItemHelpBody .hubOpenLinkedStage:hover{background:#3b4939;border-color:#efcc83}
+.hubItemHelpBody .hubOpenLinkedStage:focus-visible{outline:3px solid #ffdfa9;outline-offset:3px}
+@media(max-width:720px){.hubItemHelpBody .hubOpenLinkedStage{display:flex;width:100%}}

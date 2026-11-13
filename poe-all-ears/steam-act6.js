@@ -361,8 +361,8 @@ guide.acts[6]=[
   {
     "id": "nessa-ships",
     "place": "Prisoner's Gate / The Southern Forest",
-    "heading": "หลังพบ Nessa · กลับคุยก่อน Cavern of Anger",
-    "headingEN": "After meeting Nessa · return before Cavern of Anger",
+    "heading": "หลังพบ Nessa · ฟัง Bestel และ Tarkleigh ก่อนเข้า Western Forest",
+    "headingEN": "After meeting Nessa · speak to Bestel and Tarkleigh before Western Forest",
     "quest": "The Brine King",
     "dialogueIds": [
       332,
@@ -374,22 +374,25 @@ guide.acts[6]=[
     ],
     "sidequestIds": [],
     "actions": [
-      "พบ Nessa ใน Prisoner's Gate แล้วกลับคุย Bestel และ Tarkleigh เรื่อง The Ship Graveyard",
-      "โดยเฉพาะ Tarkleigh: The Ship Graveyard (#333) ต้องฟังก่อนเข้า The Cavern of Anger",
-      "เปิด Waypoint The Southern Forest ระหว่างเดินต่อ แล้วตรวจหัวข้อเหล่านี้ก่อนข้าม"
+      "หลังพบ Nessa ที่ Prisoner's Gate ให้กลับ Lioneye's Watch เพื่อคุย Bestel และ Tarkleigh เรื่อง The Ship Graveyard ทั้งสองหัวข้อ",
+      "สำหรับ Bestel: The Ship Graveyard (ID 332) ฐานข้อมูลเดิมเตือนก่อนเข้า The Western Forest ขณะที่ PoE Wiki 2025 เพียงระบุว่าหัวข้อเปิดหลังคุย Nessa",
+      "สำหรับ Tarkleigh: The Ship Graveyard (ID 333) PoE Wiki ระบุให้ฟังก่อนเข้า The Cavern of Anger ตรวจทั้งสองหัวข้อทันทีเพื่อไม่ต้องเสี่ยงกับจุดเปลี่ยนสถานะ"
     ],
     "actionsEN": [
-      "After meeting Nessa in Prisoner's Gate, return to Bestel and Tarkleigh for The Ship Graveyard topics.",
-      "Check Tarkleigh: The Ship Graveyard (Wiki #333) BEFORE entering The Cavern of Anger.",
-      "Activate The Southern Forest Waypoint on the route and confirm the dialogue before advancing."
+      "After speaking to Nessa in Prisoner's Gate, return to Lioneye's Watch and hear both Bestel and Tarkleigh: The Ship Graveyard.",
+      "For Bestel: The Ship Graveyard (local ID 332), the legacy checklist says before entering The Western Forest, whereas PoE Wiki 2025 only documents the topic unlocking after Nessa.",
+      "For Tarkleigh: The Ship Graveyard (ID 333), the Wiki warns before entering The Cavern of Anger. Check both as soon as they unlock; these different deadlines are not gameplay-verified in 3.29."
     ],
-    "stop": "ห้ามเข้า The Cavern of Anger ก่อนคุย Tarkleigh: The Ship Graveyard",
-    "stopEN": "STOP: do not enter The Cavern of Anger before Tarkleigh: The Ship Graveyard.",
+    "stop": "หยุดตรวจหลังคุย Nessa: ฟัง Bestel: The Ship Graveyard (ID 332) ก่อนเข้า The Western Forest ตามข้อมูลเดิม และ Tarkleigh หัวข้อเดียวกัน (ID 333) ก่อนเข้า The Cavern of Anger ตาม Wiki",
+    "stopEN": "STOP: after meeting Nessa, check Bestel: The Ship Graveyard (ID 332) before The Western Forest (legacy precaution) and Tarkleigh: The Ship Graveyard (ID 333) before The Cavern of Anger (Wiki).",
     "stopIds": [
+      332,
       333
     ],
     "keyItems": [],
-    "confidence": "historical-source-only"
+    "confidence": "historical-source-only",
+    "sourceNote": "ข้อมูลเดิม #332 เตือนก่อนเข้า Western Forest แต่ PoE Wiki 2025 ระบุเพียงว่าเปิดหลังคุย Nessa ที่ Prisoner's Gate; ส่วน #333 Wiki เตือนก่อนเข้า Cavern of Anger จึงแยกสองเส้นตายและแนะนำให้ฟังทันทีเมื่อหัวข้อเปิด ยังไม่มีผลทดสอบกับเกม 3.29 ยืนยันว่า #332 หายเมื่อเข้า Western Forest",
+    "sourceNoteEN": "Legacy #332 warns before entering The Western Forest; PoE Wiki 2025 only lists speaking to Nessa in Prisoner's Gate as its prerequisite. Wiki #333 warns before The Cavern of Anger. These are different deadlines: hear both immediately. No 3.29 gameplay test proves #332 disappears on entering the Western Forest."
   },
   {
     "id": "cavern-sin",

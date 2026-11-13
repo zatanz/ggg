@@ -97,22 +97,22 @@ guide.acts[8]=[
     "sidequestIds": [],
     "actions": [
       "เข้า The Toxic Conduits ต่อไป Doedre's Cesspool แล้วจัดการ Doedre the Vile",
-      "หลังสู้ให้คุย Sin: Doedre (#403) ในช่วงที่บทสนทนาเปิด และตรวจให้ครบก่อนออกจากพื้นที่ตามข้อควรระวังเก่า",
+      "หลังสู้ให้คุย Sin: Doedre (ID 403) ตามที่เปิด แล้วตรวจให้ครบก่อนออกจากพื้นที่ตามข้อมูลเก่า (ยังไม่ใช่ผลยืนยันในเกม 3.29)",
       "Waypoint ที่ฐานข้อมูลเรียก The Toxic Conduits (#71) ปรากฏตรงโหนดแผนที่เดียวกับทางออก Doedre's Cesspool และปลดล็อกหลังสู้; อย่าติ๊กตั้งแต่เข้าท่อครั้งแรก"
     ],
     "actionsEN": [
       "Travel from The Toxic Conduits to Doedre's Cesspool and defeat Doedre the Vile.",
-      "After the boss, check Sin: Doedre (Wiki #403) before leaving, following the older caution.",
+      "After the boss, hear Sin: Doedre (ID 403) before leaving as an earlier legacy precaution, not a verified 3.29 miss.",
       "The tracker calls Waypoint #71 The Toxic Conduits, but the world-map node is shared with the post-fight Doedre's Cesspool waypoint. Confirm it actually unlocks before checking it."
     ],
-    "stop": "หลังฆ่า Doedre ให้ตรวจ Sin: Doedre ก่อนออกจาก Cesspool (หมายเหตุเดิม ยังไม่ยืนยันในแพตช์ 3.30)",
-    "stopEN": "STOP: after defeating Doedre, hear Sin: Doedre before leaving the Cesspool (historic warning, not patch-certified).",
+    "stop": "หลังฆ่า Doedre ให้ตรวจ Sin: Doedre (ID 403) ก่อนออกจาก Doedre's Cesspool ตามข้อควรระวังจากฐานข้อมูลเก่า; PoE Wiki ระบุเพียงว่าหัวข้อเปิดหลังฆ่าบอส",
+    "stopEN": "STOP: after defeating Doedre, hear Sin: Doedre (ID 403) before leaving the Cesspool as a legacy precaution. The Wiki documents only the post-boss unlock, not a proven 3.29 exit deadline.",
     "stopIds": [
       403
     ],
     "keyItems": [],
     "sourceNote": "หมายเหตุเดิมกำชับอย่าออกจาก Doedre's Cesspool ก่อนคุย Sin แต่ PoE Wiki 2025 ระบุเพียง 'หลังฆ่า Doedre'; Waypoint #71 ใช้ชื่อ The Toxic Conduits ขณะที่ทางเข้าถึง Waypoint อยู่ฝั่ง Cesspool หลังสู้",
-    "sourceNoteEN": "The legacy source says do not leave Doedre's Cesspool before Sin, while Wiki 2025 only says after defeating Doedre. Waypoint #71 is historically named The Toxic Conduits, but its actual activation is reached on the Cesspool side after the fight.",
+    "sourceNoteEN": "The legacy source says do not leave Doedre's Cesspool before Sin, while Wiki 2025 only says after defeating Doedre. Waypoint #71 is historically named The Toxic Conduits, but its actual activation is reached on the Cesspool side after the fight. No 3.29 gameplay experiment in this project confirms that exiting removes the topic.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act8-doedre-sin-quest.svg",

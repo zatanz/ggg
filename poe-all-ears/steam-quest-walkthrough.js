@@ -931,5 +931,5 @@ window.POE_STEAM_WALK = {
       }
     ]
   },
-  "note": "Act 1: 9 phases 41/41 dialogues and 15/29 lore explicitly placed. Act 2: 10 historical zone phases cover wiki rows 42–110 exactly once; source disagreement before Ancient Seal/Bandits remains unresolved, so cannot certify a safe play order. Both Acts still require separate Lore, Waypoint and Side Quest gates. Act 3: twelve historic source phases crosswalk all 71 dialogue IDs and 32 lore IDs once. Clarissa, Dialla, Fairgraves, Gravicius and Piety cautions are not gameplay-certified for patch 3.30."
+  "note": "Act 1: 9 phases 41/41 dialogues and 15/29 lore explicitly placed. Act 2: 11 historical zone phases (one source-conflict review with no canonical NPC item) cover wiki rows 42–110 exactly once; Wiki TALK-before-Seal vs Steam NO-TALK-before-Darkness remains unresolved, so cannot certify a safe play order. Both Acts still require separate Lore, Waypoint and Side Quest gates. Act 3: twelve historic source phases crosswalk all 71 dialogue IDs and 32 lore IDs once. Clarissa, Dialla, Fairgraves, Gravicius and Piety cautions are not gameplay-certified for patch 3.30."
 };

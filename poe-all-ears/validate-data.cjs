@@ -291,7 +291,7 @@ const routeMappings=JSON.parse(fs.readFileSync(path.join(dir,'route-mapping-67.j
 assert(routeMappings.records.length===67,'Expected 67 handoff route bindings');
 assert(new Set(routeMappings.records.map(item=>item.type+':'+item.id)).size===67,'Route bindings must be unique');
 assert(['lore','waypoints','sidequests'].every((type,index)=>routeMappings.records.filter(item=>item.type===type).length===[25,34,8][index]),'Route bindings must include 25 lore, 34 waypoints and 8 sidequests');
-assert(Object.values(steamWalk.acts).reduce((count,phases)=>count+phases.length,0)===127,'Expected 127 campaign stages');
+assert(Object.values(steamWalk.acts).reduce((count,phases)=>count+phases.length,0)===128,'Expected 128 campaign stages (Act 6 pre/post Beacon split)');
 for(const item of routeMappings.records){
  const field={lore:'loreIds',waypoints:'waypointIds',sidequests:'sidequestIds'}[item.type];
  const destination=item.type==='waypoints'&&item.id===34?'library':item.phase;
@@ -427,20 +427,25 @@ assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includ
 
 const actSix=steamWalk.acts[6],actSixEars=actSix.flatMap(p=>p.dialogueIds),actSixLore=actSix.flatMap(p=>p.loreIds||[]);
 const actSixWp=actSix.flatMap(p=>p.waypointIds||[]),actSixSide=actSix.flatMap(p=>p.sidequestIds||[]);
-assert(actSix.length===15,'Act 6 has fifteen source-aligned player quest stages');
+assert(actSix.length===16,'Act 6 has sixteen quest-state-aligned stages after separating pre- and post-Beacon checks');
 assert(sameExactSet(actSixEars,d.items.filter(x=>x.act===6).map(x=>x.id)),'Act 6 All Ears: 44 original IDs exactly once');
 assert(sameExactSet(actSixLore,lore.entries.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Stone: six original IDs exactly once');
 assert(sameExactSet(actSixWp,extras.waypoints.filter(x=>x.act===6).map(x=>x.id)),'Act 6 Locomancer: ten original IDs exactly once');
 assert(sameExactSet(actSixSide,extras.sidequests.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Loose Ends: four original IDs exactly once');
 assert(actSix.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>=2&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 6 bilingual source and stop IDs must be tied to the actual phase');
 const actSixWikiRoute=ctx.window.ALL_EARS_ROUTE_ACT6.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(r=>r.id);
-assert(actSixEars.join(',')===actSixWikiRoute.join(','),'Act 6 source steps must follow Wiki row order, not local ID order');
+assert(sameExactSet(actSixEars,actSixWikiRoute),'Act 6 quest-time ordering must retain every original Wiki-row-backed dialogue without duplicates');
+assert(actSix.findIndex(p=>p.id==='umbra-complete')<actSix.findIndex(p=>p.id==='nessa-ships')&&actSix.findIndex(p=>p.id==='nessa-ships')<actSix.findIndex(p=>p.id==='ryslatha'),'After Nessa in Prisoners Gate, collect two shipyard topics before entering Western Forest, not after');
+assert(actSix.find(p=>p.id==='nessa-ships')?.stopIds.join(',')==='332,333'&&!(actSix.find(p=>p.id==='nessa-ships')?.waypointIds||[]).length,'Early Nessa stop covers #332/#333 without claiming the later Southern Forest Waypoint');
+assert(actSix.find(p=>p.id==='cavern-sin')?.waypointIds.join(',')==='57','The Southern Forest Waypoint must be in the post-Western-Forest journey');
 assert(actSix.find(p=>p.id==='eye-before')?.stopIds.includes(321),'Eye of Conquest before-use stop required');
 assert(actSix.find(p=>p.id==='eye-after')?.stopIds.includes(322),'Eye of Conquest after-use, before-enter stop required');
 assert(actSix.find(p=>p.id==='tukohama-after')?.stopIds.includes(324),'Tukohama/Shavronne before-boss dialogue required');
 assert(actSix.find(p=>p.id==='shavronne-after')?.stopIds.includes(326),'Shavronne post-fight Sin dialogue required');
 assert(actSix.find(p=>p.id==='nessa-ships')?.stopIds.includes(333),'Nessa/Tarkleigh before Cavern of Anger required');
-assert(actSix.find(p=>p.id==='beacon-flag')?.stopIds.includes(336),'Lilly Black Flag before-use stop required');
+assert(actSix.find(p=>p.id==='beacon-flag')?.stopIds.join(',')==='336'&&actSix.find(p=>p.id==='beacon-flag')?.dialogueIds.join(',')==='336','Lilly Black Flag before-entering-Beacon STOP must only contain pre-entry dialogue #336');
+assert(actSix.findIndex(p=>p.id==='beacon-flag')+1===actSix.findIndex(p=>p.id==='beacon-entered'),'Pre- and post-Beacon stages must appear consecutively');
+assert(actSix.find(p=>p.id==='beacon-entered')?.dialogueIds.join(',')==='337'&&actSix.find(p=>p.id==='beacon-entered')?.waypointIds.join(',')==='58'&&sameExactSet(actSix.find(p=>p.id==='beacon-entered')?.loreIds||[],[110,111]),'Post-Beacon Lilly #337, Waypoint #58 and both Lore items must not appear before entry');
 assert(sameExactSet(actSix.find(p=>p.id==='reef-weylam')?.stopIds||[],[338,339]),'Weylam two dialogs before Tsoagoth required');
 assert(actSix.find(p=>p.id==='beacon-flag')?.keyItems.includes('The Black Flag'),'Black Flag original item name must stay available');
 assert(steamWalk.patchCertified===false,'Act 6 must remain historical and unverified for patch 3.30');
@@ -494,7 +499,7 @@ assert(actEight.find(p=>p.id==='sisters-after')?.dialogueIds.includes(416),'Harg
 assert(canonicalSource.includes('src="./steam-act8.js"'),'Act 8 route script must load before hub.js');
 assert(steamWalk.patchCertified===false,'Act 8 source-led guidance must not claim 3.30 gameplay certification');
 const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiActEight.includes('const toWarn=Number(act)>=7?')&&uiActEight.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)))'),'Act 5 must warn only on currently crossed Waypoint STOPs, retaining Act 7–10 checks');
+assert(uiActEight.includes('const toWarn=Number(act)>=7?')&&uiActEight.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))')&&uiActEight.includes('Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)'),'Act 5 must warn only on currently crossed Waypoint STOPs, retaining Act 7–10 checks');
 assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
 
 
@@ -536,7 +541,7 @@ assert(actTen.find(p=>p.id==='kitava-after')?.dialogueIds.includes(482),'Act10 L
 const finalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(finalSource.includes('src="./steam-act9.js"')&&finalSource.includes('src="./steam-act10.js"'),'Final Acts must load their historical source scripts');
 const finalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(finalHub.includes('const toWarn=Number(act)>=7?')&&finalHub.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)))'),'Forward dropdown guards retain Act 7–10 and only guard relevant Act 5 Waypoint STOPs');
+assert(finalHub.includes('const toWarn=Number(act)>=7?')&&finalHub.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))')&&finalHub.includes('Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)'),'Forward dropdown guards retain Act 7–10 and only guard relevant Act 5 Waypoint STOPs');
 assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('dataset.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
 assert(steamWalk.patchCertified===false,'Act9 and Act10 cannot claim 3.30 gameplay certification');
 

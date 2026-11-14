@@ -310,8 +310,8 @@ assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source
 assert(canonicalSource.includes('src="./poe-acts123-bilingual.js"'),'Early Acts bilingual guidance module must load after base route');
 for(const act of [1,2,3]){
  const phases=steamWalk.acts[act];
- const expected={1:9,2:10,3:12}[act];
- assert(phases.length===expected,'Act '+act+' number of original route phases may not change during editorial pass');
+ const expected={1:9,2:11,3:12}[act];
+ assert(phases.length===expected,'Act '+act+' must preserve source-led coverage and approved pre-Seal checkpoint count');
  for(const phase of phases){
   assert(phase.headingEN&&phase.actionsEN?.length===phase.actions.length,'Act '+act+' '+phase.id+' requires complete English instructions, never generic English fallback');
   assert(phase.actionsEN.every(x=>x.length>25&&!/[\u0E00-\u0E7F]/.test(x)),'Act '+act+' '+phase.id+' English guidance must be readable without Thai text');

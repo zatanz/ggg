@@ -289,6 +289,40 @@ guide.acts[6]=[
     "confidence": "historical-source-only"
   },
   {
+    "id": "nessa-ships",
+    "place": "Prisoner's Gate / Lioneye's Watch",
+    "heading": "หลังพบ Nessa · กลับคุย NPC ก่อนเข้า Western Forest",
+    "headingEN": "After Nessa at Prisoner's Gate · return before Western Forest",
+    "quest": "The Brine King",
+    "dialogueIds": [
+      332,
+      333
+    ],
+    "loreIds": [],
+    "waypointIds": [],
+    "sidequestIds": [],
+    "actions": [
+      "ที่ Prisoner's Gate ให้คุย Nessa ก่อนเดินต่อเข้า The Western Forest",
+      "กลับ Lioneye's Watch เพื่อฟัง Bestel: The Ship Graveyard (#332) และ Tarkleigh: The Ship Graveyard (#333) ให้ครบก่อนเข้า Western Forest เป็นข้อควรระวังจากข้อมูลเดิม",
+      "Wiki ยืนยันว่าทั้งคู่เปิดหลังคุย Nessa แต่ยืนยันการหายไปเฉพาะ #333 ก่อนเข้า The Cavern of Anger; จุด Western Forest ของ #332 ยังไม่ผ่านการทดสอบในแพตช์ 3.30"
+    ],
+    "actionsEN": [
+      "At Prisoner's Gate, speak to Nessa before following the route into The Western Forest.",
+      "Return to Lioneye's Watch for Bestel: The Ship Graveyard (#332) and Tarkleigh: The Ship Graveyard (#333); hear both before entering Western Forest as a cautious early check.",
+      "Wiki confirms both unlock after Nessa but only warns that Tarkleigh #333 must precede The Cavern of Anger. Losing Bestel #332 upon entering Western Forest is not 3.30 gameplay-verified."
+    ],
+    "stop": "ก่อนเข้า Western Forest ให้ตรวจ Bestel: The Ship Graveyard (#332) และ Tarkleigh: The Ship Graveyard (#333) หลังคุย Nessa · #332 เป็นคำเตือนเก่าที่ยังไม่รับรอง 3.30",
+    "stopEN": "Before entering Western Forest, hear Bestel and Tarkleigh: The Ship Graveyard (#332–333) after meeting Nessa. The earlier Western Forest deadline for #332 is a legacy precaution, not a confirmed 3.30 lockout.",
+    "stopIds": [
+      332,
+      333
+    ],
+    "keyItems": [],
+    "confidence": "historical-source-only",
+    "sourceNote": "PoE Wiki ระบุว่าทั้ง #332 และ #333 เปิดหลังคุย Nessa ใน Prisoner's Gate โดย #333 มีเงื่อนไขก่อนเข้า The Cavern of Anger เท่านั้น ส่วนคำเตือน #332 ก่อนเข้า Western Forest มาจากข้อมูลเดิม ยังไม่มีหลักฐานเกม 3.30 ยืนยันว่าหัวข้อหายเมื่อเข้า Western Forest; จัดลำดับให้ตรวจก่อนเปลี่ยนพื้นที่โดยไม่กล่าวอ้างเกินหลักฐาน",
+    "sourceNoteEN": "PoE Wiki says both topics unlock after Nessa in Prisoner's Gate; only #333 explicitly has a before-Cavern-of-Anger deadline. Bestel #332 before-Western-Forest is a legacy precaution, not a 3.30-proven disappearance. Placing both here avoids progressing past the earliest source warning."
+  },
+  {
     "id": "ryslatha",
     "place": "The Western Forest / The Wetlands",
     "heading": "ก่อน Ryslatha · ฟัง Sin แล้วค่อยจบเควสต์",
@@ -359,44 +393,8 @@ guide.acts[6]=[
     "confidence": "historical-source-only"
   },
   {
-    "id": "nessa-ships",
-    "place": "Prisoner's Gate / The Southern Forest",
-    "heading": "หลังพบ Nessa · ฟัง Bestel และ Tarkleigh ก่อนเข้า Western Forest",
-    "headingEN": "After meeting Nessa · speak to Bestel and Tarkleigh before Western Forest",
-    "quest": "The Brine King",
-    "dialogueIds": [
-      332,
-      333
-    ],
-    "loreIds": [],
-    "waypointIds": [
-      57
-    ],
-    "sidequestIds": [],
-    "actions": [
-      "หลังพบ Nessa ที่ Prisoner's Gate ให้กลับ Lioneye's Watch เพื่อคุย Bestel และ Tarkleigh เรื่อง The Ship Graveyard ทั้งสองหัวข้อ",
-      "สำหรับ Bestel: The Ship Graveyard (ID 332) ฐานข้อมูลเดิมเตือนก่อนเข้า The Western Forest ขณะที่ PoE Wiki 2025 เพียงระบุว่าหัวข้อเปิดหลังคุย Nessa",
-      "สำหรับ Tarkleigh: The Ship Graveyard (ID 333) PoE Wiki ระบุให้ฟังก่อนเข้า The Cavern of Anger ตรวจทั้งสองหัวข้อทันทีเพื่อไม่ต้องเสี่ยงกับจุดเปลี่ยนสถานะ"
-    ],
-    "actionsEN": [
-      "After speaking to Nessa in Prisoner's Gate, return to Lioneye's Watch and hear both Bestel and Tarkleigh: The Ship Graveyard.",
-      "For Bestel: The Ship Graveyard (local ID 332), the legacy checklist says before entering The Western Forest, whereas PoE Wiki 2025 only documents the topic unlocking after Nessa.",
-      "For Tarkleigh: The Ship Graveyard (ID 333), the Wiki warns before entering The Cavern of Anger. Check both as soon as they unlock; these different deadlines are not gameplay-verified in 3.29."
-    ],
-    "stop": "หยุดตรวจหลังคุย Nessa: ฟัง Bestel: The Ship Graveyard (ID 332) ก่อนเข้า The Western Forest ตามข้อมูลเดิม และ Tarkleigh หัวข้อเดียวกัน (ID 333) ก่อนเข้า The Cavern of Anger ตาม Wiki",
-    "stopEN": "STOP: after meeting Nessa, check Bestel: The Ship Graveyard (ID 332) before The Western Forest (legacy precaution) and Tarkleigh: The Ship Graveyard (ID 333) before The Cavern of Anger (Wiki).",
-    "stopIds": [
-      332,
-      333
-    ],
-    "keyItems": [],
-    "confidence": "historical-source-only",
-    "sourceNote": "ข้อมูลเดิม #332 เตือนก่อนเข้า Western Forest แต่ PoE Wiki 2025 ระบุเพียงว่าเปิดหลังคุย Nessa ที่ Prisoner's Gate; ส่วน #333 Wiki เตือนก่อนเข้า Cavern of Anger จึงแยกสองเส้นตายและแนะนำให้ฟังทันทีเมื่อหัวข้อเปิด ยังไม่มีผลทดสอบกับเกม 3.29 ยืนยันว่า #332 หายเมื่อเข้า Western Forest",
-    "sourceNoteEN": "Legacy #332 warns before entering The Western Forest; PoE Wiki 2025 only lists speaking to Nessa in Prisoner's Gate as its prerequisite. Wiki #333 warns before The Cavern of Anger. These are different deadlines: hear both immediately. No 3.29 gameplay test proves #332 disappears on entering the Western Forest."
-  },
-  {
     "id": "cavern-sin",
-    "place": "The Cavern of Anger",
+    "place": "The Southern Forest / The Cavern of Anger",
     "heading": "The Cavern of Anger · ฟัง Sin หลังพบ Nessa",
     "headingEN": "Cavern of Anger · check Sin after meeting Nessa",
     "quest": "The Brine King",
@@ -405,17 +403,19 @@ guide.acts[6]=[
       335
     ],
     "loreIds": [],
-    "waypointIds": [],
+    "waypointIds": [
+      57
+    ],
     "sidequestIds": [],
     "actions": [
-      "หลังคุย Nessa ใน The Cavern of Anger ให้เปิดหัวข้อ Sin: The Brine King (#334)",
-      "ตรวจ Sin: Tsoagoth (#335) ต่อเมื่อปลดล็อก",
-      "เก็บบทสนทนาให้ครบก่อนเดินต่อไปยัง The Beacon"
+      "หลังออกจาก The Riverways ให้เข้าพื้นที่ The Southern Forest และเปิด Waypoint #57 ก่อนเดินต่อ",
+      "คุย Nessa ใน The Cavern of Anger แล้วกลับฟัง Sin: The Brine King (#334) และ Tsoagoth (#335) เมื่อเปิด",
+      "ตรวจทั้งสองบทสนทนาก่อนเดินต่อไป The Beacon"
     ],
     "actionsEN": [
-      "After speaking with Nessa in The Cavern of Anger, listen to Sin: The Brine King (Wiki #334).",
-      "Check Sin: Tsoagoth (#335) when it unlocks.",
-      "Confirm both Sin topics before heading for The Beacon."
+      "From The Riverways, enter The Southern Forest and activate its Waypoint #57.",
+      "After meeting Nessa in The Cavern of Anger, listen to Sin: The Brine King (#334) and Tsoagoth (#335) when available.",
+      "Verify both conversations before proceeding toward The Beacon."
     ],
     "stop": null,
     "stopEN": null,
@@ -425,12 +425,45 @@ guide.acts[6]=[
   },
   {
     "id": "beacon-flag",
-    "place": "The Beacon / Lioneye's Watch",
+    "place": "The Cavern of Anger / Lioneye's Watch",
     "heading": "The Black Flag · กลับคุย Lilly ก่อนเข้า Beacon",
     "headingEN": "The Black Flag · talk to Lilly before entering the Beacon",
     "quest": "The Brine King",
     "dialogueIds": [
-      336,
+      336
+    ],
+    "loreIds": [],
+    "waypointIds": [],
+    "sidequestIds": [],
+    "actions": [
+      "เมื่อได้ The Black Flag ใน The Cavern of Anger ให้กลับ Lioneye's Watch คุย Lilly Roth: The Black Flag (#336)",
+      "ฟังบทสนทนาให้จบก่อนเข้า The Beacon ตามข้อมูลเดิม โดย PoE Wiki ระบุเส้นตายก่อนนำธงไปเผาที่ประภาคาร",
+      "เมื่อบันทึก #336 แล้วจึงเดินต่อ The Beacon ตรวจ Waypoint และ Lore ในขั้นถัดไป"
+    ],
+    "actionsEN": [
+      "After acquiring The Black Flag in The Cavern of Anger, return to Lilly Roth in Lioneye's Watch for The Black Flag (#336).",
+      "Finish the dialogue before entering The Beacon as a conservative legacy precaution; PoE Wiki only confirms the before-burning deadline.",
+      "Once #336 is recorded, proceed to The Beacon for its Waypoint, lore and next Lilly topic."
+    ],
+    "stop": "ก่อนเข้า The Beacon: หลังเก็บ The Black Flag ต้องกลับคุย Lilly Roth หัวข้อ The Black Flag (#336) ให้จบ · คำเตือนก่อนเข้าเป็นข้อมูลเดิม ไม่ใช่ผลพิสูจน์ 3.30",
+    "stopEN": "Before entering The Beacon, hear Lilly Roth: The Black Flag (#336) after collecting the item. The zone-entry warning is historical; the Wiki explicitly warns before burning the flag.",
+    "stopIds": [
+      336
+    ],
+    "keyItems": [
+      "The Black Flag"
+    ],
+    "sourceNote": "PoE Wiki All Ears #336 ระบุว่าหัวข้อเปิดหลังได้ The Black Flag และต้องฟังก่อนเผาธง; ข้อมูลเดิมเตือนเร็วกว่านั้นคือก่อนเข้า The Beacon การเปิดพื้นที่ไม่ใช่ความผิดพลาดที่ยืนยันแล้วใน 3.30 คู่มือจึงให้กลับเมืองก่อนเพื่อความปลอดภัย",
+    "sourceNoteEN": "PoE Wiki All Ears #336 unlocks after obtaining The Black Flag and warns before burning it. The legacy source gives the earlier Beacon-entry precaution; no 3.30 gameplay proof confirms a zone-entry lockout. The route chooses the cautious earlier revisit.",
+    "confidence": "historical-source-only"
+  },
+  {
+    "id": "beacon-entered",
+    "place": "The Beacon / Lioneye's Watch",
+    "heading": "The Beacon · เปิด Waypoint เก็บ Lore แล้วกลับคุย Lilly",
+    "headingEN": "Inside The Beacon · Waypoint, lore and Lilly",
+    "quest": "The Brine King",
+    "dialogueIds": [
       337
     ],
     "loreIds": [
@@ -442,25 +475,19 @@ guide.acts[6]=[
     ],
     "sidequestIds": [],
     "actions": [
-      "เมื่อได้ The Black Flag ให้กลับ Lioneye's Watch ฟัง Lilly Roth: The Black Flag (ID 336) ก่อนเข้า The Beacon ตามข้อมูลเก่า; PoE Wiki กำหนดอย่างช้าที่สุดก่อนเผาธง",
-      "เมื่อเข้า The Beacon ให้ฟัง Lilly Roth: The Brine King (#337) ตามเงื่อนไขที่เปิด",
-      "เปิด Waypoint The Beacon และอ่าน Letter Fragment / Templar Report (#110–111) ก่อนออกจากพื้นที่"
+      "เมื่อเข้า The Beacon ให้เข้าใกล้ Waypoint #58 และตรวจว่าเปิดแล้วในแผนที่โลก (U)",
+      "สำรวจ Letter Fragment (#110) และ Templar Report (#111) ให้ครบใน The Beacon",
+      "กลับ Lioneye's Watch คุย Lilly Roth: The Brine King (#337) ซึ่งเปิดหลังเข้า The Beacon; ห้ามติ๊กบทสนทนานี้ตั้งแต่ขั้นก่อนเข้า"
     ],
     "actionsEN": [
-      "Once you obtain The Black Flag, return to Lilly Roth in Lioneye's Watch and hear The Black Flag (ID 336) BEFORE entering The Beacon according to legacy data; the 2025 Wiki states no later than burning the flag.",
-      "On entering The Beacon, check Lilly Roth: The Brine King (#337) when available.",
-      "Activate The Beacon Waypoint and discover Letter Fragment and Templar Report (#110–111)."
+      "Inside The Beacon, approach Waypoint #58 and verify it is active on the world map (U).",
+      "Discover the Letter Fragment (#110) and Templar Report (#111) environmental lore in The Beacon.",
+      "Return to Lilly Roth in Lioneye's Watch for The Brine King dialogue (#337), available after first entering The Beacon. Do not mark it before that quest state."
     ],
-    "stop": "หยุดก่อนเข้า The Beacon: ต้องคุย Lilly Roth: The Black Flag (ID 336) ให้ครบก่อน ข้อมูลเก่าเตือนเร็วกว่าจุดเผาธงใน Wiki",
-    "stopEN": "STOP: hear Lilly Roth: The Black Flag (ID 336) BEFORE entering The Beacon (early legacy caution). The 2025 Wiki cautions before burning the flag.",
-    "stopIds": [
-      336
-    ],
-    "keyItems": [
-      "The Black Flag"
-    ],
-    "sourceNote": "ข้อควรระวังเรื่องกำหนดเวลา: ข้อมูลเดิมของ ID 336 เตือนก่อนเข้า The Beacon แต่ PoE Wiki ปี 2025 เตือนก่อนเผา The Black Flag ใช้เงื่อนไขที่เร็วกว่าเพื่อเลี่ยงความเสี่ยง โดยยังไม่มีผลทดสอบ 3.29 ยืนยันว่าการเข้า Beacon ทำให้หัวข้อหาย",
-    "sourceNoteEN": "Deadline discrepancy: legacy checklist ID 336 cautions before entering The Beacon, while the 2025 PoE Wiki warns before burning The Black Flag. Follow the earlier precaution; there is no 3.29 game evidence here that entering the Beacon makes the topic disappear.",
+    "stop": null,
+    "stopEN": null,
+    "stopIds": [],
+    "keyItems": [],
     "confidence": "historical-source-only"
   },
   {

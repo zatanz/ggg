@@ -1460,7 +1460,10 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
 
  await hub.locator('#hubCampaignAct').selectOption('2');
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+ if(!await hub.locator('#hubView [data-manual-review="true"] input').isChecked())hub.once('dialog',d=>d.accept()); // Test previews past an unreviewed STOP, never marking it completed.
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
+ assert.equal(await hub.locator('#hubView [data-steam-act="2"]').getAttribute('data-phase'),'bandit-decisions','English inspection explicitly previews Act 2 after the pre-Seal STOP');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam 3.28 explicitly forbids both talking and killing'),true,'Act 2 English route accurately states explicit Steam restriction before The Darkness');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 2 English route has no Thai text');

@@ -123,7 +123,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
   await page.locator('#character').selectOption({label:'Legacy waypoint QA'});
   await page.locator('#hubAdvancedDashboard > summary').click();
   const score=await page.locator('.hubMissionScore b').innerText();
-  assert.equal(score,'0 / 743','historical waypoints do not increase active progress');
+  assert.equal(score,'0 / 744','historical waypoints do not increase active progress');
   await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('Epilogue');
   assert.equal((await page.locator('[data-special-scope="Epilogue"]').innerText()).includes('Karui Shores'),true,'Epilogue directs players to the currently mapped Karui Shores Waypoint');
@@ -132,7 +132,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
   assert.equal(await page.locator('[data-special-scope="Epilogue"] input:checked').count(),2,'legacy waypoints survive import');
   await page.locator('#hubNav [data-tab="review"]').click();
   await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
-  assert.equal((await page.locator('#hubView p.hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review warns the extra current Epilogue area is not tracked');
+  assert.equal((await page.locator('#hubView p.hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review includes the separately tracked Epilogue location');
   const pending=page.waitForEvent('download');
   await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
   const saved=await pending;
@@ -140,6 +140,84 @@ async function verifyHistoricalWaypointBackup(browser,url){
   const exported=JSON.parse(Buffer.concat(chunks).toString('utf8'));
   assert.deepEqual(exported.characters.find(c=>c.name==='Legacy waypoint QA').waypoints,[90,91],'legacy waypoint IDs survive export');
  assert.equal(exported.characters.find(c=>c.name==='Legacy waypoint QA').rulerChoice,'undecided','older backups without a ruler field remain valid');
+ assert.equal(exported.characters.find(c=>c.name==='Legacy waypoint QA').karuiShores,false,'older backups without Karui field import as unmarked');
+ }finally{await context.close();}
+}
+
+async function verifyKaruiShoresSupplement(browser,url){
+ const context=await browser.newContext({viewport:{width:390,height:844},acceptDownloads:true});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  const primaryId=await page.locator('#character').inputValue();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  const mark=page.locator('[data-karui-shores="true"] input[type="checkbox"]');
+  assert.equal(await mark.isChecked(),false,'Karui Shores never auto-completes on a fresh character');
+  assert.equal((await page.locator('[data-special-scope="Epilogue"]').innerText()).includes('90 จุด'),true,'Wiki count is clearly qualified');
+  assert.equal(await page.locator('#hubView [data-special-scope="Epilogue"] > .hubItem').count(),1,'separate current Waypoint is visible without expanding legacy records');
+  await page.locator('#hubAdvancedDashboard > summary').click();
+  assert.equal(await page.locator('.hubMissionScore b').innerText(),'0 / 744','current mapped checklist includes one Karui Shores mark');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
+  await page.locator('#hubView input[aria-label="กรอกจำนวนที่เกมแสดง"]').fill('0');
+  await page.getByRole('button',{name:'บันทึกจุดที่ยอดตรงกัน'}).click();
+  await page.locator('#hubNav [data-tab="route"]').click();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  await mark.check();
+  assert.equal(await mark.isChecked(),true,'current Karui Shores state is checked manually');
+  assert.equal(await mark.evaluate(n=>document.activeElement===n),true,'keyboard focus is restored after Karui update');
+  assert.equal(await page.locator('.hubMissionScore b').innerText(),'1 / 744','Karui progress counts exactly once');
+  assert.equal((await page.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('1 / 1'),true,'Epilogue marks as one of one');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
+  await page.locator('#hubView input[aria-label="กรอกจำนวนที่เกมแสดง"]').fill('0');
+  await page.getByRole('button',{name:'เปรียบเทียบยอด'}).click();
+  assert.equal((await page.locator('#hubView .hubSection li').allTextContents()).includes('Karui Shores'),true,'new Karui check appears in the post-checkpoint discrepancy list');
+  await page.locator('#hubNav [data-tab="route"]').click();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  await page.reload();
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'Karui mark survives reload');
+  page.once('dialog',d=>d.accept('Karui separate character'));
+  await page.locator('#addChar').click();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),false,'new character has no inherited Karui mark');
+  await page.locator('#character').selectOption(primaryId);
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'original character retains Karui mark');
+  // Simulate a standalone legacy Extras page rewriting its own storage record. The new mark lives separately.
+  await page.evaluate(()=>localStorage.setItem('poe-companion-extras-v1',JSON.stringify({version:1,byCharacter:{}})));
+  await page.reload();
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'legacy Extras saves cannot erase the separate Karui mark');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  const pending=page.waitForEvent('download');
+  await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
+  const downloaded=await pending,chunks=[];
+  for await(const chunk of await downloaded.createReadStream())chunks.push(chunk);
+  const backup=JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  assert.equal(backup.schema,2,'Karui field is an optional schema 2 extension');
+  assert.equal(backup.characters.length,2,'both characters are exported');
+  assert.equal(backup.characters[0].karuiShores,true,'export preserves original Karui Shores');
+  assert.equal(backup.characters[1].karuiShores,false,'export does not infer marks on other characters');
+  const before=await page.locator('#character option').count(),reload=page.waitForEvent('load');
+  page.once('dialog',d=>d.accept());
+  await page.locator('#hubView input[type="file"]').setInputFiles({name:'karui-roundtrip.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+  await reload;
+  assert.equal(await page.locator('#character option').count(),before+2,'Karui backup import adds characters without replacing originals');
+  const restoredId=await page.locator('#character option').nth(before).getAttribute('value');
+  await page.locator('#character').selectOption(restoredId);
+  await page.locator('#hubNav [data-tab="route"]').click();
+  await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'import restores Karui mark to newly generated character ID');
+  assert.equal(await page.locator('[data-special-scope="Epilogue"] > details > summary').count(),1,'two obsolete legacy records are still available but collapsed');
+  await page.locator('[data-karui-shores="true"] input').uncheck();
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),false,'Karui mark can be undone');
+  await page.locator('#character').selectOption(primaryId);
+  assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'undo on imported character never changes original');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  const malformed={app:'poe-unified-companion',schema:2,characters:[{name:'bad Karui',ears:[],lore:[],waypoints:[],sidequests:[],karuiShores:'true'}]};
+  const count=await page.locator('#character option').count();
+  page.once('dialog',d=>d.accept());
+  await page.locator('#hubView input[type="file"]').setInputFiles({name:'invalid-karui.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(malformed))});
+  assert.equal(await page.locator('#character option').count(),count,'invalid Karui type is rejected without modifying profiles');
  }finally{await context.close();}
 }
 
@@ -158,6 +236,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await verifyGuidedEntry(browser,url);
  await verifyEditorialGuidance(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
+ await verifyKaruiShoresSupplement(browser,url);
  await page.goto(url);
  await page.locator('#hubNav [data-tab="collection"]').click();
  await page.locator('#results input[type="checkbox"]').first().waitFor();
@@ -343,9 +422,9 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Ruthless'),true,'difficulty caveat warns about Vaal Side Areas in Ruthless');
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Fairgraves'),true,'pre-run warning surfaces unresolved 3.29 Fairgraves condition');
 
- assert.equal(await hub.locator('#hubStats .hubMissionStage').count(),12,'active journey has 10 Acts plus Labyrinth and Vaal');
+ assert.equal(await hub.locator('#hubStats .hubMissionStage').count(),13,'active journey includes Epilogue Karui Shores');
  const coverage=await hub.locator('#hubStats .hubMissionStage span').allTextContents();
- assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),743,'active journey excludes the two historical Epilogue entries');
+ assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),744,'active journey includes Karui Shores while excluding two obsolete Waypoints');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').count(),1,'3.29 player-reported Fairgraves blocker appears before walkthrough');
  assert.equal((await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').innerText()).includes('#34–38'),true,'community-sourced Fairgraves warning identifies exact five entries');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),3,'Fairgraves warning includes the 3.30 follow-up alongside historical reports');
@@ -1053,6 +1132,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert(storedAct9Index>=0,'Act 9 character is present before export');
  assert.equal(data.characters[storedAct9Index].rulerChoice,'Irasha','combined export preserves the actual recorded Highgate ruler');
  assert.equal(data.characters.every(c=>["undecided","Irasha","Tasuni"].includes(c.rulerChoice)),true,'all archived characters have safe ruler-choice values');
+ assert.equal(data.characters.every(c=>typeof c.karuiShores==='boolean'),true,'all combined backups include a safely typed Karui mark');
  const beforeUnifiedImport=await hub.locator('#character option').count();
  const reloadPromise=hub.waitForEvent('load');
  hub.once('dialog',d=>d.accept());
@@ -1181,7 +1261,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details').first().evaluate(x=>x.open),false,'obsolete Epilogue records are collapsed');
  assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Waypoint #90 Oriath และ #91 The Templar Laboratory เป็นข้อมูลประวัติศาสตร์'),true,'Epilogue records are explicitly historical');
- assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'both legacy records remain accessible');
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details .hubItem').count(),2,'both legacy records remain accessible');
  await hub.locator('#hubCampaignAct').selectOption('Labyrinth');
  assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),4,'Labyrinth has three Lore groups plus its one separate Waypoint');
  assert.equal(await hub.locator('#hubView [data-special-group="lab-waypoint"] .hubItem').count(),1,'Labyrinth Locomancer waypoint is not omitted from 100% roadmap');

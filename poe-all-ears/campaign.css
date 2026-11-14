@@ -138,6 +138,28 @@
 
 .hubCampaignContext { margin: 14px 0 12px; }
 .hubCampaignContext p { margin: 3px 0; }
+/* Make the real game-patch picker discoverable beside character and Act, not hidden in Settings. */
+.hubCampaignContext .hubPatchInline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 8px 0;
+  padding: 8px 12px;
+  background: var(--journal);
+  border: 1px solid var(--rule);
+  border-radius: 9px;
+  box-shadow: none;
+}
+.hubPatchInline .ctrls { display: flex; flex: 1 1 100%; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0; }
+.hubPatchInline label[for="patch"] { flex: 0 0 auto; color: var(--paper); font-size: .8rem; font-weight: 750; }
+.hubPatchInline #patch { flex: 1 1 240px; min-width: 0; width: auto; max-width: 580px; min-height: 43px; }
+.hubPatchInline #patchStatus { flex: 0 1 auto; font-size: .72rem; }
+.hubCampaignContext .hubPatchInline #patchNotice { flex: 1 1 100%; width: 100%; margin: 0; font-size: .73rem; line-height: 1.45; color: var(--secondary); }
+@media(max-width:600px){
+  .hubCampaignContext .hubPatchInline { padding: 8px 10px; }
+  .hubPatchInline #patch { flex-basis: 100%; }
+}
 #hubCampaignIntro { color: var(--paper); font-size: .95rem; }
 .hubCampaignContext .hubDataNotice {
   color: var(--secondary);

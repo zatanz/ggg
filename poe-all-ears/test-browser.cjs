@@ -279,6 +279,7 @@ async function verifyAct2PreSealConflict(browser,url){
   await loaded;
   const imported=await page.locator('#character option').nth(initial).getAttribute('value');
   await page.locator('#character').selectOption(imported);
+  await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('2');
   await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
   assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'combined backup restores reviewed state to the new character ID');

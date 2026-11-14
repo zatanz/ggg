@@ -1285,12 +1285,34 @@ records.forEach((c,i)=>{const id="hub-"+Date.now().toString(36)+"-"+i+"-"+Math.r
 try{localStorage.setItem(MAIN,JSON.stringify(newMain));localStorage.setItem(LORE,JSON.stringify(newLore));localStorage.setItem(EXTRA,JSON.stringify(newExtras));localStorage.setItem(HUB,JSON.stringify(newHub));localStorage.setItem(RULER,JSON.stringify(newRuler));localStorage.setItem(KARUI,JSON.stringify(newKarui));location.reload();}catch(e){originals.forEach(([k,v])=>{try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(_e){}});alert(tr("นำเข้าไม่สำเร็จ ระบบพยายามคืนข้อมูลเดิมแล้ว กรุณาตรวจ Backup ก่อนลองซ้ำ","Import failed. The app attempted to restore your previous data. Verify your backup before retrying."));}
 }catch(e){alert(tr("ไฟล์ Backup ไม่ถูกต้องหรือเกินขีดจำกัดตัวละคร","Invalid backup file or character limit exceeded."));}};
 row.append(exp,imp,file);panel.append(row);return panel;}
-function renderView(){const panel=$("hubView");panel.replaceChildren();if(state.tab==="ears")return;
-if($("patch").value!=="legacy-3.9"&&state.tab!=="review"){
-  const warning=el("div",undefined,"hubPanel");warning.append(el("h2",tr("ยังไม่มีคู่มือรับรองแยกสำหรับแพตช์นี้","No separately certified guide for this patch")),el("p",tr("ข้อมูลอ้างอิงจาก PoE Wiki ปี 2025 และชุดเก่า 3.9 สามารถเปิดตรวจขั้นตอนได้ แต่ยังไม่ใช่ผลทดสอบที่รับรองสำหรับแพตช์ที่เลือก","This historical reference uses 2025 PoE Wiki and legacy 3.9 records. It is not a verified missable-safe playthrough for the selected patch."),"hubNotice"));
-  const button=el("button",tr("ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)","View historical guide (not patch-certified)"));button.onclick=()=>{$("patch").value="legacy-3.9";$("patch").dispatchEvent(new Event("change",{bubbles:true}));renderView();};warning.append(button);panel.append(warning);return;
+function renderView(){const panel=$("hubView");panel.replaceChildren();
+const currentPatch=$("patch").value,preview330=currentPatch==="3.30"&&B.historicalReferenceEnabled?.()===true;
+if(state.tab==="ears"&&currentPatch==="legacy-3.9")return;
+if(currentPatch!=="legacy-3.9"&&state.tab!=="review"&&!preview330){
+  const warning=el("div",undefined,"hubPanel");warning.dataset.patchGate=currentPatch;
+  warning.append(el("h2",tr("ยังไม่มีคู่มือรับรองแยกสำหรับแพตช์นี้","No separately certified guide for this patch")),
+   el("p",tr("ข้อมูลที่มีเป็นคู่มืออ้างอิงจาก PoE Wiki ปี 2025 และชุดเดิม 3.9 ยังไม่มีผลทดสอบยืนยันเส้นทางปลอดภัยสำหรับแพตช์ที่เลือก","Available guidance comes from the 2025 PoE Wiki and legacy 3.9 records. Its missable-safe route has not been verified for the selected patch."),"hubNotice"));
+  const button=el("button",currentPatch==="3.30"?tr("เปิดคู่มืออ้างอิงสำหรับเล่น 3.30 (ยังไม่รับรอง)","Open historical reference for 3.30 (unverified)"):tr("ดูรายการประวัติศาสตร์ (ยังไม่รับรองแพตช์)","View historical guide (not patch-certified)"));
+  button.type="button";button.dataset.patchPreviewAction=currentPatch==="3.30"?"enable":"legacy";
+  button.onclick=()=>{
+    if(currentPatch==="3.30"){B.enableHistoricalReference(true);renderView();return;}
+    $("patch").value="legacy-3.9";$("patch").dispatchEvent(new Event("change",{bubbles:true}));
+  };
+  warning.append(button);panel.append(warning);return;
 }
-if(state.tab==="route"){renderRoute(panel);return;}if(state.tab==="review"){if($("patch").value!=="legacy-3.9")panel.append(el("div",tr("หมายเหตุ: ตัวเลขและข้อมูลอ้างอิงยังเป็นชุดประวัติศาสตร์ ไม่รับรองสำหรับแพตช์ที่เลือก แต่ยังสำรองข้อมูลได้ตามปกติ","Note: counts and references are historical, not certified for the selected patch. You can still back up your progress."),"hubNotice"));panel.append(reviewPanel());return;}renderCategory(panel,state.tab);}
+if(preview330){
+  const notice=el("div",undefined,"hubPanel hubReferenceMode");notice.dataset.patchReference="3.30";notice.setAttribute("role","status");
+  notice.append(el("strong",tr("3.30 · กำลังดูคู่มือเก่าที่ไม่ได้รับรอง","3.30 · Historical reference, NOT patch-certified")),
+    el("p",tr("อ้างอิง Wiki 2025 / 3.9 · ตรวจ STOP และสถานะในเกมจริงก่อนเดินเรื่องต่อ","Based on Wiki 2025 / legacy 3.9 · verify STOP steps and in-game quest state before advancing"),"hubSubtle"));
+  const turnOff=el("button",tr("หยุดแสดงข้อมูลเก่า","Hide historical reference"));turnOff.type="button";turnOff.dataset.patchPreviewAction="disable";turnOff.onclick=()=>{B.enableHistoricalReference(false);renderView();};notice.append(turnOff);panel.append(notice);
+}
+if(state.tab==="ears")return;
+if(state.tab==="route"){renderRoute(panel);return;}
+if(state.tab==="review"){
+ if(currentPatch!=="legacy-3.9"&&!preview330)panel.append(el("div",tr("หมายเหตุ: ตัวเลขและข้อมูลอ้างอิงยังเป็นชุดประวัติศาสตร์ ไม่รับรองสำหรับแพตช์ที่เลือก แต่ยังสำรองข้อมูลได้ตามปกติ","Note: counts and references are historical, not certified for the selected patch. You can still back up your progress."),"hubNotice"));
+ panel.append(reviewPanel());return;
+}
+renderCategory(panel,state.tab);}
 function renderToolbar(){const t=$("hubToolbar");t.replaceChildren();
 if(state.tab==="review")return;
 if(state.tab!=="route"){
@@ -1337,7 +1359,7 @@ $("hubCampaignIntro").hidden=tab!=="route";
 if(tab==="route")$("hubCampaignBar").append($("hubToolbar"));
 else $("hubView").before($("hubToolbar"));
 $("hubView").setAttribute("role",tab==="ears"?"region":"main");
-$("hubView").hidden=tab==="ears";$("hubToolbar").hidden=tab==="review";state.limit=40;state.search="";renderToolbar();renderView();renderSummary();
+$("hubView").hidden=tab==="ears"&&$("patch").value==="legacy-3.9";$("hubToolbar").hidden=tab==="review";state.limit=40;state.search="";renderToolbar();renderView();renderSummary();
 try{history.replaceState(null,"","#"+tab);}catch(e){}
 }
 function refresh(){renderSummary();if(state.tab!=="ears")renderView();}
@@ -1446,7 +1468,7 @@ if(statusNote)footer.prepend(statusNote);
 const legacyLinks=header.querySelector(".headlinks");footer.append(legacyLinks);
 const feedback=reportLink("ui",null,null,null);feedback.id="hubGeneralReport";footer.append(feedback);
 updateLanguageLabels();
-$("patch").addEventListener("change",()=>{renderView();});
+$("patch").addEventListener("change",()=>{if(state.tab==="ears")$("hubView").hidden=$("patch").value==="legacy-3.9";renderView();});
 function refreshCharacter(){restoreRoutePosition();renderToolbar();refresh();}
 $("character").addEventListener("change",refreshCharacter);
 const obs=new MutationObserver(()=>{if(active()?.id!==positionCharacter)refreshCharacter();});obs.observe($("character"),{childList:true});

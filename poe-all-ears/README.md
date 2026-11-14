@@ -8,6 +8,14 @@ The manual quest-step confirmation is independent of checklist marks and is save
 
 Use the report link beside a task or STOP to open a prefilled GitHub issue. GitHub requires a signed-in account. The app does not submit a report until the player completes submission on GitHub.
 
+## Patch 3.30 · opt-in historical reference (14 November 2026)
+
+ผู้ที่เลือกเล่นแพตช์ **3.30** สามารถกด **เปิดคู่มืออ้างอิงสำหรับเล่น 3.30 (ยังไม่รับรอง)** เพื่อใช้เส้นทางและเช็กลิสต์ต้นฉบับได้ **โดยไม่เปลี่ยนตัวเลือกแพตช์กลับเป็น 3.9** ก่อนกดเปิด ระบบยังแสดงหน้าหยุดและไม่เปิดเผยข้อมูลเก่าเป็นข้อมูลที่รับรองแพตช์แล้ว
+
+เมื่อเปิดใช้ จะมีป้ายเตือน **3.30 · กำลังดูคู่มือเก่าที่ไม่ได้รับรอง** แสดงตลอดบนหน้าเควสต์ เช็กลิสต์ และตรวจยอด/สำรอง พร้อมปุ่ม **หยุดแสดงข้อมูลเก่า** ผู้ใช้ยังต้องตรวจ STOP และตัวนับในเกมจริงทุกครั้ง การอนุญาตให้แสดงคู่มือเป็นเพียง **การตั้งค่าการอ่านข้อมูล** ไม่ใช่การยืนยัน Achievement หรือผลทดสอบ 3.30
+
+ระบบจำแพตช์ที่เลือกและการอนุญาตแสดงข้อมูลเก่าไว้ **ในเบราว์เซอร์นี้** โดยใช้คีย์ที่ไม่ปะปนกับข้อมูลตัวละครและไม่ได้ส่งออกกับ Backup ข้อมูล 745 ID เดิม, ตัวละคร, เครื่องหมายความคืบหน้า และรูปแบบ Backup ไม่เปลี่ยน แพตช์ **3.29** ไม่ได้รับสิทธิ์เปิดคู่มือจากการอนุญาตของ 3.30 ดู [หลักฐานและรายการ QA](./handoff/CONTENT-QA-20261114-PATCH330-REFERENCE-PREVIEW.md)
+
 ## Guided campaign · 13 November 2026
 
 The **Quests** view opens directly at the current quest. Choose a character and Act or additional area, then use the step selector to pick a different quest stage. The app remembers the last area and selected stages by character in this browser. First-time profiles start in Act 1. Route position is a display preference and is stored separately from the existing progress and backup formats.

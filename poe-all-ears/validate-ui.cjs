@@ -34,7 +34,7 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{
-    check(html.includes('p.id!=="legacy-3.9"'),name+': unverified patches not blocked');
+    check(html.includes('byId("results").hidden=!(p.id==="legacy-3.9"||referencePreviewActive())')&&html.includes('selectedPatch==="3.30"&&historicalReferencePreview'),name+': 3.30 historical rows must require explicit scoped reference approval');
     for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js','./route-act9.js','./route-act10.js']){
       check(html.includes('src="'+ref+'"'),name+': missing wiki route script '+ref)
     }
@@ -57,6 +57,11 @@ check(index.includes('href="./campaign.css"')&&fs.existsSync(path.join(dir,'camp
 check(index.indexOf('src="./approved-guidance.js"')>=0&&index.indexOf('src="./approved-guidance.js"')<index.indexOf('src="./guide-descriptions.js"'),'approved copy must load before its route and item consumers');
 check(index.includes('src="./lore-data.js"')&&index.includes('src="./extra-data.js"')&&index.includes('src="./hub.js"')&&index.includes('href="./hub.css"'),'unified hub dependencies not loaded');
 check(index.includes('window.POE_HUB_BRIDGE')&&index.includes('mark:function(id,done)'),'legacy progress bridge unavailable');
+check(index.includes('function referencePreviewActive()')&&index.includes('selectedPatch==="3.30"&&historicalReferencePreview'),'3.30 historical reference preview must be strictly scoped to the selected current patch');
+check(index.includes('historicalReferenceEnabled:function()')&&index.includes('enableHistoricalReference:function(enabled)'),'opt-in historical preview controls must be shared across native and guided checklists');
+check(index.includes('PATCH_CHOICE_KEY')&&index.includes('REFERENCE_PREVIEW_KEY'),'patch selection and reference consent must persist in separate device keys');
+check(hubSource.includes('data-patch-reference')===false&&hubSource.includes('notice.dataset.patchReference="3.30"')&&hubSource.includes('notice.setAttribute("role","status")'),'active 3.30 historical view must have an always-on accessible source label');
+check(hubSource.includes('button.dataset.patchPreviewAction=currentPatch==="3.30"?"enable":"legacy"')&&hubSource.includes('B.enableHistoricalReference(false)'),'3.30 reference consent must be explicit and reversible');
 check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
 // Regress source-risk disclosures: visible at decision points, bilingual and source-linked.
 const hubCSS=fs.readFileSync(path.join(dir,'hub.css'),'utf8');

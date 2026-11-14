@@ -3,6 +3,12 @@
 #hubNav button{flex:1 1 auto;white-space:nowrap;padding:10px 12px;font-size:13px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:600}
 #hubNav button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .hubPanel{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:20px;margin:13px 0}
+/* The 3.30 reference status stays visible without adding another tall nested card. */
+.hubReferenceMode{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:10px 13px;margin:8px 0 12px;border-radius:9px;border-left:4px solid #c29362}
+.hubReferenceMode strong{font-size:13px;line-height:1.4}
+.hubReferenceMode p{flex:1 1 270px;margin:0;font-size:12px;line-height:1.5}
+.hubReferenceMode button{font-size:12px;padding:7px 10px;min-height:36px}
+@media(max-width:600px){.hubReferenceMode{padding:9px 10px;gap:6px}.hubReferenceMode button{margin-left:0}}
 .hubPanel h2{font-size:clamp(18px,3vw,25px);margin:0 0 7px;font-weight:650}
 .hubPanel h3{font-size:17px;margin:0 0 6px}
 .hubPanel p{margin:6px 0}

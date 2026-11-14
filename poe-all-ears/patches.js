@@ -31,7 +31,7 @@ window.POE_PATCH_PROFILES = {
       "dialogues": null,
       "rewards": null,
       "guide": null,
-      "notes": "กำหนดเปิดตัว 14 พฤศจิกายน 2026 เวลา 02:00 น. (ไทย) · ยังไม่มีหลักฐานตรวจรับรอง All Ears และเส้นทาง Achievement สำหรับเกม 3.30",
+      "notes": "เปิดให้เล่นแล้ว 14 พฤศจิกายน 2026 เวลา 02:00 น. (ไทย) · ยังไม่มีหลักฐานทดสอบรับรอง All Ears และเส้นทาง Achievement สำหรับเกม 3.30",
       "evidence": "https://www.pathofexile.com/forum/view-thread/4013680"
     }
   ],

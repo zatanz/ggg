@@ -126,9 +126,13 @@ async function verifyHistoricalWaypointBackup(browser,url){
   assert.equal(score,'0 / 743','historical waypoints do not increase active progress');
   await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  assert.equal((await page.locator('[data-special-scope="Epilogue"]').innerText()).includes('Karui Shores'),true,'Epilogue directs players to the currently mapped Karui Shores Waypoint');
+  assert.equal((await page.locator('[data-special-scope="Epilogue"] .hubNotice').innerText()).includes('90 จุด'),true,'Epilogue distinguishes the Wiki 90 waypoint list from the 89 legacy-mapped records');
   await page.locator('[data-special-scope="Epilogue"] > details > summary').click();
   assert.equal(await page.locator('[data-special-scope="Epilogue"] input:checked').count(),2,'legacy waypoints survive import');
   await page.locator('#hubNav [data-tab="review"]').click();
+  await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
+  assert.equal((await page.locator('#hubView p.hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review warns the extra current Epilogue area is not tracked');
   const pending=page.waitForEvent('download');
   await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
   const saved=await pending;
@@ -333,7 +337,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
  assert.equal(await hub.locator('#hubStats .hubMissionTotal').count(),1,'four-achievement 100% mission dashboard is prominent');
- assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('100%'),true,'100% scope is four tracked achievements');
+ assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('4 Achievement'),true,'dashboard describes four tracked achievements without promising 100% game completion');
  assert.equal(await hub.locator('#hubStats .hubRunPreflight').count(),1,'100 percent route exposes a collapsed pre-run risk checklist');
  await hub.locator('#hubStats .hubRunPreflight > summary').click();
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Ruthless'),true,'difficulty caveat warns about Vaal Side Areas in Ruthless');
@@ -1176,7 +1180,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView').innerText()).includes('ไม่ได้หมายความว่าปลอดภัยในเกม 3.29'),true,'Act 10 missing historic warning markers is explicitly disclosed');
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details').first().evaluate(x=>x.open),false,'obsolete Epilogue records are collapsed');
- assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('ไม่ใช่จุดที่ต้องเดินทางไปเปิดหลัง Act 10'),true,'Epilogue records are explicitly historical');
+ assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Waypoint #90 Oriath และ #91 The Templar Laboratory เป็นข้อมูลประวัติศาสตร์'),true,'Epilogue records are explicitly historical');
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'both legacy records remain accessible');
  await hub.locator('#hubCampaignAct').selectOption('Labyrinth');
  assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),4,'Labyrinth has three Lore groups plus its one separate Waypoint');
@@ -1275,7 +1279,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal((await hub.locator('#hubView .hubSpecialSteps').innerText()).includes('Side Area'),true,'English Vaal guidance is sourced and not Thai-only');
  assert.equal((await hub.locator('#hubView .hubVaalGuide').innerText()).includes('Find the Vaal Side Area'),true,'English Vaal area lookup instructions are translated');
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
- assert.equal((await hub.locator('#hubView').innerText()).includes('historical records kept for save compatibility'),true,'Epilogue instructions adapt to English');
+ assert.equal((await hub.locator('#hubView').innerText()).includes('Legacy IDs #90 Oriath and #91 The Templar Laboratory are historical save entries'),true,'Epilogue instructions adapt to English');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal((await hub.locator('#hubView').innerText()).includes('Compare achievement counts'),true,'Achievement count comparison has English explanation');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Back up all tracked achievements'),true,'Combined backup has English instructions');

@@ -62,6 +62,10 @@ check(index.includes('historicalReferenceEnabled:function()')&&index.includes('e
 check(index.includes('PATCH_CHOICE_KEY')&&index.includes('REFERENCE_PREVIEW_KEY'),'patch selection and reference consent must persist in separate device keys');
 check(hubSource.includes('data-patch-reference')===false&&hubSource.includes('notice.dataset.patchReference="3.30"')&&hubSource.includes('notice.setAttribute("role","status")'),'active 3.30 historical view must have an always-on accessible source label');
 check(hubSource.includes('button.dataset.patchPreviewAction=currentPatch==="3.30"?"enable":"legacy"')&&hubSource.includes('B.enableHistoricalReference(false)'),'3.30 reference consent must be explicit and reversible');
+check(hubSource.includes('const patchPanel=wrap.querySelector')&&hubSource.includes('patchPanel.classList.add("hubPatchInline")')&&hubSource.includes('context.append(patchPanel)'),'single original patch selector must be visible in the first-time game context');
+check(hubSource.includes('settings.append(el("summary"),languagePanel,manage)')&&!hubSource.includes('settings.append(el("summary"),languagePanel,wrap.querySelector'),'patch selection must not be concealed in advanced Settings');
+check(hubSource.includes('visiblePatchLabel.textContent=tr("แพตช์ที่เล่น","Game patch")'),'visible patch label must follow the TH/EN guidance language');
+check(fs.readFileSync(path.join(dir,'campaign.css'),'utf8').includes('.hubPatchInline #patch')&&fs.readFileSync(path.join(dir,'campaign.css'),'utf8').includes('@media(max-width:600px)'),'visible patch picker requires responsive layout with no new card layer');
 check(hubSource.includes('poe-unified-companion')&&hubSource.includes('function renderRoute')&&hubSource.includes('function reviewPanel'),'unified route/review/backup missing');
 // Regress source-risk disclosures: visible at decision points, bilingual and source-linked.
 const hubCSS=fs.readFileSync(path.join(dir,'hub.css'),'utf8');

@@ -41,6 +41,10 @@ async function verifyGuidedEntry(browser,url){
      const rect=selector.getBoundingClientRect();
      return {overflow:document.documentElement.scrollWidth>innerWidth,selectorUsesRow:rect.width>=nav.clientWidth-2};
    });
+   if(layout.overflow){
+     const overflowers=await page.evaluate(()=>[...document.querySelectorAll('body *')].map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,id:el.id,cls:typeof el.className==='string'?el.className.slice(0,70):'',left:Math.round(r.left),right:Math.round(r.right),scroll:el.scrollWidth,client:el.clientWidth};}).filter(x=>x.right>innerWidth+2||x.left< -2||x.scroll>x.client+2).sort((a,b)=>b.right-a.right).slice(0,12));
+     console.log('320px overflow diagnostics: '+JSON.stringify(overflowers));
+   }
    assert.deepEqual(layout,{overflow:false,selectorUsesRow:true},'320px quest selector uses the full row without overflow');
    const firstCharacter=await page.locator('#character').inputValue();
    page.once('dialog',dialog=>dialog.accept('Independent route position'));

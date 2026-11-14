@@ -603,11 +603,13 @@ function actSteamGuide(act){
   const target=Math.max(0,Math.min(phases.length-1,i));
   if(reviewSkip&&target>chosen){
    const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))));
-   if(outstanding.length&&(Number(act)>=7||outstanding.some(p=>(p.stopWaypointIds||[]).length>0))&&outstanding.some(p=>phases.indexOf(p)>=chosen)){
-    const first=outstanding[0];
+   const forwardRisks=outstanding.filter(p=>phases.indexOf(p)>=chosen);
+   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)));
+   if(toWarn.length){
+    const first=toWarn[0];
     const msg=tr(
-      "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+outstanding.length+" ช่วง\nจุดแรก: "+first.stop+"\n\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
-      "You are skipping "+outstanding.length+" unchecked STOP checkpoint(s).\nFirst: "+(first.stopEN||first.stop)+"\n\nNavigation is not proof of quest safety. Jump anyway?"
+      "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+toWarn.length+" ช่วง\nจุดแรก: "+first.stop+"\n\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
+      "You are skipping "+toWarn.length+" unchecked STOP checkpoint(s).\nFirst: "+(first.stopEN||first.stop)+"\n\nNavigation is not proof of quest safety. Jump anyway?"
     );
     if(!confirm(msg)){select.value=String(chosen);return;}
    }

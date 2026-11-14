@@ -215,8 +215,11 @@ async function verifyKaruiShoresSupplement(browser,url){
   await page.locator('#hubNav [data-tab="review"]').click();
   const malformed={app:'poe-unified-companion',schema:2,characters:[{name:'bad Karui',ears:[],lore:[],waypoints:[],sidequests:[],karuiShores:'true'}]};
   const count=await page.locator('#character option').count();
-  page.once('dialog',d=>d.accept());
+  const rejectedDialog=page.waitForEvent('dialog');
   await page.locator('#hubView input[type="file"]').setInputFiles({name:'invalid-karui.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(malformed))});
+  const rejected=await rejectedDialog;
+  assert.equal(rejected.type(),'alert','invalid Karui backup triggers an alert, not a save or confirmation');
+  await rejected.accept();
   assert.equal(await page.locator('#character option').count(),count,'invalid Karui type is rejected without modifying profiles');
  }finally{await context.close();}
 }

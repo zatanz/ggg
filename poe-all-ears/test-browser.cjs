@@ -678,6 +678,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  assert.equal(await hub.locator('#hubView [data-steam-act="5"]').getAttribute('data-phase'),'oriath-courts','next step asks before bypassing the two unchecked Waypoints');
  await hub.locator('#hubView [data-source-note="oriath-courts"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="oriath-courts"]').innerText()).includes('PoE Wiki'),true,'Act 5 missable Waypoint STOP carries a historical source explanation');
+ hub.once('dialog',d=>d.accept());
  await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('4');
  assert.equal(await stageItems('lore'),9,'Nine Chamber of Innocence lore entries are grouped');
  await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('5');

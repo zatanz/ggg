@@ -1410,7 +1410,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await hub.locator('#hubView [data-stop-phase="forest-encampment"]').innerText()).includes('ยังไม่ควร'),true,'existing source-based STOP still visible in reference preview');
  await hub.locator('#hubNav [data-tab="collection"]').click();
  assert.equal(await hub.locator('#hubView [data-patch-reference="3.30"]').count(),1,'warning remains visible in collection view');
- assert.equal(await hub.locator('#hubView .hubItem').count()>0,true,'current patch historical reference enables the actual detailed checklist');
+ assert.equal(await hub.locator('#results .entry').count()>0,true,'current patch historical reference enables the actual original All Ears checklist');
  await hub.locator('#hubNav [data-tab="review"]').click();
  assert.equal(await hub.locator('#hubView [data-patch-reference="3.30"]').count(),1,'warning remains visible in count review and backup view');
  assert.equal((await hub.locator('#hubView').innerText()).includes('Backup รวม'),true,'backups remain available during reference preview');

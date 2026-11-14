@@ -1425,7 +1425,7 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    const overviewTitle=document.querySelector("#hubOverview>h2");if(overviewTitle)overviewTitle.textContent=tr("เส้นทางสู่ 100%","Path to 100%");
    const overviewSub=document.querySelector("#hubOverview>p");if(overviewSub)overviewSub.textContent=tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof");
    const advancedSummary=document.querySelector("#hubAdvancedDashboard>summary");if(advancedSummary)advancedSummary.textContent=tr("ข้อมูลเพิ่มเติม · ความคืบหน้าทั้งหมดและแหล่งอ้างอิง","More tools · complete progress and references");
- const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30");
+ const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("อ้างอิง PoE Wiki 2025 / ฐานเดิม 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical Wiki 2025 / legacy 3.9 · NOT certified for 3.30");
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);

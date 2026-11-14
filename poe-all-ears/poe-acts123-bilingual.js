@@ -148,9 +148,9 @@ const translated={
     "ancient-seal": [
       "Ancient Seal · collect the town's Darkness dialogue",
       [
-        "Open the Ancient Seal to unlock the Darkness topics according to both historical guides.",
+        "Only after reviewing the conflicting Bandit instructions, activate the Ancient Seal to unlock The Darkness topics. The two historical guides do not agree about first conversations.",
         "Return for Eramir, Helena, Silk, Greust and Yeena's Darkness conversations.",
-        "Do not kill or help the Bandits yet. PoE Wiki recommends speaking before the Ancient Seal; Steam does not forbid early conversation, but schedules the kills after The Darkness."
+        "Do not kill or help Bandits yet. PoE Wiki says TALK to them before Ancient Seal; Steam 3.28 explicitly says DO NOT TALK until The Darkness. No 3.30 route is certified."
       ],
       "STOP: hear the town's Darkness dialogues before killing or helping any Bandit."
     ],
@@ -160,7 +160,7 @@ const translated={
         "While Alira and Oak are still alive, check their Darkness topics. The 2025 Wiki does not list a matching topic for Kraityn.",
         "For the kill-all route, return to Eramir after killing the first Bandit and again after the second, BEFORE killing the third.",
         "After all three are dead, hear Eramir: Bandit Lords and check the newly available Greust and Helena dialogue.",
-        "PoE Wiki advises first talking to each Bandit before the Ancient Seal; Steam does not forbid early conversation, and places the kill sequence after The Darkness. Neither guide certifies patch 3.30."
+        "PoE Wiki advises talking to each Bandit before Ancient Seal, while Steam 3.28 explicitly forbids both talking and killing until The Darkness. They cannot both be followed; 3.30 remains unverified."
       ],
       "STOP: collect the town, Alira and Oak Darkness topics before making irreversible Bandit decisions. Revisit Eramir BETWEEN kills."
     ],

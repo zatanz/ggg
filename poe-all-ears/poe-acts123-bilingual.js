@@ -145,6 +145,15 @@ const translated={
       ],
       "STOP: hear Eramir: Maligaro's Creation and Ancient Gateway before destroying the roots or dealing with Lorrata."
     ],
+    "bandits-before-seal": [
+      "Before Ancient Seal · conflicting first-talk instructions",
+      [
+        "PoE Wiki (2025) says to TALK to Alira, Oak and Kraityn BEFORE activating the Ancient Seal. Steam 3.28 explicitly says DO NOT TALK TO OR KILL any Bandit until The Darkness. Both instructions cannot be followed in one run.",
+        "No in-game 3.30 evidence determines which first-talk order completes all 484 All Ears dialogues. A manual review mark is NOT an in-game achievement mark or a safety guarantee.",
+        "Inspect your real game state and the linked source guides; record only conversations you actually had. Acknowledge reviewing the conflict before activating the Seal. Do not kill or help a Bandit yet."
+      ],
+      "STOP before activating Ancient Seal: PoE Wiki says TALK first, while Steam 3.28 says DO NOT TALK until The Darkness. No 3.30-certified safe order exists."
+    ],
     "ancient-seal": [
       "Ancient Seal · collect the town's Darkness dialogue",
       [

@@ -427,20 +427,25 @@ assert(canonicalSource.includes('src="./steam-act5.js"')&&canonicalSource.includ
 
 const actSix=steamWalk.acts[6],actSixEars=actSix.flatMap(p=>p.dialogueIds),actSixLore=actSix.flatMap(p=>p.loreIds||[]);
 const actSixWp=actSix.flatMap(p=>p.waypointIds||[]),actSixSide=actSix.flatMap(p=>p.sidequestIds||[]);
-assert(actSix.length===15,'Act 6 has fifteen source-aligned player quest stages');
+assert(actSix.length===16,'Act 6 has sixteen quest-state-aligned stages after separating pre- and post-Beacon checks');
 assert(sameExactSet(actSixEars,d.items.filter(x=>x.act===6).map(x=>x.id)),'Act 6 All Ears: 44 original IDs exactly once');
 assert(sameExactSet(actSixLore,lore.entries.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Stone: six original IDs exactly once');
 assert(sameExactSet(actSixWp,extras.waypoints.filter(x=>x.act===6).map(x=>x.id)),'Act 6 Locomancer: ten original IDs exactly once');
 assert(sameExactSet(actSixSide,extras.sidequests.filter(x=>x.act===6).map(x=>x.id)),'Act 6 No Loose Ends: four original IDs exactly once');
 assert(actSix.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>=2&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 6 bilingual source and stop IDs must be tied to the actual phase');
 const actSixWikiRoute=ctx.window.ALL_EARS_ROUTE_ACT6.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(r=>r.id);
-assert(actSixEars.join(',')===actSixWikiRoute.join(','),'Act 6 source steps must follow Wiki row order, not local ID order');
+assert(sameExactSet(actSixEars,actSixWikiRoute),'Act 6 quest-time ordering must retain every original Wiki-row-backed dialogue without duplicates');
+assert(actSix.findIndex(p=>p.id==='umbra-complete')<actSix.findIndex(p=>p.id==='nessa-ships')&&actSix.findIndex(p=>p.id==='nessa-ships')<actSix.findIndex(p=>p.id==='ryslatha'),'After Nessa in Prisoners Gate, collect two shipyard topics before entering Western Forest, not after');
+assert(actSix.find(p=>p.id==='nessa-ships')?.stopIds.join(',')==='332,333'&&!(actSix.find(p=>p.id==='nessa-ships')?.waypointIds||[]).length,'Early Nessa stop covers #332/#333 without claiming the later Southern Forest Waypoint');
+assert(actSix.find(p=>p.id==='cavern-sin')?.waypointIds.join(',')==='57','The Southern Forest Waypoint must be in the post-Western-Forest journey');
 assert(actSix.find(p=>p.id==='eye-before')?.stopIds.includes(321),'Eye of Conquest before-use stop required');
 assert(actSix.find(p=>p.id==='eye-after')?.stopIds.includes(322),'Eye of Conquest after-use, before-enter stop required');
 assert(actSix.find(p=>p.id==='tukohama-after')?.stopIds.includes(324),'Tukohama/Shavronne before-boss dialogue required');
 assert(actSix.find(p=>p.id==='shavronne-after')?.stopIds.includes(326),'Shavronne post-fight Sin dialogue required');
 assert(actSix.find(p=>p.id==='nessa-ships')?.stopIds.includes(333),'Nessa/Tarkleigh before Cavern of Anger required');
-assert(actSix.find(p=>p.id==='beacon-flag')?.stopIds.includes(336),'Lilly Black Flag before-use stop required');
+assert(actSix.find(p=>p.id==='beacon-flag')?.stopIds.join(',')==='336'&&actSix.find(p=>p.id==='beacon-flag')?.dialogueIds.join(',')==='336','Lilly Black Flag before-entering-Beacon STOP must only contain pre-entry dialogue #336');
+assert(actSix.findIndex(p=>p.id==='beacon-flag')+1===actSix.findIndex(p=>p.id==='beacon-entered'),'Pre- and post-Beacon stages must appear consecutively');
+assert(actSix.find(p=>p.id==='beacon-entered')?.dialogueIds.join(',')==='337'&&actSix.find(p=>p.id==='beacon-entered')?.waypointIds.join(',')==='58'&&sameExactSet(actSix.find(p=>p.id==='beacon-entered')?.loreIds||[],[110,111]),'Post-Beacon Lilly #337, Waypoint #58 and both Lore items must not appear before entry');
 assert(sameExactSet(actSix.find(p=>p.id==='reef-weylam')?.stopIds||[],[338,339]),'Weylam two dialogs before Tsoagoth required');
 assert(actSix.find(p=>p.id==='beacon-flag')?.keyItems.includes('The Black Flag'),'Black Flag original item name must stay available');
 assert(steamWalk.patchCertified===false,'Act 6 must remain historical and unverified for patch 3.30');

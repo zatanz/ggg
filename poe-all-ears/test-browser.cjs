@@ -1399,7 +1399,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#results').getAttribute('hidden'),'','legacy native rows remain hidden before user opts in');
  await hub.locator('#hubView [data-patch-preview-action="enable"]').click();
  assert.equal(await hub.locator('#patch').inputValue(),'3.30','opening reference never switches the game patch to legacy 3.9');
- assert.equal(await hub.locator('#patchStatus').innerText(),'ยังไม่มีข้อมูลยืนยัน','3.30 retains explicitly unverified patch status');
+ assert.equal(await hub.locator('#patchStatus').textContent(),'ยังไม่มีข้อมูลยืนยัน','3.30 retains explicitly unverified patch status even inside collapsed Settings');
  assert.equal(await hub.locator('#hubView [data-patch-reference="3.30"]').count(),1,'persistent historical-data caution appears on the route');
  assert.equal((await hub.locator('#hubView [data-patch-reference="3.30"]').innerText()).includes('ไม่ได้รับรอง'),true,'reference warning is plain-language and explicit');
  assert.equal(await hub.locator('#results').getAttribute('hidden'),null,'legacy native checklist is accessible after approval, not relabeled certified');

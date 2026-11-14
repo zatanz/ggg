@@ -776,7 +776,7 @@ function actSteamGuide(act){
   }
  }
  box.append(focus);
- const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),pendingManualReview=phase.requiresManualConfirmation&&!questConfirmed;
+ const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),pendingManualReview=phase.requiresManualConfirmation===true&&!questConfirmed;
  const stopPending=pending.length+pendingWaypointIds.length+Number(pendingManualReview);
  if(phase.stop){
    const gate=el("div",undefined,"hubStopGate"+(stopPending?" blocked":" reviewed"));

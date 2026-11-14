@@ -41,6 +41,10 @@ async function verifyGuidedEntry(browser,url){
      const rect=selector.getBoundingClientRect();
      return {overflow:document.documentElement.scrollWidth>innerWidth,selectorUsesRow:rect.width>=nav.clientWidth-2};
    });
+   if(layout.overflow){
+     const overflowers=await page.evaluate(()=>[...document.querySelectorAll('body *')].map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,id:el.id,cls:typeof el.className==='string'?el.className.slice(0,70):'',left:Math.round(r.left),right:Math.round(r.right),scroll:el.scrollWidth,client:el.clientWidth};}).filter(x=>x.right>innerWidth+2||x.left< -2||x.scroll>x.client+2).sort((a,b)=>b.right-a.right).slice(0,12));
+     console.log('320px overflow diagnostics: '+JSON.stringify(overflowers));
+   }
    assert.deepEqual(layout,{overflow:false,selectorUsesRow:true},'320px quest selector uses the full row without overflow');
    const firstCharacter=await page.locator('#character').inputValue();
    page.once('dialog',dialog=>dialog.accept('Independent route position'));
@@ -457,6 +461,16 @@ async function verifyAct2PreSealConflict(browser,url){
  const stageItems=async type=>hub.locator('#hubView .hubWalkthrough input[data-track-type="'+type+'"]').count();
  await hub.locator('#hubNav button').first().waitFor();
  assert.equal(await hub.locator('#hubNav button').count(),3,'primary navigation has three clear modes');
+ assert.equal(await hub.locator('#hubSettings').evaluate(node=>node.open),false,'Settings starts collapsed for first-time players');
+ assert.equal(await hub.locator('.hubCampaignContext #patch').isVisible(),true,'game patch selector is immediately visible without opening Settings');
+ assert.equal(await hub.locator('.hubCampaignContext #hubPatchLabel').textContent(),'แพตช์ที่เล่น',"visible patch control names the user’s game version");
+ assert.equal(await hub.locator('#patch').count(),1,'the original patch picker is relocated, not duplicated');
+ assert.equal(await hub.locator('#hubSettings #patch').count(),0,'the game-patch picker is not buried in the Settings disclosure');
+ await hub.locator('.hubCampaignContext #patch').selectOption('3.30');
+ assert.equal(await hub.locator('#hubView [data-patch-gate="3.30"]').count(),1,'first-time current-patch selection shows the honest unsupported-route gate');
+ assert.equal(await hub.locator('#hubView [data-patch-preview-action="enable"]').count(),1,'the current-patch gate offers the existing explicit historical-reference opt-in');
+ await hub.locator('.hubCampaignContext #patch').selectOption('legacy-3.9');
+ assert.equal(await hub.locator('#hubView [data-steam-act="1"]').count(),1,'historical baseline route remains usable after patch-picker quick check');
  const contrast=await hub.evaluate(()=>{
    const lum=css=>{
      const nums=(css.match(/[\d.]+/g)||[]).slice(0,3).map(v=>Number(v)/255);
@@ -1438,6 +1452,9 @@ async function verifyAct2PreSealConflict(browser,url){
 
  await hub.setViewportSize({width:375,height:812});
  await hub.reload();
+ assert.equal(await hub.locator('.hubCampaignContext #patch').isVisible(),true,'mobile users can select their patch without opening Settings');
+ const patchBounds=await hub.locator('.hubCampaignContext #patch').boundingBox();
+ assert.equal(Boolean(patchBounds&&patchBounds.x>=0&&patchBounds.x+patchBounds.width<=375),true,'game-patch selector remains fully within a 375px phone viewport');
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2),false,'unified page mobile overflow');
  await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal(await hub.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),true,'expanded reference drawer fits mobile viewport');
@@ -1445,6 +1462,7 @@ async function verifyAct2PreSealConflict(browser,url){
 
  // Editorial language pass: English must carry the same quest actions and STOP timing as Thai for Acts 1–3.
  await selectSetting('hubDescriptionLanguage','en');
+ assert.equal(await hub.locator('.hubCampaignContext #hubPatchLabel').textContent(),'Game patch','the visible patch label follows the selected guidance language');
  assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('Goal:'),true,'Dashboard heading follows the English guidance setting');
  assert.equal((await hub.locator('#hubStats .hubMissionNext').innerText()).includes('Viewing: Act 10'),true,'Main dashboard names the selected Act in English rather than a misleading global first-incomplete state');
  assert.equal((await hub.locator('#hubView').innerText()).includes('3.30'),false,'current route copy should not misdirect the player toward an unverified future patch');

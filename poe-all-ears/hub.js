@@ -1401,6 +1401,8 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    nav.setAttribute("aria-label",tr("เมนูหลัก","Main navigation"));
    document.querySelector('.hubProfileLabel')?.replaceChildren(tr("ตัวละคร","Character"));
    $("hubSettings")?.querySelector("summary").replaceChildren(tr("ตั้งค่า","Settings"));
+   const visiblePatchLabel=$("hubPatchLabel");
+   if(visiblePatchLabel)visiblePatchLabel.textContent=tr("แพตช์ที่เล่น","Game patch");
    $("hubCampaignIntro")?.replaceChildren(tr("เลือกตัวละครและ Act ที่กำลังเล่น แล้วเริ่มจากเควสต์ด้านล่าง","Choose your character and Act, then follow the quest below."));
    $("addChar").textContent=tr("+ เพิ่ม","+ Add");
    $("addChar").setAttribute("aria-label",tr("เพิ่มตัวละคร","Add character"));
@@ -1423,11 +1425,19 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    const overviewTitle=document.querySelector("#hubOverview>h2");if(overviewTitle)overviewTitle.textContent=tr("เส้นทางสู่ 100%","Path to 100%");
    const overviewSub=document.querySelector("#hubOverview>p");if(overviewSub)overviewSub.textContent=tr("เป้าหมาย 4 Achievement · ความคืบหน้าเป็นบันทึกส่วนตัว ไม่ใช่การยืนยันจากเกม","Four tracked achievements · checklist records are manual, not game-provided proof");
    const advancedSummary=document.querySelector("#hubAdvancedDashboard>summary");if(advancedSummary)advancedSummary.textContent=tr("ข้อมูลเพิ่มเติม · ความคืบหน้าทั้งหมดและแหล่งอ้างอิง","More tools · complete progress and references");
- const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("ฐานข้อมูลอ้างอิง PoE Wiki ปี 2025 / ชุดเก่า 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical data: PoE Wiki 2025 / legacy 3.9 · NOT certified for patch 3.30");
+ const notice=document.querySelector(".hubDataNotice");if(notice)notice.textContent=tr("อ้างอิง PoE Wiki 2025 / ฐานเดิม 3.9 · ยังไม่รับรองแพตช์ 3.30","Historical Wiki 2025 / legacy 3.9 · NOT certified for 3.30");
  };
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
  namesChoice.select.onchange=()=>changeLanguage("names",namesChoice.select.value);
+// Use the original patch control as a first-class game setting; never duplicate its selection or persistence.
+const patchPanel=wrap.querySelector('section[aria-label="เลือกแพตช์"]');
+if(patchPanel){
+ patchPanel.classList.add("hubPatchInline");
+ patchPanel.querySelector(".panel-title")?.classList.add("sr");
+ const patchLabel=patchPanel.querySelector('label[for="patch"]');
+ if(patchLabel){patchLabel.classList.remove("sr");patchLabel.id="hubPatchLabel";}
+}
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){
   const manage=el("details",undefined,"hubManage");manage.id="hubManage";
@@ -1443,7 +1453,7 @@ if(profileRows.length>=2){
   profileRows[0].before(label);
   profileNote?.remove();
   const settings=el("details");settings.id="hubSettings";
-  settings.append(el("summary"),languagePanel,wrap.querySelector('section[aria-label="เลือกแพตช์"]'),manage);
+  settings.append(el("summary"),languagePanel,manage);
   if(profileNote)settings.append(profileNote);
   header.append(settings);
 }
@@ -1457,7 +1467,9 @@ const bar=el("div");bar.id="hubCampaignBar";
 const context=el("div",undefined,"hubCampaignContext");
 const intro=el("p");intro.id="hubCampaignIntro";
 const status=el("p",undefined,"hubDataNotice");
-context.append(intro,status);
+context.append(intro);
+if(patchPanel)context.append(patchPanel);
+context.append(status);
 const controls=el("div");controls.id="hubToolbar";
 const view=el("section");view.id="hubView";view.tabIndex=-1;
 header.after(context,bar,view);

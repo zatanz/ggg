@@ -131,7 +131,7 @@ Run `node poe-all-ears/validate-data.cjs`, `node poe-all-ears/validate-ui.cjs` a
 - **Act 2 Safety** เก็บเช็กลิสต์คุยกับ Bandits, Ancient Seal, The Darkness และลำดับการจัดการ Bandits แบบกรอกเอง; คำเตือนต้องตรวจตามแพตช์และการเล่นจริงอีกครั้ง
 - **Vaal side area search** ค้นชื่อพื้นที่จากตัวอย่างใน PoE Wiki และจับคู่กับ Vaal Letter/Research Journal; ใช้ ID เก่าเพื่อไม่เปลี่ยนเซฟ แต่แสดงหมายเลข Wiki แยก (16 รายการ)
 - **Progress Recheck** เปรียบเทียบยอดที่เกมแสดงกับจำนวนที่ติ๊ก แล้วบันทึกจุดเทียบยอดตรงกันเป็น baseline สำหรับย้อนตรวจ; ไม่สามารถระบุรายการที่พลาดจากเกมอัตโนมัติ
-- **Backup รวม (v2)** ส่งออกไฟล์เดียวสำหรับทุกตัวละครและทั้งสี่หมวด; นำเข้าเป็นตัวละครใหม่โดยไม่ทับเซฟเดิม ตรวจรูปแบบก่อนนำเข้า และทดสอบใน Chromium
+- **Backup รวม (v2)** ส่งออกไฟล์เดียวสำหรับทุกตัวละครและทั้งสี่หมวด รวมตัวเลือกผู้ปกครอง Highgate (Irasha/Tasuni) ที่บันทึกไว้; นำเข้าเป็นตัวละครใหม่โดยไม่ทับเซฟเดิม ยังรองรับไฟล์ v2 เก่าที่ไม่มีฟิลด์นี้ และตรวจรูปแบบก่อนนำเข้า
 - ตัวหน้าหลักยังใช้ข้อมูล All Ears และ Backup v1 เดิมได้เหมือนเดิม; หน้า companion.html / extras.html / walkthrough.html ยังเก็บไว้เพื่อรองรับลิงก์เก่า แต่ไม่จำเป็นต้องสลับหน้าเพื่อใช้งานหลัก
 
 **คำเตือนด้านข้อมูล:** ชุดชื่อและลำดับ All Ears มาจาก PoE Wiki ฉบับปี 2025 และ Excel 3.9; ชุด Lore/Waypoint/Side Quest ตรงกับ Excel เดิมแต่ยังไม่ยืนยันกับแพตช์ 3.30 ที่เปิด 13 พฤศจิกายน 2026 (PST). Patch Notes 3.30 ระบุว่า Vaal Side Areas จะไม่ปรากฏใน Maps อีกต่อไป; ไม่ควรใช้วิธีฟาร์มจากคู่มือ Map Device เก่า. `0/484` คือจำนวนรายการที่ได้รับรองด้วยหลักฐานในเกมปัจจุบัน ณ Checkpoint นี้ ไม่ใช่จำนวนรายการที่อยู่ในเว็บ
@@ -159,7 +159,7 @@ Three additional tracker surfaces are now available as historical, manual-use ai
 - These web pages **do not connect to the game**. Recheck compares only the player's manually entered total with manually checked entries. Matching totals do **not** guarantee correct specific items, and mismatches do not identify exact missing items.
 - Vaal Side Area spawns can vary. A small area-name lookup maps only specifically sourced examples; unknown area names are reported as unknown rather than guessed.
 - Patch 3.30 notes remove Vaal Side Areas from Maps and make old Sacrifice/Mortal Fragment farming instructions obsolete. Do not use the legacy Map Device strategy without checking the target patch.
-- **Backup/migration:** existing All Ears backup format and storage key remain unchanged. Lore and Waypoint/Quest trackers use independent localStorage keys and each has its own export/import button. To move progress between devices, export **all three** backup files. Import adds/merges supplemental checked entries; it does not erase existing legacy progress.
+- **Backup/migration:** The legacy All Ears backup format and storage key remain unchanged. For a complete move between devices, prefer the **unified Backup & verify > combined backup (schema:2)**; it covers all four checklists, per-character quest confirmations and optional Highgate ruler choice. Older combined backups without `rulerChoice` remain importable. Standalone legacy exports still exist for backwards compatibility, but do **not** transfer this newer ruler-choice metadata. Import adds new characters rather than overwriting the existing ones.
 - The historical source spreadsheet supplied by the user marked its prose privately owned; the companion publishes only factual item identifiers/locations, not its commentary or guide text.
 - Current deployment/build and smoke tests check UI and persistence, **not** in-game applicability. See [delivery plan](./DELIVERY-PLAN.md).
 

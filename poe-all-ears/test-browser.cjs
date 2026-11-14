@@ -242,7 +242,7 @@ async function verifyAct2PreSealConflict(browser,url){
   assert.equal(await page.locator('[data-phase="bandits-before-seal"] .hubConflictLinks a').count(),2,'the Wiki and Steam primary guide links are accessible');
   assert.equal(await page.locator('[data-bandit-preflight="true"] > summary').count(),1,'the existing per-character Bandit talk notes are accessible on demand');
   assert.equal((await page.locator('[data-phase-progress="bandits-before-seal"]').textContent()).includes('0 / 1'),true,'manual source review is distinct from original achievement items');
-  const scoreBefore=await page.locator('.hubMissionScore b').innerText();
+  const marksBefore=await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key)));
   page.once('dialog',d=>d.dismiss());
   await phasePicker.selectOption('8');
   assert.equal(await page.locator('[data-steam-act="2"]').getAttribute('data-phase'),'bandits-before-seal','Cancel prevents silently skipping the disputed Ancient Seal boundary');
@@ -250,7 +250,7 @@ async function verifyAct2PreSealConflict(browser,url){
   await ack.check();
   assert.equal(await page.locator('[data-stop-phase="bandits-before-seal"]').getAttribute('data-stop-state'),'review','manual review changes visible STOP status without certifying gameplay');
   assert.equal((await page.locator('[data-phase-progress="bandits-before-seal"]').textContent()).includes('1 / 1'),true,'the review progress tracks the explicit acknowledgement');
-  assert.equal(await page.locator('.hubMissionScore b').innerText(),scoreBefore,'manual review does not increase any of the 744 canonical/current achievement checkmarks');
+  assert.deepEqual(await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key))),marksBefore,'manual review leaves all achievement item marks and the Karui supplement unchanged');
   await page.reload();
   await page.locator('#hubCampaignAct').selectOption('2');
   await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');

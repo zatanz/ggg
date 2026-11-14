@@ -126,9 +126,13 @@ async function verifyHistoricalWaypointBackup(browser,url){
   assert.equal(score,'0 / 743','historical waypoints do not increase active progress');
   await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('Epilogue');
+  assert.equal((await page.locator('[data-special-scope="Epilogue"]').innerText()).includes('Karui Shores'),true,'Epilogue directs players to the currently mapped Karui Shores Waypoint');
+  assert.equal((await page.locator('[data-special-scope="Epilogue"] .hubNotice').innerText()).includes('90 จุด'),true,'Epilogue distinguishes the Wiki 90 waypoint list from the 89 legacy-mapped records');
   await page.locator('[data-special-scope="Epilogue"] > details > summary').click();
   assert.equal(await page.locator('[data-special-scope="Epilogue"] input:checked').count(),2,'legacy waypoints survive import');
   await page.locator('#hubNav [data-tab="review"]').click();
+  await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
+  assert.equal((await page.locator('#hubView .hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review warns the extra current Epilogue area is not tracked');
   const pending=page.waitForEvent('download');
   await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
   const saved=await pending;

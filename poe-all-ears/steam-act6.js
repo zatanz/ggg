@@ -311,8 +311,8 @@ guide.acts[6]=[
       "Return to Lioneye's Watch for Bestel: The Ship Graveyard (#332) and Tarkleigh: The Ship Graveyard (#333); hear both before entering Western Forest as a cautious early check.",
       "Wiki confirms both unlock after Nessa but only warns that Tarkleigh #333 must precede The Cavern of Anger. Losing Bestel #332 upon entering Western Forest is not 3.30 gameplay-verified."
     ],
-    "stop": "ก่อนเข้า Western Forest ให้ตรวจ Bestel: The Ship Graveyard (#332) และ Tarkleigh: The Ship Graveyard (#333) หลังคุย Nessa · #332 เป็นคำเตือนเก่าที่ยังไม่รับรอง 3.30",
-    "stopEN": "Before entering Western Forest, hear Bestel and Tarkleigh: The Ship Graveyard (#332–333) after meeting Nessa. The earlier Western Forest deadline for #332 is a legacy precaution, not a confirmed 3.30 lockout.",
+    "stop": "ก่อนเข้า Western Forest ให้ตรวจ Bestel: The Ship Graveyard (#332) และ Tarkleigh (#333) หลังพบ Nessa · #332 เป็นคำเตือนเก่า; Wiki กำหนด #333 ก่อนเข้า Cavern of Anger",
+    "stopEN": "Before Western Forest, hear Bestel and Tarkleigh: The Ship Graveyard (#332–333) after Nessa. Bestel's earlier deadline is legacy-only; Wiki requires Tarkleigh #333 before entering the Cavern of Anger.",
     "stopIds": [
       332,
       333

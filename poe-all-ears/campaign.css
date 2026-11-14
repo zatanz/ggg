@@ -157,8 +157,13 @@
 .hubPatchInline #patchStatus { flex: 0 1 auto; font-size: .72rem; }
 .hubCampaignContext .hubPatchInline #patchNotice { flex: 1 1 100%; width: 100%; margin: 0; font-size: .73rem; line-height: 1.45; color: var(--secondary); }
 @media(max-width:600px){
-  .hubCampaignContext .hubPatchInline { padding: 8px 10px; }
-  .hubPatchInline #patch { flex-basis: 100%; }
+  .hubCampaignContext { margin: 6px 0 7px; }
+  .hubCampaignContext #hubCampaignIntro { display: none; }
+  .hubCampaignContext .hubPatchInline { padding: 5px 8px; gap: 2px; margin: 4px 0; }
+  .hubPatchInline .ctrls { gap: 4px 8px; }
+  .hubPatchInline #patch { flex: 1 1 150px; min-height: 43px; }
+  .hubCampaignContext .hubPatchInline #patchNotice { display: none; }
+  .hubCampaignContext .hubDataNotice { margin: 2px 0; font-size: .69rem; }
 }
 #hubCampaignIntro { color: var(--paper); font-size: .95rem; }
 .hubCampaignContext .hubDataNotice {

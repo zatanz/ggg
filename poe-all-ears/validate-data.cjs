@@ -376,6 +376,8 @@ assert(sameExactSet(actFiveWp,extras.waypoints.filter(x=>x.act===5).map(x=>x.id)
 assert(sameExactSet(actFiveSide,extras.sidequests.filter(x=>x.act===5).map(x=>x.id)),'Act 5 two optional quests must appear once');
 assert(actFive.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>0&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 5 must contain reviewed Thai/English steps and proper STOP IDs');
 assert(actFive.find(p=>p.id==='casticus-return')?.stopIds.includes(275),'Act 5 must protect Utula after Casticus but before Avarius');
+assert(sameExactSet(actFive.find(p=>p.id==='oriath-courts')?.stopWaypointIds||[],[44,45])&&actFive.find(p=>p.id==='oriath-courts')?.stopEN.includes('Avarius')&&actFive.find(p=>p.id==='oriath-courts')?.sourceNoteEN.includes('PoE Wiki'),'Act 5 must warn about both Waypoints becoming missable after Avarius');
+assert(actFive.flatMap(p=>p.stopWaypointIds||[]).every(id=>actFiveWp.includes(id)),'Act 5 STOP Waypoints must use canonical Act 5 IDs');
 assert(actFive.find(p=>p.id==='innocence-sin')?.stopIds.includes(277),'Act 5 must protect Sin before leaving Chamber of Innocence');
 assert(actFive.find(p=>p.id==='ossuary-sin')?.stopIds.includes(295),'Act 5 must protect Sin after Sign of Purity');
 assert(actFive.find(p=>p.id==='reliquary')?.keyItems.length===3,'Act 5 Reliquary must show three exact quest item names');

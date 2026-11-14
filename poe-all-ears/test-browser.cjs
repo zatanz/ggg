@@ -1495,7 +1495,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await darkness.locator('.hubCheckpointTitle').innerText()).includes('Ancient Seal / The Darkness'),true,'English risk heading identifies the actual Bandits quest state');
  assert.equal((await darkness.locator('.hubCheckpointAction').innerText()).includes('Alira and Oak'),true,'English risk action explains who must be heard while alive');
  assert.equal((await darkness.locator('.hubCheckpointRowTrigger').first().innerText()).includes('Available when:'),true,'English per-dialogue unlock conditions visible in risk panel');
- assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam\'s recorded kill sequence happens after The Darkness'),true,'Act 2 English caveat reports the documented Steam sequence without inventing prohibition');
+ assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam 3.28 explicitly says DO NOT TALK TO OR KILL'),true,'Act 2 English caveat faithfully reports Steam no-talk-before-Darkness instruction');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('First Bandit you killed'),true,'Bandit choice labels change to English without losing original choice state');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('Book of Reform'),true,'Bandit helper retains a historical uncertainty warning in English');
  assert.equal(await darkness.locator('.hubOriginalThai').count()>0,true,'English risk panel allows review of historical Thai source without forcing it into the primary text');

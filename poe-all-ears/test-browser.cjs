@@ -154,7 +154,7 @@ async function verifyKaruiShoresSupplement(browser,url){
   const mark=page.locator('[data-karui-shores="true"] input[type="checkbox"]');
   assert.equal(await mark.isChecked(),false,'Karui Shores never auto-completes on a fresh character');
   assert.equal((await page.locator('[data-special-scope="Epilogue"]').innerText()).includes('90 จุด'),true,'Wiki count is clearly qualified');
-  assert.equal(await page.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),1,'separate current Waypoint is visible without exposing legacy IDs');
+  assert.equal(await page.locator('#hubView [data-special-scope="Epilogue"] > .hubItem').count(),1,'separate current Waypoint is visible without expanding legacy records');
   await page.locator('#hubAdvancedDashboard > summary').click();
   assert.equal(await page.locator('.hubMissionScore b').innerText(),'0 / 744','current mapped checklist includes one Karui Shores mark');
   await mark.check();
@@ -1248,7 +1248,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  await hub.locator('#hubCampaignAct').selectOption('Epilogue');
  assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details').first().evaluate(x=>x.open),false,'obsolete Epilogue records are collapsed');
  assert.equal((await hub.locator('#hubView [data-special-scope="Epilogue"]').innerText()).includes('Waypoint #90 Oriath และ #91 The Templar Laboratory เป็นข้อมูลประวัติศาสตร์'),true,'Epilogue records are explicitly historical');
- assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] .hubItem').count(),2,'both legacy records remain accessible');
+ assert.equal(await hub.locator('#hubView [data-special-scope="Epilogue"] details .hubItem').count(),2,'both legacy records remain accessible');
  await hub.locator('#hubCampaignAct').selectOption('Labyrinth');
  assert.equal(await hub.locator('#hubView .hubSpecialGroup').count(),4,'Labyrinth has three Lore groups plus its one separate Waypoint');
  assert.equal(await hub.locator('#hubView [data-special-group="lab-waypoint"] .hubItem').count(),1,'Labyrinth Locomancer waypoint is not omitted from 100% roadmap');

@@ -18,6 +18,7 @@ Goal: help a player manually complete the four tracked achievements, not all ach
 - ID 275: defeat Justicar Casticus, return to Utula before defeating High Templar Avarius.
 - ID 277: speak to Sin **in the Chamber of Innocence after defeating Innocence but before leaving the room**.
 - ID 295: speak to Sin **in The Ossuary after taking Sign of Purity but before leaving the zone**.
+- **14 Nov source correction:** before defeating High Templar Avarius, verify **both Waypoints local #44 Oriath Square and #45 The Templar Courts** in the world map (U). PoE Wiki notes these areas change after Innocence, and the old Waypoints become inaccessible through ordinary progression. The new `oriath-courts` `stopWaypointIds` guard checks these exact original Waypoint IDs and confirms risky Next/dropdown skips without inventing NPC dialogue IDs; see [source audit](./handoff/CONTENT-QA-20261114-ACT5-MISSABLE-WAYPOINTS.md). **Not tested in-game on 3.30.**
 - One optional step explains Kitava's Torments, with three distinct original item names (Hinekora's Hair, Tukohama's Tooth, Valako's Jaw).
 - Source-led steps that contain no NPC dialogue still show Waypoints/Lore and progress correctly. All STOP source IDs belong to the exact phase in which their actionable condition occurs.
 

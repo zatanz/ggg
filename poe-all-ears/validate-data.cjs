@@ -494,7 +494,7 @@ assert(actEight.find(p=>p.id==='sisters-after')?.dialogueIds.includes(416),'Harg
 assert(canonicalSource.includes('src="./steam-act8.js"'),'Act 8 route script must load before hub.js');
 assert(steamWalk.patchCertified===false,'Act 8 source-led guidance must not claim 3.30 gameplay certification');
 const uiActEight=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiActEight.includes('Number(act)>=7||outstanding.some(p=>(p.stopWaypointIds||[]).length>0)')&&uiActEight.includes('outstanding.some(p=>phases.indexOf(p)>=chosen)'),'Acts 7–10 and new Act 5 Waypoint STOPs must guard forward phase-picker jumps');
+assert(uiActEight.includes('const toWarn=Number(act)>=7?')&&uiActEight.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)))'),'Act 5 must warn only on currently crossed Waypoint STOPs, retaining Act 7–10 checks');
 assert(uiActEight.includes('legacy.href="./act"+act+"-inventory.json"'),'Act 8 source disagreement link must target the actual historical inventory, not Act 7');
 
 
@@ -536,7 +536,7 @@ assert(actTen.find(p=>p.id==='kitava-after')?.dialogueIds.includes(482),'Act10 L
 const finalSource=fs.readFileSync(path.join(dir,'index.html'),'utf8');
 assert(finalSource.includes('src="./steam-act9.js"')&&finalSource.includes('src="./steam-act10.js"'),'Final Acts must load their historical source scripts');
 const finalHub=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(finalHub.includes('Number(act)>=7||outstanding.some(p=>(p.stopWaypointIds||[]).length>0)')&&finalHub.includes('outstanding.some(p=>phases.indexOf(p)>=chosen)'),'Forward dropdown guards must preserve Acts 7–10 and add missable Waypoint checks in Act 5');
+assert(finalHub.includes('const toWarn=Number(act)>=7?')&&finalHub.includes('forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)))'),'Forward dropdown guards retain Act 7–10 and only guard relevant Act 5 Waypoint STOPs');
 assert(finalHub.includes('poe-act9-ruler-choice-v1')&&finalHub.includes('saveRulerChoice')&&finalHub.includes('dataset.rulerIntegrity="Tasuni"'),'Act9 ruler branch must be a separate per-character preference and carry warning');
 assert(steamWalk.patchCertified===false,'Act9 and Act10 cannot claim 3.30 gameplay certification');
 

@@ -224,6 +224,68 @@ async function verifyKaruiShoresSupplement(browser,url){
  }finally{await context.close();}
 }
 
+async function verifyAct2PreSealConflict(browser,url){
+ const context=await browser.newContext({viewport:{width:390,height:844},acceptDownloads:true});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  const originalId=await page.locator('#character').inputValue();
+  await page.locator('#hubCampaignAct').selectOption('2');
+  const phasePicker=page.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select');
+  assert.equal(await phasePicker.locator('option').count(),11,'Act 2 now includes its first-contact source conflict checkpoint');
+  await phasePicker.selectOption('7');
+  assert.equal(await page.locator('#hubView [data-steam-act="2"]').getAttribute('data-phase'),'bandits-before-seal','the source conflict is presented before opening Ancient Seal');
+  const warning=page.locator('[data-stop-phase="bandits-before-seal"]'),ack=page.locator('[data-manual-review="true"] input[type="checkbox"]');
+  assert.equal(await warning.getAttribute('data-stop-state'),'hold','pre-Seal review starts unacknowledged');
+  assert.equal(await ack.isChecked(),false,'the review is not auto-accepted');
+  assert.equal((await page.locator('[data-conflict="steam-vs-wiki"]').innerText()).includes('Steam'),true,'both source interpretations are shown at the actual decision point');
+  assert.equal(await page.locator('[data-phase="bandits-before-seal"] .hubConflictLinks a').count(),2,'the Wiki and Steam primary guide links are accessible');
+  assert.equal(await page.locator('[data-bandit-preflight="true"] > summary').count(),1,'the existing per-character Bandit talk notes are accessible on demand');
+  assert.equal((await page.locator('[data-phase-progress="bandits-before-seal"]').textContent()).includes('0 / 1'),true,'manual source review is distinct from original achievement items');
+  const marksBefore=await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key)));
+  page.once('dialog',d=>d.dismiss());
+  await phasePicker.selectOption('8');
+  assert.equal(await page.locator('[data-steam-act="2"]').getAttribute('data-phase'),'bandits-before-seal','Cancel prevents silently skipping the disputed Ancient Seal boundary');
+  assert.equal(await ack.isChecked(),false,'cancel must not invent a user acknowledgement');
+  await ack.check();
+  assert.equal(await page.locator('[data-stop-phase="bandits-before-seal"]').getAttribute('data-stop-state'),'review','manual review changes visible STOP status without certifying gameplay');
+  assert.equal((await page.locator('[data-phase-progress="bandits-before-seal"]').textContent()).includes('1 / 1'),true,'the review progress tracks the explicit acknowledgement');
+  assert.deepEqual(await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key))),marksBefore,'manual review leaves all achievement item marks and the Karui supplement unchanged');
+  await page.reload();
+  await page.locator('#hubCampaignAct').selectOption('2');
+  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'review persists across reload for the same character');
+  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+  assert.equal(await page.locator('[data-steam-act="2"]').getAttribute('data-phase'),'ancient-seal','reviewed player may preview the next step without a fabricated achievement checkmark');
+  page.once('dialog',d=>d.accept('Pre-seal QA second character'));
+  await page.locator('#addChar').click();
+  await page.locator('#hubCampaignAct').selectOption('2');
+  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),false,'a new character never inherits the pre-Seal review');
+  await page.locator('#character').selectOption(originalId);
+  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'original character retains the review');
+  await page.locator('#hubNav [data-tab="review"]').click();
+  const download=page.waitForEvent('download');
+  await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
+  const archive=await download,parts=[];for await(const chunk of await archive.createReadStream())parts.push(chunk);
+  const backup=JSON.parse(Buffer.concat(parts).toString('utf8'));
+  assert.equal(backup.characters.length,2,'combined backup includes both isolated characters');
+  assert.equal(backup.characters[0].confirmedStages['2:bandits-before-seal'],true,'pre-Seal review is saved using the existing backup schema');
+  assert.equal(backup.characters[1].confirmedStages?.['2:bandits-before-seal']===true,false,'unreviewed character stays unreviewed in backup');
+  const initial=await page.locator('#character option').count(),loaded=page.waitForEvent('load');
+  page.once('dialog',d=>d.accept());
+  await page.locator('#hubView input[type="file"]').setInputFiles({name:'pre-seal-roundtrip.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+  await loaded;
+  const imported=await page.locator('#character option').nth(initial).getAttribute('value');
+  await page.locator('#character').selectOption(imported);
+  await page.locator('#hubNav [data-tab="route"]').click();
+  await page.locator('#hubCampaignAct').selectOption('2');
+  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'combined backup restores reviewed state to the new character ID');
+ }finally{await context.close();}
+}
+
 (async()=>{
  const browser=await chromium.launch({
    headless:true,args:['--no-sandbox'],
@@ -240,6 +302,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  await verifyEditorialGuidance(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
  await verifyKaruiShoresSupplement(browser,url);
+ await verifyAct2PreSealConflict(browser,url);
  await page.goto(url);
  await page.locator('#hubNav [data-tab="collection"]').click();
  await page.locator('#results input[type="checkbox"]').first().waitFor();
@@ -1198,7 +1261,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  assert.equal(await hub.locator('#hubView .hubReferenceShelf').evaluate(x=>x.open),false,'Backup import resets transient reference drawer to a compact default');
  await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal'),true,'Act 2 clearly describes Wiki pre-Seal talk order');
- assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal'),true,'Act 2 accurately states Steam does not ban earlier talks');
+ assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28 ห้ามชัดเจนทั้งคุยและฆ่า Bandits ก่อน The Darkness'),true,'Act 2 reports the explicit Steam no-talk prohibition faithfully');
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),false,'player can close detailed contradictory-source disclosure');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('1');
@@ -1206,10 +1269,11 @@ async function verifyKaruiShoresSupplement(browser,url){
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),true,'player can re-open conflicting sources and inspect them');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 opens with zone-based source chronology rather than seven stacked risk groups');
- assert.equal(await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select option').count(),10,'Act 2 uses ten source-backed chronological phases');
+ assert.equal(await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select option').count(),11,'Act 2 has an additional zero-canonical-ID pre-Seal source conflict gate');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('2');
  assert.equal((await hub.locator('#hubView [data-phase="western-forest"] .hubStopGate').innerText()).includes('Chamber of Sins'),true,'Act 2 explicitly stops premature Chamber of Sins progress');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+ hub.once('dialog',d=>d.accept()); // Explicitly preview past the unreviewed pre-Seal risk without marking it as safe.
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubResearchConflict').innerText()).includes('Steam'),true,'Act 2 bandit first-contact timing is flagged as contradictory');
  await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual > summary').click();
  await hub.waitForFunction(()=>{const img=document.querySelector('#hubView [data-phase="bandit-decisions"] .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
@@ -1229,7 +1293,8 @@ async function verifyKaruiShoresSupplement(browser,url){
  const rect=await lastImage.evaluate(img=>({width:img.getBoundingClientRect().width,viewport:window.innerWidth,overflow:document.documentElement.scrollWidth>window.innerWidth+2}));
  assert.equal(rect.width<=rect.viewport&&rect.overflow===false,true,'quest visual remains readable and does not cause horizontal overflow at 390px');
  await hub.setViewportSize({width:1280,height:900});
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+ hub.once('dialog',d=>d.accept()); // Previewing from the pre-Seal stage now requires explicit user consent.
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
 
 
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubStopGate').innerText()).includes('ยังไม่ควร'),true,'Bandit killing must wait for relevant Darkness dialogue');
@@ -1359,8 +1424,8 @@ async function verifyKaruiShoresSupplement(browser,url){
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
 
  await hub.locator('#hubCampaignAct').selectOption('2');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
- assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam does not forbid early conversation'),true,'Act 2 English route distinguishes Steam kill order from unsupported first-talk prohibition');
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam 3.28 explicitly forbids both talking and killing'),true,'Act 2 English route accurately states explicit Steam restriction before The Darkness');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 2 English route has no Thai text');
 
@@ -1430,7 +1495,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  assert.equal((await darkness.locator('.hubCheckpointTitle').innerText()).includes('Ancient Seal / The Darkness'),true,'English risk heading identifies the actual Bandits quest state');
  assert.equal((await darkness.locator('.hubCheckpointAction').innerText()).includes('Alira and Oak'),true,'English risk action explains who must be heard while alive');
  assert.equal((await darkness.locator('.hubCheckpointRowTrigger').first().innerText()).includes('Available when:'),true,'English per-dialogue unlock conditions visible in risk panel');
- assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam\'s recorded kill sequence happens after The Darkness'),true,'Act 2 English caveat reports the documented Steam sequence without inventing prohibition');
+ assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam 3.28 explicitly says DO NOT TALK TO OR KILL'),true,'Act 2 English caveat faithfully reports Steam no-talk-before-Darkness instruction');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('First Bandit you killed'),true,'Bandit choice labels change to English without losing original choice state');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('Book of Reform'),true,'Bandit helper retains a historical uncertainty warning in English');
  assert.equal(await darkness.locator('.hubOriginalThai').count()>0,true,'English risk panel allows review of historical Thai source without forcing it into the primary text');

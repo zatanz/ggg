@@ -201,7 +201,7 @@ window.POE_CRITICAL_CHECKPOINTS = {
           "kind": "steam-vs-wiki",
           "sourceA": "https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869",
           "sourceB": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement",
-          "summary": "Steam แนะนำไม่คุยกับ Bandits ก่อน The Darkness; PoE Wiki ให้คุยก่อนเปิด Ancient Seal. ทั้งสองเห็นตรงกันว่าห้ามฆ่าก่อนเก็บ The Darkness. จึงต้องตรวจสถานะเกมจริงก่อนชี้ลำดับคุย"
+          "summary": "Steam 3.28 ระบุชัดว่าห้ามทั้งคุยและฆ่า Bandits ก่อน The Darkness; PoE Wiki ให้คุยก่อนเปิด Ancient Seal แต่ไม่ให้ฆ่าก่อน Darkness. สองคำสั่งเรื่องคุยขัดแย้งกันโดยตรง ต้องตรวจหลักฐานในเกม 3.30 ก่อนรับรองลำดับใด"
         }
       },
       {

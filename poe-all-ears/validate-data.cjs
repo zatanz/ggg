@@ -291,7 +291,7 @@ const routeMappings=JSON.parse(fs.readFileSync(path.join(dir,'route-mapping-67.j
 assert(routeMappings.records.length===67,'Expected 67 handoff route bindings');
 assert(new Set(routeMappings.records.map(item=>item.type+':'+item.id)).size===67,'Route bindings must be unique');
 assert(['lore','waypoints','sidequests'].every((type,index)=>routeMappings.records.filter(item=>item.type===type).length===[25,34,8][index]),'Route bindings must include 25 lore, 34 waypoints and 8 sidequests');
-assert(Object.values(steamWalk.acts).reduce((count,phases)=>count+phases.length,0)===128,'Expected 128 campaign stages (Act 6 pre/post Beacon split)');
+assert(Object.values(steamWalk.acts).reduce((count,phases)=>count+phases.length,0)===129,'Expected 129 source-led stages (including Act 2 manual pre-Seal conflict review and Act 6 split)');
 for(const item of routeMappings.records){
  const field={lore:'loreIds',waypoints:'waypointIds',sidequests:'sidequestIds'}[item.type];
  const destination=item.type==='waypoints'&&item.id===34?'library':item.phase;
@@ -310,8 +310,8 @@ assert(steamWalk?.schema===1&&steamWalk.patchCertified===false&&steamWalk.source
 assert(canonicalSource.includes('src="./poe-acts123-bilingual.js"'),'Early Acts bilingual guidance module must load after base route');
 for(const act of [1,2,3]){
  const phases=steamWalk.acts[act];
- const expected={1:9,2:10,3:12}[act];
- assert(phases.length===expected,'Act '+act+' number of original route phases may not change during editorial pass');
+ const expected={1:9,2:11,3:12}[act];
+ assert(phases.length===expected,'Act '+act+' must preserve source-led coverage and approved pre-Seal checkpoint count');
  for(const phase of phases){
   assert(phase.headingEN&&phase.actionsEN?.length===phase.actions.length,'Act '+act+' '+phase.id+' requires complete English instructions, never generic English fallback');
   assert(phase.actionsEN.every(x=>x.length>25&&!/[\u0E00-\u0E7F]/.test(x)),'Act '+act+' '+phase.id+' English guidance must be readable without Thai text');
@@ -320,7 +320,7 @@ for(const act of [1,2,3]){
 }
 const earlyEN=steamWalk.acts[1].find(p=>p.id==='fairgraves');
 assert(earlyEN.actionsEN.some(t=>t.includes('Allflame'))&&earlyEN.stopEN.includes('Fairgraves'),'Act1 Allflame dialogue chain must survive English edit');
-assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('Steam')&&t.includes('PoE Wiki')&&t.includes('does not forbid early conversation')),'Act2 Bandit English instructions must separate documented kill sequence from unsupported first-talk prohibition');
+assert(steamWalk.acts[2].find(p=>p.id==='bandit-decisions').actionsEN.some(t=>t.includes('Steam')&&t.includes('PoE Wiki')&&t.includes('explicitly forbids')),'Act2 English content must retain explicit Steam no-talk-before-Darkness warning');
 assert(steamWalk.acts[3].find(p=>p.id==='bracelet').stopEN.includes('Clarissa'),'Act3 Bracelet STOP still names its recipient and timing');
 const playerHelpSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(playerHelpSource.includes('findRelevantStage(type,x)')&&playerHelpSource.includes('dataset.openStage')&&playerHelpSource.includes('openJourneyScope(String(x.act),linked.index)'),'Checklist explanations must offer direct jump to exact quest-stage actions');
@@ -334,13 +334,16 @@ assert(actOneLore.length===29&&new Set(actOneLore).size===29&&actOneLore.every(i
 assert(actOne.every(p=>p.actions.length>0&&p.place&&p.heading&&(!p.stopIds||p.stopIds.every(id=>p.dialogueIds.includes(id)))),'Act 1 guide boundary must reference only items within its source phase');
 assert(actOne.find(p=>p.id==='fairgraves').patchProblem.includes('3.29'),'Historical source must warn of Fairgraves reported breakage in 3.29');
 const actTwo=steamWalk.acts[2],actTwoIds=actTwo.flatMap(p=>p.dialogueIds);
-assert(actTwo.length===10,'Act 2 source chronology must have ten explicit zone phases');
-assert(actTwoIds.length===69&&new Set(actTwoIds).size===69,'Act 2 ten-phase guide must cover 69 dialogue IDs exactly once');
+assert(actTwo.length===11,'Act 2 must show eleven phases including its pre-Seal first-talk conflict gate');
+assert(actTwoIds.length===69&&new Set(actTwoIds).size===69,'Act 2 eleven-phase guide must preserve all 69 original dialogue IDs exactly once');
 assert(actTwoIds.every(id=>d.items.some(x=>x.id===id&&x.act===2)),'Act 2 zone guide must use canonical local IDs for the right Act');
 const steamRouteRows=ctx.window.ALL_EARS_ROUTE_ACT2.records.slice().sort((a,b)=>a.wikiRow-b.wikiRow).map(x=>x.id);
 assert(actTwoIds.join(',')===steamRouteRows.join(','),'Act 2 sequence must be derived from Wiki row numbers, not incorrectly using local ID order');
 assert(actTwo.every(p=>p.actions.length>0&&p.place&&(!p.stopIds||p.stopIds.every(id=>actTwoIds.includes(id)))),'Act 2 do-not-progress guards must refer to existing source-linked Act 2 dialogue IDs');
-assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('ไม่ได้สั่งห้ามคุยก่อน Seal')&&actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('3.30'),'Act 2 must not invent a Steam pre-Seal talking prohibition or certify patch 3.30');
+assert(actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('Steam 3.28 บอกชัดว่าห้าม')&&actTwo.find(p=>p.id==='bandit-decisions').sourceConflict.includes('3.30'),'Act 2 must accurately disclose the explicit Steam no-talk instruction and no 3.30 certification');
+assert(actTwo.findIndex(p=>p.id==='roots')+1===actTwo.findIndex(p=>p.id==='bandits-before-seal')&&actTwo.findIndex(p=>p.id==='bandits-before-seal')+1===actTwo.findIndex(p=>p.id==='ancient-seal'),'Source disagreement must appear before the irreversible Ancient Seal, not afterward');
+assert(actTwo.find(p=>p.id==='bandits-before-seal')?.dialogueIds.length===0&&actTwo.find(p=>p.id==='bandits-before-seal')?.requiresManualConfirmation===true&&actTwo.find(p=>p.id==='bandits-before-seal')?.sourceConflict?.includes('Steam 3.28')&&actTwo.find(p=>p.id==='bandits-before-seal')?.stopEN?.includes('DO NOT TALK'),'Pre-Seal manual source review must not invent canonical achievement marks');
+assert(fs.readFileSync(path.join(dir,'hub.js'),'utf8').includes('Number(act)===2&&p.requiresManualConfirmation')&&fs.readFileSync(path.join(dir,'hub.js'),'utf8').includes('pendingManualReview=phase.requiresManualConfirmation'),'Act 2 pre-Seal source review must be enforced in the visible STOP and forward navigation');
 assert(actTwo.find(p=>p.id==='western-forest').stop.includes('Chamber of Sins'),'West Forest must precede the relevant Chamber of Sins quest transition in source-oriented Act 2');
 
 const actThree=steamWalk.acts[3],actThreeIds=actThree.flatMap(p=>p.dialogueIds),actThreeLore=actThree.flatMap(p=>p.loreIds);

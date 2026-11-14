@@ -85,7 +85,7 @@ function restoreRoutePosition(){
  const current=state.steamFocusByAct[state.routeAct];
  if(resumed&&current>0){
   const checked=new Set(entries("ears")),checkedWaypoints=new Set(entries("waypoints"));
-  const earlier=resumed.slice(0,current).filter(phase=>phase.stop&&((phase.stopIds||[]).some(id=>!checked.has(id))||(phase.stopWaypointIds||[]).some(id=>!checkedWaypoints.has(id))));
+  const earlier=resumed.slice(0,current).filter(phase=>phase.stop&&((phase.stopIds||[]).some(id=>!checked.has(id))||(phase.stopWaypointIds||[]).some(id=>!checkedWaypoints.has(id))||(phase.requiresManualConfirmation&&currentReview().confirmedStages?.[state.routeAct+":"+phase.id]!==true)));
   if(earlier.length)state.skippedRisk={act:state.routeAct,from:earlier[0].id,count:earlier.length};
  }
  lastInlineMark=null;
@@ -173,11 +173,12 @@ function renderSummary(){
   const phases=window.POE_STEAM_WALK?.acts?.[scope]||[];
   const checked={ears:new Set(entries("ears")),lore:new Set(entries("lore")),waypoints:new Set(entries("waypoints")),sidequests:new Set(entries("sidequests"))};
   const fields={ears:"dialogueIds",lore:"loreIds",waypoints:"waypointIds",sidequests:"sidequestIds"};
-  const pendingIndex=phases.findIndex(p=>Object.entries(fields).some(([type,key])=>(p[key]||[]).some(id=>!checked[type].has(id))));
+  const confirmedStages=currentReview().confirmedStages||{};
+  const pendingIndex=phases.findIndex(p=>(p.requiresManualConfirmation&&confirmedStages[scope+":"+p.id]!==true)||Object.entries(fields).some(([type,key])=>(p[key]||[]).some(id=>!checked[type].has(id))));
   if(left&&pendingIndex>=0){
     const phase=phases[pendingIndex];
     text.append(el("small",tr("ช่วงที่ควรตรวจต่อ: ","Next step to review: ")+(descEN()?(phase.headingEN||phase.place):phase.heading),"hubMissionPhase"));
-    const risk=phases.find((p,i)=>i<=pendingIndex&&p.stop&&((p.stopIds||[]).some(id=>!checked.ears.has(id))||(p.stopWaypointIds||[]).some(id=>!checked.waypoints.has(id))));
+    const risk=phases.find((p,i)=>i<=pendingIndex&&p.stop&&((p.stopIds||[]).some(id=>!checked.ears.has(id))||(p.stopWaypointIds||[]).some(id=>!checked.waypoints.has(id))||(p.requiresManualConfirmation&&confirmedStages[scope+":"+p.id]!==true)));
     if(risk)text.append(el("small",tr("มีจุด STOP ที่ยังไม่ตรวจ: ","Unchecked STOP checkpoint: ")+(descEN()?(risk.stopEN||risk.headingEN):risk.stop),"hubMissionRisk"));
   }
   const jump=el("button",left?tr("เปิดช่วงที่ต้องทำต่อ","Open next quest step"):tr("ตรวจรายการในพื้นที่นี้","Review this area"));jump.type="button";
@@ -204,7 +205,7 @@ function renderSummary(){
  [
  [tr("Locomancer: ฐานข้อมูลเดิม 91 Waypoints แต่ PoE Wiki ระบุว่าเคยแก้ Achievement ให้ใช้ 90 จุดแล้ว และตั้งแต่ 3.25 Waypoint จะเปิดเองเมื่อเดินผ่าน · ยังไม่ได้ยืนยันยอดจริงจากเกม 3.30","Locomancer: this tracker contains 91 legacy Waypoints; PoE Wiki documents a later 90-waypoint requirement and automatic activation since 3.25. The live 3.30 waypoint count is not independently certified."),"https://www.poewiki.net/wiki/Waypoint"],
  [tr("Vaal Side Area: แพตช์ 3.30 นำ Vaal Side Areas ออกจาก Maps แล้ว อย่าใช้วิธีฟาร์มผ่าน Map Device แบบเก่า ให้ตรวจพื้นที่ใน Campaign และ Lore ที่พบจริงก่อนติ๊ก","Vaal Side Areas no longer appear in Maps as of 3.30. Do not follow old Map Device farming instructions; verify Campaign areas and actual lore before marking."),"https://www.pathofexile.com/forum/view-thread/4013680"],
- [tr("Act 2: PoE Wiki แนะนำคุย Bandits ก่อนเปิด Ancient Seal ส่วน Steam จัดช่วงฆ่า Bandits หลัง The Darkness · ยังไม่ยืนยันใน 3.30","Act 2: PoE Wiki advises speaking to Bandits before the Ancient Seal; Steam places the kill route after The Darkness. Patch 3.30 is not certified."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
+ [tr("Act 2: Wiki ให้คุย Bandits ก่อน Ancient Seal แต่ Steam 3.28 ห้ามทั้งคุยและฆ่าจนกว่า The Darkness จะเกิด · ไม่มีวิธีที่รับรองกับ 3.30","Act 2: Wiki says TALK before Ancient Seal; Steam 3.28 explicitly forbids TALKING or killing until The Darkness. The conflict has no 3.30-certified resolution."),"https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]
  ].forEach(([copy,url])=>{const p=el("p",copy),a=el("a",tr("ดูแหล่งอ้างอิง","View source"));a.href=url;a.target="_blank";a.rel="noopener noreferrer";p.append(document.createTextNode(" · "),a);sourceBody.append(p);});
  sourceAlert.append(sourceBody);hero.append(sourceAlert);
  const prep=el("details",undefined,"hubRunPreflight");prep.dataset.preflight="achievement-100";
@@ -212,7 +213,7 @@ function renderSummary(){
  const checklist=el("ul",undefined);
  [[ "Ruthless: คู่มือ PoE Wiki ระบุว่า Vaal Side Area ไม่เกิดในโหมดนี้ จึงไม่ควรใช้เส้นทางนี้เป็นหลักฐานว่าจะเก็บ No Stone Unturned ครบ", "Ruthless: the PoE Wiki says Vaal Side Areas do not spawn in this mode. This route cannot certify No Stone Unturned here." ],
  [ "Act 1: มีรายงานว่า Fairgraves อาจคุยไม่ได้ในแพตช์ 3.29 ทำให้ All Ears ขาดหัวข้อ #34–38 · ยังไม่มีผลตรวจเกม 3.29 ครบทุกสถานะ", "Act 1: Fairgraves dialogue #34–38 was reportedly unavailable in patch 3.29; the issue is not fully reproduced across all 3.29 character states." ],
- [ "Act 2: Wiki แนะนำคุย Bandits ก่อน Ancient Seal; Steam จัดการฆ่าหลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal · ห้ามฆ่าก่อนตรวจบทสนทนา", "Act 2: Wiki says talk before Ancient Seal; Steam kills Bandits after The Darkness without prohibiting earlier talks. Verify all relevant dialogue before killing." ],
+ [ "Act 2: Wiki ให้คุยก่อน Seal; Steam 3.28 ห้ามทั้งคุยและฆ่าก่อน The Darkness · สองคำสั่งทำพร้อมกันไม่ได้ ต้องอ่านจุดตรวจและรับความเสี่ยงก่อนเปิด Seal", "Act 2: Wiki says talk before Seal; Steam 3.28 explicitly forbids both talking and killing before The Darkness. These conflict; review the risk before opening Seal." ],
  [ "เปิด Quest Log และหน้า Achievement ในเกมเพื่อเทียบยอดจริง · เครื่องหมายในเว็บเป็นเพียงบันทึกของคุณ", "Open the in-game Quest Log and Achievement panel to compare real counts. Website checkmarks are manual notes, not game verification." ]].forEach(([th,en])=>checklist.append(el("li",tr(th,en))));
  prep.append(checklist);
  const link=el("a","PoE Wiki: Ruthless mode");link.href="https://www.poewiki.net/wiki/Ruthless_mode";link.target="_blank";link.rel="noopener noreferrer";
@@ -426,7 +427,7 @@ function criticalPanel(act){
   if(stage.sourceConflict){
     const conflict=el("div",undefined,"hubResearchConflict");
     conflict.dataset.conflict=stage.sourceConflict.kind;
-    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"PoE Wiki advises speaking to Bandits before the Ancient Seal. Steam's recorded kill sequence happens after The Darkness without forbidding earlier conversations. Confirm every available dialogue before any kill/help choice; patch 3.30 remains unverified.":stage.sourceConflict.summary));
+    conflict.append(el("strong",tr("ข้อมูลจากสองคู่มือไม่ตรงกัน — ห้ามถือว่าเส้นทางนี้ปลอดภัย","Conflicting sources · do not assume this route is safe")),el("p",en?"PoE Wiki asks you to TALK to every Bandit before the Ancient Seal. Steam 3.28 explicitly says DO NOT TALK TO OR KILL a Bandit before The Darkness. The orders conflict; no 3.30 game test resolves which path works.":stage.sourceConflict.summary));
     const steam=el("a",tr("คู่มือ Steam","Steam guide"));steam.href=stage.sourceConflict.sourceA;steam.target="_blank";steam.rel="noopener noreferrer";
     const wiki=el("a","PoE Wiki");wiki.href=stage.sourceConflict.sourceB;wiki.target="_blank";wiki.rel="noopener noreferrer";
     const refs=el("div",undefined,"hubConflictLinks");refs.append(steam,wiki);conflict.append(refs);inside.append(conflict);
@@ -582,18 +583,19 @@ function actSteamGuide(act){
  const data=window.POE_STEAM_WALK,phases=data?.acts?.[act]||[];
  if(!phases.length)return null;
  const allEars=new Set(entries("ears")),allLore=new Set(entries("lore")),allWaypoints=new Set(entries("waypoints")),allSidequests=new Set(entries("sidequests"));
- const start=phases.findIndex(p=>p.dialogueIds.some(id=>!allEars.has(id))||(p.loreIds||[]).some(id=>!allLore.has(id))||(p.waypointIds||[]).some(id=>!allWaypoints.has(id))||(p.sidequestIds||[]).some(id=>!allSidequests.has(id)));
+ const checklistReview=currentReview();
+ const start=phases.findIndex(p=>(p.requiresManualConfirmation&&checklistReview.confirmedStages?.[act+":"+p.id]!==true)||p.dialogueIds.some(id=>!allEars.has(id))||(p.loreIds||[]).some(id=>!allLore.has(id))||(p.waypointIds||[]).some(id=>!allWaypoints.has(id))||(p.sidequestIds||[]).some(id=>!allSidequests.has(id)));
  const chosen=state.steamFocusByAct[act]===undefined?Math.max(0,start):Math.max(0,Math.min(phases.length-1,state.steamFocusByAct[act]));
  const phase=phases[chosen];
- const review=currentReview();
+ const review=checklistReview;
  const questKey=act+":"+phase.id;
  const questConfirmed=review.confirmedStages?.[questKey]===true;
  const box=el("section",undefined,"hubWalkthrough");box.dataset.steamAct=String(act);box.dataset.phase=phase.id;
  const header=el("div",undefined,"hubWalkHeader");
  const phaseCount={ears:phase.dialogueIds||[],lore:phase.loreIds||[],waypoints:phase.waypointIds||[],sidequests:phase.sidequestIds||[]};
  const checkedGroups={ears:allEars,lore:allLore,waypoints:allWaypoints,sidequests:allSidequests};
- const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0);
- const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0);
+ const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0)+Number(phase.requiresManualConfirmation===true);
+ const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0)+Number(phase.requiresManualConfirmation===true&&questConfirmed);
  const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
  const position=el("strong",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
@@ -602,9 +604,9 @@ function actSteamGuide(act){
  const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
   if(reviewSkip&&target>chosen){
-   const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))));
+   const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(p.requiresManualConfirmation&&review.confirmedStages?.[act+":"+p.id]!==true)));
    const forwardRisks=outstanding.filter(p=>phases.indexOf(p)>=chosen);
-   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)&&(p.stopIds||[]).some(id=>!allEars.has(id))));
+   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)&&(p.stopIds||[]).some(id=>!allEars.has(id)))||(Number(act)===2&&p.requiresManualConfirmation&&review.confirmedStages?.[act+":"+p.id]!==true));
    if(toWarn.length){
     const first=toWarn[0];
     const msg=tr(
@@ -636,8 +638,8 @@ function actSteamGuide(act){
   // Keep navigation possible for review, but distinguish it from in-game completion.
   const missing=Object.entries(phaseCount).flatMap(([type,ids])=>
    ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
-  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
-  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length)){
+  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),missingManualReview=phase.requiresManualConfirmation&&!questConfirmed;
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview)){
    if(!confirm(tr(
     "หยุดตรวจจุดเสี่ยงก่อน: "+phase.stop+"\n\nยังไม่ได้บันทึก "+missing.length+" รายการในช่วงนี้ การไปหน้าถัดไปไม่ได้ทำให้เควสต์ปลอดภัย ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
     "STOP checkpoint unresolved: "+(phase.stopEN||phase.stop)+"\n\n"+missing.length+" task(s) remain unchecked in this step. Viewing the next step does not make the quest safe. Skip for review?"
@@ -651,7 +653,7 @@ function actSteamGuide(act){
    )))return;
   }
   // Keep a visible return path when the user knowingly previews beyond a STOP.
-  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length))state.skippedRisk={act,from:phase.id,count:1};
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview))state.skippedRisk={act,from:phase.id,count:1};
   goto(chosen+1,false,"task");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
@@ -693,9 +695,11 @@ function actSteamGuide(act){
   const updated=currentReview();
   updated.confirmedStages={...updated.confirmedStages,[questKey]:questCheck.checked};
   if(!saveReview(updated)){questCheck.checked=questConfirmed;return;}
+  if(phase.requiresManualConfirmation){refresh();document.querySelector('[data-phase="'+phase.id+'"] [data-manual-review="true"] input')?.focus({preventScroll:true});}
  });
- questStatus.append(questCheck,el("span",tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
- head.append(questStatus);
+ if(phase.requiresManualConfirmation)questStatus.dataset.manualReview="true";
+ questStatus.append(questCheck,el("span",phase.requiresManualConfirmation?tr(phase.manualConfirmLabel||"ฉันอ่านคำเตือนแล้ว (ไม่รับรองความปลอดภัย)",phase.manualConfirmLabelEN||"I reviewed the warning (not a safety guarantee)"):tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
+ if(!phase.requiresManualConfirmation)head.append(questStatus);
  // Focus on the first unmarked task within the selected stage, prioritizing an unchecked STOP.
  const unchecked=Object.entries(phaseCount).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
  const urgent=unchecked.find(x=>x.type==="ears"&&(phase.stopIds||[]).includes(x.id));
@@ -707,6 +711,7 @@ function actSteamGuide(act){
  const fullSteps=el("details",undefined,"hubWalkInstructions");
  fullSteps.append(el("summary",tr("ดูขั้นตอนทั้งหมด · ","All instructions · ")+instructions.length+tr(" ข้อ"," steps")),actions);
  focus.append(fullSteps);
+ if(phase.requiresManualConfirmation)focus.append(questStatus);
  const charId=active()?.id;
  const previous=lastInlineMark?.act===act&&lastInlineMark.index===chosen&&lastInlineMark.charId===charId&&
    checkedGroups[lastInlineMark.type].has(lastInlineMark.id)?lastInlineMark:null;
@@ -747,10 +752,14 @@ function actSteamGuide(act){
   }else{
    inline=el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle");
   }
+ }else if(phase.requiresManualConfirmation&&!questConfirmed){
+  inline=el("div",undefined,"hubManualReview");
+  inline.append(el("h3",tr("หยุดตรวจข้อมูลก่อนเปลี่ยนสถานะเควสต์","Review before changing quest state")),
+    el("p",tr("คำแนะนำจาก PoE Wiki และ Steam ขัดแย้งกัน ต้องตัดสินใจจากข้อมูลจริงและทำเครื่องหมายว่าทบทวนแล้วด้านบน · ยังไม่รับรอง 3.30","PoE Wiki and Steam conflict. Check the actual game state and acknowledge reading the conflicting guidance above. No 3.30 route is certified.")));
  }else{
   inline=el("div",undefined,"hubStepComplete");
-  inline.append(el("h3",tr("บันทึกครบสำหรับช่วงนี้","All items in this step are checked")),
-    el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing.")));
+  inline.append(el("h3",phase.requiresManualConfirmation?tr("ทบทวนคำเตือนแล้ว","Risk review acknowledged"):tr("บันทึกครบสำหรับช่วงนี้","All items in this step are checked")),
+    el("p",phase.requiresManualConfirmation?tr("ทำเครื่องหมายว่าทบทวนคำเตือนแล้ว ไม่ใช่การยืนยันว่าเลือกเส้นทางปลอดภัยหรือ All Ears นับครบ","You acknowledged reviewing the source conflict. This does not certify a safe route or an All Ears count."):tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing.")));
   if(chosen<phases.length-1){
    advance=el("button",tr("ดูขั้นตอนถัดไป","View next quest step"),"hubInlineAdvance");
    advance.type="button";advance.dataset.inlineAdvance="true";
@@ -767,12 +776,12 @@ function actSteamGuide(act){
   }
  }
  box.append(focus);
- const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
- const stopPending=pending.length+pendingWaypointIds.length;
+ const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),pendingManualReview=phase.requiresManualConfirmation===true&&!questConfirmed;
+ const stopPending=pending.length+pendingWaypointIds.length+Number(pendingManualReview);
  if(phase.stop){
    const gate=el("div",undefined,"hubStopGate"+(stopPending?" blocked":" reviewed"));
    gate.dataset.stopPhase=phase.id;gate.dataset.stopState=stopPending?"hold":"review";
-   gate.append(el("strong",stopPending?tr("ยังไม่ควรผ่านจุดนี้","STOP: do not progress yet"):tr("ติ๊กครบแล้ว · ต้องตรวจในเกมอีกครั้ง","Checked in this guide · verify in-game")),
+   gate.append(el("strong",stopPending?tr("ยังไม่ควรผ่านจุดนี้","STOP: do not progress yet"):phase.requiresManualConfirmation?tr("ทบทวนความขัดแย้งแล้ว · ยังไม่รับรอง 3.30","Conflict reviewed · 3.30 remains unverified"):tr("ติ๊กครบแล้ว · ต้องตรวจในเกมอีกครั้ง","Checked in this guide · verify in-game")),
  el("p",descEN()?(phase.stopEN||"Review all missable dialogue and the original Thai warning before changing quest state."):phase.stop));
  if(descEN()&&!phase.stopEN){const source=el("details",undefined,"hubOriginalThai");source.lang="th";source.append(el("summary","Original Thai STOP detail"),el("p",phase.stop));gate.append(source);}
    if(pending.length){
@@ -785,6 +794,7 @@ function actSteamGuide(act){
      }
    }
    if(pendingWaypointIds.length){const places=pendingWaypointIds.map(id=>X.waypoints.find(x=>x.id===id)?.name||"Waypoint #"+id);gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pendingWaypointIds.length+tr(" Waypoint: "," Waypoint(s): ")+places.join(" / "),"hubStopPending"));}
+   if(pendingManualReview)gate.append(el("div",tr("ยังไม่ได้ทำเครื่องหมายว่าตรวจคำแนะนำทั้งสองฝ่ายแล้ว","The conflicting sources have not yet been acknowledged"),"hubStopPending"));
    const stopText=descEN()?(phase.stopEN||phase.stop):phase.stop;
    if(itemCaution&&!stopText.includes(itemCaution.replace(/^STOP: /,"").replace(/\.$/,"")))gate.append(itemWarning);
    gate.append(reportLink("stop",(phase.stopIds||[]).join(",")||null,act,phase.id));
@@ -813,15 +823,20 @@ function actSteamGuide(act){
  stageLinks.append(prev,next,jump,resume);
  if(phase.sourceConflict){
    const conflict=el("div",undefined,"hubResearchConflict");conflict.dataset.conflict="steam-vs-wiki";
-   conflict.append(el("strong",tr("คู่มือ Bandits เน้นลำดับต่างกัน · ยังไม่รับรอง 3.30","Bandit guide sequences differ · 3.30 unverified")),
- el("p",descEN()?"PoE Wiki advises talking to each Bandit before the Ancient Seal. Steam 3.28 places the Bandit kill sequence after The Darkness but does not explicitly forbid talking earlier. No fully verified route for patch 3.30; do not kill or choose sides before checking available dialogue.":phase.sourceConflict));
+   conflict.append(el("strong",tr("คู่มือ Bandits สั่งตรงข้ามกัน · ยังไม่รับรอง 3.30","Bandit first-talk instructions directly conflict · 3.30 unverified")),
+ el("p",descEN()?"PoE Wiki (2025) says TALK to every Bandit before activating the Ancient Seal. Steam 3.28 explicitly says DO NOT TALK TO OR KILL Bandits until The Darkness. These instructions conflict; neither order is verified in PoE 3.30. Do not claim either guarantees All Ears.":phase.sourceConflict));
    if(descEN()){const original=el("details",undefined,"hubOriginalThai");original.lang="th";original.append(el("summary","Original Thai source note"),el("p",phase.sourceConflict));conflict.append(original);}
    const links=el("div",undefined,"hubConflictLinks");
    const steam=el("a",tr("คู่มือ Steam","Steam walkthrough"));steam.href=data.source;steam.target="_blank";steam.rel="noopener noreferrer";
    const wiki=el("a","PoE Wiki");wiki.href=data.wiki;wiki.target="_blank";wiki.rel="noopener noreferrer";
    links.append(steam,wiki);conflict.append(links);focus.append(conflict);
  }
- if(act==="9"&&phase.branchChoice){
+ if(act==="2"&&phase.requiresManualConfirmation){
+ const notes=el("details",undefined,"hubChapter");notes.dataset.banditPreflight="true";
+ notes.append(el("summary",tr("บันทึกว่าคุย Alira / Oak / Kraityn แล้วหรือยัง","Record actual conversations: Alira / Oak / Kraityn")),safetyPanel());
+ focus.append(notes);
+}
+if(act==="9"&&phase.branchChoice){
  const chosenRuler=rulerChoice();
  const frame=el("section",undefined,"hubBranchChoice");frame.dataset.rulerBranch=chosenRuler;
  const heading=el("strong",tr("ตัดสินใจครั้งเดียว · ผู้ปกครอง Highgate","Irreversible choice · Highgate ruler"));
@@ -1066,7 +1081,7 @@ function epilogueRoute(target){
 function routeEvidencePanel(act){
  const issues={
   "1":[["Fairgraves #34–38 · current 3.29 reports","Fairgraves #34–38 · รายงานใน 3.29","Community reports describe five inaccessible Fairgraves/Bestel dialogues after the Act 1 rework. If the NPC cannot be spoken to, do not mark these as heard or assume the achievement is possible on this league character.","มีรายงานว่าการปรับเควสต์ Act 1 ทำให้บทสนทนา Fairgraves/Bestel 5 รายการเข้าไม่ถึง หากคุยไม่ได้ อย่าติ๊กว่าได้ฟังแล้ว และอย่าสรุปว่าตัวละครในลีกนี้เก็บ All Ears ได้แน่นอน","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
-  "2":[["Bandits / The Darkness","Bandits / The Darkness","PoE Wiki: talk to each Bandit before the Ancient Seal and do not kill before The Darkness. Steam 3.28 places the kill sequence after The Darkness; it does not explicitly ban earlier conversations. Source ordering differs, but an absolute conflict on FIRST TALK is unsupported. In the local tracker, #101 is Eramir: Oak after Alira, #102 is Oak: The Darkness, and #103 is Eramir: Bandit Lords. PoE Wiki's 101–103 are row numbers with different meanings. Patch 3.30 remains untested.","PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal และยังไม่ฆ่าจนกว่าจะเก็บ The Darkness ส่วน Steam 3.28 จัดขั้นฆ่า Bandits หลัง The Darkness แต่ไม่ได้ระบุว่าห้ามคุยก่อน Seal จึงยังสรุปว่าขัดกันเรื่องการคุยครั้งแรกไม่ได้ ต้องตรวจบทสนทนาในเกมก่อนตัดสินใจ และแยกเลขฐานข้อมูล: #101 Eramir: Oak หลังฆ่า Alira, #102 Oak: The Darkness, #103 Eramir: Bandit Lords (เลขแถว Wiki 101–103 ไม่ใช่ ID เดียวกัน) · ยังไม่รับรอง 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the historical Steam and Wiki routes before irreversible Bandit choices; neither is gameplay-certified for 3.30.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนตัดสินใจฆ่าหรือช่วย ทั้งคู่ยังไม่มีผลทดสอบครบใน 3.30","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
+  "2":[["Bandits / The Darkness","Bandits / The Darkness","PoE Wiki: talk to each Bandit before the Ancient Seal, but do not kill before The Darkness. Steam 3.28 explicitly says DO NOT KILL OR TALK to any Bandit until The Darkness. These are conflicting first-talk instructions without a verified 3.30 resolution. In the local tracker, #101 is Eramir: Oak after Alira, #102 is Oak: The Darkness, and #103 is Eramir: Bandit Lords. PoE Wiki's 101–103 are row numbers with different meanings. Patch 3.30 remains untested.","PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal และยังไม่ฆ่าจนกว่าจะเก็บ The Darkness ส่วน Steam 3.28 ห้ามชัดเจนทั้งคุยและฆ่า Bandits ก่อน The Darkness จึงขัดแย้งกันตรงเวลาเริ่มคุยอย่างแท้จริง ไม่สามารถทำตามสองคู่มือพร้อมกันในตัวละครเดียวได้ ต้องตรวจบทสนทนาในเกมก่อนตัดสินใจ และแยกเลขฐานข้อมูล: #101 Eramir: Oak หลังฆ่า Alira, #102 Oak: The Darkness, #103 Eramir: Bandit Lords (เลขแถว Wiki 101–103 ไม่ใช่ ID เดียวกัน) · ยังไม่รับรอง 3.30","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"],["Steam 3.28 route","ลำดับจาก Steam 3.28","Compare the historical Steam and Wiki routes before irreversible Bandit choices; neither is gameplay-certified for 3.30.","เทียบลำดับจากคู่มือ Steam กับ Wiki ก่อนตัดสินใจฆ่าหรือช่วย ทั้งคู่ยังไม่มีผลทดสอบครบใน 3.30","https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"]],
   "7":[["Yeena / Helena timing","จังหวะ Yeena / Helena","Source guides differ on several before/after conversations. Check the current STOP step before entering the next area.","คู่มือเก่ามีจังหวะบทสนทนาบางจุดไม่ตรงกัน ตรวจจุดหยุดก่อนเข้าพื้นที่ถัดไป","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]],
   "9":[["Irasha / Tasuni branch","ทางเลือก Irasha / Tasuni","The legacy #443/#444 identifiers describe one ruler branch. Do not assume a complete 484/484 check proves the alternate route.","ID #443/#444 ในข้อมูลเดิมอ้างถึงทางเลือกผู้ปกครองฝั่งหนึ่ง ห้ามถือว่าติ๊ก 484/484 แล้วยืนยันอีกทางเลือกได้","https://www.poewiki.net/wiki/Guide:All_Ears_achievement"]]
  };
@@ -1165,8 +1180,8 @@ function safetyPanel(){
  const wrap=el("div",undefined,"hubPanel");
  wrap.append(
    el("h3",tr("ก่อนตัดสินใจกับ Bandits · ตรวจ The Darkness","Before choosing Bandits · check The Darkness")),
-   el("p",tr("PoE Wiki แนะนำคุย Bandits ก่อนเปิด Ancient Seal และยังไม่ฆ่าก่อน The Darkness; Steam 3.28 แสดงขั้นฆ่าหลัง The Darkness แต่ไม่ได้ห้ามคุยก่อน Seal ให้บันทึกเฉพาะสิ่งที่ทำจริงและตรวจบทสนทนาก่อนตัดสินใจ",
-     "PoE Wiki advises speaking before the Ancient Seal; Steam's kill route follows The Darkness and does not forbid earlier talks. Verify available dialogue before any irreversible kill/help choice. These are manual notes, not proof of a patch-3.30-safe route."),"hubSubtle")
+   el("p",tr("PoE Wiki ให้คุย Bandits ก่อน Ancient Seal แต่ Steam 3.28 ห้ามคุยและฆ่าก่อน The Darkness · ลำดับแรกพบขัดแย้งกันโดยตรง ยังไม่มีผลทดสอบ 3.30 ยืนยันทางใด บันทึกเฉพาะสิ่งที่พบจริงและตรวจบทสนทนาก่อนฆ่าหรือช่วย",
+     "PoE Wiki says TALK to Bandits before Ancient Seal, but Steam 3.28 explicitly says DO NOT TALK or KILL before The Darkness. The instructions conflict; no route is verified for 3.30. Record only observed dialogue, and review before killing or helping."),"hubSubtle")
  );
  wrap.append(el("p",tr(
    "สำคัญสำหรับ All Ears: คู่มือปี 2025 อธิบายหัวข้อ Eramir หลังฆ่า Bandits ตัวแรก ตัวที่สอง และหลังฆ่าครบทั้งสาม หากเลือกช่วย Bandit เส้นทางนี้จะใช้ตามลำดับเดียวกันไม่ได้ และยังไม่มีหลักฐานทดสอบในโปรเจกต์ว่า Book of Reform กู้หัวข้อที่พลาดไปใน 3.30 ได้",

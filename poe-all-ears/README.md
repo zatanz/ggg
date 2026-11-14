@@ -4,7 +4,7 @@
 
 The campaign route connects the 67 additional historical Lore, Waypoint and Side Quest records listed in `route-mapping-67.json`. The Sceptre of God waypoint appears before the post-Dominus stage. Review each item's location and timing in the route before marking it.
 
-The manual quest-step confirmation is independent of checklist marks and is saved per character. Combined backups include this confirmation while continuing to accept older backups. **Locomancer crosswalk (14 Nov 2026):** legacy IDs #90 Oriath and #91 The Templar Laboratory are historical, still importable/exportable and excluded from the active 89-item tracker. The 2025 [PoE Wiki Waypoint list](https://www.poewiki.net/wiki/Waypoint) identifies **90** current waypoints, including **Karui Shores** in the Epilogue, which has no standalone ID in the legacy dataset. Review the Karui Shores Waypoint directly on the in-game world map (U); the in-game 3.30 count is not independently certified. See [Epilogue Locomancer source audit](./handoff/CONTENT-QA-20261114-LOCOMANCER-EPILOGUE.md).
+The manual quest-step confirmation is independent of checklist marks and is saved per character. Combined backups include this confirmation while continuing to accept older backups. **Locomancer crosswalk (14 Nov 2026):** original local #90 Oriath and #91 The Templar Laboratory are historical and excluded from active progress, but still import/export unchanged. The guide tracks **89 legacy-mapped Waypoints + 1 separate Karui Shores mark = 90** as listed by the [PoE Wiki](https://www.poewiki.net/wiki/Waypoint). The new flag uses per-character `poe-karui-shores-waypoint-v1` storage and optional `karuiShores` boolean in unified schema:2 backups; older backups without the flag import as unchecked. Only mark after confirming Karui Shores on the in-game world map (U); 3.30 counter not gameplay-certified. See [Epilogue Locomancer source audit](./handoff/CONTENT-QA-20261114-LOCOMANCER-EPILOGUE.md).
 
 Use the report link beside a task or STOP to open a prefilled GitHub issue. GitHub requires a signed-in account. The app does not submit a report until the player completes submission on GitHub.
 
@@ -46,11 +46,11 @@ Run `node poe-all-ears/validate-data.cjs`, `node poe-all-ears/validate-ui.cjs` a
 
 ## แนวทางใหม่: แนะนำผู้เล่นเก็บ 4 Achievement ให้ครบ 100%
 
-หน้าแรกเปลี่ยนเป็นเป้าหมาย **745 รายการของ 4 Achievement** ไม่ใช่จำนวน Achievement ทั้งหมดใน Path of Exile. มีตัวเลขรวมที่บันทึกด้วยตัวเอง แผน 13 ช่วง (Act 1–10, Labyrinth, Vaal Side Areas และ Epilogue) และปุ่มเปิดช่วงที่ยังขาดรายการแรก
+หน้าแรกแสดง **745 รายการประวัติศาสตร์** โดยเส้นทางที่ให้ติ๊กมี **744 ช่อง** (ไม่นับ Waypoint เก่า 2 จุด และเพิ่ม Karui Shores อีก 1 จุด) สำหรับ 4 Achievement ไม่ใช่ Achievement ทั้งหมดของเกม. มีแผน 13 ช่วง (Act 1–10, Labyrinth, Vaal Side Areas และ Epilogue) และปุ่มเปิดช่วงแรกที่ยังไม่ทำเครื่องหมาย
 
 เมื่อเข้า Act จะเห็น **เป้าหมาย 4 ด้านที่ต้องตรวจให้ครบก่อนออกจาก Act** ได้แก่ บทสนทนา NPC, Lore, Waypoint, เควสต์รอง (แสดงเฉพาะประเภทที่มีรายการ) พร้อมจำนวนที่ยังขาดและปุ่มเปิด Checklist เฉพาะที่ยังไม่เก็บ. หากมีจุดเสี่ยงจากคู่มือเก่า จะแสดงทางลัดไปยังจุดตรวจที่ยังไม่ครบก่อน
 
-หมวด Labyrinth นับ Lore 10 และ Waypoint ของ The Aspirants' Plaza อีก 1 จุด ส่วน Epilogue แสดง Waypoint เก่า 2 จุด (#90 Oriath / #91 The Templar Laboratory) เพื่อรองรับเซฟเดิมเท่านั้น ไม่ใช่รายการที่ต้องเปิดในเกมปัจจุบัน. PoE Wiki ระบุ **Karui Shores** เป็นจุดวาร์ปใน Epilogue และยอด Locomancer 90 จุด แต่ชุดข้อมูลเก่าของเว็บติดตามจริงเพียง 89 จุดและยังไม่มีช่องติ๊ก Karui Shores; ต้องตรวจจุดนี้และยอด Achievement ในเกมเอง. ฐานข้อมูล 745 ID เดิมไม่ถูกเปลี่ยน
+หมวด Labyrinth นับ Lore 10 และ Waypoint ของ The Aspirants' Plaza อีก 1 จุด ส่วน Epilogue มีช่องติ๊ก **Karui Shores** ใหม่ที่เก็บสถานะแยกตามตัวละครและสำรองใน Backup รวมได้ โดยไม่ใช้ ID #90 Oriath หรือ #91 The Templar Laboratory ซึ่งคงไว้เป็นรายการประวัติศาสตร์รองรับเซฟเก่า. ตัวนับเส้นทางคือ **89 Waypoint เดิมที่ยังใช้อ้างอิง + Karui Shores = 90 จุดตาม Wiki**; ยอดปลดล็อกจริงในเกม 3.30 ยังไม่ได้รับรอง. ฐานข้อมูลต้นทาง 745 ID เดิมไม่ถูกเปลี่ยน
 
 **เงื่อนไขผ่าน:** ติ๊กครบในเว็บเป็นเพียงบันทึกของผู้เล่น ต้องตรวจยอดจากเกมจริงเพื่อยืนยัน Achievement ที่ปลดแล้ว. ข้อมูลการเดินเควสต์ 3.30 ยังไม่ผ่านการทดสอบกับเกมจริง จึงยังไม่อ้างว่าเป็นเส้นทางปลอดภัยครบถ้วน
 

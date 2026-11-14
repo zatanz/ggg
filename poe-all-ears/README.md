@@ -4,7 +4,7 @@
 
 The campaign route connects the 67 additional historical Lore, Waypoint and Side Quest records listed in `route-mapping-67.json`. The Sceptre of God waypoint appears before the post-Dominus stage. Review each item's location and timing in the route before marking it.
 
-The manual quest-step confirmation is independent of checklist marks and is saved per character. Combined backups include this confirmation while continuing to accept older backups. Locomancer IDs 90 and 91 remain importable and exportable as historical Epilogue records. They are excluded from the active route totals. These totals count records in this guide and do not certify the current in-game requirements.
+The manual quest-step confirmation is independent of checklist marks and is saved per character. Combined backups include this confirmation while continuing to accept older backups. **Locomancer crosswalk (14 Nov 2026):** legacy IDs #90 Oriath and #91 The Templar Laboratory are historical, still importable/exportable and excluded from the active 89-item tracker. The 2025 [PoE Wiki Waypoint list](https://www.poewiki.net/wiki/Waypoint) identifies **90** current waypoints, including **Karui Shores** in the Epilogue, which has no standalone ID in the legacy dataset. Review the Karui Shores Waypoint directly on the in-game world map (U); the in-game 3.30 count is not independently certified. See [Epilogue Locomancer source audit](./handoff/CONTENT-QA-20261114-LOCOMANCER-EPILOGUE.md).
 
 Use the report link beside a task or STOP to open a prefilled GitHub issue. GitHub requires a signed-in account. The app does not submit a report until the player completes submission on GitHub.
 
@@ -50,7 +50,7 @@ Run `node poe-all-ears/validate-data.cjs`, `node poe-all-ears/validate-ui.cjs` a
 
 เมื่อเข้า Act จะเห็น **เป้าหมาย 4 ด้านที่ต้องตรวจให้ครบก่อนออกจาก Act** ได้แก่ บทสนทนา NPC, Lore, Waypoint, เควสต์รอง (แสดงเฉพาะประเภทที่มีรายการ) พร้อมจำนวนที่ยังขาดและปุ่มเปิด Checklist เฉพาะที่ยังไม่เก็บ. หากมีจุดเสี่ยงจากคู่มือเก่า จะแสดงทางลัดไปยังจุดตรวจที่ยังไม่ครบก่อน
 
-หมวด Labyrinth นับ Lore 10 และ Waypoint ของ The Aspirants' Plaza อีก 1 จุด ส่วน Epilogue นับ Waypoint อีก 2 จุด **ซึ่งอยู่ใน Locomancer 91 จุดเดิม**. เส้นทาง 13 ช่วงครอบคลุม ID ทั้ง 745 ชิ้นแบบไม่ซ้ำ และไม่เปลี่ยนข้อมูลตัวละคร/Backup เดิม
+หมวด Labyrinth นับ Lore 10 และ Waypoint ของ The Aspirants' Plaza อีก 1 จุด ส่วน Epilogue แสดง Waypoint เก่า 2 จุด (#90 Oriath / #91 The Templar Laboratory) เพื่อรองรับเซฟเดิมเท่านั้น ไม่ใช่รายการที่ต้องเปิดในเกมปัจจุบัน. PoE Wiki ระบุ **Karui Shores** เป็นจุดวาร์ปใน Epilogue และยอด Locomancer 90 จุด แต่ชุดข้อมูลเก่าของเว็บติดตามจริงเพียง 89 จุดและยังไม่มีช่องติ๊ก Karui Shores; ต้องตรวจจุดนี้และยอด Achievement ในเกมเอง. ฐานข้อมูล 745 ID เดิมไม่ถูกเปลี่ยน
 
 **เงื่อนไขผ่าน:** ติ๊กครบในเว็บเป็นเพียงบันทึกของผู้เล่น ต้องตรวจยอดจากเกมจริงเพื่อยืนยัน Achievement ที่ปลดแล้ว. ข้อมูลการเดินเควสต์ 3.30 ยังไม่ผ่านการทดสอบกับเกมจริง จึงยังไม่อ้างว่าเป็นเส้นทางปลอดภัยครบถ้วน
 

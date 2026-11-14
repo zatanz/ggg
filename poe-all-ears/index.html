@@ -167,6 +167,15 @@
   var questRewards = (window.POE_QUEST_REWARDS && window.POE_QUEST_REWARDS.acts) || [];
   var patchProfiles = (window.POE_PATCH_PROFILES && window.POE_PATCH_PROFILES.profiles) || [];
   var selectedPatch = (window.POE_PATCH_PROFILES && window.POE_PATCH_PROFILES.default) || "legacy-3.9";
+  // A current-patch reference preview is a user's explicit viewing choice, never a certified data profile.
+  var PATCH_CHOICE_KEY="poe-selected-patch-v1",REFERENCE_PREVIEW_KEY="poe-330-historical-reference-preview-v1";
+  var historicalReferencePreview=false;
+  try {
+    var rememberedPatch=localStorage.getItem(PATCH_CHOICE_KEY);
+    if(patchProfiles.some(function(p){return p.id===rememberedPatch;}))selectedPatch=rememberedPatch;
+    historicalReferencePreview=localStorage.getItem(REFERENCE_PREVIEW_KEY)==="enabled";
+  }catch(_e){}
+  function referencePreviewActive(){return selectedPatch==="3.30"&&historicalReferencePreview;}
   var root=document.getElementById("results");
   if(!Array.isArray(items)||items.length!==484){root.innerHTML='<div class="empty">โหลดข้อมูล 484 รายการไม่สำเร็จ กรุณารีเฟรชหน้าเว็บ</div>';return;}
   var KEY="poe-all-ears-user-data-v1";
@@ -193,10 +202,10 @@
   function renderProgress(){var count=current().checked.length;byId("progress").textContent=count;byId("pct").textContent=(count*100/484).toFixed(1)+"%";byId("bar").style.width=(count/484*100)+"%";byId("progressBar").setAttribute("aria-valuenow",String(count));}
   function renderItems(){var c=current(),checked=new Set(c.checked),q=searchText.toLowerCase(),selected=items.filter(function(x){if(actFilter!=="all"&&String(x.act)!==actFilter)return false;if(status==="pending"&&checked.has(x.id))return false;if(status==="done"&&!checked.has(x.id))return false;if(status==="warning"&&!isWarning(x))return false;if(q&&[String(x.id),x.npc,x.dialog,x.note].join(" ").toLowerCase().indexOf(q)<0)return false;return true;});var acts=new Map();selected.forEach(function(x){if(!acts.has(x.act))acts.set(x.act,[]);acts.get(x.act).push(x);});root.replaceChildren();if(!selected.length){root.appendChild(el("div","empty","ไม่พบรายการที่ตรงกับการค้นหา / ตัวกรอง"));return;}acts.forEach(function(rows,a){var head=el("div","actline");head.appendChild(el("h2",null,"Act "+a));var total=items.filter(function(x){return x.act===a;}).length;var done=items.filter(function(x){return x.act===a&&checked.has(x.id);}).length;head.appendChild(el("span","pill",done+" / "+total+" · แสดง "+rows.length));root.appendChild(head);var list=el("div","list");rows.forEach(function(x){var done=checked.has(x.id), card=el("label","entry"+(done?" done":"")),check=el("input");check.type="checkbox";check.checked=done;check.setAttribute("aria-label","บทสนทนา "+x.id+" "+x.npc.replace(/^Lily Roth/,"Lilly Roth")+" "+x.dialog);check.addEventListener("change",function(){var o=current(),previousChecked=o.checked.slice();if(check.checked&&!o.checked.includes(x.id))o.checked.push(x.id);if(!check.checked)o.checked=o.checked.filter(function(n){return n!==x.id;});o.checked.sort(function(a,b){return a-b;});if(!save())o.checked=previousChecked;renderProgress();renderItems();});var content=el("div","content"),line=el("div");line.appendChild(el("span","id",wikiMeta.has(x.id)?"Wiki "+wikiMeta.get(x.id).wikiRow+" · ID "+x.id:"#"+x.id));line.appendChild(el("span","npc",x.npc.replace(/^Lily Roth/,"Lilly Roth")));content.appendChild(line);content.appendChild(el("div","topic",x.dialog.replace(/\s*-\s*\(!\)/g," [!]")));if(x.note)content.appendChild(el("div","note"+(isWarning(x)?" alert":""),"ข้อมูลประวัติศาสตร์ (ยังไม่รับรองแพตช์): "+x.note));var wiki=wikiMeta.get(x.id);if(wiki&&wiki.before&&![28,29,31,140].includes(x.id)){var caution=[275,365].includes(x.id)?window.POE_ITEM_DESCRIPTIONS.get("ears",x).caution:wiki.before;content.appendChild(el("div","note alert","เงื่อนไขจาก Wiki (ยังไม่รับรองแพตช์): "+caution));}var g=guideEntries[x.id];if(g){var detail=el("details","guide"),summary=el("summary",null,"คำแนะนำเบื้องต้น (ยังไม่ผ่าน QA ครบ)");detail.appendChild(summary);var gp=el("p",null,g.steps);detail.appendChild(gp);if(g.warning){var warn=el("p","caution","ข้อควรระวัง: "+g.warning);detail.appendChild(warn);}content.appendChild(detail);}card.appendChild(check);card.appendChild(content);list.appendChild(card);});root.appendChild(list);});}
   function renderRewards(){var target=byId("rewardResults");target.replaceChildren();if(selectedPatch!=="legacy-3.9"){target.appendChild(el("p","tips","ยังไม่มีข้อมูลรางวัลที่ยืนยันตรงกับแพตช์นี้ โปรดใช้ PoE Wiki และ Patch Notes ทางการ"));return;}questRewards.forEach(function(group){if(actFilter!=="all"&&String(group.act)!==actFilter)return;var title=el("h3",null,"Act "+group.act+" · "+group.quests.length+" เควสต์");title.style.margin="18px 0 10px";target.appendChild(title);var list=el("div","reward-list");group.quests.forEach(function(q){var card=el("div","reward-card");var labels={passive:"Passive Skill",refund:"Passive Refund",gem:"Skill / Support Gem",item:"อุปกรณ์ / ไอเทม",choice:"รางวัลตามตัวเลือก"};card.appendChild(el("div","reward-kind",labels[q.type]||"รางวัล"));card.appendChild(el("strong",null,q.name));card.appendChild(el("p",null,q.reward));list.appendChild(card);});target.appendChild(list);});}
-  function renderPatch(){var p=patchProfiles.find(function(x){return x.id===selectedPatch;})||patchProfiles[0];if(!p)return;byId("patch").value=p.id;byId("patchStatus").textContent=p.id==="legacy-3.9"?"ข้อมูลเก่า · ยังไม่รับรอง":"ยังไม่มีข้อมูลยืนยัน";byId("patchNotice").textContent=p.notes;byId("results").hidden=p.id!=="legacy-3.9";byId("progressBar").closest(".panel").hidden=p.id!=="legacy-3.9";byId("rewardSection").querySelector(".panel-title").textContent=p.id==="legacy-3.9"?"ข้อมูลรางวัลอ้างอิง (ยังไม่ได้ตรวจตามแพตช์ 3.9)":"รางวัลเควสต์ — ยังไม่มีข้อมูลที่ตรวจยืนยัน";}
-  function render(){renderChar();renderProgress();renderPatch();if(selectedPatch==="legacy-3.9")renderItems();renderRewards();}
+  function renderPatch(){var p=patchProfiles.find(function(x){return x.id===selectedPatch;})||patchProfiles[0];if(!p)return;byId("patch").value=p.id;byId("patchStatus").textContent=p.id==="legacy-3.9"?"ข้อมูลเก่า · ยังไม่รับรอง":"ยังไม่มีข้อมูลยืนยัน";byId("patchNotice").textContent=p.notes+(referencePreviewActive()?" · กำลังแสดงรายการเก่าที่ไม่ได้รับรองสำหรับ 3.30":"");byId("results").hidden=!(p.id==="legacy-3.9"||referencePreviewActive());byId("progressBar").closest(".panel").hidden=!(p.id==="legacy-3.9"||referencePreviewActive());byId("rewardSection").querySelector(".panel-title").textContent=p.id==="legacy-3.9"?"ข้อมูลรางวัลอ้างอิง (ยังไม่ได้ตรวจตามแพตช์ 3.9)":"รางวัลเควสต์ — ยังไม่มีข้อมูลที่ตรวจยืนยัน";}
+  function render(){renderChar();renderProgress();renderPatch();if(selectedPatch==="legacy-3.9"||referencePreviewActive())renderItems();renderRewards();}
   patchProfiles.forEach(function(p){var opt=el("option",null,p.label);opt.value=p.id;byId("patch").appendChild(opt);});
-  byId("patch").addEventListener("change",function(e){selectedPatch=e.target.value;render();});
+  byId("patch").addEventListener("change",function(e){selectedPatch=e.target.value;try{localStorage.setItem(PATCH_CHOICE_KEY,selectedPatch);}catch(_e){}render();});
   for(var a=1;a<=10;a++){var opt=el("option",null,"Act "+a);opt.value=String(a);byId("act").appendChild(opt);}
   byId("character").addEventListener("change",function(e){var next=snapshot();next.active=e.target.value;commit(next);render();});
   byId("addChar").addEventListener("click",function(){var name=prompt("ชื่อตัวละครใหม่:","ตัวละคร "+(state.characters.length+1));if(name===null)return;name=name.trim().slice(0,60);if(!name)return toast("กรุณาระบุชื่อตัวละคร");var c={id:uid(),name:name,checked:[]};var next=snapshot();next.characters.push(c);next.active=c.id;if(commit(next)){render();toast("เพิ่มตัวละคร "+name+" แล้ว");}});
@@ -204,13 +213,20 @@
   byId("deleteChar").addEventListener("click",function(){var c=current();if(!confirm('ลบตัวละคร "'+c.name+'" และข้อมูลที่ติ๊กทั้งหมด?'))return;var next=snapshot();next.characters=next.characters.filter(function(x){return x.id!==c.id;});if(!next.characters.length){next=blank();}else{next.active=next.characters[0].id;}if(commit(next)){render();toast("ลบตัวละครแล้ว");}});
   byId("reset").addEventListener("click",function(){var c=current();if(!confirm('ล้างเครื่องหมายทั้งหมดของ "'+c.name+'" ?'))return;var next=snapshot();next.characters.find(function(x){return x.id===c.id;}).checked=[];if(commit(next)){render();toast("ล้างรายการที่ติ๊กแล้ว");}});
   byId("search").addEventListener("input",function(e){searchText=e.target.value.trim();renderItems();});
-  byId("act").addEventListener("change",function(e){actFilter=e.target.value;if(selectedPatch==="legacy-3.9")renderItems();renderRewards();});
+  byId("act").addEventListener("change",function(e){actFilter=e.target.value;if(selectedPatch==="legacy-3.9"||referencePreviewActive())renderItems();renderRewards();});
   document.querySelectorAll("[data-status]").forEach(function(b){b.addEventListener("click",function(){status=b.dataset.status;document.querySelectorAll("[data-status]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});renderItems();});});
   byId("export").addEventListener("click",function(){var data=JSON.stringify({app:"poe-all-ears",exportedAt:new Date().toISOString(),...state},null,2),blob=new Blob([data],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="poe-all-ears-backup.json";a.click();setTimeout(function(){URL.revokeObjectURL(u);},3000);toast("ดาวน์โหลดข้อมูลสำรองแล้ว");});
   byId("import").addEventListener("click",function(){byId("file").click();});
   byId("file").addEventListener("change",function(e){var f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>2000000){toast("ไฟล์ใหญ่เกิน 2 MB");e.target.value="";return;}var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(String(reader.result));if(data.app!=="poe-all-ears"||data.version!==1||!Array.isArray(data.characters)||!data.characters.length||data.characters.length>100||data.characters.some(function(c){return !c||typeof c.name!=="string"||!c.name.trim()||!Array.isArray(c.checked)||c.checked.some(function(id){return !Number.isInteger(id)||!validIds.has(id);});}))throw Error("invalid");var clean=sanitize(data);if(!confirm("นำเข้าตัวละคร "+clean.characters.length+" ตัว? จะเพิ่มเป็นรายการใหม่ ไม่ลบข้อมูลเดิม"))return;var next=snapshot();if(next.characters.length+clean.characters.length>100)throw Error("too-many");var first=null;clean.characters.forEach(function(c){var id=uid();if(first===null)first=id;next.characters.push({id:id,name:c.name,checked:c.checked});});next.active=first;if(commit(next)){render();toast("นำเข้าข้อมูล "+clean.characters.length+" ตัวละครแล้ว");}}catch(err){toast("รูปแบบไฟล์ไม่ถูกต้อง");}finally{e.target.value="";}};reader.onerror=function(){toast("อ่านไฟล์ไม่สำเร็จ");};reader.readAsText(f);});
   window.POE_HUB_BRIDGE={
     read:function(){return snapshot()},
+    historicalReferenceEnabled:function(){return referencePreviewActive();},
+    enableHistoricalReference:function(enabled){
+      historicalReferencePreview=enabled===true;
+      try{localStorage.setItem(REFERENCE_PREVIEW_KEY,historicalReferencePreview?"enabled":"disabled");}catch(_e){}
+      render();
+      return referencePreviewActive();
+    },
     mark:function(id,done){
       if(!validIds.has(id))return false;
       var next=snapshot(),c=next.characters.find(function(x){return x.id===next.active});
@@ -220,7 +236,7 @@
       c.checked=[...new Set(arr)].sort(function(a,b){return a-b});
       if(!commit(next))return false;
       renderProgress();
-      if(selectedPatch==="legacy-3.9")renderItems();
+      if(selectedPatch==="legacy-3.9"||referencePreviewActive())renderItems();
       return true;
     }
   };

@@ -84,8 +84,8 @@ function restoreRoutePosition(){
  const resumed=window.POE_STEAM_WALK?.acts?.[state.routeAct];
  const current=state.steamFocusByAct[state.routeAct];
  if(resumed&&current>0){
-  const checked=new Set(entries("ears"));
-  const earlier=resumed.slice(0,current).filter(phase=>phase.stop&&(phase.stopIds||[]).some(id=>!checked.has(id)));
+  const checked=new Set(entries("ears")),checkedWaypoints=new Set(entries("waypoints"));
+  const earlier=resumed.slice(0,current).filter(phase=>phase.stop&&((phase.stopIds||[]).some(id=>!checked.has(id))||(phase.stopWaypointIds||[]).some(id=>!checkedWaypoints.has(id))));
   if(earlier.length)state.skippedRisk={act:state.routeAct,from:earlier[0].id,count:earlier.length};
  }
  lastInlineMark=null;
@@ -177,7 +177,7 @@ function renderSummary(){
   if(left&&pendingIndex>=0){
     const phase=phases[pendingIndex];
     text.append(el("small",tr("ช่วงที่ควรตรวจต่อ: ","Next step to review: ")+(descEN()?(phase.headingEN||phase.place):phase.heading),"hubMissionPhase"));
-    const risk=phases.find((p,i)=>i<=pendingIndex&&p.stop&&(p.stopIds||[]).some(id=>!checked.ears.has(id)));
+    const risk=phases.find((p,i)=>i<=pendingIndex&&p.stop&&((p.stopIds||[]).some(id=>!checked.ears.has(id))||(p.stopWaypointIds||[]).some(id=>!checked.waypoints.has(id))));
     if(risk)text.append(el("small",tr("มีจุด STOP ที่ยังไม่ตรวจ: ","Unchecked STOP checkpoint: ")+(descEN()?(risk.stopEN||risk.headingEN):risk.stop),"hubMissionRisk"));
   }
   const jump=el("button",left?tr("เปิดช่วงที่ต้องทำต่อ","Open next quest step"):tr("ตรวจรายการในพื้นที่นี้","Review this area"));jump.type="button";
@@ -602,8 +602,8 @@ function actSteamGuide(act){
  const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
   if(reviewSkip&&target>chosen){
-   const outstanding=phases.slice(0,target).filter(p=>p.stop&&(p.stopIds||[]).some(id=>!allEars.has(id)));
-   if(outstanding.length&&Number(act)>=7&&outstanding.some(p=>phases.indexOf(p)>=chosen)){
+   const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))));
+   if(outstanding.length&&(Number(act)>=7||outstanding.some(p=>(p.stopWaypointIds||[]).length>0))&&outstanding.some(p=>phases.indexOf(p)>=chosen)){
     const first=outstanding[0];
     const msg=tr(
       "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+outstanding.length+" ช่วง\nจุดแรก: "+first.stop+"\n\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
@@ -634,8 +634,8 @@ function actSteamGuide(act){
   // Keep navigation possible for review, but distinguish it from in-game completion.
   const missing=Object.entries(phaseCount).flatMap(([type,ids])=>
    ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
-  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id));
-  if(phase.stop&&stillMissing.length){
+  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length)){
    if(!confirm(tr(
     "หยุดตรวจจุดเสี่ยงก่อน: "+phase.stop+"\n\nยังไม่ได้บันทึก "+missing.length+" รายการในช่วงนี้ การไปหน้าถัดไปไม่ได้ทำให้เควสต์ปลอดภัย ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
     "STOP checkpoint unresolved: "+(phase.stopEN||phase.stop)+"\n\n"+missing.length+" task(s) remain unchecked in this step. Viewing the next step does not make the quest safe. Skip for review?"
@@ -649,7 +649,7 @@ function actSteamGuide(act){
    )))return;
   }
   // Keep a visible return path when the user knowingly previews beyond a STOP.
-  if(phase.stop&&stillMissing.length)state.skippedRisk={act,from:phase.id,count:1};
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length))state.skippedRisk={act,from:phase.id,count:1};
   goto(chosen+1,false,"task");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
@@ -765,11 +765,12 @@ function actSteamGuide(act){
   }
  }
  box.append(focus);
- const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id));
+ const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
+ const stopPending=pending.length+pendingWaypointIds.length;
  if(phase.stop){
-   const gate=el("div",undefined,"hubStopGate"+(pending.length?" blocked":" reviewed"));
-   gate.dataset.stopPhase=phase.id;gate.dataset.stopState=pending.length?"hold":"review";
-   gate.append(el("strong",pending.length?tr("ยังไม่ควรผ่านจุดนี้","STOP: do not progress yet"):tr("ติ๊กครบแล้ว · ต้องตรวจในเกมอีกครั้ง","Checked in this guide · verify in-game")),
+   const gate=el("div",undefined,"hubStopGate"+(stopPending?" blocked":" reviewed"));
+   gate.dataset.stopPhase=phase.id;gate.dataset.stopState=stopPending?"hold":"review";
+   gate.append(el("strong",stopPending?tr("ยังไม่ควรผ่านจุดนี้","STOP: do not progress yet"):tr("ติ๊กครบแล้ว · ต้องตรวจในเกมอีกครั้ง","Checked in this guide · verify in-game")),
  el("p",descEN()?(phase.stopEN||"Review all missable dialogue and the original Thai warning before changing quest state."):phase.stop));
  if(descEN()&&!phase.stopEN){const source=el("details",undefined,"hubOriginalThai");source.lang="th";source.append(el("summary","Original Thai STOP detail"),el("p",phase.stop));gate.append(source);}
    if(pending.length){
@@ -781,6 +782,7 @@ function actSteamGuide(act){
       review.type="button";review.onclick=()=>goto(prior,false,"task");gate.append(review);
      }
    }
+   if(pendingWaypointIds.length){const places=pendingWaypointIds.map(id=>X.waypoints.find(x=>x.id===id)?.name||"Waypoint #"+id);gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pendingWaypointIds.length+tr(" Waypoint: "," Waypoint(s): ")+places.join(" / "),"hubStopPending"));}
    const stopText=descEN()?(phase.stopEN||phase.stop):phase.stop;
    if(itemCaution&&!stopText.includes(itemCaution.replace(/^STOP: /,"").replace(/\.$/,"")))gate.append(itemWarning);
    gate.append(reportLink("stop",(phase.stopIds||[]).join(",")||null,act,phase.id));

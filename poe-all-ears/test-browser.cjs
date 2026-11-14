@@ -1272,6 +1272,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select option').count(),11,'Act 2 has an additional zero-canonical-ID pre-Seal source conflict gate');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('2');
  assert.equal((await hub.locator('#hubView [data-phase="western-forest"] .hubStopGate').innerText()).includes('Chamber of Sins'),true,'Act 2 explicitly stops premature Chamber of Sins progress');
+ hub.once('dialog',d=>d.accept()); // Explicitly preview past the unreviewed pre-Seal risk without marking it as safe.
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubResearchConflict').innerText()).includes('Steam'),true,'Act 2 bandit first-contact timing is flagged as contradictory');
  await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual > summary').click();
@@ -1292,6 +1293,7 @@ async function verifyAct2PreSealConflict(browser,url){
  const rect=await lastImage.evaluate(img=>({width:img.getBoundingClientRect().width,viewport:window.innerWidth,overflow:document.documentElement.scrollWidth>window.innerWidth+2}));
  assert.equal(rect.width<=rect.viewport&&rect.overflow===false,true,'quest visual remains readable and does not cause horizontal overflow at 390px');
  await hub.setViewportSize({width:1280,height:900});
+ hub.once('dialog',d=>d.accept()); // Previewing from the pre-Seal stage now requires explicit user consent.
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
 
 

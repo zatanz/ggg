@@ -807,7 +807,7 @@ async function verifyKaruiShoresSupplement(browser,url){
  assert.equal(await stageItems('waypoints'),1,'Beacon Waypoint #58 is checked only after entering Beacon');
  assert.equal(await stageItems('lore'),2,'both Beacon lore entries remain present after entering');
  assert.equal(await stageItems('ears'),1,'Lilly Brine King #337 is after first entering Beacon');
- assert.equal((await hub.locator('#hubView .hubWalkActions').innerText()).includes('Lioneye'),true,'post-Beacon step explicitly sends player back to Lilly in town');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Lioneye'),true,'collapsed post-Beacon instructions still explicitly send player to Lilly in town');
  await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('14');
  assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('Weylam Roth'),true,'Reef pre-Tsoagoth STOP names Weylam');
  assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('2 บทสนทนา'),true,'Weylam requires two distinct dialogue entries');

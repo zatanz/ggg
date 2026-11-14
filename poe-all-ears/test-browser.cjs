@@ -337,7 +337,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  
  assert.equal(await hub.locator('#hubStats .hubStat').count(),4,'unified dashboard four achievements');
  assert.equal(await hub.locator('#hubStats .hubMissionTotal').count(),1,'four-achievement 100% mission dashboard is prominent');
- assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('100%'),true,'100% scope is four tracked achievements');
+ assert.equal((await hub.locator('#hubStats .hubMissionHeading').innerText()).includes('4 Achievement'),true,'dashboard describes four tracked achievements without promising 100% game completion');
  assert.equal(await hub.locator('#hubStats .hubRunPreflight').count(),1,'100 percent route exposes a collapsed pre-run risk checklist');
  await hub.locator('#hubStats .hubRunPreflight > summary').click();
  assert.equal((await hub.locator('#hubStats .hubRunPreflight').innerText()).includes('Ruthless'),true,'difficulty caveat warns about Vaal Side Areas in Ruthless');

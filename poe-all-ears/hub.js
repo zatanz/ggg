@@ -604,7 +604,7 @@ function actSteamGuide(act){
   if(reviewSkip&&target>chosen){
    const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))));
    const forwardRisks=outstanding.filter(p=>phases.indexOf(p)>=chosen);
-   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id)));
+   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)&&(p.stopIds||[]).some(id=>!allEars.has(id))));
    if(toWarn.length){
     const first=toWarn[0];
     const msg=tr(

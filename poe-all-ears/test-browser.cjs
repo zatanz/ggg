@@ -135,6 +135,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
   const chunks=[];for await(const chunk of await saved.createReadStream())chunks.push(chunk);
   const exported=JSON.parse(Buffer.concat(chunks).toString('utf8'));
   assert.deepEqual(exported.characters.find(c=>c.name==='Legacy waypoint QA').waypoints,[90,91],'legacy waypoint IDs survive export');
+ assert.equal(exported.characters.find(c=>c.name==='Legacy waypoint QA').rulerChoice,'undecided','older backups without a ruler field remain valid');
  }finally{await context.close();}
 }
 
@@ -343,7 +344,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal(coverage.reduce((sum,t)=>sum+Number(t.match(/\/ (\d+)/)[1]),0),743,'active journey excludes the two historical Epilogue entries');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').count(),1,'3.29 player-reported Fairgraves blocker appears before walkthrough');
  assert.equal((await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').innerText()).includes('#34–38'),true,'community-sourced Fairgraves warning identifies exact five entries');
- assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),2,'Fairgraves warning links two source reports');
+ assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),3,'Fairgraves warning includes the 3.30 follow-up alongside historical reports');
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').evaluate(x=>x.open),true,'Act 1 defaults to expanded Fairgraves evidence because risk is relevant now');
  const taskOrder=await hub.locator('#hubStats .hubMissionTotal').evaluate(x=>{
    const children=[...x.children],mission=x.querySelector(':scope > .hubMissionNext'),risk=x.querySelector(':scope > [data-current-risk="fairgraves-329"]');
@@ -563,7 +564,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').evaluate(x=>x.open),false,'Act 5 shows compact Fairgraves issue without displacing current Act');
  await hub.locator('#hubStats [data-current-risk="fairgraves-329"] > summary').click();
  assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"]').evaluate(x=>x.open),true,'player can expand external evidence explicitly even outside Act 1');
- assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),2,'both external reports remain accessible after disclosure toggle');
+ assert.equal(await hub.locator('#hubStats [data-current-risk="fairgraves-329"] a').count(),3,'all three reports remain accessible after disclosure toggle');
  assert.equal((await hub.locator('#hubStats [data-mission-scope="selected"]').innerText()).includes('Act 5'),true,'Act strip updates active progress without changing collection marks');
  assert.equal(await hub.locator('#hubStats [data-first-missing="1"]').count(),1,'earliest-missing fallback persists while browsing Act 5');
  assert.equal(await hub.locator('#hubStats [data-mission-scope="selected"] button').count(),1,'active Act has a single primary jump action');
@@ -1044,17 +1045,27 @@ async function verifyHistoricalWaypointBackup(browser,url){
  assert.equal(data.schema,2);
  assert.equal(data.characters.length,4,'combined backup captures all imported profiles');
  assert.equal(Array.isArray(data.characters[0].lore),true,'combined backup includes lore');
+ const storedAct9Index=await hub.locator('#character option').evaluateAll((nodes,id)=>nodes.findIndex(n=>n.value===id),act9Character);
+ assert(storedAct9Index>=0,'Act 9 character is present before export');
+ assert.equal(data.characters[storedAct9Index].rulerChoice,'Irasha','combined export preserves the actual recorded Highgate ruler');
+ assert.equal(data.characters.every(c=>["undecided","Irasha","Tasuni"].includes(c.rulerChoice)),true,'all archived characters have safe ruler-choice values');
  const beforeUnifiedImport=await hub.locator('#character option').count();
  const reloadPromise=hub.waitForEvent('load');
  hub.once('dialog',d=>d.accept());
  await hub.locator('#hubView input[type="file"]').setInputFiles({name:'combined.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});
  await reloadPromise;
  assert.equal(await hub.locator('#character option').count(),beforeUnifiedImport+data.characters.length,'combined import adds profiles without replacing existing ones');
+ const importedAct9Id=await hub.locator('#character option').nth(beforeUnifiedImport+storedAct9Index).getAttribute('value');
+ assert.equal(await hub.evaluate(id=>JSON.parse(localStorage.getItem('poe-act9-ruler-choice-v1')||'{}')[id],importedAct9Id),'Irasha','combined import restores the selected Highgate ruler on a new character ID');
  const renamedBackup={app:'poe-unified-companion',schema:2,characters:[{name:'bad',ears:[999],lore:[],waypoints:[],sidequests:[]}]};
  const prevCount=await hub.locator('#character option').count();
  hub.once('dialog',d=>d.accept());
  await hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(renamedBackup))});
  assert.equal(await hub.locator('#character option').count(),prevCount,'invalid combined import must not change profiles');
+ const invalidBranchBackup={app:'poe-unified-companion',schema:2,characters:[{name:'invalid ruler',ears:[],lore:[],waypoints:[],sidequests:[],rulerChoice:'both'}]};
+ hub.once('dialog',d=>d.accept());
+ await hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid-branch.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(invalidBranchBackup))});
+ assert.equal(await hub.locator('#character option').count(),prevCount,'invalid ruler choice cannot change imported profiles');
 
  await hub.locator('#hubNav [data-tab="collection"]').click();
  await hub.locator('#hubToolbar [data-category="ears"]').click();

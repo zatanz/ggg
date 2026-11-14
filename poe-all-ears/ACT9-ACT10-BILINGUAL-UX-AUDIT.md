@@ -26,7 +26,7 @@ These are the unchanged historical tracker IDs. The canonical totals for the pro
 9. **After Depraved Trinity**: check Weylam Roth: Rescue (#448) and Lilly (#449) BEFORE travelling to Act 10; return to Highgate for three post-Recurring Nightmare The Beast lines (#450–452).
 10. Four original Act 9 optional quest IDs: The Storm Blade, Queen of the Sands, Fastis Fortuna (Calendar of Fortune), The Ruler of Highgate.
 
-The irreversible ruler choice is kept in the separate localStorage key `poe-act9-ruler-choice-v1` keyed by character ID, **not in the existing character export/backup format**. Selecting a ruler does not mark game dialogue, change the 745 canonical IDs or claim a live-game verified 100% result. On a fresh browser or after importing a backup, the choice must be reviewed again.
+The irreversible ruler choice is kept in the separate localStorage key `poe-act9-ruler-choice-v1` keyed by character ID. **Update (14 Nov 2026):** unified `schema:2` backups now export the optional per-character `rulerChoice` and restore it under newly created imported character IDs. Older backups without this optional field remain accepted and import as undecided. The old standalone All Ears v1 backup does not transfer this newer metadata. Selecting a ruler only records what happened in-game; it does not mark dialogue, change the 745 canonical IDs or prove a 3.30 achievement. See [ruler backup and Fairgraves QA](./handoff/CONTENT-QA-20261114-FAIRGRAVES-RULER-BACKUP.md).
 
 ## Act 10: end-campaign and optional quests
 
@@ -57,7 +57,7 @@ The irreversible ruler choice is kept in the separate localStorage key `poe-act9
 - Historical Locomancer records = 91, while later Wiki version history reported removal of an Oriath waypoint and 90 required; do not silently migrate records without a compatible test.
 - Act 2 Bandits timing differences between old Steam and Wiki; Act 1 Fairgraves bug reports on patch 3.29; both require targeted in-game regression.
 - Artwork is conceptual and explicitly not a verified screenshot from current PoE game.
-- Quest choice per-character selection is local UI metadata and not part of current backup export.
+- Branch selection remains user-entered local metadata, not actual game telemetry. The unified v2 backup includes the optional choice, while legacy v1 exports do not.
 - Automated Chromium tests validate browser behavior, not that an Achievement unlocked on live servers.
 
 ## References

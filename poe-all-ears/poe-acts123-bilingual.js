@@ -152,7 +152,7 @@ const translated={
         "No in-game 3.30 evidence determines which first-talk order completes all 484 All Ears dialogues. A manual review mark is NOT an in-game achievement mark or a safety guarantee.",
         "Inspect your real game state and the linked source guides; record only conversations you actually had. Acknowledge reviewing the conflict before activating the Seal. Do not kill or help a Bandit yet."
       ],
-      "STOP before activating Ancient Seal: PoE Wiki says TALK first, while Steam 3.28 says DO NOT TALK until The Darkness. No 3.30-certified safe order exists."
+      "STOP: before activating Ancient Seal, PoE Wiki says TALK first, while Steam 3.28 says DO NOT TALK until The Darkness. No 3.30-certified safe order exists."
     ],
     "ancient-seal": [
       "Ancient Seal · collect the town's Darkness dialogue",

@@ -1406,6 +1406,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubCampaignAct').count(),1,'original guided route is usable under patch 3.30 after reference consent');
  await hub.locator('#hubCampaignAct').selectOption('2');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 safety checkpoints remain usable within the current patch reference view');
+ await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('0');
  assert.equal((await hub.locator('#hubView [data-stop-phase="forest-encampment"]').innerText()).includes('ยังไม่ควร'),true,'existing source-based STOP still visible in reference preview');
  await hub.locator('#hubNav [data-tab="collection"]').click();
  assert.equal(await hub.locator('#hubView [data-patch-reference="3.30"]').count(),1,'warning remains visible in collection view');

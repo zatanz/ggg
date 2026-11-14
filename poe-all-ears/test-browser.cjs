@@ -132,7 +132,7 @@ async function verifyHistoricalWaypointBackup(browser,url){
   assert.equal(await page.locator('[data-special-scope="Epilogue"] input:checked').count(),2,'legacy waypoints survive import');
   await page.locator('#hubNav [data-tab="review"]').click();
   await page.locator('#hubView select[aria-label="เลือก Achievement ที่จะตรวจ"]').selectOption('waypoints');
-  assert.equal((await page.locator('#hubView .hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review warns the extra current Epilogue area is not tracked');
+  assert.equal((await page.locator('#hubView p.hubNotice').innerText()).includes('Karui Shores'),true,'waypoint count review warns the extra current Epilogue area is not tracked');
   const pending=page.waitForEvent('download');
   await page.getByRole('button',{name:'ดาวน์โหลด Backup รวม'}).click();
   const saved=await pending;

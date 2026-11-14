@@ -34,7 +34,7 @@ for(const name of ['index.html','walkthrough.html']){
     check(html.includes('act!==2')&&html.includes('advisory.branchRows.forEach'),name+': conditional bandit warning not displayed');
     check(html.includes('var blocked=patch!=="legacy-3.9"'),name+': unverified patches not blocked');
   }else{
-    check(html.includes('p.id!=="legacy-3.9"'),name+': unverified patches not blocked');
+    check(html.includes('byId("results").hidden=!(p.id==="legacy-3.9"||referencePreviewActive())')&&html.includes('selectedPatch==="3.30"&&historicalReferencePreview'),name+': 3.30 historical rows must require explicit scoped reference approval');
     for(const ref of ['./route-act1.js','./route-act2.js','./route-act3.js','./route-act4.js','./route-act5.js','./route-act6.js','./route-act7.js','./route-act8.js','./route-act9.js','./route-act10.js']){
       check(html.includes('src="'+ref+'"'),name+': missing wiki route script '+ref)
     }

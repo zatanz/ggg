@@ -138,18 +138,21 @@
     ],
     "sidequestIds": [],
     "actions": [
-      "เปิด Waypoint Oriath Square และ The Templar Courts ตามเส้นทาง",
+      "เข้าใกล้ Waypoint ที่ Oriath Square (#44) และ The Templar Courts (#45) ให้ระบบเปิด แล้วตรวจไอคอนในแผนที่โลก (U)",
       "เก็บ Lani: Oriath Square (ID 276) ระหว่างเดินเรื่อง Death to Purity",
-      "ตรวจว่าได้ฟัง Utula หลัง Casticus แล้วก่อนเดินหน้าไปสู้ Avarius"
+      "ตรวจว่า Waypoint ทั้ง 2 จุดและบทสนทนา Utula หลัง Casticus ครบก่อนฆ่า High Templar Avarius"
     ],
     "actionsEN": [
-      "Activate Oriath Square and The Templar Courts Waypoints.",
+      "Approach the Oriath Square (#44) and The Templar Courts (#45) Waypoints, then verify both are active on the world map (U).",
       "Check Lani: Oriath Square (ID 276) while progressing Death to Purity.",
-      "Confirm the post-Casticus Utula dialogue before advancing to Avarius."
+      "Verify both Waypoints and the post-Casticus Utula dialogue before defeating High Templar Avarius."
     ],
-    "stop": null,
-    "stopEN": null,
+    "stop": "ก่อนฆ่า High Templar Avarius: ต้องเปิดและตรวจ Waypoint #44 Oriath Square กับ #45 The Templar Courts ทั้งสองจุด · หลังสู้บอสพื้นที่จะเปลี่ยน",
+    "stopEN": "Before defeating High Templar Avarius: verify Waypoints #44 Oriath Square and #45 The Templar Courts are active. These areas change after the boss.",
     "stopIds": [],
+    "stopWaypointIds": [44,45],
+    "sourceNote": "PoE Wiki ระบุว่า Oriath Square และ The Templar Courts จะเข้าไม่ได้ตามเส้นทางปกติหลังฆ่า Innocence/Avarius; The Templar Courts อาจต้องอาศัย Instance ของผู้เล่นอื่นเพื่อย้อนกลับ จึงควรตรวจทั้งสอง Waypoint ก่อนสู้ (อ้างอิง Wiki ปี 2025 ยังไม่ทดสอบ 3.30)",
+    "sourceNoteEN": "PoE Wiki lists Oriath Square and The Templar Courts Waypoints as inaccessible after killing Innocence/Avarius through normal progression. Recovering The Templar Courts may require another player's instance. Verify both before the boss (2025 Wiki; not tested in 3.30).",
     "keyItems": [
       "Eyes of Zeal"
     ],

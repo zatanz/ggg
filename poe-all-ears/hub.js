@@ -1401,6 +1401,8 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
    nav.setAttribute("aria-label",tr("เมนูหลัก","Main navigation"));
    document.querySelector('.hubProfileLabel')?.replaceChildren(tr("ตัวละคร","Character"));
    $("hubSettings")?.querySelector("summary").replaceChildren(tr("ตั้งค่า","Settings"));
+   const visiblePatchLabel=$("hubPatchLabel");
+   if(visiblePatchLabel)visiblePatchLabel.textContent=tr("แพตช์ที่เล่น","Game patch");
    $("hubCampaignIntro")?.replaceChildren(tr("เลือกตัวละครและ Act ที่กำลังเล่น แล้วเริ่มจากเควสต์ด้านล่าง","Choose your character and Act, then follow the quest below."));
    $("addChar").textContent=tr("+ เพิ่ม","+ Add");
    $("addChar").setAttribute("aria-label",tr("เพิ่มตัวละคร","Add character"));
@@ -1428,6 +1430,14 @@ tabs.forEach(([id,label])=>{const b=el("button",label);b.type="button";b.dataset
  const changeLanguage=(key,value)=>{if(!LANG.set(key,value))return;updateLanguageLabels();renderToolbar();renderSummary();renderView();};
  guidance.select.onchange=()=>changeLanguage("description",guidance.select.value);
  namesChoice.select.onchange=()=>changeLanguage("names",namesChoice.select.value);
+// Use the original patch control as a first-class game setting; never duplicate its selection or persistence.
+const patchPanel=wrap.querySelector('section[aria-label="เลือกแพตช์"]');
+if(patchPanel){
+ patchPanel.classList.add("hubPatchInline");
+ patchPanel.querySelector(".panel-title")?.classList.add("sr");
+ const patchLabel=patchPanel.querySelector('label[for="patch"]');
+ if(patchLabel){patchLabel.classList.remove("sr");patchLabel.id="hubPatchLabel";}
+}
 const profileRows=profile.querySelectorAll(".ctrls");
 if(profileRows.length>=2){
   const manage=el("details",undefined,"hubManage");manage.id="hubManage";
@@ -1443,7 +1453,7 @@ if(profileRows.length>=2){
   profileRows[0].before(label);
   profileNote?.remove();
   const settings=el("details");settings.id="hubSettings";
-  settings.append(el("summary"),languagePanel,wrap.querySelector('section[aria-label="เลือกแพตช์"]'),manage);
+  settings.append(el("summary"),languagePanel,manage);
   if(profileNote)settings.append(profileNote);
   header.append(settings);
 }
@@ -1457,7 +1467,9 @@ const bar=el("div");bar.id="hubCampaignBar";
 const context=el("div",undefined,"hubCampaignContext");
 const intro=el("p");intro.id="hubCampaignIntro";
 const status=el("p",undefined,"hubDataNotice");
-context.append(intro,status);
+context.append(intro);
+if(patchPanel)context.append(patchPanel);
+context.append(status);
 const controls=el("div");controls.id="hubToolbar";
 const view=el("section");view.id="hubView";view.tabIndex=-1;
 header.after(context,bar,view);

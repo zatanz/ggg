@@ -582,18 +582,19 @@ function actSteamGuide(act){
  const data=window.POE_STEAM_WALK,phases=data?.acts?.[act]||[];
  if(!phases.length)return null;
  const allEars=new Set(entries("ears")),allLore=new Set(entries("lore")),allWaypoints=new Set(entries("waypoints")),allSidequests=new Set(entries("sidequests"));
- const start=phases.findIndex(p=>p.dialogueIds.some(id=>!allEars.has(id))||(p.loreIds||[]).some(id=>!allLore.has(id))||(p.waypointIds||[]).some(id=>!allWaypoints.has(id))||(p.sidequestIds||[]).some(id=>!allSidequests.has(id)));
+ const checklistReview=currentReview();
+ const start=phases.findIndex(p=>(p.requiresManualConfirmation&&checklistReview.confirmedStages?.[act+":"+p.id]!==true)||p.dialogueIds.some(id=>!allEars.has(id))||(p.loreIds||[]).some(id=>!allLore.has(id))||(p.waypointIds||[]).some(id=>!allWaypoints.has(id))||(p.sidequestIds||[]).some(id=>!allSidequests.has(id)));
  const chosen=state.steamFocusByAct[act]===undefined?Math.max(0,start):Math.max(0,Math.min(phases.length-1,state.steamFocusByAct[act]));
  const phase=phases[chosen];
- const review=currentReview();
+ const review=checklistReview;
  const questKey=act+":"+phase.id;
  const questConfirmed=review.confirmedStages?.[questKey]===true;
  const box=el("section",undefined,"hubWalkthrough");box.dataset.steamAct=String(act);box.dataset.phase=phase.id;
  const header=el("div",undefined,"hubWalkHeader");
  const phaseCount={ears:phase.dialogueIds||[],lore:phase.loreIds||[],waypoints:phase.waypointIds||[],sidequests:phase.sidequestIds||[]};
  const checkedGroups={ears:allEars,lore:allLore,waypoints:allWaypoints,sidequests:allSidequests};
- const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0);
- const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0);
+ const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0)+Number(phase.requiresManualConfirmation===true);
+ const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0)+Number(phase.requiresManualConfirmation===true&&questConfirmed);
  const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
  const position=el("strong",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
@@ -602,9 +603,9 @@ function actSteamGuide(act){
  const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
   if(reviewSkip&&target>chosen){
-   const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))));
+   const outstanding=phases.slice(0,target).filter(p=>p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(p.requiresManualConfirmation&&review.confirmedStages?.[act+":"+p.id]!==true)));
    const forwardRisks=outstanding.filter(p=>phases.indexOf(p)>=chosen);
-   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)&&(p.stopIds||[]).some(id=>!allEars.has(id))));
+   const toWarn=Number(act)>=7?(forwardRisks.length?outstanding:[]):forwardRisks.filter(p=>(p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||(Number(act)===6&&["nessa-ships","beacon-flag"].includes(p.id)&&(p.stopIds||[]).some(id=>!allEars.has(id)))||(Number(act)===2&&p.requiresManualConfirmation&&review.confirmedStages?.[act+":"+p.id]!==true));
    if(toWarn.length){
     const first=toWarn[0];
     const msg=tr(
@@ -636,8 +637,8 @@ function actSteamGuide(act){
   // Keep navigation possible for review, but distinguish it from in-game completion.
   const missing=Object.entries(phaseCount).flatMap(([type,ids])=>
    ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
-  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
-  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length)){
+  const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),missingManualReview=phase.requiresManualConfirmation&&!questConfirmed;
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview)){
    if(!confirm(tr(
     "หยุดตรวจจุดเสี่ยงก่อน: "+phase.stop+"\n\nยังไม่ได้บันทึก "+missing.length+" รายการในช่วงนี้ การไปหน้าถัดไปไม่ได้ทำให้เควสต์ปลอดภัย ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
     "STOP checkpoint unresolved: "+(phase.stopEN||phase.stop)+"\n\n"+missing.length+" task(s) remain unchecked in this step. Viewing the next step does not make the quest safe. Skip for review?"
@@ -651,7 +652,7 @@ function actSteamGuide(act){
    )))return;
   }
   // Keep a visible return path when the user knowingly previews beyond a STOP.
-  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length))state.skippedRisk={act,from:phase.id,count:1};
+  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview))state.skippedRisk={act,from:phase.id,count:1};
   goto(chosen+1,false,"task");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
@@ -693,9 +694,11 @@ function actSteamGuide(act){
   const updated=currentReview();
   updated.confirmedStages={...updated.confirmedStages,[questKey]:questCheck.checked};
   if(!saveReview(updated)){questCheck.checked=questConfirmed;return;}
+  if(phase.requiresManualConfirmation){refresh();document.querySelector('[data-phase="'+phase.id+'"] [data-manual-review="true"] input')?.focus({preventScroll:true});}
  });
- questStatus.append(questCheck,el("span",tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
- head.append(questStatus);
+ if(phase.requiresManualConfirmation)questStatus.dataset.manualReview="true";
+ questStatus.append(questCheck,el("span",phase.requiresManualConfirmation?tr(phase.manualConfirmLabel||"ฉันอ่านคำเตือนแล้ว (ไม่รับรองความปลอดภัย)","I reviewed the warning (not a safety guarantee)"):tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
+ if(!phase.requiresManualConfirmation)head.append(questStatus);
  // Focus on the first unmarked task within the selected stage, prioritizing an unchecked STOP.
  const unchecked=Object.entries(phaseCount).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
  const urgent=unchecked.find(x=>x.type==="ears"&&(phase.stopIds||[]).includes(x.id));
@@ -707,6 +710,7 @@ function actSteamGuide(act){
  const fullSteps=el("details",undefined,"hubWalkInstructions");
  fullSteps.append(el("summary",tr("ดูขั้นตอนทั้งหมด · ","All instructions · ")+instructions.length+tr(" ข้อ"," steps")),actions);
  focus.append(fullSteps);
+ if(phase.requiresManualConfirmation)focus.append(questStatus);
  const charId=active()?.id;
  const previous=lastInlineMark?.act===act&&lastInlineMark.index===chosen&&lastInlineMark.charId===charId&&
    checkedGroups[lastInlineMark.type].has(lastInlineMark.id)?lastInlineMark:null;
@@ -747,9 +751,13 @@ function actSteamGuide(act){
   }else{
    inline=el("p",tr("ไม่พบรายการต้นทางสำหรับรหัสนี้ กรุณาตรวจฐานข้อมูลก่อนทำเครื่องหมาย","The referenced entry is missing from source data; do not mark it until verified."),"hubSubtle");
   }
+ }else if(phase.requiresManualConfirmation&&!questConfirmed){
+  inline=el("div",undefined,"hubManualReview");
+  inline.append(el("h3",tr("หยุดตรวจข้อมูลก่อนเปลี่ยนสถานะเควสต์","Review before changing quest state")),
+    el("p",tr("คำแนะนำจาก PoE Wiki และ Steam ขัดแย้งกัน ต้องตัดสินใจจากข้อมูลจริงและทำเครื่องหมายว่าทบทวนแล้วด้านบน · ยังไม่รับรอง 3.30","PoE Wiki and Steam conflict. Check the actual game state and acknowledge reading the conflicting guidance above. No 3.30 route is certified.")));
  }else{
   inline=el("div",undefined,"hubStepComplete");
-  inline.append(el("h3",tr("บันทึกครบสำหรับช่วงนี้","All items in this step are checked")),
+  inline.append(el("h3",phase.requiresManualConfirmation?tr("ทบทวนคำเตือนแล้ว","Risk review acknowledged"):tr("บันทึกครบสำหรับช่วงนี้","All items in this step are checked")),
     el("p",tr("รายการในช่วงนี้ติ๊กครบแล้ว แต่ยังต้องตรวจยอดในเกมจริงก่อนเดินเรื่องต่อ","Every entry in this step is checked, but you must verify the actual in-game counters before advancing.")));
   if(chosen<phases.length-1){
    advance=el("button",tr("ดูขั้นตอนถัดไป","View next quest step"),"hubInlineAdvance");
@@ -767,8 +775,8 @@ function actSteamGuide(act){
   }
  }
  box.append(focus);
- const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id));
- const stopPending=pending.length+pendingWaypointIds.length;
+ const pending=(phase.stopIds||[]).filter(id=>!allEars.has(id)),pendingWaypointIds=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),pendingManualReview=phase.requiresManualConfirmation&&!questConfirmed;
+ const stopPending=pending.length+pendingWaypointIds.length+Number(pendingManualReview);
  if(phase.stop){
    const gate=el("div",undefined,"hubStopGate"+(stopPending?" blocked":" reviewed"));
    gate.dataset.stopPhase=phase.id;gate.dataset.stopState=stopPending?"hold":"review";
@@ -785,6 +793,7 @@ function actSteamGuide(act){
      }
    }
    if(pendingWaypointIds.length){const places=pendingWaypointIds.map(id=>X.waypoints.find(x=>x.id===id)?.name||"Waypoint #"+id);gate.append(el("div",tr("ยังไม่บันทึก ","Still unchecked: ")+pendingWaypointIds.length+tr(" Waypoint: "," Waypoint(s): ")+places.join(" / "),"hubStopPending"));}
+   if(pendingManualReview)gate.append(el("div",tr("ยังไม่ได้ทำเครื่องหมายว่าตรวจคำแนะนำทั้งสองฝ่ายแล้ว","The conflicting sources have not yet been acknowledged"),"hubStopPending"));
    const stopText=descEN()?(phase.stopEN||phase.stop):phase.stop;
    if(itemCaution&&!stopText.includes(itemCaution.replace(/^STOP: /,"").replace(/\.$/,"")))gate.append(itemWarning);
    gate.append(reportLink("stop",(phase.stopIds||[]).join(",")||null,act,phase.id));

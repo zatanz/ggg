@@ -476,7 +476,7 @@ window.POE_STEAM_WALK = {
           "Review your actual quest state, optionally record Bandit conversations in the Act 2 notes, and decide with the unresolved risk in mind before activating the Seal. Do not kill or side with any Bandit yet."
         ],
         "stop": "ก่อนเปิด Ancient Seal: PoE Wiki ให้คุย Bandits ก่อน แต่ Steam 3.28 ห้ามคุยก่อน The Darkness · ยังไม่มีทางเลือกที่รับรองกับเกม 3.30",
-        "stopEN": "Before activating Ancient Seal: PoE Wiki says TALK to Bandits first; Steam 3.28 says DO NOT TALK until The Darkness. Neither route is 3.30-certified.",
+        "stopEN": "STOP: before activating Ancient Seal, PoE Wiki says TALK to Bandits first; Steam 3.28 says DO NOT TALK until The Darkness. Neither route is 3.30-certified.",
         "stopIds": [],
         "requiresManualConfirmation": true,
         "manualConfirmLabel": "ฉันอ่านข้อขัดแย้งและตรวจสถานะในเกมแล้ว (ไม่ได้รับรองว่าปลอดภัย)",

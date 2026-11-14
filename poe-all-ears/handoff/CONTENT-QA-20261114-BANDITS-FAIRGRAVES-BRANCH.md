@@ -1,4 +1,6 @@
 # PoE 1 Achievement Content QA — evidence audit, 14 November 2026 (Asia/Bangkok)
+
+> **Source correction added 14 Nov 2026:** The Act 2 row below stating that Steam 3.28 did *not* forbid first conversations before Ancient Seal is **incorrect and superseded**. The original Steam guide explicitly instructs players **not to talk to or kill Bandits before triggering The Darkness**, whereas PoE Wiki 2025 instructs players to talk to all Bandits **before** Ancient Seal. The two sources directly conflict; **no 3.30 safe route is gameplay-certified**. See [evidence and code correction](./CONTENT-QA-20261114-ACT2-FIRST-TALK-CONFLICT-CORRECTION.md). The older text below is retained as the original audit snapshot and must **not** be quoted as current guidance.
 **Owner:** ChatGPT editorial. **Status:** PARTIAL VERIFIED / 3.30 GAMEPLAY HOLD. **Source branch:** `fix/poe-content-qa-bandits-evidence-20261114`.
 **Do not convert source guidance into a guaranteed 3.30 perfect-run route.** This file documents claims, their evidence class, and editorial corrections. No gameplay was performed by ChatGPT.
 

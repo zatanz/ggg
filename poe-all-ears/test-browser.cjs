@@ -79,6 +79,46 @@ async function verifyAct5FirstContactSource(browser,url){
  }finally{await context.close();}
 }
 
+async function verifyAct4SourceAfterEvents(browser,url){
+ const context=await browser.newContext({viewport:{width:390,height:844}});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  const rows=await page.evaluate(()=>{
+   const ids=[217,225,240,242,244,249,250,251,252,253];
+   return ids.map(id=>{
+    const item=window.ALL_EARS_DATA.items.find(x=>x.id===id);
+    const guide=window.POE_ITEM_DESCRIPTIONS.get('ears',item);
+    return {id,npc:item.npc,dialogue:item.dialog,th:guide.action,en:window.POE_LANGUAGE.englishHelp('ears',item,guide).action,caution:guide.caution};
+   });
+  });
+  const cases=[[217,'Breaking the Seal'],[225,'The Crystal Veins'],[240,'The Belly of the Beast'],
+   [242,'Piety'],[244,'Tasuni: Malachai'],[249,'Malachai'],[250,'Malachai'],
+   [251,'Malachai'],[252,'Malachai'],[253,'Malachai']];
+  for(const [id,event] of cases){
+   const row=rows.find(x=>x.id===id);
+   assert.match(row.th,new RegExp(event),'Thai Act4 event unlock: '+id);
+   assert.match(row.en,new RegExp(event),'English Act4 event unlock: '+id);
+   assert.equal(row.caution,'','Act4 after-event does not invent a permanent STOP: '+id);
+  }
+  await page.locator('#hubCampaignAct').selectOption('4');
+  const readPhase=async(index,id,expected)=>{
+   const selector=page.locator('[data-steam-act="4"] .hubWalkNavigator select');
+   await selector.selectOption(String(index));
+   const panel=page.locator('[data-phase="'+id+'"] .hubWalkInstructions');
+   await panel.locator('summary').click();
+   const text=await panel.innerText();
+   assert.match(text,expected,'Act4 step source timing is visible: '+id);
+  };
+  await readPhase(2,'voll-mines',/Breaking the Seal/);
+  await readPhase(4,'crystal-veins',/ID 225/);
+  await readPhase(7,'belly-intro',/ID 240/);
+  await readPhase(9,'piety-town',/ID 244/);
+  await readPhase(12,'malachai-after',/ID 249/);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true,'Act4 source guidance fits 390px mobile');
+ }finally{await context.close();}
+}
+
 async function verifySourceUnlockCorrections(browser,url){
  const context=await browser.newContext({viewport:{width:390,height:844}});
  try{
@@ -435,6 +475,7 @@ async function verifyAct2PreSealConflict(browser,url){
  await verifyQuestSelectorAndSkippedRisk(browser,url);
  await verifyEditorialGuidance(browser,url);
  await verifySourceUnlockCorrections(browser,url);
+ await verifyAct4SourceAfterEvents(browser,url);
  await verifyAct5FirstContactSource(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
  await verifyKaruiShoresSupplement(browser,url);

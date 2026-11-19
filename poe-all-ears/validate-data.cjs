@@ -635,6 +635,13 @@ assert(legacyGuide[336]?.[1].includes('อย่าเผา')&&legacyGuide[336]
 assert(legacyGuide[365]?.[1].includes('Helena: The Den')&&!legacyGuide[365][1].startsWith('อย่าเข้า The Fellshrine'),'Helena Den warning must not assert an unsourced Fellshrine lockout');
 assert(legacyGuide[382]?.[1].includes('The Vaal City')&&!legacyGuide[382][1].startsWith('อย่าเข้า The Causeway'),'Yeena Fireflies deadline must use source-supported Vaal City contact, not a Causeway cutoff');
 assert(legacyGuide[439]?.[1].includes('Petarus and Vanja'),'Highgate ruler warning must mention both pre-decision NPC checks');
+const act5Bannon=ctx.window.POE_STEAM_WALK?.acts?.[5]?.find(x=>x.id==='bannon-chamber');
+assert(act5Bannon?.stopIds.join(',')==='283'&&act5Bannon?.stopEN?.startsWith('STOP:'),'Bannon #283 needs a source-cautioned pre-Torched-Courts STOP');
+const utula=ctx.window.POE_STEAM_WALK?.acts?.[5]?.find(x=>x.id==='casticus-return');
+assert(utula?.stop?.includes('Oriath Square')&&utula?.sourceNote?.includes('PoE Wiki'),'Utula #275 must retain both Steam and Wiki source boundary context');
+const helena=ctx.window.POE_STEAM_WALK?.acts?.[7]?.find(x=>x.id==='den-before');
+assert(helena?.stop?.includes('Fellshrine Ruins')&&helena?.sourceNoteEN?.includes('Wiki'),'Helena #365 must retain the earlier Steam deadline with explicit uncertainty');
+assert(legacyGuide[365]?.[1].includes('Fellshrine Ruins'),'Legacy Helena #365 per-dialogue text must preserve conservative source boundary');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
 const act1Reference=ctx.window.POE_STEAM_WALK?.acts?.[1]||[];
 const sewerStop=ctx.window.POE_STEAM_WALK?.acts?.[3]?.find(x=>x.id==='sewer-blockage');

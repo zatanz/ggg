@@ -49,17 +49,19 @@ Main URL: https://zatanz.github.io/ggg/poe-all-ears/
 - The current UI displays row-level prerequisites and before-action constraints, and preserves the authored checkpoint grouping instead of sorting it by risk label. This is source-level clarification, **not** current-patch gameplay verification.
 - Do not raise zero certified 3.30 counts based on the prior 2025 Wiki route, patch note text, or passing UI CI.
 
-## Remaining game-dependent release gates
+**Updated 19 Nov 2026:** the following items are requests for voluntary player reports, not blocking engineering tasks or acceptance checkboxes. Do not wait for them before fixing source, UX, reliability or deployment defects. In-game 3.30 certification must still be described as unknown unless evidence actually arrives.
 
-- [ ] Check the actual running 3.30 build on/after November 13 PST; record client version, date, and platform.
-- [ ] Execute Act 2 quest-state matrix in fresh characters: speak to all three before seal, Darkness before kills, first-kill variants, second-kill survivor variants, all-kill state, and branch alternatives. Capture screenshots/video and exact dialogue topics.
-- [ ] Verify the 69 Act 2 rows and source risk warnings independently in-game. Do not promote earlier rows from "Wiki-matched" merely because count and order match.
-- [ ] Continue 484 dialogue checks across Acts 1–10, including missable transitions and alternative branches.
-- [ ] Validate all 140 Lore in a single character; test Letters of Exile/Library generation and campaign Vaal Side Area availability in 3.30.
-- [ ] Verify the active Locomancer target against the 3.30 in-game counter (Wiki reference: 90 locations = 89 mapped historical locations + separately tracked Karui Shores; original 91 historical IDs retained solely for compatibility) and verify Side Quests (30) in-game.
-- [ ] End-to-end mobile/desktop human UX review in live GitHub Pages (automation tested, human review pending).
-- [ ] Only after all gates: promote 3.30 profile, release a stable version, and tag a corresponding evidence manifest.
+## Optional post-release community feedback topics (not development release gates)
 
-## CI gate vs release gate
+- Check the actual running 3.30 build on/after November 13 PST; record client version, date, and platform.
+- Execute Act 2 quest-state matrix in fresh characters: speak to all three before seal, Darkness before kills, first-kill variants, second-kill survivor variants, all-kill state, and branch alternatives. Capture screenshots/video and exact dialogue topics.
+- Verify the 69 Act 2 rows and source risk warnings independently in-game. Do not promote earlier rows from "Wiki-matched" merely because count and order match.
+- Continue 484 dialogue checks across Acts 1–10, including missable transitions and alternative branches.
+- Validate all 140 Lore in a single character; test Letters of Exile/Library generation and campaign Vaal Side Area availability in 3.30.
+- Verify the active Locomancer target against the 3.30 in-game counter (Wiki reference: 90 locations = 89 mapped historical locations + separately tracked Karui Shores; original 91 historical IDs retained solely for compatibility) and verify Side Quests (30) in-game.
+- End-to-end mobile/desktop human UX review in live GitHub Pages (automation tested, human review pending).
+- Do not promote the reference data to a *gameplay-certified 3.30* profile without actual proof; this restriction does not prevent ordinary stable engineering releases.
+
+## CI engineering acceptance vs optional gameplay certification
 
 GitHub Actions validates item IDs, source-order links, data structure, legacy persistence and import/export integrity, responsive viewport overflow, and real Chromium browser interactions. It does **not** certify dialogue availability, branch timing, quest reversibility, live game counters, game-state synchronization, or 3.30 source compatibility. A green build is a deployable preview, not a fully certified playthrough guide.

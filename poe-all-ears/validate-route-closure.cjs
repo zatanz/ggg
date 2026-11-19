@@ -12,6 +12,7 @@ function load(filename){
 }
 [
   "data.js","approved-guidance.js","lore-data.js","extra-data.js",
+  ...Array.from({length:10},(_,index)=>"route-act"+(index+1)+".js"),
   "steam-quest-walkthrough.js","poe-acts123-bilingual.js",
   "steam-act4.js","steam-act5.js","steam-act6.js","steam-act7.js",
   "steam-act8.js","steam-act9.js","steam-act10.js",
@@ -96,6 +97,36 @@ for(let act=1;act<=10;act++){
  }
  summaries.push({act,stages:phases.length,stops:actStops});
 }
+// Exhaustive source deadline coverage. 62 per-ID 'before' conditions from the
+// canonical Wiki crosswalk must be linked to a live STOP, except four mutually
+// conditional Act 2 bandit states which cannot all precede a single decision.
+const expectedBranchExceptions=new Set(["2:48","2:89","2:101","2:103"]);
+const foundBranchExceptions=new Set();
+let sourceDeadlines=0,sourceDeadlinesDirectlyGuarded=0;
+for(let act=1;act<=10;act++){
+ const route=W["ALL_EARS_ROUTE_ACT"+act];
+ assert(route&&Array.isArray(route.records),"Missing canonical source-route metadata Act "+act);
+ if(!route)continue;
+ for(const entry of route.records){
+  if(!entry.before)continue;
+  sourceDeadlines++;
+  const stage=guide.acts[act].find(phase=>(phase.dialogueIds||[]).includes(entry.id));
+  assert(Boolean(stage),"Source deadline Act "+act+" ID #"+entry.id+" has no campaign stage");
+  if(!stage)continue;
+  if((stage.stopIds||[]).includes(entry.id)){sourceDeadlinesDirectlyGuarded++;continue}
+  const key=act+":"+entry.id;
+  assert(expectedBranchExceptions.has(key),"Unprotected source deadline "+key+" in "+stage.id+"; review missing STOP");
+  if(expectedBranchExceptions.has(key)){
+   foundBranchExceptions.add(key);
+   assert(!!stage.stop&&stage.confidence==="conflict" || key==="2:48" && !!stage.stop,
+     "Act 2 source exception "+key+" must remain in a guarded/conflicted narrative");
+  }
+ }
+}
+assert(sourceDeadlines===62,"Expected 62 known canonical before/deadline records; found "+sourceDeadlines);
+assert(sourceDeadlinesDirectlyGuarded===58,"Expected 58 source deadlines protected by per-ID STOP checks; found "+sourceDeadlinesDirectlyGuarded);
+assert(foundBranchExceptions.size===expectedBranchExceptions.size&&[...expectedBranchExceptions].every(key=>foundBranchExceptions.has(key)),
+ "Only the four documented conditional Act 2 Bandit source IDs may be unguarded");
 assert(stagesCount===129,"Expected 129 campaign phases; found "+stagesCount);
 assert(stopCount===64,"Expected 64 STOP stages including Act 5 pre-Torched Bannon guard; found "+stopCount);
 assert(conflictCount===4,"Expected 4 source-conflict stages; found "+conflictCount);
@@ -125,6 +156,8 @@ const bindingTypes={lore:25,waypoints:34,sidequests:8};
 for(const [type,n] of Object.entries(bindingTypes))assert(bindings.filter(x=>x.type===type).length===n,type+": expected "+n+" supplementary route links");
 assert(special.labyrinth.ids.length===10&&special.vaal.ids.length===16,"Lore special-area quantities must remain 10 + 16");
 assert(lookbackCount===6,"Expected 6 cross-stage STOP ID dependencies (Silk #57 and five Darkness topics), found "+lookbackCount);
+const fatherOfWar=guide.acts[6]?.find(x=>x.id==="karui-intro");
+assert(fatherOfWar?.stopIds.join(",")==="318,320"&&fatherOfWar.stop.includes("Eye of Conquest"),"Act6 must guard Sin #318 before Eye of Conquest, Bestel #320 before Tukohama");
 const bannon=guide.acts[5]?.find(x=>x.id==="bannon-chamber");
 assert(bannon?.stopIds.join(",")==="283"&&bannon.stop.includes("The Torched Courts"),"Bannon #283 must be checked before Torched Courts per Steam");
 const utula=guide.acts[5]?.find(x=>x.id==="casticus-return");
@@ -147,6 +180,7 @@ if(errors.length){
  process.exit(1);
 }
 console.log("FULL ROUTE STRUCTURAL QA PASS: "+stagesCount+" stages, "+stopCount+" STOPs, "+conflictCount+" conflict stages, "+lookbackCount+" cross-stage STOP links.");
+console.log("Per-ID source timing: "+sourceDeadlinesDirectlyGuarded+"/"+sourceDeadlines+" deadlines directly STOP-guarded; "+foundBranchExceptions.size+" conditional Act 2 Bandit exceptions remain in the unresolved conflict gate.");
 console.log("Canonical campaign references (nonduplicate): "+categorySpecs.map(x=>x.kind+" "+allRefs[x.key].length).join(" | "));
 console.log("Special scope: 10 Labyrinth Lore + 16 Vaal Lore + 1 Labyrinth Waypoint; Karui Shores separate; Epilogue 90/91 retained only for backups.");
 console.log("Acts: "+summaries.map(x=>x.act+"="+x.stages+" stages/"+x.stops+" STOPs").join("; "));

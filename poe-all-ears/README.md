@@ -22,7 +22,7 @@ The current quest also offers **Share feedback elsewhere · copy quest details**
 
 ## Guided campaign · 13 November 2026
 
-The **Quests** view opens directly at the current quest. Choose a character and Act or additional area, then use the step selector to pick a different quest stage. The app remembers the last area and selected stages by character in this browser. First-time profiles start in Act 1. Route position is a display preference and is stored separately from the existing progress and backup formats.
+The **Quests** view opens directly at the current quest. Choose a character and Act or additional area, then use the step selector to pick a different quest stage. Step choices show the quest action, unchecked task count and unresolved source-backed STOP status instead of area-only labels; a skipped-risk return link targets the relevant checkpoint in the selected jump. The app remembers the last area and selected stages by character in this browser. First-time profiles start in Act 1. Route position is a display preference and is stored separately from the existing progress and backup formats.
 
 Instructions, location, timing, STOP guidance and the canonical checkbox are in the same reading flow. A successful check moves focus to the next item or step action. **Undo last check** restores the latest inline mark in the open stage. Use **Review other items in this step** to revisit individual marks, and **Sources and full Act checklist** for references, filters and the Act inventory.
 

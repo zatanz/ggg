@@ -13,10 +13,10 @@ const lang={
       "Bestel's pool deadline and Tarkleigh's glyph deadline are separate. Check the correct dialogue before each event."
     ],
     "a1-brutus": [
-      "The Prison · Bestel: Brutus and separate topic triggers",
-      "Before fighting Brutus, hear Bestel: Brutus (local #27) after speaking with Tarkleigh. Check Nessa: Piety (#28) after encountering Piety, and Bestel: Marceus Lioneye (#29) after reading Shavronne's Journal. Those two are NOT proven pre-Brutus lockouts.",
-      "Defeating Brutus before hearing Bestel: Brutus (local #27)",
-      "Only #27 is required by this pre-Brutus STOP. #26, #28 and #29 remain separate historical checklist topics; their exact current-patch lockout times are not certified."
+      "The Prison · collect #26–29 before fighting Brutus",
+      "Check Nessa: Brutus (#26) and Bestel: Brutus (#27). After encountering Piety, return for Nessa: Piety (#28). After reading Shavronne's Journal, return for Bestel: Marceus Lioneye (#29). The Steam 3.30 guide warns explicitly against defeating Brutus before #28/#29.",
+      "Defeating Brutus before reviewing dialogue #26–29 according to the updated Steam guide",
+      "This precaution follows the Steam guide's pre-Brutus order; #28 and #29 have explicit do-not-kill cautions. PoE Wiki lists unlock triggers without establishing these permanent cutoffs, and no 3.30 client test certifies them."
     ],
     "a1-fairgraves": [
       "Ship Graveyard · speak before taking the Allflame",

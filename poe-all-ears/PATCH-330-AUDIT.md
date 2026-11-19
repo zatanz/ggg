@@ -15,6 +15,8 @@ Main URL: https://zatanz.github.io/ggg/poe-all-ears/
 
 **Verification types must not be conflated.** Workbook fidelity does not establish Wiki validity; Wiki row agreement does not establish quest-state safety; passing CI does not establish current-patch gameplay correctness. "0" means no signed-off current-patch in-game proof, not necessarily invalid content.
 
+**Locomancer source-versus-runtime reconciliation (19 Nov 2026):** The original workbook's 91 Waypoint IDs are preserved, but legacy #90 Oriath and #91 The Templar Laboratory no longer contribute to active progress. A separate, per-character Karui Shores record brings the 89 other historical locations to **90 active reference locations**, matching the PoE Wiki. Old backups remain readable and exportable without replacing IDs. This is **source and data-structure QA only**; the actual 3.30 achievement counter, all active nodes and unlock outcome have not been reproduced in the running game.
+
 ## 3.30 patch notes review
 
 - At the original **2026-11-12** checkpoint, release had not occurred. GGG scheduled 3.30 for **2026-11-13 19:00 UTC / 2026-11-14 02:00 Bangkok**, a time that has now passed. This is an archived checkpoint, **not an in-game 3.30 validation**.
@@ -54,7 +56,7 @@ Main URL: https://zatanz.github.io/ggg/poe-all-ears/
 - [ ] Verify the 69 Act 2 rows and source risk warnings independently in-game. Do not promote earlier rows from "Wiki-matched" merely because count and order match.
 - [ ] Continue 484 dialogue checks across Acts 1–10, including missable transitions and alternative branches.
 - [ ] Validate all 140 Lore in a single character; test Letters of Exile/Library generation and campaign Vaal Side Area availability in 3.30.
-- [ ] Verify Waypoints (91) and Side Quests (30) against current game achievement counters (if available).
+- [ ] Verify the active Locomancer target against the 3.30 in-game counter (Wiki reference: 90 locations = 89 mapped historical locations + separately tracked Karui Shores; original 91 historical IDs retained solely for compatibility) and verify Side Quests (30) in-game.
 - [ ] End-to-end mobile/desktop human UX review in live GitHub Pages (automation tested, human review pending).
 - [ ] Only after all gates: promote 3.30 profile, release a stable version, and tag a corresponding evidence manifest.
 

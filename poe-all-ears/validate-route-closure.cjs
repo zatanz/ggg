@@ -97,7 +97,7 @@ for(let act=1;act<=10;act++){
  summaries.push({act,stages:phases.length,stops:actStops});
 }
 assert(stagesCount===129,"Expected 129 campaign phases; found "+stagesCount);
-assert(stopCount===61,"Expected 61 STOP stages; found "+stopCount);
+assert(stopCount===62,"Expected 62 STOP stages after Act 1 Ship Graveyard caution; found "+stopCount);
 assert(conflictCount===4,"Expected 4 source-conflict stages; found "+conflictCount);
 for(const spec of categorySpecs){
  const refs=allRefs[spec.key],unique=new Set(refs),prefix=spec.kind;
@@ -125,6 +125,9 @@ const bindingTypes={lore:25,waypoints:34,sidequests:8};
 for(const [type,n] of Object.entries(bindingTypes))assert(bindings.filter(x=>x.type===type).length===n,type+": expected "+n+" supplementary route links");
 assert(special.labyrinth.ids.length===10&&special.vaal.ids.length===16,"Lore special-area quantities must remain 10 + 16");
 assert(lookbackCount===6,"Expected 6 cross-stage STOP ID dependencies (Silk #57 and five Darkness topics), found "+lookbackCount);
+const act1=guide.acts[1];
+assert(act1.find(x=>x.id==="prisoners-gate")?.stopIds.join(",")==="31","Act 1 Prisoner's Gate source caution must prevent silent Ship Graveyard progression");
+assert(act1.find(x=>x.id==="pool")?.sidequestIds.includes(2)&&act1.find(x=>x.id==="pool")?.actions.join(" ").includes("The Flooded Depths"),"Act 1 sidequest #2 must explain how to reach The Flooded Depths");
 const hub=fs.readFileSync(path.join(dir,"hub.js"),"utf8");
 assert(hub.includes('const prior=phases.findIndex(entry=>entry.id!==phase.id&&pending.some(id=>(entry.dialogueIds||[]).includes(id)))'),"The live UI must still expose a previous-stage review button for cross-stage STOPs");
 assert(hub.includes('review.onclick=()=>goto(prior,false,"task")'),"Cross-stage STOP review button must navigate to the earlier dialogue");

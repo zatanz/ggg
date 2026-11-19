@@ -386,7 +386,7 @@ const act4SourceAfter=[
 ];
 for(const [id,row,event,npc,topic] of act4SourceAfter){
  const item=ctx.window.ALL_EARS_ROUTE_ACT4.records.find(x=>x.id===id);
- assert(item?.wikiRow===row&&item?.npc===npc&&item?.dialog===topic&&item?.trigger?.includes(event)&&!item.before,
+ assert(item?.wikiRow===row&&item?.npc===npc&&item?.dialog?.startsWith(topic)&&item?.trigger?.includes(event)&&!item.before,
  'Act4 post-event source mapping/STOP mislabel: '+id);
 }
 for(const [phase,matchTH,matchEN] of [

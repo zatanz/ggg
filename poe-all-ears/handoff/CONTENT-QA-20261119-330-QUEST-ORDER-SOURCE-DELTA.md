@@ -87,3 +87,26 @@ These are **partial-order edges**, not permission to force a single total zone r
 - [Earlier first-talk conflict resolution PR #42](https://github.com/zatanz/ggg/pull/42)
 - [Earlier editorial source correction](./CONTENT-QA-20261114-ACT2-FIRST-TALK-CONFLICT-CORRECTION.md)
 - [Tracking Issue #30](https://github.com/zatanz/ggg/issues/30)
+
+
+## 6. Act 4–10 source cross-check (19 Nov): prioritize exact state boundaries
+
+Cross-checked the same currently titled Steam 3.30 guide against the project's already-published source-led route and older PoE Wiki. This is a **source-level** cross-check, not a 3.30 client test.
+
+| Act | Stage edge to preserve in guide | Local All Ears / Waypoint references | Source status / important nuance |
+| --- | --- | --- | --- |
+| **4** | After Voll, speak to Kira about Deshret **before freeing Deshret**. Speak to Dialla about Kaom and Daresso in the Crystal Veins **before both bosses are complete**. After Piety, speak before entering Harvest; speak to Piety **without handing over organs**, then to Dialla after handing over organs but **before Malachai**. | All Ears #220, #223–224, #241, #247–248 | Steam Act 4 part 1/2 and PoE Wiki 2025; independently triggered topics, not a single “check all before boss” checkbox |
+| **4 — important source divergence** | After killing Daresso and giving Eye of Desire, Steam says review Petarus/Vanja and Tasuni topics **before entering Kaom's Dream**; PoE Wiki #231–232 instead states **before entering Belly of the Beast**. | Wiki rows #231–232 (map to canonical project IDs; verify crosswalk before editing) | **Do not silently overwrite the project's corrected Wiki boundary**. Steam's earlier boundary is a conservative route-specific order, not proof that entering Kaom's Dream destroys dialogue. Source conflict/different strictness, 3.30 HOLD |
+| **5** | Utula Justicar Casticus after fight **before Avarius**; check Waypoints Oriath Square / Templar Courts on map **before Avarius**; after Innocence, speak to Sin **before leaving Chamber of Innocence**; after taking Sign of Purity, speak to Sin **before exiting Ossuary**. | All Ears #275, #277, #295; Waypoints #44–45 | Steam Act 5 + Wiki 2025; site Act 5 waypoint guard already shipped in PR #39; possible Courts workaround ≠ safe skip |
+| **6** | After using Eye of Conquest, check Tarkleigh **before Karui Fortress**; after Shavronne, check Sin **before leaving boss area**. Following Nessa rescue, review Bestel/Tarkleigh topics earlier than Western Forest / Cavern of Anger; keep Black Flag / Beacon states separate. | Wiki #321–322 and #326–327; Bestel/Tarkleigh #332–333, Lilly #336 | Steam Act 6; PR #40 fixed order after prior misplaced Nessa step. Legacy Western Forest warning may be stricter than Wiki and is not 3.30-proven |
+| **7** | After Maligaro, speak to Sin **before leaving Sanctum**; after Greust, speak to Sin before the next zone; handle Helena Den and Yeena seven Fireflies / Arakaali separately at their own unlock states. | Wiki rows #369–370, #376 and #365/#382 | Steam Act 7; source-led route presently exists, but patch-dependent lockout severity remains HOLD |
+| **8** | After Doedre, Sin before exiting; after Wings of Vastiri, speak to Sin **then Hargan about Yugul before killing Yugul**; after Tolman, see Clarissa in The Quay; check Orbs of Sun/Moon topics before bosses. | Wiki #403, #409–410, #411–415 | Steam Act 8 and Wiki 2025 agree on Yugul subject order; take care local IDs for Clarissa/Maramoa differ from Wiki row numbers |
+| **9** | After Storm Blade, speak with Petarus/Vanja General Adus before Foothills; in Quarry, check Sin Dark Ember in the correct powder state; after Garukhan, speak to Sin before Irasha/Tasuni; record branch outcome rather than treat both as obtainable in one run. | Wiki #436, #438–445 | Steam Act 9 uses **give Irasha feather** (one branch); not proof of alternate Tasuni branch. PR #36 preserves per-character ruler choice in backups |
+| **10** | Record initial town topics, then review quest-dependent topics after Safe Passage, Death and Rebirth, and An End to Hunger; do not assume no missable topics because old route lacks a `before` field. | Local #471, #481, #482 reminders | Steam guide intro says last required dialogue is after defeating Kitava and **before Karui Shores**; project keeps post-quest reminders; 3.30 end-to-end verification missing |
+
+**Act 4 explicit source URLs:**
+- Steam (updated 16 Nov; Act 4 part 2): https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869
+- PoE Wiki (updated 30 Jun 2025; rows #231–232): https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4
+- Existing PR #15 corrected a previously overstrict deadline in favor of the Wiki: https://github.com/zatanz/ggg/pull/15
+
+**Editorial result:** All Acts 1–10 now have at least one reviewed *source-described* dependency in this ledger. That does **not** mean every individual record, all special-area lore, each route branch, or all 129 stages have been freshly certified. The immediate implementable changes are **source freshness labels and precise confidence wording**. Next full audit must compare every individual stage transition and ID against the source and game evidence; no automatic public route-order change is authorized by this document alone.

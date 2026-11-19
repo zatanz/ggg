@@ -260,12 +260,37 @@ function itemGuide(type,item){
  const note=(type==="lore"&&item.id>=32&&item.id<=35)?tr("ตรวจ Etchings on Wood I–IV ที่ The Crossroads ทีละรายการ","Check Etchings on Wood I–IV individually at The Crossroads."):notes[type+":"+item.id];
  return {original,guide:note?{...guide,location:[guide?.location,note].filter(Boolean).join(" · ")}:guide};
 }
+function reportDraft(type,id,act,phase){
+ return "Type: "+type+"\nID: "+(id??"n/a")+"\nAct: "+(act??"n/a")+"\nStep: "+(phase??"n/a")+"\nLanguage: "+LANG.get().description+"\nRevision: "+(document.querySelector('meta[name="poe-revision"]')?.content||"issue-30")+"\n\nProblem type: \nDescription (optional): \nEvidence URL (optional): ";
+}
 function reportLink(type,id,act,phase){
  const link=el("a",tr("รายงานข้อมูลผิด (ต้องเข้าสู่ระบบ GitHub)","Report an issue (GitHub login required)"),"hubReport");
  const url=new URL("https://github.com/zatanz/ggg/issues/new");
  url.searchParams.set("title","PoE companion: "+type+" "+(id??phase));
- url.searchParams.set("body","Type: "+type+"\nID: "+(id??"n/a")+"\nAct: "+(act??"n/a")+"\nStep: "+(phase??"n/a")+"\nLanguage: "+LANG.get().description+"\nRevision: "+(document.querySelector('meta[name="poe-revision"]')?.content||"issue-30")+"\n\nProblem type: \nDescription (optional): \nEvidence URL (optional): ");
+ url.searchParams.set("body",reportDraft(type,id,act,phase));
  link.href=url.toString();link.target="_blank";link.rel="noopener noreferrer";return link;
+}
+function reportCopyDraft(type,id,act,phase){
+ // Copy-only feedback: no account, character identity, or network transmission.
+ const panel=el("details",undefined,"hubFeedbackDraft");
+ panel.dataset.feedbackDraft="true";
+ panel.append(el("summary",tr("ส่งฟีดแบ็กทางอื่น · คัดลอกข้อมูลเควสต์","Share feedback elsewhere · copy quest details")));
+ const hint=el("p",tr("คัดลอกไปส่งใน Discord หรือช่องทางที่คุณเลือก ข้อมูลไม่ถูกส่งโดยอัตโนมัติ","Paste this into Discord or a channel of your choice. Nothing is submitted automatically."),"hubSubtle");
+ const draft=el("textarea");draft.readOnly=true;draft.rows=8;draft.value=reportDraft(type,id,act,phase);
+ draft.setAttribute("aria-label",tr("ข้อความรายงานที่คัดลอกได้","Copyable feedback report"));
+ const copy=el("button",tr("คัดลอกข้อความ","Copy report text"));copy.type="button";copy.dataset.copyFeedback="true";
+ const status=el("small",undefined,"hubSubtle");status.setAttribute("role","status");
+ copy.onclick=async()=>{
+  draft.focus();draft.select();
+  try{
+   if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");
+   await navigator.clipboard.writeText(draft.value);
+   status.textContent=tr("คัดลอกแล้ว · นำไปวางในช่องทางที่ต้องการ","Copied. Paste into your preferred channel.");
+  }catch(_){
+   status.textContent=tr("เลือกข้อความแล้ว · กด Cmd+C หรือ Ctrl+C เพื่อคัดลอก","Text selected. Press Cmd+C or Ctrl+C to copy.");
+  }
+ };
+ panel.append(hint,draft,copy,status);return panel;
 }
 function itemCheckbox(type,x,done,{original,guide},inlineTask){
  const box=el("input"),canonical=type==="ears"?String(x.npc).replace(/^Lily Roth/,"Lilly Roth")+" — "+x.dialog:type==="lore"&&x.id===73?"Bronze Plaque — The Just Goddess":x.name;
@@ -900,6 +925,7 @@ if(act==="9"&&phase.branchChoice){
  }
  focus.append(inline);
  focus.append(reportLink(current?.type||"quest",current?.id,act,phase.id));
+ focus.append(reportCopyDraft(current?.type||"quest",current?.id,act,phase.id));
  if(advance)confirmations.prepend(advance);
  if(confirmations.childElementCount)focus.append(confirmations);
  box.insertBefore(stageLinks,focus.nextSibling);

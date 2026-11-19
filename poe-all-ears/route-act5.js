@@ -133,7 +133,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Lani",
       "dialog": "Utula",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Utula เป็นครั้งแรก"
     },
     {
       "id": 267,
@@ -141,7 +142,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Vilenta",
       "dialog": "Utula",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Utula เป็นครั้งแรก"
     },
     {
       "id": 266,
@@ -149,7 +151,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Vilenta",
       "dialog": "Lani",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Lani เป็นครั้งแรก"
     },
     {
       "id": 272,
@@ -157,7 +160,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Utula",
       "dialog": "Lani",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Lani เป็นครั้งแรก"
     },
     {
       "id": 273,
@@ -165,7 +169,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Utula",
       "dialog": "Vilenta",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Vilenta เป็นครั้งแรก"
     },
     {
       "id": 274,
@@ -173,7 +178,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Lani",
       "dialog": "Vilenta",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังคุยกับ Vilenta เป็นครั้งแรก"
     },
     {
       "id": 275,
@@ -191,7 +197,8 @@ window.ALL_EARS_ROUTE_ACT5 = {
       "npc": "Lani",
       "dialog": "Oriath Square",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_5",
+      "trigger": "หลังเข้าสู่ The Templar Courts เป็นครั้งแรก"
     },
     {
       "id": 277,

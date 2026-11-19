@@ -59,6 +59,46 @@ const sourcedActions={
     "th": "หลังเข้าสู่ The Templar Courts ครั้งแรก ให้กลับไปคุย Lani หัวข้อ Oriath Square ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
     "en": "After entering The Templar Courts for the first time, return to Lani and hear her Oriath Square topic before marking it."
   },
+  "217": {
+    "th": "หลังทำ Breaking the Seal สำเร็จและพูดคุยกับ Lady Dialla แล้ว กลับไปฟัง Oyun: Kaom ให้จบ",
+    "en": "After completing Breaking the Seal AND talking to Lady Dialla, return to Oyun and hear Kaom before marking it."
+  },
+  "225": {
+    "th": "หลังคุย Lady Dialla ใน The Crystal Veins แล้ว กลับไปฟัง Petarus and Vanja: Daresso ที่ Highgate ให้จบ",
+    "en": "After talking to Lady Dialla in The Crystal Veins, return to Petarus and Vanja in Highgate and hear Daresso."
+  },
+  "240": {
+    "th": "หลังเข้า The Belly of the Beast ครั้งแรก กลับไปฟัง Tasuni: Ghasts ที่ Highgate แล้วจึงติ๊ก",
+    "en": "After first entering The Belly of the Beast, return to Tasuni in Highgate and hear Ghasts before marking it."
+  },
+  "242": {
+    "th": "หลังเอาชนะ Piety ใน The Belly of the Beast กลับไปฟัง Petarus and Vanja: Piety ก่อนติ๊ก",
+    "en": "After defeating Piety in The Belly of the Beast, return to Petarus and Vanja and hear Piety before marking it."
+  },
+  "244": {
+    "th": "หลังฟัง Tasuni: Malachai แล้ว ให้ฟัง Tasuni: Cataclysm ต่อ ก่อนติ๊กว่าฟังแล้ว",
+    "en": "After hearing Tasuni: Malachai, hear Tasuni: Cataclysm as a separate topic before marking it."
+  },
+  "249": {
+    "th": "หลังฆ่า Malachai แล้ว กลับ Highgate เพื่อฟัง Kira: Malachai ให้จบ",
+    "en": "After defeating Malachai, return to Highgate and hear Kira: Malachai before marking it."
+  },
+  "250": {
+    "th": "หลังฆ่า Malachai แล้ว กลับ Highgate เพื่อฟัง Petarus and Vanja: Malachai ให้จบ",
+    "en": "After defeating Malachai, return to Highgate and hear Petarus and Vanja: Malachai before marking it."
+  },
+  "251": {
+    "th": "หลังฆ่า Malachai แล้ว กลับ Highgate เพื่อฟัง Tasuni: Malachai ให้จบ เป็นคนละสถานะกับหัวข้อก่อนสู้",
+    "en": "After defeating Malachai, return to Highgate for Tasuni: Malachai, a separate post-boss dialogue state."
+  },
+  "252": {
+    "th": "หลังฆ่า Malachai แล้ว กลับ Highgate เพื่อฟัง Tasuni: Malachai's Apprentices ให้จบ เป็นคนละรายการกับหัวข้อก่อนบอส",
+    "en": "After defeating Malachai, return to Highgate and hear Tasuni: Malachai's Apprentices as a separate post-boss topic."
+  },
+  "253": {
+    "th": "หลังฆ่า Malachai แล้ว กลับ Highgate เพื่อฟัง Oyun: Malachai ให้จบ",
+    "en": "After defeating Malachai, return to Highgate and hear Oyun: Malachai before marking it."
+  },
   "332": {
     "th": "หลังพูดคุยกับ Nessa ที่ Prisoner's Gate กลับไปฟัง Bestel: The Ship Graveyard ให้จบโดยไม่อ้างว่าผ่าน The Western Forest แล้วพลาดถาวร",
     "en": "After speaking with Nessa in Prisoner's Gate, return to Bestel and hear The Ship Graveyard. The cited source does not establish an irreversible Western Forest cutoff."

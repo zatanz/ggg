@@ -616,9 +616,10 @@ assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.acts?.[stage.id]')&&c
 assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.postQuest?.[stage.id]'),'Act10 post-quest notes must use the English source text');
 assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Second Bandit you killed'),'Bandit safety selector must use the guidance language');
 
-// The Wiki names only Bestel: Brutus (#27) as an explicit pre-Brutus dialogue cutoff.
-// Nessa: Piety (#28) and Bestel: Marceus Lioneye (#29) have separate unlock triggers;
-// do not regress to an unsourced pre-boss STOP for these unrelated source rows.
+// Steam guide (retitled 3.30, updated 16 Nov) explicitly cautions not to kill Brutus
+// before Nessa: Piety (#28) and Bestel: Marceus Lioneye (#29). The Wiki describes
+// unlock triggers without stating equivalent cutoffs. Keep a conservative preboss
+// gate for #26-29 while clearly marking 3.30 gameplay lockout as unverified.
 // Legacy guidance is a fallback to the canonical route's per-ID timing. Keep it
 // consistent with the current source crosswalk so refactors do not resurrect
 // outdated hard STOPs or hard-code an arbitrary Bandit kill order.
@@ -635,10 +636,13 @@ assert(legacyGuide[365]?.[1].includes('Helena: The Den')&&!legacyGuide[365][1].s
 assert(legacyGuide[382]?.[1].includes('The Vaal City')&&!legacyGuide[382][1].startsWith('อย่าเข้า The Causeway'),'Yeena Fireflies deadline must use source-supported Vaal City contact, not a Causeway cutoff');
 assert(legacyGuide[439]?.[1].includes('Petarus and Vanja'),'Highgate ruler warning must mention both pre-decision NPC checks');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
-assert(prisonGate?.stopRule?.requiredIds.join(',')==='27','Act 1 pre-Brutus STOP must require only Bestel: Brutus local #27');
-assert(prisonGate?.ids.join(',')==='26,27,28,29','Act 1 stage must retain all 4 checklist records outside the scoped STOP');
-assert(prisonGate?.stopRule?.note.includes('ID 28')&&prisonGate.stopRule.note.includes('ID 29'),'Act 1 STOP must explain separate triggers instead of inventing permanent pre-Brutus deadlines');
-assert(checkpointLanguage.acts['a1-brutus'][2].includes('#27')&&checkpointLanguage.acts['a1-brutus'][3].includes('#28'),'Act 1 English STOP must identify the same canonical ID boundary');
+assert(prisonGate?.stopRule?.requiredIds.join(',')==='26,27,28,29','Steam 3.30 guide places four All Ears topics before Brutus; #28/#29 have explicit no-kill cautions');
+assert(prisonGate?.ids.join(',')==='26,27,28,29','Act 1 history panel must retain all original dialogue IDs');
+assert(prisonGate?.stopRule?.source.includes('steamcommunity.com/sharedfiles'),'Brutus cautious guard must cite the updated Steam guide as its source');
+assert(prisonGate?.stopRule?.note.includes('ID 28')&&prisonGate.stopRule.note.includes('ID 29')&&prisonGate.stopRule.note.includes('ไม่ใช่หลักฐานทดสอบ'),'Act 1 STOP must distinguish source advice from certified game lockout');
+assert(checkpointLanguage.acts['a1-brutus'][1].includes('#28')&&checkpointLanguage.acts['a1-brutus'][1].includes('#29')&&checkpointLanguage.acts['a1-brutus'][3].includes('no 3.30 client test'),'English Brutus warning must include both source-cautioned IDs and evidence limitation');
+assert(ctx.window.POE_STEAM_WALK?.acts?.[1]?.find(x=>x.id==='prison')?.stopIds.join(',')==='26,27,28,29','Primary Act 1 Brutus STOP must match the historical source checkpoint');
+assert(fs.readFileSync(path.join(dir,'poe-acts123-bilingual.js'),'utf8').includes('explicitly warns against the early kill'),'Primary EN Act 1 copy must retain the #28/#29 Steam warning');
 assert(checkpointData.acts[2].find(x=>x.id==='a2-darkness')?.sourceConflict?.kind==='steam-vs-wiki','Bandit timing contradiction must remain prominently visible');
 const guarded=Object.values(checkpointData.acts).flatMap(stages=>stages.filter(s=>s.stopRule));
 assert(guarded.length>=20&&guarded.every(s=>s.stopRule.requiredIds.length&&s.stopRule.requiredIds.every(id=>s.ids.includes(id))),'Stop-before quest rules must tie to real per-stage dialogue IDs');

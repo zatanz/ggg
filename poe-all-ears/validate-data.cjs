@@ -636,6 +636,14 @@ assert(legacyGuide[365]?.[1].includes('Helena: The Den')&&!legacyGuide[365][1].s
 assert(legacyGuide[382]?.[1].includes('The Vaal City')&&!legacyGuide[382][1].startsWith('อย่าเข้า The Causeway'),'Yeena Fireflies deadline must use source-supported Vaal City contact, not a Causeway cutoff');
 assert(legacyGuide[439]?.[1].includes('Petarus and Vanja'),'Highgate ruler warning must mention both pre-decision NPC checks');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
+const act1Reference=ctx.window.POE_STEAM_WALK?.acts?.[1]||[];
+const oldFields=act1Reference.find(x=>x.id==='pool');
+const shipGate=act1Reference.find(x=>x.id==='prisoners-gate');
+assert(shipGate?.stopIds.join(',')==='31'&&shipGate.stop?.includes('The Ship Graveyard'),'Steam 3.30 warns to hear Bestel: Prisoner\'s Gate before entering the Ship Graveyard');
+assert(shipGate?.stop?.includes('ไม่ใช่หลักฐาน'),'Ship Graveyard STOP must disclose lack of verified 3.30 lockout proof');
+assert(legacyGuide[31]?.[1].includes('The Ship Graveyard'),'Per-ID #31 description must not suppress the source warning');
+assert(oldFields?.sidequestIds.includes(2)&&oldFields?.actions.join(' ').includes('The Flooded Depths'),'The Dweller of the Deep must include a navigable Flooded Depths detour');
+assert(oldFields?.actionsEN?.join(' ').includes('The Flooded Depths'),'English sidequest directions must match Thai Act 1 route');
 assert(prisonGate?.stopRule?.requiredIds.join(',')==='26,27,28,29','Steam 3.30 guide places four All Ears topics before Brutus; #28/#29 have explicit no-kill cautions');
 assert(prisonGate?.ids.join(',')==='26,27,28,29','Act 1 history panel must retain all original dialogue IDs');
 assert(prisonGate?.stopRule?.source.includes('steamcommunity.com/sharedfiles'),'Brutus cautious guard must cite the updated Steam guide as its source');

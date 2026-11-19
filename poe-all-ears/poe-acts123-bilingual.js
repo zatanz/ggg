@@ -38,9 +38,10 @@ const translated={
       "STOP: " + window.POE_APPROVED_GUIDANCE.undeadRhoas.stopEN + ", or insert glyphs before Tarkleigh's Strange Glyphs and Glyph Wall topics."
     ],
     "pool": [
-      "A Dirty Job · check dialogues after the quest",
+      "A Dirty Job and The Dweller of the Deep · complete both sidequests",
       [
-        "Complete A Dirty Job by defeating the necromancer, then talk to Tarkleigh.",
+        "Complete A Dirty Job in the Fetid Pool by defeating the necromancer, then talk to Tarkleigh.",
+        "From the Submerged Passage, detour into The Flooded Depths and defeat The Deep Dweller; return to Tarkleigh for the passive point reward. This is No Loose Ends sidequest #2.",
         "Check Bestel: Surviving Wraeclast and Tarkleigh: Goatmen when their topics become available."
       ],
       null
@@ -56,12 +57,12 @@ const translated={
       "STOP: check #26–29 before killing Brutus; the 3.30 Steam guide explicitly warns against killing him before #28 and #29. Not independently gameplay-certified."
     ],
     "prisoners-gate": [
-      "After Brutus · revisit town",
+      "After Brutus · speak to Bestel before entering the Ship Graveyard",
       [
-        "After defeating Brutus, return to town and ask Nessa about Brutus.",
-        "After seeing Piety block the Western Forest route, hear Bestel: Prisoner's Gate."
+        "After defeating Brutus, return to Lioneye's Watch and hear Nessa: Brutus (#30).",
+        "After seeing Piety block the Western Forest route, return to Bestel for Prisoner's Gate (#31) BEFORE entering the Ship Graveyard; the updated Steam 3.30 guide explicitly recommends this order."
       ],
-      null
+      "STOP: before entering the Ship Graveyard, hear Bestel: Prisoner's Gate (#31) after Piety blocks the way. This is a conservative source precaution, not a certified irreversible 3.30 game-client lockout."
     ],
     "fairgraves": [
       "Fairgraves · finish the dialogue sequence before the Allflame",

@@ -154,9 +154,12 @@ window.POE_STEAM_WALK = {
           "อ่าน Shavronne's Journal ใน The Upper Prison แล้วตรวจ Bestel: Marceus Lioneye",
           "ฟัง Bestel: Brutus ก่อนสู้ Brutus"
         ],
-        "stop": "ยังไม่ควรฆ่า Brutus ก่อนฟัง Bestel: Brutus (ID 27)",
+        "stop": "ก่อนฆ่า Brutus ตรวจบทสนทนา #26–29 ให้ครบตามคู่มือ Steam ฉบับ 3.30: หลังพบ Piety ต้องกลับฟัง Nessa: Piety (#28) และหลังอ่าน Shavronne’s Journal ต้องกลับฟัง Bestel: Marceus Lioneye (#29) โดย Steam เตือนชัดว่าอย่าฆ่า Brutus ก่อนเก็บสองหัวข้อนี้; ยังไม่ได้ยืนยันในเกม 3.30 ว่าพลาดถาวรจริง",
         "stopIds": [
-          27
+          26,
+          27,
+          28,
+          29
         ],
         "confidence": "historical",
         "visual": {

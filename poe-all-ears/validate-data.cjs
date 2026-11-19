@@ -184,7 +184,7 @@ assert(act9Route.records.every(x=>act9Items.some(y=>y.id===x.id&&y.npc===x.npc&&
 const byAct9Id=new Map(act9Route.records.map(x=>[x.id,x]));
 assert(act9Inventory.records.every(x=>x.wikiRow===byAct9Id.get(x.id)?.wikiRow&&x.patchEvidence===null&&x.reviewStatus==='wiki-row-matched-patch-unverified'),'Act 9 inventory mapping drift');
 assert(act9Route.routeSafe===false&&act9Route.patch==='unverified','Act 9 not patch certified');
-assert(act9Route.records.filter(x=>x.before).length===4,'Act 9 warnings count drift');
+assert(act9Route.records.filter(x=>x.before).length===5,'Act 9 warnings count drift');
 assert(act9Route.records.find(x=>x.wikiRow===421)?.id===422,'Act 9 old gods order mismatch');
 assert(act9Route.records.find(x=>x.wikiRow===441)?.id===443,'Act 9 feather branch order mismatch');
 assert(act9Route.branch.options.length===2&&act9Route.branch.options[1].row441.id===null,'Act 9 mutually exclusive ruler variant must not claim legacy ID');
@@ -706,7 +706,7 @@ for(const [act,list] of Object.entries(checkpointData.acts)){
   }
  }
 }
-assert(stepRows===72,'Critical checkpoint crosswalk must cover 72 explicit source-linked dialogue references');
+assert(stepRows===73,'Critical checkpoint crosswalk must cover 73 explicit source-linked dialogue references');
 const checkpointSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
 assert(checkpointSource.includes('const sorted=[...stages];')&&!checkpointSource.includes('Number(b.priority==="critical")'),'Urgency must not reorder checkpoint progression');
 assert(checkpointSource.includes('hubCheckpointRowTrigger')&&checkpointSource.includes('hubCheckpointRowWarning'),'Per-dialogue unlock timing and warnings must be visible in expanded stage');
@@ -783,7 +783,7 @@ for(let act=1;act<=10;act++){
    auditedEnglishRiskRows.push(item.id);
  }
 }
-assert(auditedEnglishRiskRows.length===62,'All 62 historical source-flagged warnings must retain English context across ten Acts');
+assert(auditedEnglishRiskRows.length===63,'All 63 historical source-flagged warnings must retain English context across ten Acts');
 const warnings=route.records.filter(x=>x.before);
 console.log(JSON.stringify({items:d.items.length,actCounts:expected,routeRows:route.records.length,warningRows:warnings.length,patches:patches.profiles.map(p=>({id:p.id,status:p.status})),errors},null,2));
 if(errors.length)process.exitCode=1;

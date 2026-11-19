@@ -681,7 +681,7 @@ window.POE_STEAM_WALK = {
         "loreIds": [],
         "actions": [
           "ระหว่างเดิน Sewers ตรวจบทสนทนาของ Clarissa ตามเงื่อนไขที่เปิด",
-          "เมื่อพบ Undying Blockage ให้กลับคุย Maramoa: Crossing the River (ID 140) ก่อนเข้า The Marketplace ตามคำเตือนคู่มือ Steam 3.30; เป็นข้อควรระวัง ไม่ใช่หลักฐานยืนยันจุดพลาดถาวรในเกม"
+          "เมื่อพบ Undying Blockage ให้กลับคุย Maramoa: Crossing the River (ID 140) ก่อนเข้า The Marketplace ตามคำเตือนคู่มือ Steam 3.30; เป็นข้อควรระวัง ไม่ใช่หลักฐานยืนยันจุดพลาดถาวรในเกม",
           "หัวข้ออื่นในช่วง #132–139 อาจเปิดเมื่อเข้าพื้นที่ถัดไป ให้ตรวจตามเกม ไม่จำเป็นต้องปลดทุกหัวข้อก่อนจุดกั้น"
         ],
         "stop": "อย่าเข้า The Marketplace ก่อนฟัง Maramoa: Crossing the River (ID 140) หลังพบ Undying Blockage ใน Sewers ตามคำเตือน Steam Guide ฉบับ 3.30; ยังไม่ผ่านการทดสอบยืนยันจุดพลาดถาวรในเกม 3.30",

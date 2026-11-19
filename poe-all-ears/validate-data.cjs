@@ -642,6 +642,10 @@ assert(utula?.stop?.includes('Oriath Square')&&utula?.sourceNote?.includes('PoE 
 const helena=ctx.window.POE_STEAM_WALK?.acts?.[7]?.find(x=>x.id==='den-before');
 assert(helena?.stop?.includes('Fellshrine Ruins')&&helena?.sourceNoteEN?.includes('Wiki'),'Helena #365 must retain the earlier Steam deadline with explicit uncertainty');
 assert(legacyGuide[365]?.[1].includes('Fellshrine Ruins'),'Legacy Helena #365 per-dialogue text must preserve conservative source boundary');
+const oasisStage=ctx.window.POE_STEAM_WALK?.acts?.[9]?.find(x=>x.id==='oasis-sandstorm');
+assert(oasisStage?.stopIds.join(',')==='437'&&oasisStage.stop.includes('The Foothills'),'Steam 3.30 caution for Sin Queen of the Sands must guard before Foothills');
+assert(oasisStage?.stopEN?.startsWith('STOP:')&&oasisStage.sourceNoteEN.includes('not independently 3.30-tested'),'Act 9 Sin #437 must have English caution and game-certification caveat');
+assert(ctx.window.ALL_EARS_ROUTE_ACT9.records.find(x=>x.id===437)?.before?.includes('The Foothills'),'Act 9 source metadata needs the Sin #437 pre-Foothills edge');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
 const act1Reference=ctx.window.POE_STEAM_WALK?.acts?.[1]||[];
 const sewerStop=ctx.window.POE_STEAM_WALK?.acts?.[3]?.find(x=>x.id==='sewer-blockage');

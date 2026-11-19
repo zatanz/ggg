@@ -665,7 +665,8 @@ function actSteamGuide(act){
   // Acknowledging a source conflict is not an achievement mark or a completed quest.
   // Do not present the review as 1/1 progress or an achievement progress meter.
   status.dataset.sourceReview=questConfirmed?"acknowledged":"pending";
-  status.append(el("strong",tr("ตรวจคำเตือน: ","Source review: ")+(questConfirmed?tr("อ่านและรับทราบแล้ว","Acknowledged"):tr("ยังไม่ได้รับทราบ","Not acknowledged")));
+  const reviewLabel=questConfirmed?tr("อ่านและรับทราบแล้ว","Acknowledged"):tr("ยังไม่ได้รับทราบ","Not acknowledged");
+  status.append(el("strong",tr("ตรวจคำเตือน: ","Source review: ")+reviewLabel));
   status.append(el("small",tr("ไม่ใช่การยืนยันว่าเควสต์สำเร็จหรือเก็บ All Ears ครบ","This does not mean the quest or All Ears is complete"),"hubSubtle"));
  }else{
   status.append(el("strong",tr("รายการติ๊กแล้ว ","Checklist marked ")+phaseDone+" / "+phaseTotal));

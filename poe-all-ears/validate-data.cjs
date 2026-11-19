@@ -103,6 +103,19 @@ assert(act5Inventory.records.every(x=>x.wikiRow===byAct5Id.get(x.id)?.wikiRow&&x
 assert(act5Route.routeSafe===false&&act5Inventory.routeSafe===false&&act5Inventory.patchCertified===false,'Act 5 cannot claim safe certified route');
 assert(act5Route.records.filter(x=>x.before).length===3,'Act 5 must have three critical warnings');
 assert(act5Route.records.find(x=>x.wikiRow===270)?.id===267,'Act 5 first Vilenta/Utula mapping wrong');
+// Act 5: source row is the unlock prerequisite, not an invented pre-quest STOP.
+const act5CrossContact=[
+ [264,269,"Utula","Lani"],[267,270,"Utula","Vilenta"],
+ [266,271,"Lani","Vilenta"],[272,272,"Lani","Utula"],
+ [273,273,"Vilenta","Utula"],[274,274,"Vilenta","Lani"],
+ [276,276,"The Templar Courts","Lani"]
+];
+for(const [id,wikiRow,condition,npc] of act5CrossContact){
+ const record=act5Route.records.find(x=>x.id===id);
+ assert(record?.wikiRow===wikiRow&&record.npc===npc&&record.trigger?.includes(condition)&&!record.before,
+  'Act 5 source-only cross-NPC unlock must not introduce a fake STOP: '+id);
+}
+assert(act5Route.records.filter(x=>x.before).length===3,'Act 5 real STOP count remains three after cross-NPC QA');
 assert(act5Route.records.find(x=>x.wikiRow===278)?.id===278,'Act 5 post-Innocence Vilenta/Utula mapping wrong');
 assert(act5Route.records.find(x=>x.wikiRow===275)?.before.includes('Avarius'),'Act 5 Utula disappearance warning missing');
 assert(act5Route.records.find(x=>x.wikiRow===277)?.before.includes('Chamber'),'Act 5 Sin/Innocence warning missing');
@@ -379,6 +392,15 @@ assert(sameExactSet(actFiveWp,extras.waypoints.filter(x=>x.act===5).map(x=>x.id)
 assert(sameExactSet(actFiveSide,extras.sidequests.filter(x=>x.act===5).map(x=>x.id)),'Act 5 two optional quests must appear once');
 assert(actFive.every(p=>p.id&&p.place&&p.quest&&p.heading&&p.headingEN&&p.actions.length===p.actionsEN.length&&p.actionsEN.length>0&&(p.stopIds||[]).every(id=>p.dialogueIds.includes(id))),'Act 5 must contain reviewed Thai/English steps and proper STOP IDs');
 assert(actFive.find(p=>p.id==='casticus-return')?.stopIds.includes(275),'Act 5 must protect Utula after Casticus but before Avarius');
+const towerSource=actFive.find(p=>p.id==='tower-intros'),courtSource=actFive.find(p=>p.id==='oriath-courts');
+assert(towerSource?.actions.some(x=>x.includes('Lani: Utula')&&x.includes('Vilenta: Utula'))&&
+ towerSource?.actions.some(x=>x.includes('Utula: Vilenta')&&x.includes('Lani: Vilenta'))&&
+ towerSource?.actionsEN.some(x=>x.includes('Lani: Utula')&&x.includes('Vilenta: Utula'))&&
+ towerSource?.actionsEN.some(x=>x.includes('Utula: Vilenta')&&x.includes('Lani: Vilenta')),
+ 'Act 5 tower instructions must show source-first NPC introductions in TH/EN');
+assert(courtSource?.actions.some(x=>x.includes('The Templar Courts')&&x.includes('ID 276'))&&
+ courtSource?.actionsEN.some(x=>x.includes('The Templar Courts')&&x.includes('#276')),
+ 'Act 5 Lani: Oriath Square must unlock after first Templar Courts entry, not Square arrival');
 assert(sameExactSet(actFive.find(p=>p.id==='oriath-courts')?.stopWaypointIds||[],[44,45])&&actFive.find(p=>p.id==='oriath-courts')?.stopEN.includes('Avarius')&&actFive.find(p=>p.id==='oriath-courts')?.sourceNoteEN.includes('PoE Wiki'),'Act 5 must warn about both Waypoints becoming missable after Avarius');
 assert(actFive.flatMap(p=>p.stopWaypointIds||[]).every(id=>actFiveWp.includes(id)),'Act 5 STOP Waypoints must use canonical Act 5 IDs');
 assert(actFive.find(p=>p.id==='innocence-sin')?.stopIds.includes(277),'Act 5 must protect Sin before leaving Chamber of Innocence');
@@ -759,6 +781,15 @@ for(const [type,records] of Object.entries({ears:d.items,lore:lore.entries,waypo
  }
 }
 assert(descChecked===745,'Expected contextual help for all 745 entries');
+for(const [id,,sourceCondition,npc] of act5CrossContact){
+ const item=d.items.find(x=>x.id===id),guide=descriptions.get('ears',item);
+ const english=locale.englishHelp('ears',item,guide);
+ assert(guide.action.includes(sourceCondition)&&guide.action.includes(npc)&&
+  english.action.includes(sourceCondition)&&english.action.includes(npc),
+  'Act 5 per-ID TH/EN action must name exact NPC and source prerequisite: '+id);
+ assert(guide.caution===''&&!english.caution.startsWith('STOP'),
+  'Act 5 source-only unlock must not create an unsupported permanent risk: '+id);
+}
 for(const [id,expected] of [[145,"Chitus' Plum"],[147,"The Solaris Temple"],[149,"Lady Dialla"],[151,"The Gemling Queen"],[154,"Ribbon Spool"],[155,"Thaumetic Sulphite"],[332,"Prisoner's Gate"]]){
  const item=d.items.find(x=>x.id===id),guide=descriptions.get('ears',item),english=locale.englishHelp('ears',item,guide);
  assert(guide.action.includes(expected)&&english.action.includes(expected),'Bilingual source-linked action missing for ID '+id);

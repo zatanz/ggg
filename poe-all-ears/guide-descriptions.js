@@ -31,6 +31,34 @@ const sourcedActions={
     "th": "หลังส่ง Thaumetic Sulphite ให้ Lady Dialla แล้ว ฟัง Lady Dialla: Infernal Talc ให้จบ",
     "en": "After GIVING Thaumetic Sulphite to Lady Dialla, hear her Infernal Talc topic before marking it."
   },
+  "264": {
+    "th": "หลังคุยกับ Utula ครั้งแรก ให้กลับไปคุย Lani หัวข้อ Utula ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Utula for the first time, return to Lani, hear her Utula topic, and only then mark it collected."
+  },
+  "266": {
+    "th": "หลังคุยกับ Lani ครั้งแรก ให้กลับไปคุย Vilenta หัวข้อ Lani ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Lani for the first time, return to Vilenta and hear her Lani topic before marking it."
+  },
+  "267": {
+    "th": "หลังคุยกับ Utula ครั้งแรก ให้กลับไปคุย Vilenta หัวข้อ Utula ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Utula for the first time, return to Vilenta and hear her Utula topic before marking it."
+  },
+  "272": {
+    "th": "หลังคุยกับ Lani ครั้งแรก ให้กลับไปคุย Utula หัวข้อ Lani ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Lani for the first time, return to Utula and hear his Lani topic before marking it."
+  },
+  "273": {
+    "th": "หลังคุยกับ Vilenta ครั้งแรก ให้กลับไปคุย Utula หัวข้อ Vilenta ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Vilenta for the first time, return to Utula and hear his Vilenta topic before marking it."
+  },
+  "274": {
+    "th": "หลังคุยกับ Vilenta ครั้งแรก ให้กลับไปคุย Lani หัวข้อ Vilenta ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After speaking with Vilenta for the first time, return to Lani and hear her Vilenta topic before marking it."
+  },
+  "276": {
+    "th": "หลังเข้าสู่ The Templar Courts ครั้งแรก ให้กลับไปคุย Lani หัวข้อ Oriath Square ให้จบ ก่อนติ๊กว่าเก็บแล้ว",
+    "en": "After entering The Templar Courts for the first time, return to Lani and hear her Oriath Square topic before marking it."
+  },
   "332": {
     "th": "หลังพูดคุยกับ Nessa ที่ Prisoner's Gate กลับไปฟัง Bestel: The Ship Graveyard ให้จบโดยไม่อ้างว่าผ่าน The Western Forest แล้วพลาดถาวร",
     "en": "After speaking with Nessa in Prisoner's Gate, return to Bestel and hear The Ship Graveyard. The cited source does not establish an irreversible Western Forest cutoff."

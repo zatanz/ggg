@@ -71,13 +71,15 @@
     "sidequestIds": [],
     "actions": [
       "เปิด Waypoint Overseer's Tower แล้วคุย Lani และ Vilenta พร้อมกลับไปฟัง Utula",
-      "เก็บ Introduction และหัวข้อข้ามตัวละคร Lani, Vilenta, Utula ตามที่ปลดล็อก",
+      "เริ่มคุย Utula ก่อน แล้วกลับฟัง Lani: Utula (ID 264) และ Vilenta: Utula (ID 267)",
+      "เริ่มคุย Lani แล้วกลับฟัง Vilenta: Lani (ID 266) และ Utula: Lani (ID 272); จากนั้นเริ่มคุย Vilenta แล้วกลับฟัง Utula: Vilenta (ID 273) กับ Lani: Vilenta (ID 274)",
       "ฟัง Vilenta: Piety ก่อน Vilenta: Research (ID 271) ซึ่งเป็นหัวข้อที่เปิดภายหลัง"
     ],
     "actionsEN": [
       "Activate the Overseer's Tower Waypoint and talk to Lani and Vilenta; return to Utula when new topics appear.",
-      "Collect the cross-NPC topics about Lani, Vilenta and Utula.",
-      "Listen to Vilenta's Piety topic before checking Research (ID 271), which unlocks afterward."
+      "Speak to Utula first; then revisit Lani: Utula (#264) and Vilenta: Utula (#267).",
+      "Speak to Lani first; revisit Vilenta: Lani (#266) and Utula: Lani (#272). Then speak to Vilenta; revisit Utula: Vilenta (#273) and Lani: Vilenta (#274).",
+      "Listen to Vilenta's Piety topic before checking Research (#271), which unlocks afterward."
     ],
     "stop": null,
     "stopEN": null,
@@ -139,12 +141,12 @@
     "sidequestIds": [],
     "actions": [
       "เข้าใกล้ Waypoint ที่ Oriath Square (#44) และ The Templar Courts (#45) ให้ระบบเปิด แล้วตรวจไอคอนในแผนที่โลก (U)",
-      "เก็บ Lani: Oriath Square (ID 276) ระหว่างเดินเรื่อง Death to Purity",
+      "หลังเข้า The Templar Courts ครั้งแรก ให้กลับไปฟัง Lani: Oriath Square (ID 276) จนจบ ไม่ต้องสมมติว่าหัวข้อนี้เปิดทันทีที่เข้า Oriath Square",
       "ตรวจว่า Waypoint ทั้ง 2 จุดและบทสนทนา Utula หลัง Casticus ครบก่อนฆ่า High Templar Avarius"
     ],
     "actionsEN": [
       "Approach the Oriath Square (#44) and The Templar Courts (#45) Waypoints, then verify both are active on the world map (U).",
-      "Check Lani: Oriath Square (ID 276) while progressing Death to Purity.",
+      "After first entering The Templar Courts, return to Lani and hear Oriath Square (#276); do not assume the dialogue unlocked as soon as you first entered Oriath Square.",
       "Verify both Waypoints and the post-Casticus Utula dialogue before defeating High Templar Avarius."
     ],
     "stop": "ก่อนฆ่า High Templar Avarius: ต้องเปิดและตรวจ Waypoint #44 Oriath Square กับ #45 The Templar Courts ทั้งสองจุด · หลังสู้บอสพื้นที่จะเปลี่ยน",

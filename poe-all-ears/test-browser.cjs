@@ -36,6 +36,49 @@ async function verifyQuestSelectorAndSkippedRisk(browser,url){
  }finally{await context.close();}
 }
 
+async function verifyAct5FirstContactSource(browser,url){
+ const context=await browser.newContext({viewport:{width:390,height:844}});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  const rows=await page.evaluate(()=>{
+   const ids=[264,267,266,272,273,274,276];
+   return ids.map(id=>{
+    const item=window.ALL_EARS_DATA.items.find(x=>x.id===id);
+    const guide=window.POE_ITEM_DESCRIPTIONS.get('ears',item);
+    const english=window.POE_LANGUAGE.englishHelp('ears',item,guide);
+    return {id,npc:item.npc,th:guide.action,en:english.action,caution:guide.caution};
+   });
+  });
+  const expected=[
+   [264,'Lani','Utula'],[267,'Vilenta','Utula'],
+   [266,'Vilenta','Lani'],[272,'Utula','Lani'],
+   [273,'Utula','Vilenta'],[274,'Lani','Vilenta'],
+   [276,'Lani','The Templar Courts']
+  ];
+  for(const [id,npc,condition] of expected){
+   const item=rows.find(x=>x.id===id);
+   assert.equal(item.npc,npc,'canonical NPC unchanged: '+id);
+   assert.match(item.th,new RegExp(condition),'Thai unlock instruction names source event: '+id);
+   assert.match(item.en,new RegExp(condition),'English unlock instruction names source event: '+id);
+   assert.equal(item.caution,'','historical first-contact unlock is not an unsupported STOP: '+id);
+  }
+  await page.locator('#hubCampaignAct').selectOption('5');
+  let phases=page.locator('[data-steam-act="5"] .hubWalkNavigator select');
+  await phases.selectOption('1');
+  const tower=page.locator('[data-phase="tower-intros"] .hubWalkInstructions');
+  await tower.locator('summary').click();
+  const copy=await tower.innerText();
+  assert.match(copy,/Lani: Utula/,'Tower stage explains the return to Lani after first Utula contact');
+  assert.match(copy,/Utula: Vilenta/,'Tower stage explains the return to Utula after first Vilenta contact');
+  await phases.selectOption('3');
+  const court=page.locator('[data-phase="oriath-courts"] .hubWalkInstructions');
+  await court.locator('summary').click();
+  assert.match(await court.innerText(),/หลังเข้า The Templar Courts ครั้งแรก/,'Lani Oriath Square unlock starts after Templar Courts entry');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true,'new stage guidance fits a narrow mobile viewport');
+ }finally{await context.close();}
+}
+
 async function verifySourceUnlockCorrections(browser,url){
  const context=await browser.newContext({viewport:{width:390,height:844}});
  try{
@@ -392,6 +435,7 @@ async function verifyAct2PreSealConflict(browser,url){
  await verifyQuestSelectorAndSkippedRisk(browser,url);
  await verifyEditorialGuidance(browser,url);
  await verifySourceUnlockCorrections(browser,url);
+ await verifyAct5FirstContactSource(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
  await verifyKaruiShoresSupplement(browser,url);
  await verifyAct2PreSealConflict(browser,url);

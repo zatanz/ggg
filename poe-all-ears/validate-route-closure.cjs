@@ -97,7 +97,7 @@ for(let act=1;act<=10;act++){
  summaries.push({act,stages:phases.length,stops:actStops});
 }
 assert(stagesCount===129,"Expected 129 campaign phases; found "+stagesCount);
-assert(stopCount===63,"Expected 63 STOP stages after Act 3 Maramoa Marketplace caution; found "+stopCount);
+assert(stopCount===64,"Expected 64 STOP stages including Act 5 pre-Torched Bannon guard; found "+stopCount);
 assert(conflictCount===4,"Expected 4 source-conflict stages; found "+conflictCount);
 for(const spec of categorySpecs){
  const refs=allRefs[spec.key],unique=new Set(refs),prefix=spec.kind;
@@ -125,6 +125,12 @@ const bindingTypes={lore:25,waypoints:34,sidequests:8};
 for(const [type,n] of Object.entries(bindingTypes))assert(bindings.filter(x=>x.type===type).length===n,type+": expected "+n+" supplementary route links");
 assert(special.labyrinth.ids.length===10&&special.vaal.ids.length===16,"Lore special-area quantities must remain 10 + 16");
 assert(lookbackCount===6,"Expected 6 cross-stage STOP ID dependencies (Silk #57 and five Darkness topics), found "+lookbackCount);
+const bannon=guide.acts[5]?.find(x=>x.id==="bannon-chamber");
+assert(bannon?.stopIds.join(",")==="283"&&bannon.stop.includes("The Torched Courts"),"Bannon #283 must be checked before Torched Courts per Steam");
+const utula=guide.acts[5]?.find(x=>x.id==="casticus-return");
+assert(utula?.stopIds.join(",")==="275"&&utula.stop.includes("Oriath Square"),"Conservative pre-Oriath Square Utula #275 gate missing");
+const helena=guide.acts[7]?.find(x=>x.id==="den-before");
+assert(helena?.stopIds.join(",")==="365"&&helena.stop.includes("Fellshrine Ruins"),"Conservative pre-Fellshrine Helena #365 gate missing");
 const act3Sewer=guide.acts[3]?.find(x=>x.id==="sewer-blockage");
 assert(act3Sewer?.stopIds.join(",")==="140"&&act3Sewer.stop.includes("The Marketplace"),"Act3 sewer-blockage must guard before entering Marketplace per Steam");
 const act1=guide.acts[1];

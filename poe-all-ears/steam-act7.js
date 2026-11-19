@@ -272,29 +272,29 @@ guide.acts[7]=[
     "sidequestIds": [],
     "actions": [
       "เมื่อพบทางกลับ The Forest Encampment เดิมถูกปิด ให้กลับไปคุย Helena หัวข้อ The Den (ID 365)",
-      "เมื่อพบทางกลับ Forest Encampment เดิมถูกปิด ให้ฟัง Helena: The Den (ID 365) ก่อนเดินต่อสู่ The Den",
+      "เมื่อพบทางกลับ Forest Encampment ถูกปิด ให้ฟัง Helena: The Den (ID 365) ก่อนเข้า The Fellshrine Ruins ตาม Steam 3.30 ซึ่งเร็วกว่า Wiki ที่เตือนก่อน The Den",
       "คำเตือน Fellshrine จากฐานข้อมูลเดิมยังไม่ยืนยันว่าเพียงเข้า Fellshrine ทำให้บทสนทนาหายใน 3.29"
     ],
     "actionsEN": [
       "After discovering the blocked route to the old Forest Encampment, return to Helena for The Den (Wiki row #365).",
-      "After finding the blocked route, hear Helena: The Den (ID 365) before continuing toward The Den.",
+      "After finding the blocked route, hear Helena: The Den (#365) BEFORE entering The Fellshrine Ruins per Steam 3.30; Wiki gives the later pre-Den deadline.",
       "The legacy Fellshrine warning is not proof that entering Fellshrine removes the topic in 3.29."
     ],
-    "stop": "หยุดหลังพบเส้นทางถูกปิด: คุย Helena: The Den (ID 365) ก่อนเดินต่อสู่ The Den",
-    "stopEN": "STOP: after finding the blocked route, hear Helena: The Den (ID 365) before continuing toward The Den.",
+    "stop": "หลังพบทางถูกปิด ให้กลับคุย Helena: The Den (ID 365) ก่อนเข้า The Fellshrine Ruins ตาม Steam 3.30; PoE Wiki เตือนก่อน The Den ยังไม่มีการยืนยันการพลาดถาวรในเกมจริง",
+    "stopEN": "STOP: after the blocked path, hear Helena: The Den (#365) BEFORE entering The Fellshrine Ruins per Steam 3.30; Wiki gives a later pre-Den caution. Current game lockout is unverified.",
     "stopIds": [
       365
     ],
     "keyItems": [],
-    "sourceNote": "ข้อมูลเดิม #365 เตือนก่อน The Fellshrine Ruins ขณะที่ PoE Wiki ปี 2025 เตือนก่อนมุ่งหน้า The Den ไม่มีหลักฐานในเกม 3.29 ว่าเข้าพื้นที่ Fellshrine แล้วหัวข้อหายทันที",
-    "sourceNoteEN": "Legacy #365 warns before entering The Fellshrine Ruins; the 2025 Wiki warns before proceeding toward The Den. No 3.29 gameplay reproduction proves the dialogue disappears on entering Fellshrine.",
+    "sourceNote": "Steam Guide ฉบับ 3.30 เตือนชัดก่อนเข้า The Fellshrine Ruins ขณะที่ PoE Wiki 2025 ให้คุยก่อนมุ่งสู่ The Den; ใช้คำเตือนก่อนเข้าพื้นที่แบบระมัดระวัง ไม่ยืนยันว่าเกม 3.30 มีจุดพลาดถาวรนี้จริง",
+    "sourceNoteEN": "Updated Steam 3.30 guide warns before The Fellshrine Ruins, while 2025 Wiki warns before The Den. The earlier precaution is conservative, not a demonstrated permanent 3.30 game lockout.",
     "confidence": "historical-source-only",
     "visual": {
       "asset": "./assets/act7-den-helena-stop.svg",
       "title": "The Master of a Million Faces · STOP before The Den",
       "alt": "ภาพจำลองลำดับเควสต์ The Master of a Million Faces แสดงบทสนทนาสำคัญที่ต้องตรวจ ไม่ใช่ภาพหน้าจอเกมจริง",
-      "check": "หลังเห็นทางไป Forest Encampment เดิมถูกปิด ต้องคุย Helena: The Den (ID 365) ก่อนเข้า The Den",
-      "checkEN": "After finding the blocked route to the old Forest Encampment, speak to Helena: The Den (ID 365) BEFORE entering The Den.",
+      "check": "หลังพบทางกลับ Forest Encampment ถูกปิด ต้องฟัง Helena: The Den (ID 365) ก่อนเข้า The Fellshrine Ruins ตาม Steam 3.30",
+      "checkEN": "After finding the blocked route to old Forest Encampment, speak to Helena: The Den (#365) before entering The Fellshrine Ruins per Steam 3.30.",
       "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_7",
       "status": "mock-not-in-game"
     }

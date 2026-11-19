@@ -21,6 +21,8 @@ jobs:
         run: node poe-all-ears/validate-data.cjs
       - name: Validate interface scripts and route wiring
         run: node poe-all-ears/validate-ui.cjs
+      - name: Validate all 129 route stages, source IDs, STOP dependencies and special areas
+        run: node poe-all-ears/validate-route-closure.cjs
   browser-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -123,12 +123,12 @@ for(let act=1;act<=10;act++){
   }
  }
 }
-assert(sourceDeadlines===62,"Expected 62 known canonical before/deadline records; found "+sourceDeadlines);
-assert(sourceDeadlinesDirectlyGuarded===58,"Expected 58 source deadlines protected by per-ID STOP checks; found "+sourceDeadlinesDirectlyGuarded);
+assert(sourceDeadlines===63,"Expected 63 known canonical before/deadline records including Act 9 Sin #437; found "+sourceDeadlines);
+assert(sourceDeadlinesDirectlyGuarded===59,"Expected 59 source deadlines protected by per-ID STOP checks; found "+sourceDeadlinesDirectlyGuarded);
 assert(foundBranchExceptions.size===expectedBranchExceptions.size&&[...expectedBranchExceptions].every(key=>foundBranchExceptions.has(key)),
  "Only the four documented conditional Act 2 Bandit source IDs may be unguarded");
 assert(stagesCount===129,"Expected 129 campaign phases; found "+stagesCount);
-assert(stopCount===64,"Expected 64 STOP stages including Act 5 pre-Torched Bannon guard; found "+stopCount);
+assert(stopCount===65,"Expected 65 STOP stages including Act 9 Sin Queen of the Sands guard; found "+stopCount);
 assert(conflictCount===4,"Expected 4 source-conflict stages; found "+conflictCount);
 for(const spec of categorySpecs){
  const refs=allRefs[spec.key],unique=new Set(refs),prefix=spec.kind;
@@ -156,6 +156,8 @@ const bindingTypes={lore:25,waypoints:34,sidequests:8};
 for(const [type,n] of Object.entries(bindingTypes))assert(bindings.filter(x=>x.type===type).length===n,type+": expected "+n+" supplementary route links");
 assert(special.labyrinth.ids.length===10&&special.vaal.ids.length===16,"Lore special-area quantities must remain 10 + 16");
 assert(lookbackCount===6,"Expected 6 cross-stage STOP ID dependencies (Silk #57 and five Darkness topics), found "+lookbackCount);
+const oasis=guide.acts[9]?.find(x=>x.id==="oasis-sandstorm");
+assert(oasis?.stopIds.join(",")==="437"&&oasis.stop.includes("The Foothills"),"Act9 Sin #437 must be heard before entering the Foothills per updated Steam");
 const fatherOfWar=guide.acts[6]?.find(x=>x.id==="karui-intro");
 assert(fatherOfWar?.stopIds.join(",")==="318,320"&&fatherOfWar.stop.includes("Eye of Conquest"),"Act6 must guard Sin #318 before Eye of Conquest, Bestel #320 before Tukohama");
 const bannon=guide.acts[5]?.find(x=>x.id==="bannon-chamber");

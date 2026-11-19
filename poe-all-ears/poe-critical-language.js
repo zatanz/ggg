@@ -217,10 +217,10 @@ const lang={
       "The source specifies a sequence: Sin first and Hargan afterwards."
     ],
     "a9-adus": [
-      "The Storm Blade · hear General Adus before Foothills",
-      "After handing in The Storm Blade, hear Petarus and Vanja: General Adus BEFORE entering The Foothills.",
-      "Entering The Foothills before the General Adus topic",
-      "The topic unlocks after the quest turn-in, not on first entering the desert."
+      "Act 9 · check General Adus and Queen of the Sands before Foothills",
+      "After turning in The Storm Blade, hear Petarus and Vanja: General Adus (#436). After seeing the Oasis sandstorm barrier in Vastiri Desert, hear Sin: Queen of the Sands (#437). Both precede entering The Foothills per updated Steam 3.30 guide.",
+      "Entering The Foothills before hearing General Adus #436 and Sin #437",
+      "The two topics unlock on separate conditions, quest turn-in versus blocked Oasis passage. The Steam caution is conservative; permanent 3.30 in-game missability remains unverified."
     ],
     "a9-garukhan": [
       "After Garukhan · speak before choosing a ruler",

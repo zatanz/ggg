@@ -107,21 +107,21 @@ guide.acts[9]=[
       25
     ],
     "actions": [
-      "เมื่อเห็นพายุทรายที่ปิดทางเข้า The Oasis ให้กลับฟัง Sin: Queen of the Sands (#437)",
+      "เมื่อเห็นพายุทรายที่ปิดทางเข้า The Oasis ใน The Vastiri Desert ให้กลับฟัง Sin: Queen of the Sands (#437) ก่อนเข้า The Foothills ตามคำเตือน Steam 3.30",
       "ทำเควสต์ Queen of the Sands ตามสถานะจริงและกลับรับรางวัลหลังจัดการ Shakari ใน The Oasis",
       "ติ๊กเควสต์รอง Queen of the Sands หลังจบจริง ไม่ใช่ตอนเห็นทางถูกปิด"
     ],
     "actionsEN": [
-      "After encountering the sandstorm barrier blocking The Oasis, hear Sin: Queen of the Sands (#437).",
+      "After seeing the sandstorm barrier blocking The Oasis in the Vastiri Desert, return for Sin: Queen of the Sands (#437) BEFORE entering the Foothills, per the updated Steam 3.30 guide.",
       "Complete Queen of the Sands by defeating Shakari in The Oasis and collecting the quest reward.",
       "Do not mark the side quest completed merely because you saw the blocked passage."
     ],
-    "stop": null,
-    "stopEN": null,
-    "stopIds": [],
+    "stop": "เมื่อพบพายุปิดทาง The Oasis ให้กลับไปฟัง Sin: Queen of the Sands (ID 437) ก่อนเข้า The Foothills ตาม Steam Guide ฉบับ 3.30; ไม่มีผลทดสอบยืนยันว่าเป็นจุดพลาดถาวรของเกม 3.30",
+    "stopEN": "STOP: after seeing the Oasis sandstorm barrier, hear Sin: Queen of the Sands (#437) before entering the Foothills. Steam 3.30 source precaution; permanent in-game lockout is not certified.",
+    "stopIds": [437],
     "keyItems": [],
-    "sourceNote": null,
-    "sourceNoteEN": null,
+    "sourceNote": "Steam Guide ที่ตั้งชื่อ 3.30 (อัปเดต 16 พ.ย. 2026) ระบุห้ามเข้า The Foothills หลังเห็นทาง Oasis ถูกปิดจนกว่าจะฟัง Sin; PoE Wiki เก่าให้เงื่อนไขหลังเห็นทางถูกปิดแต่ไม่มีหลักฐานยืนยันจุดพลาดถาวรใน 3.30",
+    "sourceNoteEN": "The Steam 3.30-titled guide, updated 16 Nov, warns before entering the Foothills once the Oasis route is blocked. Older Wiki lists the unlock state; the exact irreversible cutoff is not independently 3.30-tested.",
     "confidence": "historical-source-only"
   },
   {

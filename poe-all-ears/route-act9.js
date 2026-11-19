@@ -174,7 +174,9 @@ window.ALL_EARS_ROUTE_ACT9 = {
       "npc": "Sin",
       "dialog": "Queen of the Sands",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"
+      "source": "https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869",
+      "trigger": "หลังพบพายุทรายปิดทางเข้า The Oasis ใน Vastiri Desert",
+      "before": "อย่าเข้า The Foothills ก่อนฟัง Sin: Queen of the Sands ตาม Steam 3.30; ยังไม่รับรองว่าพลาดถาวรในเกม"
     },
     {
       "id": 438,

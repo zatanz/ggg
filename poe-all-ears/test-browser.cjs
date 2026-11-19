@@ -538,6 +538,8 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-evidence-act="1"]').evaluate(x=>x.open),true,'current-league Fairgraves evidence is expanded by default');
  assert.equal(await hub.locator('#hubView [data-steam-act="1"]').count(),1,'Act 1 has source-backed area walkthrough');
  assert.equal(await hub.locator('#hubView .hubWalkNavigator select option').count(),9,'Act 1 has nine source-ordered player phases');
+ assert.equal(await hub.evaluate(()=>window.POE_STEAM_WALK.acts[1].find(p=>p.id==='prison').stopIds.join(',')),'26,27,28,29','Act 1 live guidance conservatively protects all four pre-Brutus topics');
+ assert.equal(await hub.evaluate(()=>window.POE_CRITICAL_CHECKPOINTS.acts[1].find(p=>p.id==='a1-brutus').stopRule.requiredIds.join(',')),'26,27,28,29','Historical risk STOP agrees with the current Steam cautions #28/#29');
  // A one-item step must shift keyboard focus to the next-stage action rather than
  // leaving it on a checkbox removed during the render.
  const strandMark=hub.locator('#hubView [data-phase="strand"] .hubInlineCurrentChecklist input[type="checkbox"]');

@@ -6,6 +6,36 @@ const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const assert=require('node:assert/strict');
 
+async function verifyQuestSelectorAndSkippedRisk(browser,url){
+ const context=await browser.newContext({viewport:{width:375,height:812}});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  await page.locator('#hubCampaignAct').selectOption('3');
+  let chooser=page.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select');
+  const first=chooser.locator('option[value="0"]');
+  assert.match(await first.textContent(),/Clarissa/,'Act 3 selector identifies the quest action rather than only the Sarn location');
+  assert.equal(await first.getAttribute('data-stop-pending'),'true','unresolved Sarn-entry STOP is identified in the selector');
+  assert.match(await chooser.locator('option[value="1"]').textContent(),/Tolman/,'successive Act 3 phases have distinguishing action labels');
+  await chooser.selectOption('1');
+  let risk=page.locator('#hubView [data-skipped-risk="3"]');
+  assert.equal(await risk.count(),1,'unreviewed Act 3 STOP remains visible after previewing another step');
+  assert.match(await risk.innerText(),/Clarissa/,'initial jump identifies the actual Sarn-entry risk');
+  await chooser.selectOption('2');
+  risk=page.locator('#hubView [data-skipped-risk="3"]');
+  assert.equal(await risk.count(),1,'subsequent jump still identifies the skipped STOP');
+  assert.match(await risk.innerText(),/Tolman/,'subsequent jump identifies the current bracelet checkpoint, not an older unrelated STOP');
+  await risk.getByRole('button',{name:'กลับไปตรวจจุดแรก'}).click();
+  assert.equal(await page.locator('[data-steam-act="3"]').getAttribute('data-phase'),'bracelet','recovery from a second jump returns to the newly skipped stage');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),true,'action-labelled phase selector fits mobile viewport');
+  await page.locator('#hubCampaignAct').selectOption('2');
+  chooser=page.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select');
+  const reviewLabel=await chooser.locator('option[value="7"]').textContent();
+  assert.match(reviewLabel,/ตรวจคำเตือน/,'Bandit source review is named separately in the navigator');
+  assert.equal(reviewLabel.includes('1 รายการค้าง'),false,'manual review does not become an achievement item count');
+ }finally{await context.close();}
+}
+
 async function verifyGuidedEntry(browser,url){
  const context=await browser.newContext({viewport:{width:320,height:812},hasTouch:true,reducedMotion:'reduce'});
  try{
@@ -323,6 +353,7 @@ async function verifyAct2PreSealConflict(browser,url){
  page.on('pageerror',e=>errors.push(e.message));
  const url=pathToFileURL(path.join(__dirname,'index.html')).href;
  await verifyGuidedEntry(browser,url);
+ await verifyQuestSelectorAndSkippedRisk(browser,url);
  await verifyEditorialGuidance(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
  await verifyKaruiShoresSupplement(browser,url);

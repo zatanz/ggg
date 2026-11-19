@@ -203,13 +203,13 @@ const translated={
       "STOP: hear Hargan: Introduction (Wiki row #115) BEFORE giving Tolman's Bracelet to Clarissa."
     ],
     "sewer-blockage": [
-      "Sewers · revisit Maramoa",
+      "Sewers · hear Maramoa before entering the Marketplace",
       [
         "In the Sewers, check Clarissa's topics as they become available.",
-        "After seeing the Undying Blockage, return for Maramoa: Crossing the River (local ID 140).",
+        "After seeing the Undying Blockage, return for Maramoa: Crossing the River (local ID #140) BEFORE entering the Marketplace. The Steam 3.30 guide explicitly warns against entering first.",
         "Other Wiki rows #132–139 can unlock after entering later areas; do not assume they must all be available at this blockage."
       ],
-      null
+      "STOP: after seeing the Undying Blockage, hear Maramoa: Crossing the River (#140) before entering the Marketplace. This follows the Steam guide; irreversible lockout has not been independently tested in-game in 3.30."
     ],
     "market-battlefront": [
       "Marketplace and Battlefront · collect the area's lore",

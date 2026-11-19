@@ -78,6 +78,7 @@ const walkSection=hubSource.slice(hubSource.indexOf('function actSteamGuide('),h
 check(walkSection.indexOf('const actions=el("ol"')>=0&&walkSection.indexOf('const actions=el("ol"')<walkSection.indexOf('const taskNav=el('),'what-to-do instructions should precede detailed checklist navigation');
 check(hubSource.includes('const manageTitle=document.querySelector("#hubManage>summary")')&&hubSource.includes('const notice=document.querySelector(".hubDataNotice")'),'legacy help and patch label not updated on language switch');
 // The live route and review use the same checkbox handler and canonical IDs.
+check(hubSource.includes('status.dataset.sourceReview=questConfirmed?"acknowledged":"pending"')&&hubSource.includes('if(phase.requiresManualConfirmation){')&&hubSource.includes('This does not mean the quest or All Ears is complete'),'Bandit source acknowledgement must be separate from achievement progress');
 check(hubSource.includes('const mark=el("label",undefined,"hubInlineMark")')&&hubSource.includes('if(current?.type===type&&current.id===id)continue;'),'active quest checkbox must have a label and appear once in its stage');
 check(hubSource.includes('itemCheckbox(current.type,item,false,details,')&&hubSource.includes('writeMarks(previous.type,previous.id,false)'),'inline mark and undo must share canonical persistence');
 check(hubSource.includes('const shelf=el("details",undefined,"hubWalkArchive")')&&hubSource.includes('if(node.querySelector("input"))shelf.append(node);'),'historical per-category checklist must remain accessible under one disclosure');

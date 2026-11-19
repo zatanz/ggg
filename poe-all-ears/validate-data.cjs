@@ -619,6 +619,21 @@ assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Se
 // The Wiki names only Bestel: Brutus (#27) as an explicit pre-Brutus dialogue cutoff.
 // Nessa: Piety (#28) and Bestel: Marceus Lioneye (#29) have separate unlock triggers;
 // do not regress to an unsourced pre-boss STOP for these unrelated source rows.
+// Legacy guidance is a fallback to the canonical route's per-ID timing. Keep it
+// consistent with the current source crosswalk so refactors do not resurrect
+// outdated hard STOPs or hard-code an arbitrary Bandit kill order.
+const legacyGuideSource=fs.readFileSync(path.join(dir,'guide-descriptions.js'),'utf8');
+const legacyGuideJson=legacyGuideSource.match(/^const legacy=(\{[^\n]+\});$/m);
+assert(Boolean(legacyGuideJson),'Legacy per-ID guidance table must remain parseable for source QA');
+const legacyGuide=legacyGuideJson?JSON.parse(legacyGuideJson[1]):{};
+assert(Object.keys(legacyGuide).length===62,'Preserve the established legacy guidance ID set');
+assert(legacyGuide[21]?.[1].includes('The Submerged Passage')&&legacyGuide[21][1].includes('The Fetid Pool'),'Bestel Undead Rhoas must warn before either possible area boundary');
+assert([89,101,103].every(id=>!/(ฆ่า Kraityn แล้ว|ฆ่า Alira แล้ว|ฆ่า Oak แล้ว)/.test(legacyGuide[id]?.[0]||'')),'Act 2 Bandit legacy guidance must not hard-code one kill order');
+assert(legacyGuide[231]?.[1].includes('The Belly of the Beast')&&!legacyGuide[231][1].startsWith('อย่าเข้า Kaom'),'Daresso timing must reflect Wiki pre-Belly deadline, not invented absolute pre-Kaom lockout');
+assert(legacyGuide[336]?.[1].includes('อย่าเผา')&&legacyGuide[336][1].includes('Lilly Roth'),'Black Flag deadline is flag-burning, not a proven Beacon-entry lockout');
+assert(legacyGuide[365]?.[1].includes('Helena: The Den')&&!legacyGuide[365][1].startsWith('อย่าเข้า The Fellshrine'),'Helena Den warning must not assert an unsourced Fellshrine lockout');
+assert(legacyGuide[382]?.[1].includes('The Vaal City')&&!legacyGuide[382][1].startsWith('อย่าเข้า The Causeway'),'Yeena Fireflies deadline must use source-supported Vaal City contact, not a Causeway cutoff');
+assert(legacyGuide[439]?.[1].includes('Petarus and Vanja'),'Highgate ruler warning must mention both pre-decision NPC checks');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
 assert(prisonGate?.stopRule?.requiredIds.join(',')==='27','Act 1 pre-Brutus STOP must require only Bestel: Brutus local #27');
 assert(prisonGate?.ids.join(',')==='26,27,28,29','Act 1 stage must retain all 4 checklist records outside the scoped STOP');

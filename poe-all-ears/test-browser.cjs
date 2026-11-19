@@ -1287,7 +1287,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView .hubReferenceShelf').evaluate(x=>x.open),false,'Backup import resets transient reference drawer to a compact default');
  await hub.locator('#hubView .hubReferenceShelf > summary').click();
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('PoE Wiki: คุย Bandits ทุกคนก่อนเปิด Ancient Seal'),true,'Act 2 clearly describes Wiki pre-Seal talk order');
- assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('Steam 3.28 ห้ามชัดเจนทั้งคุยและฆ่า Bandits ก่อน The Darkness'),true,'Act 2 reports the explicit Steam no-talk prohibition faithfully');
+ assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามชัดเจนทั้งคุยและฆ่า Bandits ก่อน The Darkness'),true,'Act 2 reports the explicit Steam no-talk prohibition faithfully');
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),false,'player can close detailed contradictory-source disclosure');
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('1');
@@ -1494,7 +1494,7 @@ async function verifyAct2PreSealConflict(browser,url){
  if(!await hub.locator('#hubView [data-manual-review="true"] input').isChecked())hub.once('dialog',d=>d.accept()); // Test previews past an unreviewed STOP, never marking it completed.
  await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').getAttribute('data-phase'),'bandit-decisions','English inspection explicitly previews Act 2 after the pre-Seal STOP');
- assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam 3.28 explicitly forbids both talking and killing'),true,'Act 2 English route accurately states explicit Steam restriction before The Darkness');
+ assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam guide (titled 3.30; updated 16 Nov 2026) explicitly forbids both talking and killing'),true,'Act 2 English route accurately states explicit Steam restriction before The Darkness');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 2 English route has no Thai text');
 
@@ -1564,7 +1564,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await darkness.locator('.hubCheckpointTitle').innerText()).includes('Ancient Seal / The Darkness'),true,'English risk heading identifies the actual Bandits quest state');
  assert.equal((await darkness.locator('.hubCheckpointAction').innerText()).includes('Alira and Oak'),true,'English risk action explains who must be heard while alive');
  assert.equal((await darkness.locator('.hubCheckpointRowTrigger').first().innerText()).includes('Available when:'),true,'English per-dialogue unlock conditions visible in risk panel');
- assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam 3.28 explicitly says DO NOT TALK TO OR KILL'),true,'Act 2 English caveat faithfully reports Steam no-talk-before-Darkness instruction');
+ assert.equal((await darkness.locator('.hubResearchConflict').innerText()).includes('Steam guide (titled 3.30; updated 16 Nov 2026) explicitly says DO NOT TALK TO OR KILL'),true,'Act 2 English caveat faithfully reports Steam no-talk-before-Darkness instruction');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('First Bandit you killed'),true,'Bandit choice labels change to English without losing original choice state');
  assert.equal((await darkness.locator('.hubCheckpointSafety').innerText()).includes('Book of Reform'),true,'Bandit helper retains a historical uncertainty warning in English');
  assert.equal(await darkness.locator('.hubOriginalThai').count()>0,true,'English risk panel allows review of historical Thai source without forcing it into the primary text');

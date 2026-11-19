@@ -749,13 +749,14 @@ window.POE_CRITICAL_CHECKPOINTS = {
       {
         "id": "a9-adus",
         "act": 9,
-        "quest": "The Storm Blade",
-        "heading": "The Storm Blade · ก่อนเข้า The Foothills",
-        "before": "หลังจบ The Storm Blade แต่ก่อนเข้า The Foothills",
-        "action": "คุย Petarus and Vanja เรื่อง General Adus ก่อนเดินไปพื้นที่ถัดไป",
-        "risk": "อย่าเข้า The Foothills ก่อนตรวจหัวข้อนี้",
+        "quest": "The Storm Blade / Queen of the Sands",
+        "heading": "ก่อนเข้า The Foothills · คุย Petarus/Vanja และ Sin",
+        "before": "หลังจบ The Storm Blade และหลังพบทาง The Oasis ถูกพายุปิด ก่อนเข้า The Foothills",
+        "action": "หลังส่ง Storm Blade คุย Petarus and Vanja: General Adus (#436); เมื่อเห็นทาง Oasis ถูกพายุปิด กลับคุย Sin: Queen of the Sands (#437) ก่อนเข้า The Foothills ตาม Steam 3.30",
+        "risk": "อย่าเข้า The Foothills ก่อนตรวจทั้ง #436 และ #437; คำเตือนจากคู่มือ Steam ไม่ได้ยืนยันการพลาดถาวรในเกมจริง",
         "ids": [
-          436
+          436,
+          437
         ],
         "prereq": "Highgate",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_9"

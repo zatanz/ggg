@@ -8,6 +8,10 @@ The manual quest-step confirmation is independent of checklist marks and is save
 
 Use the report link beside a task or STOP to open a prefilled GitHub issue. GitHub requires a signed-in account. The app does not submit a report until the player completes submission on GitHub.
 
+The current quest also offers **Share feedback elsewhere · copy quest details**: an optional, read-only contextual report containing its Act, step, category and source revision that a player can paste into Discord or another community channel **without a GitHub login**. The site does not transmit the copied draft or attach character data.
+
+**Engineering acceptance policy (19 Nov 2026):** maintain source QA, static/data/route checks, Chromium mobile/keyboard/backup regression and exact-commit GitHub Pages readback as required development gates. Do **not** gate feature completion or keep open checkboxes on live PoE client playthroughs, four-achievement counters, screenshots from players or subjective community UX feedback. Capture such reports only when volunteers submit them; preserve known source conflicts as warnings instead of silently certifying 3.30 gameplay.
+
 ## Patch 3.30 · opt-in historical reference (14 November 2026)
 
 ผู้ที่เลือกเล่นแพตช์ **3.30** สามารถกด **เปิดคู่มืออ้างอิงสำหรับเล่น 3.30 (ยังไม่รับรอง)** เพื่อใช้เส้นทางและเช็กลิสต์ต้นฉบับได้ **โดยไม่เปลี่ยนตัวเลือกแพตช์กลับเป็น 3.9** ก่อนกดเปิด ระบบยังแสดงหน้าหยุดและไม่เปิดเผยข้อมูลเก่าเป็นข้อมูลที่รับรองแพตช์แล้ว

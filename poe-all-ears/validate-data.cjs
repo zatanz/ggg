@@ -623,7 +623,7 @@ assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Se
 // consistent with the current source crosswalk so refactors do not resurrect
 // outdated hard STOPs or hard-code an arbitrary Bandit kill order.
 const legacyGuideSource=fs.readFileSync(path.join(dir,'guide-descriptions.js'),'utf8');
-const legacyGuideJson=legacyGuideSource.match(/^const legacy=(\\{[^\\n]+\\});$/m);
+const legacyGuideJson=legacyGuideSource.match(/^const legacy=(\{[^\n]+\});$/m);
 assert(Boolean(legacyGuideJson),'Legacy per-ID guidance table must remain parseable for source QA');
 const legacyGuide=legacyGuideJson?JSON.parse(legacyGuideJson[1]):{};
 assert(Object.keys(legacyGuide).length===62,'Preserve the established legacy guidance ID set');

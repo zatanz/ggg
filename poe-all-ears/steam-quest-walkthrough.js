@@ -121,16 +121,17 @@ window.POE_STEAM_WALK = {
       },
       {
         "id": "pool",
-        "place": "The Fetid Pool / The Ledge",
-        "heading": "หลังทำ A Dirty Job · ตรวจบทสนทนาที่เพิ่งเปิด",
-        "quest": "A Dirty Job",
+        "place": "The Fetid Pool / The Submerged Passage / The Flooded Depths / The Ledge",
+        "heading": "A Dirty Job และ The Dweller of the Deep · เก็บเควสต์รองให้ครบ",
+        "quest": "A Dirty Job / The Dweller of the Deep",
         "dialogueIds": [
           24,
           25
         ],
         "loreIds": [],
         "actions": [
-          "จัดการ Necromancer ตามเควสต์ A Dirty Job แล้วกลับคุย Tarkleigh",
+          "จัดการ Necromancer ใน The Fetid Pool ตามเควสต์ A Dirty Job แล้วกลับคุย Tarkleigh",
+          "จาก The Submerged Passage แยกเข้า The Flooded Depths กำจัด The Deep Dweller แล้วกลับไปรับรางวัลจาก Tarkleigh เพื่อเก็บ No Loose Ends: The Dweller of the Deep (#2) และ Passive Skill Point",
           "ตรวจหัวข้อ Surviving Wraeclast ของ Bestel และ Goatmen ของ Tarkleigh ตามเงื่อนไขในเกม"
         ],
         "stop": null,
@@ -174,7 +175,7 @@ window.POE_STEAM_WALK = {
       {
         "id": "prisoners-gate",
         "place": "The Prisoner's Gate",
-        "heading": "หลัง Brutus · กลับเมืองตรวจบทสนทนา",
+        "heading": "หลัง Brutus · คุย Bestel ก่อนเข้า Ship Graveyard",
         "quest": "The Way Forward",
         "dialogueIds": [
           30,
@@ -183,10 +184,10 @@ window.POE_STEAM_WALK = {
         "loreIds": [],
         "actions": [
           "หลังฆ่า Brutus กลับเมืองคุย Nessa เรื่อง Brutus",
-          "หลังเห็น Piety ปิดทางไป Western Forest ให้กลับคุย Bestel เรื่อง Prisoner's Gate"
+          "หลังเห็น Piety ปิดทางไป Western Forest ให้กลับคุย Bestel เรื่อง Prisoner's Gate (#31) ก่อนเข้า The Ship Graveyard ตามคำเตือน Steam 3.30"
         ],
-        "stop": null,
-        "stopIds": [],
+        "stop": "เมื่อเห็น Piety ปิดทางใน Prisoner's Gate ให้กลับไปฟัง Bestel: Prisoner's Gate (#31) ก่อนเข้า The Ship Graveyard ตามคำเตือน Steam 3.30; เป็นข้อควรระวังจากคู่มือ ไม่ใช่หลักฐานว่าเกม 3.30 ทดสอบยืนยันการพลาดถาวรแล้ว",
+        "stopIds": [31],
         "confidence": "historical"
       },
       {

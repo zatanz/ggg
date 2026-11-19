@@ -8,7 +8,7 @@ Scope: **four targeted PoE achievements only**. Not all game achievements.
 - Main campaign quest-first routes: **Act 1 through Act 10**.
 - Original All Ears corpus: **484 original local IDs** represented by Act routes (Act totals 41, 69, 71, 72, 44, 44, 45, 30, 36, 32).
 - No Stone Unturned corpus: 140 existing records, including specialized Labyrinth/Vaal scopes and the three Act 10 Cultist Tracts.
-- Locomancer: 91 legacy records remain unchanged pending patch reconciliation; includes Epilogue.
+- Locomancer: 91 original historical records remain unchanged for legacy import/export. Active reference progress counts the 89 still-mapped original waypoints and the separately recorded Karui Shores waypoint = 90 from PoE Wiki; this is a source/structure crosswalk, not a 3.30 game-client check.
 - No Loose Ends: 30 existing original side quest records.
 - Quest-state high-risk alerts, category shortcuts, context items, per-character manually recorded checklist, original backup export and import.
 - Independent language preferences: Thai/English for instructions; English/Thai/both for quest and item names.
@@ -29,7 +29,7 @@ Scope: **four targeted PoE achievements only**. Not all game achievements.
 
 - No compatible PoE patch 3.30 fresh-character gameplay reproduction, game Achievement count screenshots or comparison with the in-game H achievement tab.
 - Alternate Highgate Tasuni branch can't be represented faithfully by only the original Irasha-side IDs #443/#444. The 484-point counter must not be treated as a branch-independent proof.
-- Locomancer historical 91-vs-newer 90 discrepancy remains unresolved, requiring explicit patch-version mapping and backup-safe reconciliation.
+- Locomancer source-count mapping (91 historical records vs 90 Wiki active points) is implemented and backup-safe; exact patch 3.30 in-game counter and complete active-node set remain unverified, so gameplay certification is still blocked.
 - Original sources differ on Act 2 Bandit quest state; reported Fairgraves Act 1 NPC issues on patch 3.29 require targeted runtime verification.
 - All Acts 1–10 now have authored bilingual quest-stage steps, including the Act 1–3 editorial pass, but fine-grained per-row historical conditions have not received 745 separate human reviews or patch certification.
 - A human user testing pass for color contrast, cognitive load and effective "what do I do next" is still valuable; browser smoke tests are not a substitute for player usability testing.

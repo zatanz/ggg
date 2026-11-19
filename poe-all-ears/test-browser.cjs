@@ -1259,12 +1259,22 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.evaluate(id=>JSON.parse(localStorage.getItem('poe-act9-ruler-choice-v1')||'{}')[id],importedAct9Id),'Irasha','combined import restores the selected Highgate ruler on a new character ID');
  const renamedBackup={app:'poe-unified-companion',schema:2,characters:[{name:'bad',ears:[999],lore:[],waypoints:[],sidequests:[]}]};
  const prevCount=await hub.locator('#character option').count();
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(renamedBackup))});
+ // Await each expected rejection alert before registering another handler. A stale
+ // page.once('dialog') can otherwise accept the later alert twice, making master CI flaky.
+ const badImportAlert=hub.waitForEvent('dialog');
+ const badImportUpload=hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(renamedBackup))});
+ const badImportDialog=await badImportAlert;
+ assert.equal(badImportDialog.type(),'alert','invalid achievement ID must present a rejection alert');
+ await badImportDialog.accept();
+ await badImportUpload;
  assert.equal(await hub.locator('#character option').count(),prevCount,'invalid combined import must not change profiles');
  const invalidBranchBackup={app:'poe-unified-companion',schema:2,characters:[{name:'invalid ruler',ears:[],lore:[],waypoints:[],sidequests:[],rulerChoice:'both'}]};
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid-branch.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(invalidBranchBackup))});
+ const badBranchAlert=hub.waitForEvent('dialog');
+ const badBranchUpload=hub.locator('#hubView input[type="file"]').setInputFiles({name:'invalid-branch.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(invalidBranchBackup))});
+ const badBranchDialog=await badBranchAlert;
+ assert.equal(badBranchDialog.type(),'alert','invalid Act 9 ruler choice must present a rejection alert');
+ await badBranchDialog.accept();
+ await badBranchUpload;
  assert.equal(await hub.locator('#character option').count(),prevCount,'invalid ruler choice cannot change imported profiles');
 
  await hub.locator('#hubNav [data-tab="collection"]').click();

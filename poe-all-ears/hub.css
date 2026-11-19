@@ -708,3 +708,11 @@ body[data-hub-tab="ears"] .toolbar{top:70px}
 .hubWalkArchive>summary{cursor:pointer;color:#c6c9c3;font-size:13px;font-weight:650;min-height:44px;padding:12px 4px}
 .hubWalkArchive>summary:hover{color:#e7e6d9}
 .hubWalkArchive>.hubWalkCategory,.hubWalkArchive>.hubWalkLore{margin-top:10px}
+
+/* Compact, optional feedback-copy path; never implies automatic submission. */
+.hubFeedbackDraft{max-width:100%;min-width:0;font-size:13px}
+.hubFeedbackDraft>summary{cursor:pointer;color:#d9e7da;text-decoration:underline;text-underline-offset:3px}
+.hubFeedbackDraft>summary:focus-visible{outline:3px solid #f9edac;outline-offset:3px}
+.hubFeedbackDraft p{margin:8px 0;color:#cfdbd2}
+.hubFeedbackDraft textarea{display:block;box-sizing:border-box;width:100%;max-width:100%;min-height:118px;margin:8px 0;padding:10px;border:1px solid #798e7f;border-radius:6px;background:#101b17;color:#e7ede8;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere;resize:vertical}
+.hubFeedbackDraft [role="status"]{display:block;margin:6px 0 0}

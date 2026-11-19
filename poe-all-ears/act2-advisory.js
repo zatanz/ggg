@@ -4,7 +4,7 @@ window.ALL_EARS_ACT2_ADVISORY = {
   "reviewStatus": "wiki-reviewed-patch-unverified",
   "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
   "sourceUpdated": "2025-06-30",
-  "warning": "Act 2 มีคำสั่งขัดแย้ง: PoE Wiki ให้คุย Bandits ก่อนเปิด Ancient Seal แต่ Steam 3.28 ห้ามคุยหรือฆ่าจนกว่าจะเปิด The Darkness · ยังไม่มีลำดับที่ทดสอบรับรองในเกม 3.30 อย่าฆ่าหรือช่วยก่อนอ่านข้อควรระวัง",
+  "warning": "Act 2 มีคำสั่งขัดแย้ง: PoE Wiki ให้คุย Bandits ก่อนเปิด Ancient Seal แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามคุยหรือฆ่าจนกว่าจะเปิด The Darkness · ยังไม่มีลำดับที่ทดสอบรับรองในเกม 3.30 อย่าฆ่าหรือช่วยก่อนอ่านข้อควรระวัง",
   "dependencies": [
     {
       "id": "bandit-introductions",

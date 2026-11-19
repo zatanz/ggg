@@ -289,7 +289,7 @@ window.POE_STEAM_WALK = {
         "actions": [
           "คุย Eramir, Greust, Yeena, Silk และ Helena ตามหัวข้อที่เปิด แล้วกลับคุยเรื่อง NPC หลังรู้จักกัน",
           "เมื่อได้รับ The Great White Beast ให้เก็บบทสนทนาของ Silk ก่อนทำเควสต์สำเร็จ",
-          "ยังไม่ฆ่าหรือช่วย Bandits; PoE Wiki ให้คุยก่อน Ancient Seal แต่ Steam 3.28 ห้ามทั้งคุยและฆ่าก่อน The Darkness · ต้องตรวจข้อขัดแย้งก่อนเปิด Seal"
+          "ยังไม่ฆ่าหรือช่วย Bandits; PoE Wiki ให้คุยก่อน Ancient Seal แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามทั้งคุยและฆ่าก่อน The Darkness · ต้องตรวจข้อขัดแย้งก่อนเปิด Seal"
         ],
         "stop": "ยังไม่ควรทำ The Great White Beast เสร็จก่อนฟัง Silk และยังไม่ควรฆ่าหรือช่วย Bandit ตัวใด",
         "stopIds": [
@@ -470,22 +470,22 @@ window.POE_STEAM_WALK = {
         "waypointIds": [],
         "sidequestIds": [],
         "actions": [
-          "ก่อนเปิด Ancient Seal: PoE Wiki (2025) ให้คุย Alira, Oak และ Kraityn ก่อน แต่ Steam 3.28 สั่งห้ามทั้งคุยและฆ่าก่อน The Darkness — ทำตามสองแบบพร้อมกันไม่ได้",
+          "ก่อนเปิด Ancient Seal: PoE Wiki (2025) ให้คุย Alira, Oak และ Kraityn ก่อน แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) สั่งห้ามทั้งคุยและฆ่าก่อน The Darkness — ทำตามสองแบบพร้อมกันไม่ได้",
           "ยังไม่มีผลทดสอบในเกม 3.30 ที่บอกว่าควรคุยก่อนหรือหลังเพื่อเก็บ All Ears ครบ อย่าคิดว่าการกดยืนยันนี้แปลว่าเส้นทางปลอดภัย",
           "ตรวจสถานะเควสต์และบทสนทนาที่พบจริง บันทึกการคุย Bandits ในหมายเหตุ Act 2 หากต้องการ แล้วเลือกแนวทางด้วยความเข้าใจความเสี่ยงก่อนเปิด Seal; อย่าฆ่าหรือเลือกช่วย Bandit"
         ],
         "actionsEN": [
-          "Before activating Ancient Seal, the 2025 PoE Wiki says to TALK to Alira, Oak and Kraityn first; Steam 3.28 explicitly says DO NOT TALK TO OR KILL any Bandit until The Darkness. You cannot satisfy both instructions on one run.",
+          "Before activating Ancient Seal, the 2025 PoE Wiki says to TALK to Alira, Oak and Kraityn first; Steam guide (titled 3.30; updated 16 Nov 2026) explicitly says DO NOT TALK TO OR KILL any Bandit until The Darkness. You cannot satisfy both instructions on one run.",
           "No recorded patch 3.30 client test proves which first-talk timing completes All Ears. Checking this confirmation does not certify a route.",
           "Review your actual quest state, optionally record Bandit conversations in the Act 2 notes, and decide with the unresolved risk in mind before activating the Seal. Do not kill or side with any Bandit yet."
         ],
-        "stop": "ก่อนเปิด Ancient Seal: PoE Wiki ให้คุย Bandits ก่อน แต่ Steam 3.28 ห้ามคุยก่อน The Darkness · ยังไม่มีทางเลือกที่รับรองกับเกม 3.30",
-        "stopEN": "STOP: before activating Ancient Seal, PoE Wiki says TALK to Bandits first; Steam 3.28 says DO NOT TALK until The Darkness. Neither route is 3.30-certified.",
+        "stop": "ก่อนเปิด Ancient Seal: PoE Wiki ให้คุย Bandits ก่อน แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามคุยก่อน The Darkness · ยังไม่มีทางเลือกที่รับรองกับเกม 3.30",
+        "stopEN": "STOP: before activating Ancient Seal, PoE Wiki says TALK to Bandits first; Steam guide (titled 3.30; updated 16 Nov 2026) says DO NOT TALK until The Darkness. Neither route is 3.30-certified.",
         "stopIds": [],
         "requiresManualConfirmation": true,
         "manualConfirmLabel": "ฉันอ่านข้อขัดแย้งและตรวจสถานะในเกมแล้ว (ไม่ได้รับรองว่าปลอดภัย)",
         "manualConfirmLabelEN": "I reviewed the conflicting sources and my game state (not a safety guarantee)",
-        "sourceConflict": "สองแหล่งขัดแย้งโดยตรง: PoE Wiki (30 มิ.ย. 2025) แนะนำคุย Bandits ทั้งหมดก่อนเปิด Ancient Seal แต่ Steam 3.28 เขียนชัดว่าอย่าคุยหรือฆ่า Bandits จนกว่าจะเปิด The Darkness ยังไม่มีหลักฐานทดสอบเกม 3.30 ที่ยืนยันว่าฝั่งใดเก็บครบ",
+        "sourceConflict": "สองแหล่งขัดแย้งโดยตรง: PoE Wiki (30 มิ.ย. 2025) แนะนำคุย Bandits ทั้งหมดก่อนเปิด Ancient Seal แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) เขียนชัดว่าอย่าคุยหรือฆ่า Bandits จนกว่าจะเปิด The Darkness ยังไม่มีหลักฐานทดสอบเกม 3.30 ที่ยืนยันว่าฝั่งใดเก็บครบ",
         "confidence": "conflict"
       },
       {
@@ -535,7 +535,7 @@ window.POE_STEAM_WALK = {
           "ตรวจบทสนทนา The Darkness ของ Alira และ Oak ขณะที่ยังมีชีวิต; Kraityn ไม่มีหัวข้อนี้ตาม Wiki 2025",
           "ถ้าติดตามสายฆ่าทั้งสาม ให้กลับ Eramir หลังฆ่าตัวแรก แล้วกลับอีกครั้งหลังตัวที่สอง ก่อนฆ่าตัวสุดท้าย",
           "หลังฆ่าครบให้กลับคุย Eramir เรื่อง Bandit Lords และตรวจหัวข้อ Greust / Helena ที่เปิดเพิ่มเติม",
-          "ระวัง: Wiki ให้คุย Bandits ก่อน Seal แต่ Steam 3.28 ห้ามทั้งคุยและฆ่าก่อน The Darkness · ยังไม่มีผลทดสอบ 3.30 ยืนยันแนวทางใด"
+          "ระวัง: Wiki ให้คุย Bandits ก่อน Seal แต่คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามทั้งคุยและฆ่าก่อน The Darkness · ยังไม่มีผลทดสอบ 3.30 ยืนยันแนวทางใด"
         ],
         "stop": "ยังไม่ควรฆ่าหรือช่วย Bandits จนกว่าจะเก็บ The Darkness ของเมืองและ Alira/Oak ครบ; และต้องกลับ Eramir ระหว่างการฆ่า",
         "stopIds": [
@@ -548,7 +548,7 @@ window.POE_STEAM_WALK = {
           102
         ],
         "confidence": "conflict",
-        "sourceConflict": "ข้อมูลขัดแย้งกันโดยตรง: PoE Wiki 2025 บอกให้คุย Bandits ก่อนเปิด Ancient Seal ส่วน Steam 3.28 บอกชัดว่าห้ามทั้งคุยและฆ่าจนกว่าจะปลด The Darkness จึงไม่สามารถปฏิบัติตามทั้งสองคู่มือในตัวละครเดียวได้ ยังไม่มีผลทดสอบ 3.30 ยืนยันว่าวิธีใดปลอดภัย",
+        "sourceConflict": "ข้อมูลขัดแย้งกันโดยตรง: PoE Wiki 2025 บอกให้คุย Bandits ก่อนเปิด Ancient Seal ส่วนคู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) บอกชัดว่าห้ามทั้งคุยและฆ่าจนกว่าจะปลด The Darkness จึงไม่สามารถปฏิบัติตามทั้งสองคู่มือในตัวละครเดียวได้ ยังไม่มีผลทดสอบ 3.30 ยืนยันว่าวิธีใดปลอดภัย",
         "visual": {
           "asset": "./assets/bandits-quest-illustration.svg",
           "title": "Deal with the Bandits · ก่อนตัดสินใจ",

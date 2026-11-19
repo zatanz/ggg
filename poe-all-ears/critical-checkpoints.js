@@ -179,7 +179,7 @@ window.POE_CRITICAL_CHECKPOINTS = {
           100,
           102
         ],
-        "risk": "Steam 3.28 แนะนำไม่คุย Bandits ก่อน Darkness แต่ Wiki 2025 ให้คุยก่อนเปิด Ancient Seal จึงยังไม่สามารถรับรองลำดับที่ปลอดภัยได้",
+        "risk": "คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) แนะนำไม่คุย Bandits ก่อน Darkness แต่ Wiki 2025 ให้คุยก่อนเปิด Ancient Seal จึงยังไม่สามารถรับรองลำดับที่ปลอดภัยได้",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_2",
         "prereq": "The Vaal Ruins",
         "priority": "critical",
@@ -201,7 +201,7 @@ window.POE_CRITICAL_CHECKPOINTS = {
           "kind": "steam-vs-wiki",
           "sourceA": "https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869",
           "sourceB": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement",
-          "summary": "Steam 3.28 ระบุชัดว่าห้ามทั้งคุยและฆ่า Bandits ก่อน The Darkness; PoE Wiki ให้คุยก่อนเปิด Ancient Seal แต่ไม่ให้ฆ่าก่อน Darkness. สองคำสั่งเรื่องคุยขัดแย้งกันโดยตรง ต้องตรวจหลักฐานในเกม 3.30 ก่อนรับรองลำดับใด"
+          "summary": "คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ระบุชัดว่าห้ามทั้งคุยและฆ่า Bandits ก่อน The Darkness; PoE Wiki ให้คุยก่อนเปิด Ancient Seal แต่ไม่ให้ฆ่าก่อน Darkness. สองคำสั่งเรื่องคุยขัดแย้งกันโดยตรง ต้องตรวจหลักฐานในเกม 3.30 ก่อนรับรองลำดับใด"
         }
       },
       {

@@ -112,9 +112,10 @@ guide.acts[6]=[
       "After receiving The Father of War, hear Bestel: Tukohama (Wiki row #320).",
       "Do not kill Tukohama before you have listened to Bestel's topic."
     ],
-    "stop": "ก่อนฆ่า Tukohama ต้องเก็บ Bestel: Tukohama ตามเงื่อนไขเควสต์",
-    "stopEN": "Before killing Tukohama, confirm Bestel: Tukohama is heard.",
+    "stop": "ก่อนใช้ Eye of Conquest ต้องฟัง Sin: The Father of War (ID 318) และก่อนฆ่า Tukohama ต้องฟัง Bestel: Tukohama (ID 320); 3.30 ยังไม่ผ่านการพิสูจน์จุดพลาดถาวรในเกมจริง",
+    "stopEN": "STOP: before using Eye of Conquest, hear Sin: The Father of War (#318); before killing Tukohama, hear Bestel: Tukohama (#320). Source precautions are not 3.30 game-client certification.",
     "stopIds": [
+      318,
       320
     ],
     "keyItems": [],

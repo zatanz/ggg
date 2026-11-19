@@ -665,7 +665,7 @@ window.POE_STEAM_WALK = {
       {
         "id": "sewer-blockage",
         "place": "The Sewers / Sarn Encampment",
-        "heading": "Sewers · คุย Maramoa ก่อนเข้า Marketplace"
+        "heading": "Sewers · คุย Maramoa ก่อนเข้า Marketplace",
         "quest": "Victario's Secrets",
         "dialogueIds": [
           134,

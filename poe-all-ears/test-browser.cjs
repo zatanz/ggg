@@ -65,7 +65,9 @@ async function verifySourceUnlockCorrections(browser,url){
   await select.selectOption('5');
   assert.equal(await page.locator('[data-phase="dialla-intro"] input[data-track-id="151"]').count(),0,'post-quest Grigor #151 is not inside Lady Dialla first-contact stage');
   await select.selectOption('6');
-  assert.match(await page.locator('[data-phase="dialla-items"] .hubWalkActions').innerText(),/หลังส่ง Ribbon Spool/,'post-item quest stage explains the hand-in');
+  const allSteps=page.locator('[data-phase="dialla-items"] .hubWalkInstructions');
+  await allSteps.locator('summary').click();
+  assert.match(await allSteps.innerText(),/หลังส่ง Ribbon Spool/,'post-item quest stage visibly explains the hand-in');
   assert.equal(await page.evaluate(()=>window.POE_STEAM_WALK.acts[3].find(p=>p.id==='dialla-items').dialogueIds.includes(151)),true,'Grigor #151 appears in the post-quest stage');
  }finally{await context.close();}
 }

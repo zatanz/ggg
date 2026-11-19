@@ -36,6 +36,40 @@ async function verifyQuestSelectorAndSkippedRisk(browser,url){
  }finally{await context.close();}
 }
 
+async function verifySourceUnlockCorrections(browser,url){
+ const context=await browser.newContext({viewport:{width:390,height:844}});
+ try{
+  const page=await context.newPage();
+  await page.goto(url+'#route');
+  const results=await page.evaluate(()=>{
+   const ids=[145,147,149,151,154,155,332],records=window.ALL_EARS_DATA.items;
+   return ids.map(id=>{
+    const item=records.find(x=>x.id===id),guide=window.POE_ITEM_DESCRIPTIONS.get('ears',item);
+    const english=window.POE_LANGUAGE.englishHelp('ears',item,guide);
+    return {id,th:guide.action,en:english.action,caution:guide.caution,unlock:guide.unlock};
+   });
+  });
+  const byId=new Map(results.map(x=>[x.id,x]));
+  assert.match(byId.get(154).th,/หลังส่ง Ribbon Spool ให้ Lady Dialla/,'Thai #154 requires handing in Ribbon Spool');
+  assert.match(byId.get(154).en,/After GIVING the Ribbon Spool/,'English #154 must match the hand-in state');
+  assert.match(byId.get(149).en,/first time/,'Hargan #149 references first Dialla meeting');
+  assert.equal(byId.get(149).caution,'','Hargan #149 does not claim an unsupported permanent cutoff');
+  assert.equal(byId.get(332).caution,'','Act 6 Bestel #332 no longer invents a Western Forest cutoff');
+  assert.match(byId.get(332).th,/Prisoner's Gate/,'Bestel #332 gives correct Nessa trigger');
+  assert.match(byId.get(151).en,/After completing The Gemling Queen/,'Grigor Gemlings requires quest completion');
+  assert.match(byId.get(145).en,/Chitus' Plum/,'Fairgraves Resurrection follows the Plum topic');
+  assert.match(byId.get(155).en,/After GIVING Thaumetic Sulphite/,'Infernal Talc follows sulphite hand-in');
+  assert.match(byId.get(147).en,/After first entering The Solaris Temple/,'Clarissa source unlock follows Solaris entry');
+  await page.locator('#hubCampaignAct').selectOption('3');
+  let select=page.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select');
+  await select.selectOption('5');
+  assert.equal(await page.locator('[data-phase="dialla-intro"] input[data-track-id="151"]').count(),0,'post-quest Grigor #151 is not inside Lady Dialla first-contact stage');
+  await select.selectOption('6');
+  assert.match(await page.locator('[data-phase="dialla-items"] .hubWalkActions').innerText(),/หลังส่ง Ribbon Spool/,'post-item quest stage explains the hand-in');
+  assert.equal(await page.evaluate(()=>window.POE_STEAM_WALK.acts[3].find(p=>p.id==='dialla-items').dialogueIds.includes(151)),true,'Grigor #151 appears in the post-quest stage');
+ }finally{await context.close();}
+}
+
 async function verifyGuidedEntry(browser,url){
  const context=await browser.newContext({viewport:{width:320,height:812},hasTouch:true,reducedMotion:'reduce'});
  try{
@@ -355,6 +389,7 @@ async function verifyAct2PreSealConflict(browser,url){
  await verifyGuidedEntry(browser,url);
  await verifyQuestSelectorAndSkippedRisk(browser,url);
  await verifyEditorialGuidance(browser,url);
+ await verifySourceUnlockCorrections(browser,url);
  await verifyHistoricalWaypointBackup(browser,url);
  await verifyKaruiShoresSupplement(browser,url);
  await verifyAct2PreSealConflict(browser,url);

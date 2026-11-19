@@ -624,7 +624,21 @@ function actSteamGuide(act){
  const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
  const position=el("strong",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
  const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
- phases.forEach((p,i)=>{const op=el("option",(i+1)+". "+gameName(p.place));op.value=String(i);select.append(op)});
+ phases.forEach((p,i)=>{
+  // Identify the actual action rather than repeating area names for multiple quest states.
+  const pendingItems=[
+   ["dialogueIds",allEars],["loreIds",allLore],["waypointIds",allWaypoints],["sidequestIds",allSidequests]
+  ].reduce((n,[key,marked])=>n+(p[key]||[]).filter(id=>!marked.has(id)).length,0);
+  const pendingReview=p.requiresManualConfirmation&&review.confirmedStages?.[act+":"+p.id]!==true;
+  const pendingStop=p.stop&&((p.stopIds||[]).some(id=>!allEars.has(id))||
+   (p.stopWaypointIds||[]).some(id=>!allWaypoints.has(id))||pendingReview);
+  const actionName=descEN()?(p.headingEN||p.quest||p.place):(p.heading||p.place);
+  const note=pendingReview?tr(" · ตรวจคำเตือน"," · review source conflict"):
+   pendingItems?(" · "+pendingItems+tr(" รายการค้าง"," unchecked")):"";
+  const op=el("option",(i+1)+". "+(pendingStop?"STOP · ":"")+actionName+note);
+  op.value=String(i);op.dataset.stopPending=pendingStop?"true":"false";
+  select.append(op);
+ });
  select.value=String(chosen);
  const goto=(i,reviewSkip=false,focusControl="select")=>{
   const target=Math.max(0,Math.min(phases.length-1,i));
@@ -640,7 +654,9 @@ function actSteamGuide(act){
     );
     if(!confirm(msg)){select.value=String(chosen);return;}
    }
-   state.skippedRisk=outstanding.length?{act,from:outstanding[0].id,count:outstanding.length}:null;
+   // Show the first checkpoint relevant to this jump, not an unrelated older one.
+   const visibleSkipped=toWarn.length?toWarn:forwardRisks;
+   state.skippedRisk=visibleSkipped.length?{act,from:visibleSkipped[0].id,count:visibleSkipped.length}:null;
   }else if(state.skippedRisk?.act===act&&target<=chosen){state.skippedRisk=null;}
   lastInlineMark=null;
   state.steamFocusByAct[act]=target;rememberRoutePosition();renderView();

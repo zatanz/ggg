@@ -46,14 +46,14 @@ const translated={
       null
     ],
     "prison": [
-      "The Caged Brute · talk before fighting Brutus",
+      "The Caged Brute · check four conversations before fighting Brutus",
       [
-        "Enter the Prison and return to Tarkleigh and Bestel for their Brutus topics.",
-        "After meeting Piety, hear Nessa: Piety.",
-        "Read Shavronne's Journal in the Upper Prison, then check Bestel: Marceus Lioneye.",
-        "Hear Bestel: Brutus before killing Brutus."
+        "Before fighting Brutus, hear Nessa: Brutus (#26) and return to Tarkleigh and Bestel for Bestel: Brutus (#27).",
+        "After encountering Piety, return for Nessa: Piety (#28) BEFORE defeating Brutus; the updated Steam 3.30 guide explicitly warns against the early kill.",
+        "After reading Shavronne's Journal, return for Bestel: Marceus Lioneye (#29) BEFORE defeating Brutus; Steam likewise gives a do-not-kill warning.",
+        "Confirm that you heard all four dialogue entries (#26–29) before fighting Brutus. These are conservative guide precautions, not independent 3.30 gameplay certification."
       ],
-      "STOP: hear Bestel: Brutus (local ID 27) before killing Brutus."
+      "STOP: check #26–29 before killing Brutus; the 3.30 Steam guide explicitly warns against killing him before #28 and #29. Not independently gameplay-certified."
     ],
     "prisoners-gate": [
       "After Brutus · revisit town",

@@ -35,25 +35,28 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "id": "a1-brutus",
         "act": 1,
         "quest": "The Caged Brute",
-        "heading": "The Prison · เก็บ Bestel: Brutus และตรวจหัวข้ออื่นตามเงื่อนไข",
-        "before": "ก่อนฆ่า Brutus เฉพาะ Bestel: Brutus (ID 27)",
-        "action": "หลังเข้า The Prison คุย Tarkleigh เรื่อง Brutus แล้วกลับหา Bestel: Brutus (ID 27) ก่อนสู้บอส; ส่วน Nessa: Piety (ID 28) ให้ตรวจหลังพบ Piety และ Bestel: Marceus Lioneye (ID 29) ให้ตรวจหลังอ่าน Shavronne's Journal ไม่ใช่ STOP ที่พิสูจน์ว่าต้องทำก่อนฆ่า Brutus",
+        "heading": "The Prison · ตรวจบทสนทนา #26–29 ก่อนฆ่า Brutus",
+        "before": "ก่อนฆ่า Brutus ตามคู่มือ Steam ฉบับ 3.30 (ยังไม่ผ่านการทดสอบยืนยันในเกม)",
+        "action": "เก็บ Nessa: Brutus (ID 26) และ Bestel: Brutus (ID 27) หลังคุย Tarkleigh; หลังพบ Piety กลับหา Nessa: Piety (ID 28) และหลังอ่าน Shavronne's Journal กลับหา Bestel: Marceus Lioneye (ID 29) ก่อนฆ่า Brutus ตามคำเตือน Steam; PoE Wiki อธิบายเงื่อนไขการเปิดหัวข้อ แต่ไม่ได้ยืนยันจุดพลาดถาวรของ #28/#29",
         "ids": [
           26,
           27,
           28,
           29
         ],
-        "risk": "ก่อนสู้ Brutus ให้เก็บ Bestel: Brutus (ID 27); ID 28 และ 29 เปิดตามเหตุการณ์เฉพาะ ไม่ใช่เงื่อนไข STOP ก่อนฆ่าบอสที่มีหลักฐานยืนยัน",
+        "risk": "Steam Guide ฉบับ 3.30 เตือนอย่าฆ่า Brutus ก่อนฟัง Nessa: Piety (ID 28) และ Bestel: Marceus Lioneye (ID 29); ให้ตรวจครบ ID 26–29 ก่อนสู้โดยไม่กล่าวอ้างว่าเกม 3.30 ทดสอบยืนยันแล้ว",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
         "prereq": "The Prison / The Upper Prison",
         "stopRule": {
-          "action": "ฆ่า Brutus ก่อนฟัง Bestel: Brutus (ID 27)",
+          "action": "ฆ่า Brutus ก่อนตรวจบทสนทนา ID 26–29 ตามคู่มือ Steam 3.30",
           "requiredIds": [
-            27
+            26,
+            27,
+            28,
+            29
           ],
-          "note": "STOP นี้ผูกกับ ID 27 เท่านั้นตาม PoE Wiki; ID 26 เป็นหัวข้อหลังเข้า Prison ส่วน ID 28 หลังพบ Piety และ ID 29 หลังอ่าน Shavronne's Journal ต้องตรวจแยก ไม่อ้างว่าแพ้ Brutus แล้วพลาดถาวร",
-          "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
+          "note": "Steam 3.30 ระบุคำเตือนห้ามฆ่า Brutus ก่อน ID 28 (หลังเห็น Piety) และ ID 29 (หลังอ่าน Shavronne's Journal); เก็บ ID 26–27 ในช่วงเดียวกันตามลำดับคู่มือ เป็นคำเตือนระมัดระวังจากคู่มือ ไม่ใช่หลักฐานทดสอบการพลาดถาวรในเกม 3.30",
+          "source": "https://steamcommunity.com/sharedfiles/filedetails/?id=2948321869"
         }
       },
       {

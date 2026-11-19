@@ -125,6 +125,8 @@ const bindingTypes={lore:25,waypoints:34,sidequests:8};
 for(const [type,n] of Object.entries(bindingTypes))assert(bindings.filter(x=>x.type===type).length===n,type+": expected "+n+" supplementary route links");
 assert(special.labyrinth.ids.length===10&&special.vaal.ids.length===16,"Lore special-area quantities must remain 10 + 16");
 assert(lookbackCount===6,"Expected 6 cross-stage STOP ID dependencies (Silk #57 and five Darkness topics), found "+lookbackCount);
+const fatherOfWar=guide.acts[6]?.find(x=>x.id==="karui-intro");
+assert(fatherOfWar?.stopIds.join(",")==="318,320"&&fatherOfWar.stop.includes("Eye of Conquest"),"Act6 must guard Sin #318 before Eye of Conquest, Bestel #320 before Tukohama");
 const bannon=guide.acts[5]?.find(x=>x.id==="bannon-chamber");
 assert(bannon?.stopIds.join(",")==="283"&&bannon.stop.includes("The Torched Courts"),"Bannon #283 must be checked before Torched Courts per Steam");
 const utula=guide.acts[5]?.find(x=>x.id==="casticus-return");

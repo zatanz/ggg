@@ -101,16 +101,16 @@
     ],
     "actions": [
       "เข้า The Control Blocks เพื่อทำ The Key to Freedom และหา Miasmeter ของเควสต์ In Service to Science",
-      "เมื่อจัดการ Justicar Casticus แล้ว ให้กลับ Overseer's Tower คุย Utula: Justicar Casticus (ID 275) ก่อนฆ่า Avarius",
+      "หลังฆ่า Casticus กลับ Overseer's Tower ฟัง Utula: Justicar Casticus (ID 275) ก่อนเข้า Oriath Square ตาม Steam 3.30; Wiki เตือนเพียงก่อนฆ่า Avarius ไม่ได้ยืนยันจุดพลาดถาวรในเกม 3.30",
       "ส่ง Miasmeter ให้ Vilenta และติ๊กเควสต์รองเมื่อเกมแสดงว่าสำเร็จจริง"
     ],
     "actionsEN": [
       "Enter The Control Blocks for The Key to Freedom and recover the Miasmeter for In Service to Science.",
-      "After defeating Justicar Casticus, return to Overseer's Tower to hear Utula: Justicar Casticus (ID 275) before killing Avarius.",
+      "After Casticus, hear Utula: Justicar Casticus (#275) BEFORE entering Oriath Square per Steam 3.30; Wiki only states before Avarius. This is not gameplay-certified for 3.30.",
       "Return the Miasmeter to Vilenta and mark No Loose Ends only once the optional quest has actually completed."
     ],
-    "stop": "หยุดก่อนฆ่า Avarius: หลังฆ่า Casticus ให้กลับไปฟัง Utula: Justicar Casticus (ID 275)",
-    "stopEN": "STOP: hear Utula: Justicar Casticus (ID 275) after Casticus and before killing Avarius.",
+    "stop": "หยุดก่อนเข้า Oriath Square: หลังฆ่า Casticus ให้กลับไปฟัง Utula: Justicar Casticus (ID 275) ตาม Steam 3.30; Wiki เตือนก่อนฆ่า Avarius และจุดพลาดถาวรยังไม่ผ่านการพิสูจน์ในเกม",
+    "stopEN": "STOP: after Casticus, hear Utula: Justicar Casticus (#275) before entering Oriath Square per Steam 3.30; Wiki warns before killing Avarius. The exact lockout is unverified.",
     "stopIds": [
       275
     ],
@@ -118,8 +118,8 @@
       "Miasmeter",
       "Eyes of Zeal"
     ],
-    "sourceNote": "ข้อมูลเดิมของ ID 275 เตือนก่อนเข้า Oriath Square ขณะที่ PoE Wiki ปี 2025 ระบุก่อนฆ่า Avarius ข้อมูลทั้งสองยังไม่ได้ตรวจยืนยันในเกม 3.29",
-    "sourceNoteEN": "Legacy ID 275 cautions before entering Oriath Square; the 2025 PoE Wiki says before killing Avarius. Neither boundary has been independently verified in patch 3.29.",
+    "sourceNote": "Steam Guide ฉบับ 3.30 (อัปเดต 16 พ.ย.) เตือนก่อนเข้า Oriath Square; PoE Wiki 2025 เตือนก่อนฆ่า Avarius. ใช้จุดเตือนที่เร็วกว่าโดยไม่อ้างผลยืนยันการพลาดถาวรจากเกม 3.30",
+    "sourceNoteEN": "Updated Steam 3.30 guide warns before Oriath Square; 2025 Wiki gives a later pre-Avarius deadline. Conservative early advice is not a proven game-client lockout.",
     "confidence": "historical-source-only"
   },
   {
@@ -266,7 +266,7 @@
   },
   {
     "id": "bannon-chamber",
-    "heading": "พบ Bannon · เก็บหัวข้อใหม่หลัง Innocence",
+    "heading": "พบ Bannon · ฟัง Introduction ก่อนเข้า Torched Courts",
     "headingEN": "Meet Bannon · post-Innocence topics",
     "place": "The Chamber of Innocence / Overseer's Tower",
     "quest": "The King's Feast",
@@ -284,18 +284,18 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "คุย Bannon ใน The Chamber of Innocence แล้วกลับสำรวจหัวข้อที่เปิด",
+      "หลังพบ Bannon ใน The Chamber of Innocence ฟัง Introduction (ID 283) ก่อนเข้า The Torched Courts ตาม Steam 3.30 แล้วกลับตรวจหัวข้ออื่นที่เปิด",
       "เก็บ Introduction, Utula, Overseer's Tower, Innocence, The Sign of Purity, The Ossuary, Lani และ Vilenta",
       "กลับคุยตามสถานะก่อนทำ The King's Feast / The Ravenous God ไปไกล"
     ],
     "actionsEN": [
-      "Speak to Bannon in The Chamber of Innocence and revisit his newly unlocked dialogue.",
+      "Before entering The Torched Courts, hear Bannon: Introduction (#283) in The Chamber of Innocence as explicitly cautioned by Steam 3.30. Revisit his other topics as they unlock.",
       "Check Introduction, Utula, Overseer's Tower, Innocence, The Sign of Purity, The Ossuary, Lani and Vilenta.",
       "Recheck his available topics before progressing further into The King's Feast and The Ravenous God."
     ],
-    "stop": null,
-    "stopEN": null,
-    "stopIds": [],
+    "stop": "ก่อนเข้า The Torched Courts ให้คุย Bannon: Introduction (ID 283) ตามคำเตือน Steam Guide 3.30; ยังไม่มีการพิสูจน์ว่าพลาดถาวรจากเกมจริง",
+    "stopEN": "STOP: before entering The Torched Courts, hear Bannon: Introduction (#283) in The Chamber of Innocence. Steam 3.30 cautions this, but permanent 3.30 lockout is unverified.",
+    "stopIds": [283],
     "keyItems": [],
     "confidence": "historical-source-only"
   },

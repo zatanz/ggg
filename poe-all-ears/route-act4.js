@@ -300,7 +300,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Oyun",
       "dialog": "Kaom",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After completing Breaking the Seal and speaking with Lady Dialla"
     },
     {
       "id": 220,
@@ -360,7 +361,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Petarus and Vanja",
       "dialog": "Daresso",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After talking with Lady Dialla in The Crystal Veins"
     },
     {
       "id": 229,
@@ -486,7 +488,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Tasuni",
       "dialog": "Ghasts",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After first entering The Belly of the Beast"
     },
     {
       "id": 241,
@@ -504,7 +507,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Petarus and Vanja",
       "dialog": "Piety",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Piety in The Belly of the Beast"
     },
     {
       "id": 243,
@@ -528,7 +532,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Tasuni",
       "dialog": "Cataclysm",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After hearing Tasuni: Malachai"
     },
     {
       "id": 245,
@@ -566,7 +571,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Kira",
       "dialog": "Malachai - QC - (!)",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Malachai"
     },
     {
       "id": 250,
@@ -574,7 +580,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Petarus and Vanja",
       "dialog": "Malachai - (!)",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Malachai"
     },
     {
       "id": 251,
@@ -582,7 +589,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Tasuni",
       "dialog": "Malachai - (!)",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Malachai"
     },
     {
       "id": 252,
@@ -590,7 +598,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Tasuni",
       "dialog": "Malachai's Apprentices",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Malachai"
     },
     {
       "id": 253,
@@ -598,7 +607,8 @@ window.ALL_EARS_ROUTE_ACT4 = {
       "npc": "Oyun",
       "dialog": "Malachai - (!)",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_4",
+      "trigger": "After defeating Malachai"
     }
   ]
 };

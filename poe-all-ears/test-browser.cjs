@@ -31,6 +31,18 @@ async function verifyGuidedEntry(browser,url){
    assert.match(reportUrl.searchParams.get('body'),/Act: 2/,'report includes the current Act');
    assert.match(reportUrl.searchParams.get('body'),/ID: /,'report includes an ID field');
    assert.match(await report.innerText(),/GitHub/,'report discloses GitHub login');
+   const feedback=page.locator('.hubNextAction [data-feedback-draft="true"]');
+   assert.equal(await feedback.count(),1,'current quest has one optional no-login copy draft');
+   await feedback.locator('summary').click();
+   const draft=feedback.locator('textarea');
+   const feedbackText=await draft.inputValue();
+   assert.equal(await draft.getAttribute('readonly')!==null,true,'feedback draft is read-only, not a submitted form');
+   assert.match(feedbackText,/Act: 2/,'feedback copy includes current Act');
+   assert.match(feedbackText,/Step: old-fields/,'feedback copy includes selected quest step');
+   assert.equal((await feedback.innerText()).includes('ไม่ถูกส่งโดยอัตโนมัติ'),true,'feedback explicitly states no automatic submission');
+   await feedback.locator('[data-copy-feedback="true"]').click();
+   assert.equal(await draft.inputValue(),feedbackText,'copy action does not mutate report context');
+
    await page.reload();
    assert.equal(await page.locator('#hubCampaignAct').inputValue(),'2','reload restores the selected Act for this character');
    assert.equal(await page.locator('.hubWalkNavigator select').inputValue(),'1','reload restores the selected quest step for this character');

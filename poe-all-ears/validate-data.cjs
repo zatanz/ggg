@@ -623,11 +623,30 @@ assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Se
 // Legacy guidance is a fallback to the canonical route's per-ID timing. Keep it
 // consistent with the current source crosswalk so refactors do not resurrect
 // outdated hard STOPs or hard-code an arbitrary Bandit kill order.
+// Source-only editorial QA: Act 3 first-talk/quest hand-in and Act 6 Nessa conditions.
+const act3Audited=ctx.window.ALL_EARS_ROUTE_ACT3.records;
+for(const [id,row,prerequisite] of [
+  [145,157,"Chitus' Plum"],[147,142,"The Solaris Temple"],[149,144,"Lady Dialla"],
+  [151,146,"The Gemling Queen"],[154,149,"Ribbon Spool"],[155,152,"Thaumetic Sulphite"]
+]){
+ const found=act3Audited.find(x=>x.id===id);
+ assert(found?.wikiRow===row&&found.trigger?.includes(prerequisite),'Act3 Wiki prerequisite missing for canonical ID '+id);
+}
+assert(ctx.window.ALL_EARS_ROUTE_ACT6.records.find(x=>x.id===332)?.trigger?.includes("Nessa in Prisoner's Gate"),'Act6 #332 Bestel must depend on speaking to Nessa');
+const audAct3=ctx.window.POE_STEAM_WALK?.acts?.[3]||[];
+const firstDialla=audAct3.find(x=>x.id==='dialla-intro'),afterItems=audAct3.find(x=>x.id==='dialla-items');
+assert(!firstDialla?.dialogueIds.includes(151)&&afterItems?.dialogueIds.includes(151),'Grigor Gemlings #151 is post-quest, not first-contact dialogue');
+assert(afterItems?.actions.join(' ').includes('หลังส่ง Ribbon Spool ให้ Lady Dialla'),'Post-Dialla quest phase must name the item hand-in for #154');
 const legacyGuideSource=fs.readFileSync(path.join(dir,'guide-descriptions.js'),'utf8');
 const legacyGuideJson=legacyGuideSource.match(/^const legacy=(\{[^\n]+\});$/m);
 assert(Boolean(legacyGuideJson),'Legacy per-ID guidance table must remain parseable for source QA');
 const legacyGuide=legacyGuideJson?JSON.parse(legacyGuideJson[1]):{};
 assert(Object.keys(legacyGuide).length===62,'Preserve the established legacy guidance ID set');
+assert(legacyGuide[149]?.[1]===null&&legacyGuide[149]?.[0].includes('ครั้งแรก'),'Hargan #149 must not invent a cutoff while continuing to speak to Dialla');
+assert(legacyGuide[154]?.[0].includes('หลังส่ง Ribbon Spool'),'Dialla #154 must require handing in Ribbon Spool');
+assert(legacyGuide[332]?.[1]===null&&legacyGuide[332]?.[0].includes("Prisoner's Gate"),'Act6 Bestel #332 must not claim a Western Forest cutoff');
+assert(legacyGuide[146]?.[1]===null,'Fairgraves #146 must not force an unsupported immediate hand-in');
+
 assert(legacyGuide[21]?.[1].includes('The Submerged Passage')&&legacyGuide[21][1].includes('The Fetid Pool'),'Bestel Undead Rhoas must warn before either possible area boundary');
 assert([89,101,103].every(id=>!/(ฆ่า Kraityn แล้ว|ฆ่า Alira แล้ว|ฆ่า Oak แล้ว)/.test(legacyGuide[id]?.[0]||'')),'Act 2 Bandit legacy guidance must not hard-code one kill order');
 assert(legacyGuide[231]?.[1].includes('The Belly of the Beast')&&!legacyGuide[231][1].startsWith('อย่าเข้า Kaom'),'Daresso timing must reflect Wiki pre-Belly deadline, not invented absolute pre-Kaom lockout');
@@ -740,6 +759,13 @@ for(const [type,records] of Object.entries({ears:d.items,lore:lore.entries,waypo
  }
 }
 assert(descChecked===745,'Expected contextual help for all 745 entries');
+for(const [id,expected] of [[145,"Chitus' Plum"],[147,"The Solaris Temple"],[149,"Lady Dialla"],[151,"The Gemling Queen"],[154,"Ribbon Spool"],[155,"Thaumetic Sulphite"],[332,"Prisoner's Gate"]]){
+ const item=d.items.find(x=>x.id===id),guide=descriptions.get('ears',item),english=locale.englishHelp('ears',item,guide);
+ assert(guide.action.includes(expected)&&english.action.includes(expected),'Bilingual source-linked action missing for ID '+id);
+}
+assert(descriptions.get('ears',d.items.find(x=>x.id===149)).caution==='','Hargan #149 unsupported STOP must be removed');
+assert(descriptions.get('ears',d.items.find(x=>x.id===332)).caution==='','Act6 Bestel #332 unsupported Western Forest STOP must be removed');
+
 assert(descriptions.get('ears',d.items.find(x=>x.id===21)).caution.includes('The Fetid Pool'),'Act 1 missable must be explained');
 assert(descriptions.get('ears',d.items.find(x=>x.id===118)).caution.includes('Clarissa'),'Act 3 warning must be translated');
 assert(descriptions.get('lore',lore.entries.find(x=>x.id===1)).tip.includes('ชื่อจดหมายอาจออกซ้ำ'),'Random Letters of Exile explanation missing');

@@ -62,7 +62,7 @@ const translated={
         "After defeating Brutus, return to Lioneye's Watch and hear Nessa: Brutus (#30).",
         "After seeing Piety block the Western Forest route, return to Bestel for Prisoner's Gate (#31) BEFORE entering the Ship Graveyard; the updated Steam 3.30 guide explicitly recommends this order."
       ],
-      "STOP before entering the Ship Graveyard: hear Bestel: Prisoner's Gate (#31) after Piety blocks the way. This is a conservative source precaution, not a certified irreversible 3.30 game-client lockout."
+      "STOP: before entering the Ship Graveyard, hear Bestel: Prisoner's Gate (#31) after Piety blocks the way. This is a conservative source precaution, not a certified irreversible 3.30 game-client lockout."
     ],
     "fairgraves": [
       "Fairgraves · finish the dialogue sequence before the Allflame",

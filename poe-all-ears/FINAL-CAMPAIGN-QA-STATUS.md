@@ -25,14 +25,18 @@ Scope: **four targeted PoE achievements only**. Not all game achievements.
 5. Verify merged `master` contents and GitHub Pages deployment on the exact merged commit.
 6. No checklist ID changes, no migration of backup/export schema, and no automatic achievement marking.
 
-## Not certified / next acceptance gate
+## Known gameplay uncertainties — community feedback after release, not a development gate
 
 - No compatible PoE patch 3.30 fresh-character gameplay reproduction, game Achievement count screenshots or comparison with the in-game H achievement tab.
 - Alternate Highgate Tasuni branch can't be represented faithfully by only the original Irasha-side IDs #443/#444. The 484-point counter must not be treated as a branch-independent proof.
-- Locomancer source-count mapping (91 historical records vs 90 Wiki active points) is implemented and backup-safe; exact patch 3.30 in-game counter and complete active-node set remain unverified, so gameplay certification is still blocked.
+- Locomancer source-count mapping (91 historical records vs 90 Wiki active points) is implemented and backup-safe; exact patch 3.30 in-game counter and complete active-node set remain unverified; this does not block source/UX maintenance.
 - Original sources differ on Act 2 Bandit quest state; reported Fairgraves Act 1 NPC issues on patch 3.29 require targeted runtime verification.
 - All Acts 1–10 now have authored bilingual quest-stage steps, including the Act 1–3 editorial pass, but fine-grained per-row historical conditions have not received 745 separate human reviews or patch certification.
 - A human user testing pass for color contrast, cognitive load and effective "what do I do next" is still valuable; browser smoke tests are not a substitute for player usability testing.
+
+## Development completion policy — 19 Nov 2026
+
+Development acceptance is determined by source-linked data checks, canonical ID and backup stability, automated static/UI validation, Chromium browser interaction tests and deployment readback. **Do not create an outstanding development checkbox for fresh-character gameplay, human usability interviews, achievement-counter screenshots or player-reported edge cases.** These are optional post-release community feedback inputs, investigated when submitted. Source disagreements (e.g., Act 2 Bandits and Act 9 branching) remain visibly disclosed as uncertainty and are not silently marked safe.
 
 Conclusion: **The web application's source-guided coverage of Acts 1–10 is implemented. Verified 100% achievement unlock rate is NOT established.**
 

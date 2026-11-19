@@ -267,7 +267,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Clarissa",
       "dialog": "The Lunaris Temple",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After first entering The Solaris Temple"
     },
     {
       "id": 148,
@@ -285,7 +286,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Hargan",
       "dialog": "The Undying",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After first talking to Lady Dialla"
     },
     {
       "id": 150,
@@ -301,7 +303,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Grigor",
       "dialog": "Gemlings",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After completing The Gemling Queen"
     },
     {
       "id": 152,
@@ -327,7 +330,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Dialla *",
       "dialog": "The Sewers - (!)",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After giving Lady Dialla the Ribbon Spool"
     },
     {
       "id": 156,
@@ -351,7 +355,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Dialla *",
       "dialog": "Infernal Talc",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After giving Lady Dialla the Thaumetic Sulphite"
     },
     {
       "id": 142,
@@ -393,7 +398,8 @@ window.ALL_EARS_ROUTE_ACT3 = {
       "npc": "Fairgraves *",
       "dialog": "Resurrection",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_3",
+      "trigger": "After Fairgraves: Chitus' Plum"
     },
     {
       "id": 158,

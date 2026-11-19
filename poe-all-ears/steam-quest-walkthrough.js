@@ -748,7 +748,6 @@ window.POE_STEAM_WALK = {
           148,
           149,
           150,
-          151,
           152
         ],
         "loreIds": [],
@@ -773,7 +772,8 @@ window.POE_STEAM_WALK = {
           154,
           156,
           157,
-          155
+          155,
+          151
         ],
         "loreIds": [
           49,
@@ -782,7 +782,9 @@ window.POE_STEAM_WALK = {
         ],
         "actions": [
           "คุย Lady Dialla: Thaumetic Sulphite โดยยังไม่มี Ribbon Spool ตาม Wiki #148",
-          "เมื่อสถานะเควสต์เปลี่ยน ค่อยตรวจหัวข้อ The Sewers, Malachai, Chitus และ Infernal Talc ที่เปิดใหม่",
+          "หลังส่ง Ribbon Spool ให้ Lady Dialla แล้ว จึงตรวจหัวข้อ The Sewers (Wiki #149); การเก็บ Ribbon Spool ยังไม่ใช่เงื่อนไขนี้",
+          "หลังส่ง Thaumetic Sulphite ให้ Lady Dialla แล้ว ตรวจหัวข้อ Infernal Talc (Wiki #152) และตรวจ Malachai / Chitus เมื่อเปิด",
+          "หลังทำ The Gemling Queen สำเร็จ กลับไปฟัง Grigor: Gemlings (Wiki #146)",
           "เก็บ Journal Entry, Reverie Device และ Malachai's Journal ใน Solaris Temple Level 2"
         ],
         "stop": "ยังไม่ควรรับ Ribbon Spool ก่อนตรวจ Lady Dialla: Thaumetic Sulphite ตามเงื่อนไข (Wiki #148)",

@@ -242,7 +242,9 @@ const translated={
       "Sulphite and Ribbon Spool · preserve the item-state order",
       [
         "Hear Lady Dialla: Thaumetic Sulphite while you do NOT have Ribbon Spool (Wiki row #148).",
-        "As the quest state changes, check The Sewers, Malachai, Chitus and Infernal Talc topics when available.",
+        "After GIVING Ribbon Spool to Lady Dialla, hear The Sewers (Wiki row #149); merely finding the item is not the trigger.",
+        "After GIVING Thaumetic Sulphite to Lady Dialla, hear Infernal Talc (Wiki row #152), and check Malachai / Chitus as they unlock.",
+        "After completing The Gemling Queen, revisit Grigor: Gemlings (Wiki row #146).",
         "Read Journal Entry, Reverie Device and Malachai's Journal in Solaris Temple Level 2."
       ],
       "STOP: hear Lady Dialla: Thaumetic Sulphite before taking Ribbon Spool, according to the historical item-state condition."

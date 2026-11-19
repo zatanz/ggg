@@ -300,7 +300,8 @@ window.ALL_EARS_ROUTE_ACT6 = {
       "npc": "Bestel",
       "dialog": "The Ship Graveyard",
       "review": "wiki-row-matched-patch-unverified",
-      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6"
+      "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_6",
+      "trigger": "After talking to Nessa in Prisoner's Gate"
     },
     {
       "id": 333,

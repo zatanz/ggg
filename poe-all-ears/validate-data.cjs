@@ -371,6 +371,36 @@ assert(actThree.find(p=>p.id==='docks-fairgraves')?.patchProblem.includes('3.29'
 assert(steamWalk.patchCertified===false,'Act 3 source chronology does not certify 3.30 gameplay');
 
 const actFour=steamWalk.acts[4],actFourIds=actFour.flatMap(p=>p.dialogueIds),actFourLore=actFour.flatMap(p=>p.loreIds||[]);
+// 2026-11-19 Act 4 source-row QA: after-event unlocks must not become fake hard STOPs.
+const act4SourceAfter=[
+ [217,218,"Breaking the Seal","Oyun","Kaom"],
+ [225,225,"The Crystal Veins","Petarus and Vanja","Daresso"],
+ [240,240,"The Belly of the Beast","Tasuni","Ghasts"],
+ [242,242,"Piety","Petarus and Vanja","Piety"],
+ [244,245,"Tasuni: Malachai","Tasuni","Cataclysm"],
+ [249,249,"Malachai","Kira","Malachai"],
+ [250,250,"Malachai","Petarus and Vanja","Malachai"],
+ [251,251,"Malachai","Tasuni","Malachai"],
+ [252,252,"Malachai","Tasuni","Malachai's Apprentices"],
+ [253,253,"Malachai","Oyun","Malachai"]
+];
+for(const [id,row,event,npc,topic] of act4SourceAfter){
+ const item=ctx.window.ALL_EARS_ROUTE_ACT4.records.find(x=>x.id===id);
+ assert(item?.wikiRow===row&&item?.npc===npc&&item?.dialog?.startsWith(topic)&&item?.trigger?.includes(event)&&!item.before,
+ 'Act4 post-event source mapping/STOP mislabel: '+id);
+}
+for(const [phase,matchTH,matchEN] of [
+ ["voll-mines","Breaking the Seal","Breaking the Seal"],
+ ["crystal-veins","ID 225","#225"],
+ ["belly-intro","ID 240","#240"],
+ ["piety-town","ID 244","#244"],
+ ["malachai-after","ID 249","#249"]
+]){
+ const p=actFour.find(x=>x.id===phase);
+ assert(p?.actions.some(x=>x.includes(matchTH))&&p?.actionsEN.some(x=>x.includes(matchEN)),
+ 'Act4 source-informed bilingual phase mismatch: '+phase);
+}
+
 const actFourWp=actFour.flatMap(p=>p.waypointIds||[]),actFourSide=actFour.flatMap(p=>p.sidequestIds||[]);
 const sameExactSet=(items,expected)=>items.length===expected.length&&new Set(items).size===items.length&&expected.every(id=>items.includes(id));
 assert(actFour.length===13,'Act 4 walkthrough must have thirteen player-oriented phases');
@@ -781,6 +811,15 @@ for(const [type,records] of Object.entries({ears:d.items,lore:lore.entries,waypo
  }
 }
 assert(descChecked===745,'Expected contextual help for all 745 entries');
+for(const [id,,event,npc,topic] of act4SourceAfter){
+ const original=d.items.find(x=>x.id===id),guide=descriptions.get('ears',original);
+ const english=locale.englishHelp('ears',original,guide);
+ assert(guide.action.includes(npc)&&guide.action.includes(topic)&&guide.action.includes(event)&&
+   english.action.includes(npc)&&english.action.includes(topic)&&english.action.includes(event),
+ 'Act4 source after-event TH/EN item guidance mismatch: '+id);
+ assert(!guide.caution&&!english.caution.startsWith('STOP'),'Act4 after-event condition is not an extra STOP: '+id);
+}
+
 for(const [id,,sourceCondition,npc] of act5CrossContact){
  const item=d.items.find(x=>x.id===id),guide=descriptions.get('ears',item);
  const english=locale.englishHelp('ears',item,guide);

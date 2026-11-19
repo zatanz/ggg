@@ -637,6 +637,11 @@ assert(legacyGuide[382]?.[1].includes('The Vaal City')&&!legacyGuide[382][1].sta
 assert(legacyGuide[439]?.[1].includes('Petarus and Vanja'),'Highgate ruler warning must mention both pre-decision NPC checks');
 const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
 const act1Reference=ctx.window.POE_STEAM_WALK?.acts?.[1]||[];
+const sewerStop=ctx.window.POE_STEAM_WALK?.acts?.[3]?.find(x=>x.id==='sewer-blockage');
+assert(sewerStop?.stopIds.join(',')==='140'&&sewerStop.stop?.includes('The Marketplace'),'Updated Steam 3.30 guide warns not to enter Marketplace before Maramoa: Crossing the River #140');
+assert(sewerStop?.stop?.includes('ยังไม่ผ่านการทดสอบ'),'Act 3 sewer STOP must not claim a certified game-client lockout');
+assert(legacyGuide[140]?.[1].includes('The Marketplace'),'Act 3 per-dialogue caution #140 must be visible');
+assert(sewerStop?.stopEN?.startsWith('STOP:')&&sewerStop.stopEN.includes('Maramoa'),'Act3 English STOP must match the historical source');
 const oldFields=act1Reference.find(x=>x.id==='pool');
 const shipGate=act1Reference.find(x=>x.id==='prisoners-gate');
 assert(shipGate?.stopIds.join(',')==='31'&&shipGate.stop?.includes('The Ship Graveyard'),'Steam 3.30 warns to hear Bestel: Prisoner\'s Gate before entering the Ship Graveyard');

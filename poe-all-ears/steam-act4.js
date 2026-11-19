@@ -99,7 +99,7 @@
     "actions": [
       "ที่ The Dried Lake อ่าน Voll's Confession และจัดการ Voll เพื่อเปิดทางเข้า The Mines",
       "หลังรับเควสต์ An Indomitable Spirit ให้กลับ Highgate คุย Kira หัวข้อ Deshret (ID 220) ก่อนปลดปล่อย Deshret ใน The Mines Level 2",
-      "ตรวจหัวข้อเกี่ยวกับ The Mines, Voll และ The Rapture Device ที่เพิ่งเปิดก่อนเดินเรื่องต่อ"
+      "หลังจบ Breaking the Seal และคุย Lady Dialla กลับไปฟัง Oyun: Kaom (ID 217); ตรวจ The Mines, Voll และ Rapture Device ตามสถานะที่เปิด"
     ],
     "stop": "หยุดก่อนปลดปล่อย Deshret: ต้องฟัง Kira: Deshret (ID 220) ให้จบก่อน",
     "stopIds": [
@@ -162,7 +162,7 @@
     "actions": [
       "เปิด Waypoint The Crystal Veins และอ่าน Malachai's Notebook",
       "คุย Lady Dialla เรื่อง Kaom และ Daresso ก่อนจบเควสต์บอสทั้งสองสาย",
-      "กลับ Highgate ตรวจ Petarus and Vanja, Tasuni และ Oyun ในหัวข้อใหม่"
+      "หลังคุย Lady Dialla ใน The Crystal Veins กลับ Highgate ฟัง Petarus and Vanja: Daresso (ID 225); ตรวจ Tasuni และ Oyun เมื่อหัวข้อเปิด"
     ],
     "stop": "อย่าจบทั้งสองเควสต์ Kaom/Daresso ก่อนตรวจ Dialla ใน Crystal Veins",
     "stopIds": [
@@ -253,7 +253,7 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "ตรวจหัวข้อ Tasuni: Ghasts ที่ปลดล็อก",
+      "หลังเข้า The Belly of the Beast ครั้งแรก กลับไปฟัง Tasuni: Ghasts (ID 240) ที่ Highgate",
       "หลังต่อสู้ Piety ต้องหยุดตรวจ The Godless Three ก่อนเข้า Harvest"
     ],
     "stop": null,
@@ -296,7 +296,7 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "กลับเมืองคุย Petarus and Vanja, Tasuni และ Dialla ในหัวข้อที่เปิดหลังชนะ Piety",
+      "หลังชนะ Piety กลับ Highgate ฟัง Petarus and Vanja: Piety (ID 242) พร้อมตรวจ Tasuni: Malachai (ID 243) แล้วฟัง Tasuni: Cataclysm (ID 244) ที่ปลดล็อกตามมา และตรวจ Dialla เมื่อหัวข้อเปิด",
       "ตรวจ Tasuni: Malachai's Apprentices (ID 245) ก่อนฆ่า Malachai"
     ],
     "stop": "ยังไม่ควรฆ่า Malachai ก่อนฟัง Tasuni: Malachai's Apprentices",
@@ -378,7 +378,7 @@
     "waypointIds": [],
     "sidequestIds": [],
     "actions": [
-      "หลังฆ่า Malachai กลับ Highgate ฟัง Kira, Petarus and Vanja, Tasuni และ Oyun ทุกหัวข้อที่เปิด",
+      "หลังฆ่า Malachai กลับ Highgate ฟัง Kira (ID 249), Petarus and Vanja (250), Tasuni: Malachai (251) และ Malachai's Apprentices (252), และ Oyun (253) ทีละหัวข้อ อย่ารวม Tasuni #252 เข้ากับหัวข้อก่อนฆ่าบอส #245",
       "อ่าน Resonator Instructions ใน The Ascent",
       "ตรวจยอดสี่ Achievement ก่อนออกจาก Act 4"
     ],
@@ -407,7 +407,7 @@ const english={
   "voll-mines":["After Voll · talk to Kira BEFORE freeing Deshret",[
     "Read Voll's Confession at the Dried Lake, then defeat Voll to gain access to the Mines.",
     "After receiving An Indomitable Spirit, return to Highgate for Kira: Deshret (checklist ID 220) BEFORE freeing Deshret in Mines Level 2.",
-    "Review newly unlocked Mines, Voll and Rapture Device dialogue before continuing."
+    "After completing Breaking the Seal and speaking with Lady Dialla, hear Oyun: Kaom (#217); also review newly unlocked Mines, Voll and Rapture Device topics."
   ],"STOP: hear Kira: Deshret (checklist ID 220; Wiki #219) before freeing Deshret."],
   "deshret-after":["After freeing Deshret · return to Kira and Oyun",[
     "Return to Highgate after freeing Deshret and listen to Kira and Oyun: Deshret.",
@@ -416,7 +416,7 @@ const english={
   "crystal-veins":["Crystal Veins · meet Dialla before finishing both boss quests",[
     "Activate the Crystal Veins Waypoint and collect Malachai's Notebook.",
     "Speak to Lady Dialla about Kaom and Daresso before completing BOTH The King of Fury and The King of Desire.",
-    "Revisit Petarus and Vanja, Tasuni and Oyun in Highgate for the resulting topics."
+    "After speaking with Lady Dialla in The Crystal Veins, hear Petarus and Vanja: Daresso (#225) in Highgate; revisit Tasuni and Oyun as topics unlock."
   ],"STOP: speak to Lady Dialla in the Crystal Veins before completing both Kaom and Daresso quest lines (Wiki #223–224)."],
   "daresso-after":["After Daresso · check two dialogues before Belly of the Beast",[
     "Activate the Grand Arena Waypoint and discover the three Plaque lore entries.",
@@ -428,14 +428,14 @@ const english={
     "Check Oyun, Tasuni, Petarus and Vanja, Kira and Lady Dialla's newly unlocked topics after the Rapture Device changes state."
   ],"STOP: complete the relevant post-Kaom and post-Rapture Device conversations BEFORE entering The Belly of the Beast (Wiki #233–239)."],
   "belly-intro":["Belly of the Beast · review Tasuni: Ghasts",[
-    "Review the newly unlocked Tasuni: Ghasts dialogue.",
+    "After first entering The Belly of the Beast, return to Tasuni in Highgate for Ghasts (#240).",
     "After the Piety encounter, check The Godless Three before entering The Harvest."
   ],null],
   "piety-after":["After Piety · do NOT enter the Harvest immediately",[
     "Talk to Piety about The Godless Three after the encounter in the Belly of the Beast, before entering The Harvest."
   ],"STOP: hear Piety: The Godless Three before entering The Harvest (Wiki #241)."],
   "piety-town":["After Piety · review Tasuni before killing Malachai",[
-    "Return to Highgate and review newly available Petarus and Vanja, Tasuni and Lady Dialla topics.",
+    "After defeating Piety, hear Petarus and Vanja: Piety (#242); listen to Tasuni: Malachai (#243) and then Tasuni: Cataclysm (#244). Check Dialla as her topics unlock.",
     "Hear Tasuni: Malachai's Apprentices (checklist ID 245; Wiki #246) BEFORE killing Malachai."
   ],"STOP: hear Tasuni: Malachai's Apprentices before defeating Malachai (Wiki #246)."],
   "harvest-before":["The Harvest · speak to Piety before the final organ hand-in",[
@@ -448,7 +448,7 @@ const english={
     "Verify that the post-hand-in dialogue was heard before fighting Malachai."
   ],"STOP: hear Lady Dialla: Malachai (Wiki #248) AFTER handing in all organs but BEFORE killing Malachai."],
   "malachai-after":["After Malachai · finish Highgate dialogue and Act 4 lore",[
-    "After defeating Malachai, revisit Kira, Petarus and Vanja, Tasuni and Oyun for their newly unlocked topics.",
+    "After defeating Malachai, return to Kira (#249), Petarus and Vanja (#250), Tasuni: Malachai (#251) and Malachai's Apprentices (#252), plus Oyun (#253). Tasuni's #252 is distinct from the pre-boss #245.",
     "Read Resonator Instructions in the Ascent.",
     "Compare the four tracked achievement counts with your in-game progress before leaving Act 4."
   ],"Before leaving Act 4, revisit the post-Malachai NPC conversations (Wiki #249–253)."]

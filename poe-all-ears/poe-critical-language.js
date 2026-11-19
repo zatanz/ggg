@@ -13,10 +13,10 @@ const lang={
       "Bestel's pool deadline and Tarkleigh's glyph deadline are separate. Check the correct dialogue before each event."
     ],
     "a1-brutus": [
-      "The Prison · check NPCs before Brutus",
-      "After entering the Prison, return for Tarkleigh and Bestel's Brutus dialogue. Check Nessa: Piety and the Marceus Lioneye topic after reading Shavronne's Journal.",
-      "Defeating Brutus before the required conversations",
-      "Some topics appear at different points before the fight. Do not assume they all unlock at once."
+      "The Prison · Bestel: Brutus and separate topic triggers",
+      "Before fighting Brutus, hear Bestel: Brutus (local #27) after speaking with Tarkleigh. Check Nessa: Piety (#28) after encountering Piety, and Bestel: Marceus Lioneye (#29) after reading Shavronne's Journal. Those two are NOT proven pre-Brutus lockouts.",
+      "Defeating Brutus before hearing Bestel: Brutus (local #27)",
+      "Only #27 is required by this pre-Brutus STOP. #26, #28 and #29 remain separate historical checklist topics; their exact current-patch lockout times are not certified."
     ],
     "a1-fairgraves": [
       "Ship Graveyard · speak before taking the Allflame",

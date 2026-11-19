@@ -616,6 +616,14 @@ assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.acts?.[stage.id]')&&c
 assert(criticalHub.includes('window.POE_CRITICAL_LANGUAGE?.postQuest?.[stage.id]'),'Act10 post-quest notes must use the English source text');
 assert(criticalHub.includes('First Bandit you killed')&&criticalHub.includes('Second Bandit you killed'),'Bandit safety selector must use the guidance language');
 
+// The Wiki names only Bestel: Brutus (#27) as an explicit pre-Brutus dialogue cutoff.
+// Nessa: Piety (#28) and Bestel: Marceus Lioneye (#29) have separate unlock triggers;
+// do not regress to an unsourced pre-boss STOP for these unrelated source rows.
+const prisonGate=checkpointData.acts[1].find(x=>x.id==='a1-brutus');
+assert(prisonGate?.stopRule?.requiredIds.join(',')==='27','Act 1 pre-Brutus STOP must require only Bestel: Brutus local #27');
+assert(prisonGate?.ids.join(',')==='26,27,28,29','Act 1 stage must retain all 4 checklist records outside the scoped STOP');
+assert(prisonGate?.stopRule?.note.includes('ID 28')&&prisonGate.stopRule.note.includes('ID 29'),'Act 1 STOP must explain separate triggers instead of inventing permanent pre-Brutus deadlines');
+assert(checkpointLanguage.acts['a1-brutus'][2].includes('#27')&&checkpointLanguage.acts['a1-brutus'][3].includes('#28'),'Act 1 English STOP must identify the same canonical ID boundary');
 assert(checkpointData.acts[2].find(x=>x.id==='a2-darkness')?.sourceConflict?.kind==='steam-vs-wiki','Bandit timing contradiction must remain prominently visible');
 const guarded=Object.values(checkpointData.acts).flatMap(stages=>stages.filter(s=>s.stopRule));
 assert(guarded.length>=20&&guarded.every(s=>s.stopRule.requiredIds.length&&s.stopRule.requiredIds.every(id=>s.ids.includes(id))),'Stop-before quest rules must tie to real per-stage dialogue IDs');

@@ -384,7 +384,7 @@ function criticalPanel(act){
  const section=el("section",undefined,"hubCritical");
  section.dataset.criticalAct=act;
  const title=el("div",undefined,"hubCriticalTitle");
- title.append(el("h3",tr("ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด","Before advancing · missable dialogue checkpoints")),el("p",tr("กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.29","Historical 2025 risk groups. Individual dialogue topics can unlock at different quest stages; check each condition before acting. This is not a patch 3.29-certified complete route."),"hubSubtle"));
+ title.append(el("h3",tr("ก่อนเดินเควสต์ต่อ · จุดที่อาจพลาด","Before advancing · missable dialogue checkpoints")),el("p",tr("กลุ่มจุดเสี่ยงจากคู่มือปี 2025 · แต่ละบทสนทนาอาจเปิดคนละช่วง ให้ดูเงื่อนไขรายบรรทัดก่อนทำ · ไม่ใช่ลำดับเดินเควสต์ครบทุกเส้นทาง และยังไม่รับรอง 3.30","Historical 2025 risk groups. Individual dialogue topics can unlock at different quest stages; check each condition before acting. This is not a patch 3.30-certified complete route."),"hubSubtle"));
  section.append(title);
  const already=new Set(entries("ears"));
  const sorted=[...stages]; // Preserve authored stage/source grouping; urgency is a label, never reorders quest timing.
@@ -421,7 +421,7 @@ function criticalPanel(act){
     guard.dataset.stopStage=stage.id;guard.dataset.stopState=missing.length?"hold":"review";
     guard.append(el("strong",missing.length?tr("ยังไม่ควรทำ: ","STOP before: ")+(en?en[2]:rule.action):tr("รายการก่อนผ่านจุดนี้บันทึกครบแล้ว — ตรวจในเกมอีกครั้ง","All required topics are marked · verify in-game before advancing")));
     guard.append(el("p",en?en[1]:rule.note));
-    guard.append(el("div",missing.length?tr("ขาดอีก ","Still unchecked: ")+missing.length+tr(" บทสนทนาก่อนผ่านจุดนี้"," dialogues before this transition"):tr("การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.29","Checkmarks do not certify the correct quest state for patch 3.29."),"hubStopPending"));
+    guard.append(el("div",missing.length?tr("ขาดอีก ","Still unchecked: ")+missing.length+tr(" บทสนทนาก่อนผ่านจุดนี้"," dialogues before this transition"):tr("การติ๊กครบไม่รับรองว่าสถานะเควสต์ถูกต้องกับแพตช์ 3.30","Checkmarks do not certify the correct quest state for patch 3.30."),"hubStopPending"));
     inside.append(guard);
   }
   if(stage.sourceConflict){

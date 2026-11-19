@@ -35,27 +35,24 @@ window.POE_CRITICAL_CHECKPOINTS = {
         "id": "a1-brutus",
         "act": 1,
         "quest": "The Caged Brute",
-        "heading": "The Prison · ก่อนฆ่า Brutus",
-        "before": "ก่อนฆ่า Brutus",
-        "action": "หลังเข้า The Prison คุย Tarkleigh เรื่อง Brutus; กลับไป Bestel เพื่อเก็บหัวข้อ Brutus และตรวจ Nessa / Shavronne's Journal ตามเงื่อนไขของแต่ละรายการ",
+        "heading": "The Prison · เก็บ Bestel: Brutus และตรวจหัวข้ออื่นตามเงื่อนไข",
+        "before": "ก่อนฆ่า Brutus เฉพาะ Bestel: Brutus (ID 27)",
+        "action": "หลังเข้า The Prison คุย Tarkleigh เรื่อง Brutus แล้วกลับหา Bestel: Brutus (ID 27) ก่อนสู้บอส; ส่วน Nessa: Piety (ID 28) ให้ตรวจหลังพบ Piety และ Bestel: Marceus Lioneye (ID 29) ให้ตรวจหลังอ่าน Shavronne's Journal ไม่ใช่ STOP ที่พิสูจน์ว่าต้องทำก่อนฆ่า Brutus",
         "ids": [
           26,
           27,
           28,
           29
         ],
-        "risk": "อย่าฆ่า Brutus ก่อนเก็บบทสนทนาที่เปิดได้ก่อนสู้บอส",
+        "risk": "ก่อนสู้ Brutus ให้เก็บ Bestel: Brutus (ID 27); ID 28 และ 29 เปิดตามเหตุการณ์เฉพาะ ไม่ใช่เงื่อนไข STOP ก่อนฆ่าบอสที่มีหลักฐานยืนยัน",
         "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement#Act_1",
         "prereq": "The Prison / The Upper Prison",
         "stopRule": {
-          "action": "ฆ่า Brutus",
+          "action": "ฆ่า Brutus ก่อนฟัง Bestel: Brutus (ID 27)",
           "requiredIds": [
-            26,
-            27,
-            28,
-            29
+            27
           ],
-          "note": "Tarkleigh/Bestel ต้องคุยก่อนสู้ ส่วน Nessa:Piety และ Bestel:Marceus Lioneye เปิดหลังเงื่อนไขเฉพาะ",
+          "note": "STOP นี้ผูกกับ ID 27 เท่านั้นตาม PoE Wiki; ID 26 เป็นหัวข้อหลังเข้า Prison ส่วน ID 28 หลังพบ Piety และ ID 29 หลังอ่าน Shavronne's Journal ต้องตรวจแยก ไม่อ้างว่าแพ้ Brutus แล้วพลาดถาวร",
           "source": "https://www.poewiki.net/wiki/Guide:All_Ears_achievement"
         }
       },

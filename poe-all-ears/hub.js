@@ -28,8 +28,24 @@ const routeKeys=[1,2,3,4,5,6,7,8,9,10],routes={};
 routeKeys.forEach(a=>{const r=window["ALL_EARS_ROUTE_ACT"+a];if(r&&Array.isArray(r.records))routes[a]=r.records;});
 const state={tab:"route",collectionType:"ears",act:"1",routeAct:"1",collectionAct:"all",status:"all",search:"",limit:12,reviewType:"lore",gameCount:"",focusByAct:{},vaalQuery:"",steamFocusByAct:{},skippedRisk:null,fairgravesExpanded:null,referenceShelfOpen:false,evidenceExpandedByAct:{}};
 let lastInlineMark=null;
+let itemLabelSequence=0;
 const $=id=>document.getElementById(id);
 function el(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
+function confirmStop(message,trigger,onConfirm){
+ if(typeof HTMLDialogElement==="undefined"||typeof HTMLDialogElement.prototype.showModal!=="function"){
+  if(confirm(message))onConfirm();
+  else trigger?.focus({preventScroll:true});
+  return;
+ }
+ const dialog=el("dialog",undefined,"hubStopDialog");dialog.setAttribute("aria-labelledby","hubStopDialogTitle");
+ const title=el("h2",tr("ตรวจจุด STOP ก่อนข้าม","Review STOP before skipping"));title.id="hubStopDialogTitle";
+ const description=el("p",message);description.id="hubStopDialogDescription";dialog.setAttribute("aria-describedby",description.id);
+ const actions=el("div",undefined,"hubStopDialogActions"),cancel=el("button",tr("ยกเลิก","Cancel")),proceed=el("button",tr("ยืนยันการข้าม","Confirm skip"),"hubStopDialogConfirm");
+ cancel.type="button";proceed.type="button";cancel.dataset.stopDialogCancel="true";proceed.dataset.stopDialogConfirm="true";
+ cancel.onclick=()=>dialog.close("cancel");proceed.onclick=()=>dialog.close("confirm");
+ dialog.addEventListener("close",()=>{const accepted=dialog.returnValue==="confirm";dialog.remove();if(accepted)onConfirm();else if(trigger?.isConnected)trigger.focus({preventScroll:true});},{once:true});
+ actions.append(cancel,proceed);dialog.append(title,description,actions);document.body.append(dialog);dialog.showModal();cancel.focus();
+}
 function safeParse(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
 function validIDs(type,ids){const max=totals[type];return Array.isArray(ids)?[...new Set(ids.filter(i=>Number.isInteger(i)&&i>=1&&i<=max))].sort((a,b)=>a-b):[];}
 function active(){const s=B.read(),id=$("character").value;return s.characters.find(c=>c.id===id)||s.characters.find(c=>c.id===s.active)||s.characters[0];}
@@ -333,7 +349,7 @@ function itemCard(type,x){
  const row=el("div",undefined,"hubItem"+(done?" done":"")),box=itemCheckbox(type,x,done,details),info=el("div",undefined,"hubText");
  row.dataset.state=done?"done":"todo";
  const shown=label(x,type),canonical=type==="ears"?x.npc+" — "+x.dialog:x.name;
- const name=el("div",shown,"hubName");
+ const name=el("label",shown,"hubName");box.id="hubItemLabel"+(++itemLabelSequence);name.htmlFor=box.id;
  if(LANG.get().names==="th"&&shown!==canonical){name.title=canonical;const originalName=el("small",canonical,"hubCanonicalName");originalName.lang="en";info.append(name,originalName);}else info.append(name);
  const meta=el("div",undefined,"hubCompactMeta");
  const priorityText=type==="ears"&&original?.caution?tr("ต้องฟังก่อนเดินเรื่องต่อ","Check before advancing"):type==="sidequests"?tr("เควสต์รอง · ต้องทำให้จบ","Side quest · finish it"):tr("เก็บรายการนี้ในเกม","Collect this in-game");
@@ -622,8 +638,8 @@ function actSteamGuide(act){
  const phaseTotal=Object.values(phaseCount).reduce((n,ids)=>n+ids.length,0)+Number(phase.requiresManualConfirmation===true);
  const phaseDone=Object.entries(phaseCount).reduce((n,[k,ids])=>n+ids.filter(id=>checkedGroups[k].has(id)).length,0)+Number(phase.requiresManualConfirmation===true&&questConfirmed);
  const control=el("div",undefined,"hubStepNavigator hubWalkNavigator");
- const position=el("strong",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
- const select=el("select");select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
+ const position=el("label",tr("ช่วงที่เปิดล่าสุด ","Last viewed ")+(chosen+1)+" / "+phases.length,"hubStepPosition");
+ const select=el("select");select.id="hubCurrentStep";position.htmlFor=select.id;select.setAttribute("aria-label",tr("เลือกช่วงการเดิน Act ","Choose walkthrough step in Act ")+act);
  phases.forEach((p,i)=>{
   // Identify the actual action rather than repeating area names for multiple quest states.
   const pendingItems=[
@@ -652,7 +668,13 @@ function actSteamGuide(act){
       "กำลังข้ามจุดเสี่ยงที่ยังไม่บันทึก "+toWarn.length+" ช่วง\nจุดแรก: "+first.stop+"\n\nการเปลี่ยนหน้าไม่ได้ยืนยันว่าปลอดภัย ต้องการข้ามไปดูช่วงอื่นหรือไม่?",
       "You are skipping "+toWarn.length+" unchecked STOP checkpoint(s).\nFirst: "+(first.stopEN||first.stop)+"\n\nNavigation is not proof of quest safety. Jump anyway?"
     );
-    if(!confirm(msg)){select.value=String(chosen);return;}
+    const origin=focusControl==="select"?select:document.activeElement;
+    select.value=String(chosen);
+    confirmStop(msg,origin,()=>{
+     state.skippedRisk={act,from:toWarn[0].id,count:toWarn.length};
+     goto(target,false,focusControl);
+    });
+    return;
    }
    // Show the first checkpoint relevant to this jump, not an unrelated older one.
    const visibleSkipped=toWarn.length?toWarn:forwardRisks;
@@ -681,10 +703,14 @@ function actSteamGuide(act){
    ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
   const stillMissing=(phase.stopIds||[]).filter(id=>!allEars.has(id)),missingStopWaypoints=(phase.stopWaypointIds||[]).filter(id=>!allWaypoints.has(id)),missingManualReview=phase.requiresManualConfirmation&&!questConfirmed;
   if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview)){
-   if(!confirm(tr(
+   confirmStop(tr(
     "หยุดตรวจจุดเสี่ยงก่อน: "+phase.stop+"\n\nยังไม่ได้บันทึก "+missing.length+" รายการในช่วงนี้ การไปหน้าถัดไปไม่ได้ทำให้เควสต์ปลอดภัย ต้องการข้ามไปดูช่วงถัดไปหรือไม่?",
     "STOP checkpoint unresolved: "+(phase.stopEN||phase.stop)+"\n\n"+missing.length+" task(s) remain unchecked in this step. Viewing the next step does not make the quest safe. Skip for review?"
-   )))return;
+   ),next,()=>{
+    state.skippedRisk={act,from:phase.id,count:1};
+    goto(chosen+1,false,"task");
+   });
+   return;
   }else if(missing.length){
    const first=missing[0],entry=collections[first.type].find(x=>x.id===first.id);
    const nextName=entry?label(entry,first.type):"ID "+first.id;
@@ -693,8 +719,6 @@ function actSteamGuide(act){
     missing.length+" unchecked task(s) remain in this step.\nFirst: "+nextName+"\n\nCheck these in-game before progressing. Skip to preview the next step?"
    )))return;
   }
-  // Keep a visible return path when the user knowingly previews beyond a STOP.
-  if(phase.stop&&(stillMissing.length||missingStopWaypoints.length||missingManualReview))state.skippedRisk={act,from:phase.id,count:1};
   goto(chosen+1,false,"task");
  };
  const jump=el("button",tr("ไปช่วงแรกที่ยังขาด","First incomplete step"),"hubJumpMissing");jump.type="button";
@@ -730,8 +754,8 @@ function actSteamGuide(act){
   }
  }
  const head=el("div",undefined,"hubWalkFocus");
- head.append(el("h2",descEN()?(phase.headingEN||("Route step: "+phase.place)):phase.heading),
- el("p",tr("พื้นที่: ","Area: ")+gameName(phase.place)+" · "+tr("เควสต์: ","Quest: ")+gameName(phase.quest)));
+ head.append(el("h2",descEN()?(phase.headingEN||("Route step: "+phase.place)):phase.heading));
+ const location=el("p",tr("พื้นที่: ","Area: ")+gameName(phase.place)+" · "+tr("เควสต์: ","Quest: ")+gameName(phase.quest),"hubQuestLocation");
  if(phase.keyItems?.length){
   const items=el("div",undefined,"hubQuestItems");
   items.append(el("strong",tr("ไอเท็มสำคัญ: ","Key items: ")));
@@ -749,7 +773,6 @@ function actSteamGuide(act){
  });
  if(phase.requiresManualConfirmation)questStatus.dataset.manualReview="true";
  questStatus.append(questCheck,el("span",phase.requiresManualConfirmation?tr(phase.manualConfirmLabel||"ฉันอ่านคำเตือนแล้ว (ไม่รับรองความปลอดภัย)",phase.manualConfirmLabelEN||"I reviewed the warning (not a safety guarantee)"):tr("ยืนยันด้วยตนเองว่าเควสต์ช่วงนี้เสร็จในเกม","I confirm this quest step is complete in-game")));
- if(!phase.requiresManualConfirmation)head.append(questStatus);
  // Focus on the first unmarked task within the selected stage, prioritizing an unchecked STOP.
  const unchecked=Object.entries(phaseCount).flatMap(([type,ids])=>ids.filter(id=>!checkedGroups[type].has(id)).map(id=>({type,id})));
  const urgent=unchecked.find(x=>x.type==="ears"&&(phase.stopIds||[]).includes(x.id));
@@ -760,7 +783,7 @@ function actSteamGuide(act){
  instructions.forEach(txt=>actions.append(el("li",txt)));
  const fullSteps=el("details",undefined,"hubWalkInstructions");
  fullSteps.append(el("summary",tr("ดูขั้นตอนทั้งหมด · ","All instructions · ")+instructions.length+tr(" ข้อ"," steps")),actions);
- focus.append(fullSteps);
+ focus.append(fullSteps,location);
  if(phase.requiresManualConfirmation)focus.append(questStatus);
  const charId=active()?.id;
  const previous=lastInlineMark?.act===act&&lastInlineMark.index===chosen&&lastInlineMark.charId===charId&&
@@ -940,6 +963,7 @@ if(act==="9"&&phase.branchChoice){
   const list=el("ol");phase.actions.forEach(txt=>list.append(el("li",txt)));original.append(list);box.append(original);
  }
  focus.append(inline);
+ if(!phase.requiresManualConfirmation)focus.append(questStatus);
  focus.append(reportLink(current?.type||"quest",current?.id,act,phase.id));
  focus.append(reportCopyDraft(current?.type||"quest",current?.id,act,phase.id));
  if(advance)confirmations.prepend(advance);
@@ -1178,7 +1202,8 @@ for(const [id,caption] of [["all",tr("ทุกสถานะ","All statuses")]
 filter.value=state.status;
 search.oninput=()=>{const caret=search.selectionStart;state.search=search.value;state.limit=40;renderView();const replacement=document.querySelector(".hubReferenceFilters input");replacement.focus({preventScroll:true});replacement.setSelectionRange(caret,caret);};
 filter.onchange=()=>{state.status=filter.value;state.limit=40;renderView();document.querySelector(".hubReferenceFilters select").focus({preventScroll:true});};
-filters.append(search,filter);reference.append(filters);
+const searchLabel=el("label",tr("ค้นหาใน Act นี้","Search this Act")),filterLabel=el("label",tr("สถานะรายการ","Item status"));
+searchLabel.append(search);filterLabel.append(filter);filters.append(searchLabel,filterLabel);reference.append(filters);
 const actMission=journeyActGuide(act);
 if(["1","2","3","4","5","6","7","8","9","10"].includes(act)){
  const route=actSteamGuide(act);if(route)panel.append(route);
@@ -1325,6 +1350,18 @@ controls.append(select,input,cmp,checkpoint);panel.append(controls,out);
 const old=currentReview()?.baselines?.[state.reviewType];if(old)panel.append(el("p",tr("จุดเทียบยอดล่าสุด: ","Last matching checkpoint: ")+old.count+tr(" รายการ · "," entries · ")+old.at,"hubSubtle"));
 const safety=el("details",undefined,"hubChapter");safety.append(el("summary",tr("ตรวจจุดเสี่ยง Act 2 · Bandits / Ancient Seal","Review Act 2 risks · Bandits / Ancient Seal")),safetyPanel());
 panel.append(safety,exportPanel());return panel;}
+function importedBaselines(value){
+ const result={};
+ for(const type of Object.keys(names)){
+  const checkpoint=value?.[type];
+  if(!checkpoint||!Number.isInteger(checkpoint.count)||checkpoint.count<0||checkpoint.count>totals[type]||
+   !Array.isArray(checkpoint.ids)||typeof checkpoint.at!=="string"||!Number.isFinite(Date.parse(checkpoint.at)))continue;
+  const restored={count:checkpoint.count,ids:validIDs(type,checkpoint.ids),at:checkpoint.at};
+  if(typeof checkpoint.karuiShores==="boolean")restored.karuiShores=checkpoint.karuiShores;
+  result[type]=restored;
+ }
+ return result;
+}
 function exportPanel(){const panel=el("div",undefined,"hubPanel");panel.append(el("h3",tr("สำรองข้อมูลทุก Achievement","Back up all tracked achievements")),el("p",tr("ส่งออกเป็นไฟล์เดียวสำหรับทุกตัวละคร · เมื่อนำเข้าจะเพิ่มเป็นตัวละครใหม่ ไม่เขียนทับข้อมูลเดิม","Export one file for all characters. Import adds new character entries and does not overwrite existing ones."),"hubSubtle"));
 const row=el("div",undefined,"hubInlineRow"),exp=el("button",tr("ดาวน์โหลด Backup รวม","Download combined backup")),imp=el("button",tr("นำเข้า Backup รวม","Import combined backup")),file=el("input");file.type="file";file.accept="application/json,.json";file.hidden=true;
 exp.className="primary";exp.onclick=()=>{const s=B.read(),l=getBackupState(LORE),x=getBackupState(EXTRA),h=safeParse(HUB)||{},r=safeParse(RULER)||{};const characters=s.characters.map(c=>{const lr=l.byCharacter[c.id]||{},ex=x.byCharacter[c.id]||{},rv=h.byCharacter&&h.byCharacter[c.id]||{};return {name:c.name,ears:validIDs("ears",c.checked),lore:validIDs("lore",lr.lore),waypoints:validIDs("waypoints",ex.waypoints),sidequests:validIDs("sidequests",ex.sidequests),safety:lr.safety||{},baselines:rv.baselines||{},confirmedStages:rv.confirmedStages||{},rulerChoice:["Irasha","Tasuni"].includes(r[c.id])?r[c.id]:"undecided",karuiShores:(safeParse(KARUI)||{})[c.id]===true};});const blob=new Blob([JSON.stringify({app:"poe-unified-companion",schema:2,exportedAt:new Date().toISOString(),characters},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download="poe-achievements-all-characters.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);};
@@ -1332,7 +1369,7 @@ imp.onclick=()=>file.click();file.onchange=async()=>{const f=file.files[0];file.
 for(const c of records){if(!c||typeof c.name!=="string"||!c.name.trim()||c.name.length>60)throw Error("name");if(c.rulerChoice!==undefined&&!["undecided","Irasha","Tasuni"].includes(c.rulerChoice))throw Error("ruler");if(c.karuiShores!==undefined&&typeof c.karuiShores!=="boolean")throw Error("karui");for(const type of Object.keys(names)){const ids=c[type];if(!Array.isArray(ids)||ids.length>totals[type]||ids.some(z=>!Number.isInteger(z)||z<1||z>totals[type]))throw Error("ids");}}
 const main=B.read();if(main.characters.length+records.length>100)throw Error("limit");if(!confirm(tr("นำเข้า ","Import ")+records.length+tr(" ตัวละครเป็นรายการใหม่? จะไม่ลบข้อมูลเดิม และโหลดหน้าใหม่เมื่อสำเร็จ"," character(s) as new entries? Existing data will remain and the page will reload after success.")))return;
 const originals=[MAIN,LORE,EXTRA,HUB,RULER,KARUI].map(key=>[key,localStorage.getItem(key)]),newMain=JSON.parse(JSON.stringify(main)),newLore=getBackupState(LORE),newExtras=getBackupState(EXTRA),newHub=safeParse(HUB)||{schema:2,byCharacter:{}},newRuler=safeParse(RULER)||{},newKarui=safeParse(KARUI)||{};if(!newHub.byCharacter)newHub.byCharacter={};
-records.forEach((c,i)=>{const id="hub-"+Date.now().toString(36)+"-"+i+"-"+Math.random().toString(36).slice(2,9);newMain.characters.push({id,name:c.name.trim(),checked:validIDs("ears",c.ears)});newLore.byCharacter[id]={lore:validIDs("lore",c.lore),safety:c.safety&&typeof c.safety==="object"?c.safety:{},checkpoint:null};newExtras.byCharacter[id]={waypoints:validIDs("waypoints",c.waypoints),sidequests:validIDs("sidequests",c.sidequests)};newHub.byCharacter[id]={baselines:{},confirmedStages:c.confirmedStages&&typeof c.confirmedStages==="object"&&!Array.isArray(c.confirmedStages)?Object.fromEntries(Object.entries(c.confirmedStages).filter(([key,value])=>/^(?:[1-9]|10):[a-z0-9-]+$/.test(key)&&value===true)): {}};if(["Irasha","Tasuni"].includes(c.rulerChoice))newRuler[id]=c.rulerChoice;if(c.karuiShores===true)newKarui[id]=true;});
+records.forEach((c,i)=>{const id="hub-"+Date.now().toString(36)+"-"+i+"-"+Math.random().toString(36).slice(2,9);newMain.characters.push({id,name:c.name.trim(),checked:validIDs("ears",c.ears)});newLore.byCharacter[id]={lore:validIDs("lore",c.lore),safety:c.safety&&typeof c.safety==="object"?c.safety:{},checkpoint:null};newExtras.byCharacter[id]={waypoints:validIDs("waypoints",c.waypoints),sidequests:validIDs("sidequests",c.sidequests)};newHub.byCharacter[id]={baselines:importedBaselines(c.baselines),confirmedStages:c.confirmedStages&&typeof c.confirmedStages==="object"&&!Array.isArray(c.confirmedStages)?Object.fromEntries(Object.entries(c.confirmedStages).filter(([key,value])=>/^(?:[1-9]|10):[a-z0-9-]+$/.test(key)&&value===true)): {}};if(["Irasha","Tasuni"].includes(c.rulerChoice))newRuler[id]=c.rulerChoice;if(c.karuiShores===true)newKarui[id]=true;});
 try{localStorage.setItem(MAIN,JSON.stringify(newMain));localStorage.setItem(LORE,JSON.stringify(newLore));localStorage.setItem(EXTRA,JSON.stringify(newExtras));localStorage.setItem(HUB,JSON.stringify(newHub));localStorage.setItem(RULER,JSON.stringify(newRuler));localStorage.setItem(KARUI,JSON.stringify(newKarui));location.reload();}catch(e){originals.forEach(([k,v])=>{try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(_e){}});alert(tr("นำเข้าไม่สำเร็จ ระบบพยายามคืนข้อมูลเดิมแล้ว กรุณาตรวจ Backup ก่อนลองซ้ำ","Import failed. The app attempted to restore your previous data. Verify your backup before retrying."));}
 }catch(e){alert(tr("ไฟล์ Backup ไม่ถูกต้องหรือเกินขีดจำกัดตัวละคร","Invalid backup file or character limit exceeded."));}};
 row.append(exp,imp,file);panel.append(row);return panel;}

@@ -528,7 +528,7 @@ assert(actSeven.filter(p=>p.dialogueIds.length===0).length>=3,'Lore/Waypoint-onl
 assert(canonicalSource.includes('src="./steam-act7.js"'),'Act 7 script must load in the main page');
 assert(steamWalk.patchCertified===false,'Act 7 guide must remain historical and not certified for patch 3.30');
 const uiSource=fs.readFileSync(path.join(dir,'hub.js'),'utf8');
-assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('dataset.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(0,target)')&&uiSource.includes('if(!confirm(msg)){select.value=String(chosen);return;}'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
+assert(uiSource.includes('hubJumpMissing')&&uiSource.includes('dataset.jumpIncomplete')&&uiSource.includes('outstanding=phases.slice(0,target)')&&uiSource.includes('confirmStop(msg,origin,'),'Act 7 UX needs first-unchecked-step recovery and non-silent STOP skipping');
 assert(uiSource.includes('if(phase.dialogueIds.length)')&&uiSource.includes('hubSourceDiscrepancy'),'Act 7 source differences need disclosure and zero-dialogue stages must not render fake NPC lists');
 
 const actEight=steamWalk.acts[8],actEightEars=actEight.flatMap(p=>p.dialogueIds),actEightLore=actEight.flatMap(p=>p.loreIds||[]);

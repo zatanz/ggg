@@ -1,6 +1,23 @@
 /* Browser-level smoke tests. Run from repository root after installing playwright + chromium. */
 'use strict';
 const {chromium}=require('playwright');
+
+async function resolveStopModal(page, decision, required=false) {
+ const modal=page.locator('dialog.hubStopDialog[open]');
+ if(!await modal.count()){
+  assert.equal(required,false,'expected a STOP confirmation');
+  return;
+ }
+ const cancel=modal.locator('[data-stop-dialog-cancel]');
+ assert.equal(await cancel.evaluate(button=>document.activeElement===button),true,'STOP initially focuses Cancel');
+ await (decision==='dismiss'?cancel:modal.locator('[data-stop-dialog-confirm]')).click();
+ await page.locator('dialog.hubStopDialog').waitFor({state:'detached'});
+}
+async function chooseRouteStep(page,picker,step,decision='accept',required=false) {
+ await picker.selectOption(step);
+ await resolveStopModal(page,decision,required);
+}
+
 const fs=require('node:fs/promises');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
@@ -169,7 +186,7 @@ async function verifyGuidedEntry(browser,url){
    await page.keyboard.press('Enter');
    assert.equal(await page.locator('#hubView').evaluate(node=>node===document.activeElement),true,'skip link moves focus to the active workspace');
    await page.locator('#hubCampaignAct').selectOption('2');
-   await page.locator('.hubWalkNavigator select').selectOption('1');
+   await chooseRouteStep(page,page.locator('.hubWalkNavigator select'),'1');
    const confirmedPhase=await page.locator('.hubWalkthrough').getAttribute('data-phase');
    const confirmation=page.locator('.hubQuestConfirmation input');
    assert.equal(await page.locator('[data-stop-phase="old-fields"] button').getByText('กลับไปตรวจบทสนทนาที่ยังค้าง').count(),1,'Silk pre-quest dialogue is directly reachable from the unresolved STOP');
@@ -229,7 +246,7 @@ async function verifyGuidedEntry(browser,url){
    await page.locator('#character').selectOption(imported);
    await page.locator('#hubNav [data-tab="route"]').click();
    await page.locator('#hubCampaignAct').selectOption('2');
-   await page.locator('.hubWalkNavigator select').selectOption('1');
+   await chooseRouteStep(page,page.locator('.hubWalkNavigator select'),'1');
    assert.equal(await page.locator('.hubQuestConfirmation input').isChecked(),true,'import restores manually confirmed quest steps');
  }finally{await context.close();}
 }
@@ -246,7 +263,7 @@ async function verifyEditorialGuidance(browser,url){
      await page.locator('#hubDescriptionLanguage').selectOption(language);
      await settings.click();
    };
-   await page.locator('.hubWalkNavigator select').selectOption('3');
+   await chooseRouteStep(page,page.locator('.hubWalkNavigator select'),'3');
    const mudflats=page.locator('[data-phase="mudflats"]');
    for(const language of ['th','en']){
      await chooseLanguage(language);
@@ -258,7 +275,7 @@ async function verifyEditorialGuidance(browser,url){
    }
    assert.equal(await mudflats.locator('input[data-track-type="ears"][data-track-id="21"]').count(),1,'approved Bestel wording retains the canonical checkbox');
    await page.locator('#hubCampaignAct').selectOption('8');
-   await page.locator('.hubWalkNavigator select').selectOption('2');
+   await chooseRouteStep(page,page.locator('.hubWalkNavigator select'),'2');
    const cesspool=page.locator('[data-phase="doedre-cesspool"]');
    for(const language of ['th','en']){
      await chooseLanguage(language);
@@ -369,6 +386,8 @@ async function verifyKaruiShoresSupplement(browser,url){
   assert.equal(await page.locator('#character option').count(),before+2,'Karui backup import adds characters without replacing originals');
   const restoredId=await page.locator('#character option').nth(before).getAttribute('value');
   await page.locator('#character').selectOption(restoredId);
+  const restoredCheckpoints=await page.evaluate(id=>JSON.parse(localStorage.getItem('poe-unified-review-v2')).byCharacter[id].baselines,restoredId);
+  assert.deepEqual(restoredCheckpoints,backup.characters[0].baselines,'the exported matching-count checkpoint is restored to the imported character');
   await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('Epilogue');
   assert.equal(await page.locator('[data-karui-shores="true"] input').isChecked(),true,'import restores Karui mark to newly generated character ID');
@@ -412,8 +431,7 @@ async function verifyAct2PreSealConflict(browser,url){
   assert.equal(await reviewStatus.locator('progress').count(),0,'manual source review must not show an achievement progress meter');
   assert.equal((await reviewStatus.innerText()).includes('0 / 1'),false,'unread source review must not be presented as a checklist count');
   const marksBefore=await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key)));
-  page.once('dialog',d=>d.dismiss());
-  await phasePicker.selectOption('8');
+  await chooseRouteStep(page,phasePicker,'8','dismiss',true);
   assert.equal(await page.locator('[data-steam-act="2"]').getAttribute('data-phase'),'bandits-before-seal','Cancel prevents silently skipping the disputed Ancient Seal boundary');
   assert.equal(await ack.isChecked(),false,'cancel must not invent a user acknowledgement');
   await ack.check();
@@ -426,17 +444,17 @@ async function verifyAct2PreSealConflict(browser,url){
   assert.deepEqual(await page.evaluate(()=>['poe-all-ears-user-data-v1','poe-companion-lore-v1','poe-companion-extras-v1','poe-karui-shores-waypoint-v1'].map(key=>localStorage.getItem(key))),marksBefore,'manual review leaves all achievement item marks and the Karui supplement unchanged');
   await page.reload();
   await page.locator('#hubCampaignAct').selectOption('2');
-  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  await chooseRouteStep(page,page.locator('[data-steam-act="2"] .hubWalkNavigator select'),'7');
   assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'review persists across reload for the same character');
-  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('8');
+  await chooseRouteStep(page,page.locator('[data-steam-act="2"] .hubWalkNavigator select'),'8');
   assert.equal(await page.locator('[data-steam-act="2"]').getAttribute('data-phase'),'ancient-seal','reviewed player may preview the next step without a fabricated achievement checkmark');
   page.once('dialog',d=>d.accept('Pre-seal QA second character'));
   await page.locator('#addChar').click();
   await page.locator('#hubCampaignAct').selectOption('2');
-  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  await chooseRouteStep(page,page.locator('[data-steam-act="2"] .hubWalkNavigator select'),'7');
   assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),false,'a new character never inherits the pre-Seal review');
   await page.locator('#character').selectOption(originalId);
-  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  await chooseRouteStep(page,page.locator('[data-steam-act="2"] .hubWalkNavigator select'),'7');
   assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'original character retains the review');
   await page.locator('#hubNav [data-tab="review"]').click();
   const download=page.waitForEvent('download');
@@ -454,7 +472,7 @@ async function verifyAct2PreSealConflict(browser,url){
   await page.locator('#character').selectOption(imported);
   await page.locator('#hubNav [data-tab="route"]').click();
   await page.locator('#hubCampaignAct').selectOption('2');
-  await page.locator('[data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
+  await chooseRouteStep(page,page.locator('[data-steam-act="2"] .hubWalkNavigator select'),'7');
   assert.equal(await page.locator('[data-manual-review="true"] input').isChecked(),true,'combined backup restores reviewed state to the new character ID');
  }finally{await context.close();}
 }
@@ -730,7 +748,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-phase="strand"] [data-step-nav="next"]').isVisible(),false,'completed step has a single visible next action');
  await strandAdvance.press('Enter');
  assert.equal(await hub.locator('#hubView [data-phase="town"] .hubWalkFocus h2').evaluate(x=>document.activeElement===x),true,'next step moves focus to the new quest heading');
- await hub.locator('#hubView .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView .hubWalkNavigator select'),'3');
  assert.equal(await hub.locator('#hubView [data-phase="mudflats"]').count(),1,'Mud Flats focus is selected');
  assert.equal(await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').evaluate(x=>document.activeElement===x),true,'quest-stage selector retains keyboard focus after replacing route DOM');
  assert.equal((await hub.locator('#hubView [data-stop-phase="mudflats"]').innerText()).includes('ยังไม่ควร'),true,'unsafe quest transition has red stop gate');
@@ -788,11 +806,11 @@ async function verifyAct2PreSealConflict(browser,url){
  await currentInline.press('Space');
  assert.equal(await originalInline.isChecked(),true,'archived dialogue shares canonical All Ears checkbox state');
  assert.notEqual(await hub.locator('#hubStats .hubStat').first().innerText(),statBeforeCheckpoint,'walking checkpoint updates character achievement count');
- await hub.locator('#hubView .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView .hubWalkNavigator select'),'7');
  assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'3.29 Fairgraves issue surfaced as current-patch evidence gap');
  assert.equal((await hub.locator('#hubView [data-phase="fairgraves"] .hubStopGate').innerText()).includes('Allflame'),true,'Fairgraves Allflame quest boundary is prominent');
  for(const [index,phase,file] of [["5","prison","brutus-quest-illustration.svg"],["7","fairgraves","fairgraves-quest-illustration.svg"]]){
-   await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption(index);
+   await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select'),index);
    const visual=hub.locator('#hubView [data-visual-phase="'+phase+'"]');
    assert.equal(await visual.count(),1,'Act 1 visual belongs to its true quest phase: '+phase);
    assert.equal(await visual.evaluate(x=>x.open),false,'large image remains collapsed until requested');
@@ -802,9 +820,9 @@ async function verifyAct2PreSealConflict(browser,url){
    assert.equal((await visual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'phase illustration is not passed off as a real screenshot');
    assert.equal((await visual.locator('.hubVisualLinks a').first().getAttribute('target'))==='_blank',true,'full-size image opens independently');
  }
- await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('0');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select'),'0');
 
- await hub.locator('#hubView .hubWalkNavigator select').selectOption('0');
+ await chooseRouteStep(hub,hub.locator('#hubView .hubWalkNavigator select'),'0');
  
  assert.equal(await hub.locator('#hubView details.hubRewards').count(),1,'Act rewards grouped inside same page');
  await hub.locator('#hubView details.hubRewards > summary').click();
@@ -836,21 +854,21 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-steam-act="3"]').count(),1,'Act 3 source-linked walkthrough renders');
  assert.equal(await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select option').count(),12,'Act 3 has twelve phase navigation steps');
  assert.equal(await hub.locator('#hubView [data-reference-act="3"] [data-group="ears"] .hubChapterCount').textContent().then(text=>Number(text.split('/').at(-1))),71,'Act 3 uses real dialogue count rather than hard-coded Act 2 total');
- await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select'),'1');
  assert.equal(await hub.locator('#hubView [data-skipped-risk="3"]').count(),1,'Act 3 shows persistent skipped-STOP notice on quest-phase jump');
  assert.equal((await hub.locator('#hubView [data-skipped-risk="3"]').innerText()).includes('จุดแรก'),true,'Act 3 skip notice identifies first unresolved stage');
  await hub.locator('#hubView [data-skipped-risk="3"] button').click();
  assert.equal(await hub.locator('#hubView [data-steam-act="3"]').getAttribute('data-phase'),'sarn-entry','Act 3 skipped STOP review button returns to original stage');
  assert.equal(await hub.locator('#hubView [data-skipped-risk="3"]').count(),0,'returning to first skipped stage clears notice');
- await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select'),'1');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Tolman'),true,'Bracelet quest stop is explicit');
  const clarissaVisual=hub.locator('#hubView [data-visual-phase="bracelet"]');
  await clarissaVisual.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const img=document.querySelector('[data-visual-phase="bracelet"] img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await clarissaVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act 3 mock image labelled conceptual');
- await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select'),'4');
  assert.equal((await hub.locator('#hubView [data-fairgraves-alert="true"]').innerText()).includes('3.29'),true,'Act 3 Fairgraves historical patch caution shown');
- await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('10');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select'),'10');
  assert.equal(await stageItems('lore'),18,'Library phase contains 18 historical lore references including Imperial Gardens');
  await hub.locator('#hubCampaignAct').selectOption('1');
 
@@ -858,38 +876,38 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-steam-act="4"]').count(),1,'Act 4 source-led walkthrough renders');
  assert.equal(await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select option').count(),13,'Act 4 has 13 zone/quest-state phases');
  assert.equal(await hub.locator('#hubView [data-reference-act="4"] [data-group="ears"] .hubChapterCount').textContent().then(text=>Number(text.split('/').at(-1))),72,'Act 4 All Ears count remains 72');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('0');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'0');
  assert.equal(await hub.locator('#hubView [data-walk-extra="waypoints"]').count(),1,'Act 4 first phase includes canonical Waypoints');
  await openDisclosure('#hubView .hubWalkArchive');
  await openDisclosure('#hubView [data-walk-extra="waypoints"]');
  assert.equal(await stageItems('waypoints'),2,'Aqueduct and Highgate Waypoints appear once');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('2');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'2');
  assert.equal((await hub.locator('#hubView [data-stop-phase="voll-mines"]').innerText()).includes('Deshret'),true,'Kira pre-freeing STOP visible');
  assert.equal(await hub.locator('#hubView [data-phase="voll-mines"] .hubInlineCurrentChecklist input').getAttribute('data-track-id'),'220','Deshret STOP dialogue is available directly');
  const deshretVisual=hub.locator('#hubView [data-visual-phase="voll-mines"]');
  await deshretVisual.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="voll-mines"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await deshretVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Deshret artwork marked as conceptual');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'3');
  assert.equal(await hub.locator('#hubView [data-skipped-risk="4"]').count(),1,'Act 4 warns after jumping past unchecked Deshret STOP');
  assert.equal((await hub.locator('#hubView [data-skipped-risk="4"]').innerText()).includes('Deshret'),true,'Act 4 skipped-risk notice describes quest boundary');
  await openDisclosure('#hubView .hubWalkArchive');
  await openDisclosure('#hubView [data-walk-extra="sidequests"]');
  assert.equal(await stageItems('sidequests'),1,'Act 4 sidequest uses original No Loose Ends record');
  assert.equal((await hub.locator('#hubView [data-walk-extra="sidequests"] .hubItem').innerText()).includes('An Indomitable Spirit'),true,'Act 4 sidequest correctly named');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('10');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'10');
  assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-before"]').innerText()).includes('Piety'),true,'Pre-organ Piety STOP shown');
  const organVisual=hub.locator('#hubView [data-visual-phase="harvest-before"]');
  await organVisual.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="harvest-before"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await organVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Organ turn-in art marked as conceptual');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('11');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'11');
  assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('Dialla'),true,'Post-organ Dialla STOP is separate');
  await hub.locator('#hubView .hubHistoricalRisks > summary').click();
  assert.equal(await hub.locator('#hubView .hubHistoricalRisks .hubStepNavigator select option').count(),4,'Original Act 4 critical checkpoints preserved');
  await selectSetting('hubDescriptionLanguage','en');
  assert.equal((await hub.locator('#hubView [data-stop-phase="harvest-after"]').innerText()).includes('AFTER handing in all organs but BEFORE killing Malachai'),true,'English Act 4 Piety/Dialla timing is fully authored');
- await hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="4"] .hubWalkNavigator select'),'5');
  assert.equal((await hub.locator('#hubView [data-stop-phase="daresso-after"]').innerText()).includes('Entering Kaom\'s Dream alone is not the sourced deadline'),true,'Act 4 Daresso STOP deadline matches Wiki #231–232, not an invented Kaom deadline');
  assert.equal((await hub.locator('#hubView [data-steam-act="4"] .hubWalkActions').textContent()).includes('BEFORE entering The Belly of the Beast'),true,'English Act 4 guidance follows exact current source condition');
  await selectSetting('hubDescriptionLanguage','th');
@@ -913,44 +931,42 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-reference-act="5"] [data-group="ears"] .hubChapterCount').textContent().then(text=>Number(text.split('/').at(-1))),44,'Act 5 has 44 canonical dialogue IDs');
  assert.equal(await hub.locator('#hubView [data-phase-progress="slave-pens"] progress').count(),1,'Act 5 current phase displays all-category progress');
  assert.equal(await stageItems('waypoints'),1,'The Slave Pens Waypoint is included');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('2');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'2');
  assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('Utula'),true,'Utula Casticus checkpoint STOP visible');
  assert.equal((await hub.locator('#hubView [data-stop-phase="casticus-return"]').innerText()).includes('ก่อนฆ่า Avarius'),true,'Act 5 uses the source-reviewed Utula #275 deadline');
  await hub.locator('#hubView [data-source-note="casticus-return"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="casticus-return"]').innerText()).includes('PoE Wiki'),true,'Act 5 explains difference between legacy and Wiki deadline');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Miasmeter'),true,'Act 5 source item names appear in the quest phase');
  assert.equal(await stageItems('sidequests'),1,'In Service to Science side quest appears in phase');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'3');
  assert.equal(await stageItems('waypoints'),2,'Both Oriath Square and The Templar Courts Waypoints appear before Avarius');
  assert.equal(await hub.locator('#hubView [data-stop-phase="oriath-courts"]').getAttribute('data-stop-state'),'hold','Act 5 STOP remains active while either missable Waypoint is unmarked');
  const preAvariusWarning=await hub.locator('#hubView [data-stop-phase="oriath-courts"]').innerText();
  assert.equal(preAvariusWarning.includes('Oriath Square')&&preAvariusWarning.includes('The Templar Courts'),true,'Waypoint STOP identifies both locations before Avarius');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'4','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="5"]').getAttribute('data-phase'),'oriath-courts','forward dropdown cannot silently skip missable Act 5 Waypoints');
- hub.once('dialog',d=>d.dismiss());
  await hub.locator('#hubView .hubStageLinks [data-step-nav="next"]').click();
+ await resolveStopModal(hub,'dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="5"]').getAttribute('data-phase'),'oriath-courts','next step asks before bypassing the two unchecked Waypoints');
  await hub.locator('#hubView [data-source-note="oriath-courts"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="oriath-courts"]').innerText()).includes('PoE Wiki'),true,'Act 5 missable Waypoint STOP carries a historical source explanation');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'4','accept',false);
  assert.equal(await stageItems('lore'),9,'Nine Chamber of Innocence lore entries are grouped');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'5');
  assert.equal((await hub.locator('#hubView [data-stop-phase="innocence-sin"]').innerText()).includes('Sin'),true,'Sin before chamber exit is prominent');
  const beforeBlocked=await hub.locator('#hubView [data-steam-act="5"]').getAttribute('data-phase');
- hub.once('dialog',d=>d.dismiss());
  await hub.locator('#hubView .hubStageLinks [data-step-nav="next"]').click();
+ await resolveStopModal(hub,'dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="5"]').getAttribute('data-phase'),beforeBlocked,'Unchecked STOP Next asks confirmation and respects cancel');
  const sinArt=hub.locator('#hubView [data-visual-phase="innocence-sin"]');
  await sinArt.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="innocence-sin"] img');return x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await sinArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Sin image identified as concept');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'9');
  assert.equal(await hub.locator('#hubView .hubQuestItem').count(),3,'Kitava Torments has three separate key items');
  assert.equal(await stageItems('lore'),3,'Reliquary lore appears exactly three times');
  assert.equal(await stageItems('sidequests'),1,'Kitava Torments quest completion linked to original ID');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('10');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'10');
  assert.equal((await hub.locator('#hubView [data-stop-phase="ossuary-sin"]').innerText()).includes('Sign of Purity'),true,'Ossuary Sin stop uses correct quest item');
  const ossuaryArt=hub.locator('#hubView [data-visual-phase="ossuary-sin"]');
  await ossuaryArt.locator(':scope > summary').click();
@@ -970,7 +986,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubGameNames').inputValue(),'both','Game-name mode persists independently after reload');
  await selectSetting('hubGameNames','th');
  await hub.locator('#hubCampaignAct').selectOption('5');
- await hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select').selectOption('10');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="5"] .hubWalkNavigator select'),'10');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('สัญลักษณ์'),true,'Thai name-only mode displays editorial term');
  assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),'Sign of Purity','Thai-only display keeps original English title');
  await selectSetting('hubGameNames','en');
@@ -988,7 +1004,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').evaluate(x=>!!(x.compareDocumentPosition(document.querySelector('[data-act-summary="6"]'))&Node.DOCUMENT_POSITION_FOLLOWING)),true,'Current quest step is ordered before detailed overview');
  assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),1,'Optional archive retains task-specific jumps');
 
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'1');
  assert.equal(await stageItems('lore'),2,'Early Act 6 source-backed lore');
  assert.equal(await stageItems('sidequests'),2,'Fallen from Grace and Bestel Epic optional quests');
  await openDisclosure('#hubView .hubWalkArchive');
@@ -1003,13 +1019,13 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-walk-type="sidequests"]').evaluate(x=>x.open),true,'Side quest jump expands correct section');
  const act6Character=await hub.locator('#character').inputValue();
 
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'3');
  assert.equal((await hub.locator('#hubView [data-stop-phase="eye-before"]').innerText()).includes('Eye of Conquest'),true,'Before using the Eye: STOP visible');
  const phaseBefore=await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase');
- hub.once('dialog',d=>d.dismiss());
  await hub.locator('#hubView .hubStageLinks [data-step-nav="next"]').click();
+ await resolveStopModal(hub,'dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),phaseBefore,'Next cannot silently skip unchecked STOP');
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'4');
  assert.equal((await hub.locator('#hubView [data-stop-phase="eye-after"]').innerText()).includes('The Karui Fortress'),true,'After-using Eye before-entering Fortress is a separate STOP');
  const karuiImage=hub.locator('#hubView [data-visual-phase="eye-after"]');
  await karuiImage.locator(':scope > summary').click();
@@ -1028,7 +1044,7 @@ async function verifyAct2PreSealConflict(browser,url){
  await selectSetting('hubGameNames','en');
  await selectSetting('hubDescriptionLanguage','th');
 
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('8');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'8');
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'nessa-ships','Nessa warning is immediately after Prisoners Gate rather than after Western Forest');
  assert.equal(await stageItems('waypoints'),0,'early Nessa dialogue cannot incorrectly request Southern Forest Waypoint');
  assert.equal((await hub.locator('#hubView [data-stop-phase="nessa-ships"]').innerText()).includes('Bestel'),true,'Act 6 ship graveyard route warns for Bestel as well as Tarkleigh');
@@ -1036,34 +1052,30 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await hub.locator('#hubView [data-stop-phase="nessa-ships"]').innerText()).includes('Cavern of Anger'),true,'Act 6 Wiki #333 later boundary remains explicit');
  await hub.locator('#hubView [data-source-note="nessa-ships"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="nessa-ships"]').innerText()).includes('PoE Wiki'),true,'Act 6 #332 source-level difference is visible');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'9','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'nessa-ships','unchecked Nessa dialogues prevent silent preview into Western Forest');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('11');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'11','accept',false);
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'cavern-sin','the post-Western Forest journey follows the Nessa guard');
  assert.equal(await stageItems('waypoints'),1,'The Southern Forest Waypoint #57 moved to the correct later part of Act 6');
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('12');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'12');
  assert.equal((await hub.locator('#hubView [data-stop-phase="beacon-flag"]').innerText()).includes('ก่อนเข้า The Beacon'),true,'Act 6 warns before entering the Beacon per legacy #336');
  assert.equal(await stageItems('waypoints'),0,'pre-Beacon Black Flag checkpoint does not yet include Beacon Waypoint');
  assert.equal(await stageItems('lore'),0,'pre-Beacon Black Flag checkpoint does not falsely mark Beacon lore');
  assert.equal(await stageItems('ears'),1,'the only pre-Beacon dialogue is Lilly Black Flag #336');
  await hub.locator('#hubView [data-source-note="beacon-flag"] > summary').click();
  assert.equal((await hub.locator('#hubView [data-source-note="beacon-flag"]').innerText()).includes('PoE Wiki'),true,'Act 6 distinguishes burning-flag Wiki timing');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('13');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'13','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'beacon-flag','unchecked Lilly Black Flag cannot be silently skipped before entering Beacon');
  await selectSetting('hubDescriptionLanguage','en');
  assert.equal((await hub.locator('#hubView [data-stop-phase="beacon-flag"]').innerText()).includes('Before entering The Beacon'),true,'English Act 6 includes earliest legacy precaution');
  await selectSetting('hubDescriptionLanguage','th');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('13');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'13','accept',false);
  assert.equal(await hub.locator('#hubView [data-steam-act="6"]').getAttribute('data-phase'),'beacon-entered','post-Beacon step is separate from pre-entry Lilly dialogue');
  assert.equal(await stageItems('waypoints'),1,'Beacon Waypoint #58 is checked only after entering Beacon');
  assert.equal(await stageItems('lore'),2,'both Beacon lore entries remain present after entering');
  assert.equal(await stageItems('ears'),1,'Lilly Brine King #337 is after first entering Beacon');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Lioneye'),true,'collapsed post-Beacon instructions still explicitly send player to Lilly in town');
- await hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select').selectOption('14');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="6"] .hubWalkNavigator select'),'14');
  assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('Weylam Roth'),true,'Reef pre-Tsoagoth STOP names Weylam');
  assert.equal((await hub.locator('#hubView [data-stop-phase="reef-weylam"]').innerText()).includes('2 บทสนทนา'),true,'Weylam requires two distinct dialogue entries');
  const reefImage=hub.locator('#hubView [data-visual-phase="reef-weylam"]');
@@ -1087,18 +1099,16 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-jump-incomplete="true"]').isDisabled(),true,'First incomplete step is the default selection');
  assert.equal(await hub.locator('#hubView [data-act-summary="7"]').evaluate(e=>e.open),false,'Act-wide overview starts collapsed');
 
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'3');
  assert.equal(await stageItems('sidequests'),1,'The Silver Locket sidequest correctly linked');
  assert.equal(await stageItems('waypoints'),2,'Two Broken Bridge / Crypt route Waypoints linked');
  assert.equal(await hub.locator('#hubView [data-phase="broken-bridge-crypt"] .hubQuestItem').count(),2,'Silver Locket and Maligaro Map displayed in context');
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'5');
  assert.equal((await hub.locator('#hubView [data-stop-phase="maligaro-after"]').innerText()).includes('Sin: Maligaro'),true,'Maligaro after-boss Sin warning is explicit');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'7','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'maligaro-after','Unmarked STOP prevents accidental jump in phase dropdown');
  assert.equal(await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').inputValue(),'5','Canceled skip restores previous dropdown option');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'7','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('Helena'),true,'Helena: The Den before-entry STOP is visible');
  assert.equal((await hub.locator('#hubView [data-stop-phase="den-before"]').innerText()).includes('ก่อนเดินต่อสู่ The Den'),true,'Act 7 Helena warning uses the reviewed boundary');
  const denSources=hub.locator('#hubView [data-source-note="den-before"]');
@@ -1107,11 +1117,9 @@ async function verifyAct2PreSealConflict(browser,url){
  await hub.locator('#hubView [data-jump-incomplete="true"]').click();
  assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'bridge-sin-weylam','First incomplete button returns to earliest pending dialogue');
 
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('11');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'11','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="gruthkul-before"]').innerText()).includes('Eramir'),true,'Pre-Gruthkul Eramir warning attached to correct stage');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('13');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'13','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="fireflies-return"]').innerText()).includes('Fireflies'),true,'After seven Fireflies Yeena timing warning visible');
  assert.equal((await hub.locator('#hubView [data-stop-phase="fireflies-return"]').innerText()).includes('ก่อนเข้า The Causeway'),true,'Act 7 Yeena #382 uses earlier legacy boundary');
  assert.equal(await hub.locator('#hubView [data-source-note="fireflies-return"]').count(),1,'Old Causeway / Wiki Vaal City source disagreement accessible');
@@ -1119,8 +1127,7 @@ async function verifyAct2PreSealConflict(browser,url){
  await fireVisual.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="fireflies-return"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await fireVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Fireflies picture is not claimed to be a real screenshot');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('14');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'14','accept',false);
  assert.equal(await hub.locator('#hubView [data-phase="causeway-kishara"] .hubWalkCategory').count(),0,'Lore/Waypoint stage does not render empty NPC list');
  assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),0,'Empty NPC group does not create fake navigation choice');
  assert.equal(await stageItems('lore'),1,'Causeway lore follows the current zone');
@@ -1135,7 +1142,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView .hubQuestItem').getAttribute('title'),"Kishara's Star",'Canonical English item title preserved in Thai-only display');
  assert.equal(await hub.locator('#character').inputValue(),act7Character,'Switching languages keeps selected character');
  assert.equal(await hub.locator('#hubView [data-steam-act="7"]').getAttribute('data-phase'),'causeway-kishara','Switching languages preserves selected phase');
- await hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select').selectOption('17');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="7"] .hubWalkNavigator select'),'17');
  assert.equal((await hub.locator('#hubView [data-stop-phase="temple-arakaali-after"]').innerText()).includes('before leaving'),true,'English post-Arakaali Yeena STOP preserves exact location');
  const arakaaliVisual=hub.locator('#hubView [data-visual-phase="temple-arakaali-after"]');
  await arakaaliVisual.locator(':scope > summary').click();
@@ -1158,7 +1165,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-act-summary="8"]').evaluate(x=>x.open),false,'Act 8 main quest is prioritized above secondary checklist');
  assert.equal(await hub.locator('#hubView [data-jump-incomplete="true"]').isDisabled(),true,'At first incomplete Act 8 phase, recovery button is disabled');
 
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('2');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'2');
  assert.equal((await hub.locator('#hubView [data-stop-phase="doedre-cesspool"]').innerText()).includes('Sin: Doedre'),true,'Sin post-Doedre caution appears after the boss');
  assert.equal((await hub.locator('#hubView [data-stop-phase="doedre-cesspool"]').innerText()).includes('ข้อมูลเก่า'),true,'Act 8 exit warning remains historical, not a verified 3.29 miss');
  assert.equal((await hub.locator('#hubView [data-stop-phase="doedre-cesspool"]').innerText()).includes('3.30'),false,'Act 8 current guidance no longer prioritizes unreleased patch');
@@ -1167,16 +1174,14 @@ async function verifyAct2PreSealConflict(browser,url){
  await openDisclosure('#hubView [data-walk-type="waypoints"]');
  assert.equal(await hub.locator('#hubView [data-walk-type="waypoints"]').evaluate(x=>x.open),true,'Act 8 Waypoint shortcut opens correct checklist');
  assert.equal(await hub.locator('#hubView [data-source-note="doedre-cesspool"]').count(),1,'Doedre Cesspool historical caveat is visible as source disagreement');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'4','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="8"]').getAttribute('data-phase'),'doedre-cesspool','Act 8 dropdown cannot silently bypass an unchecked Doedre STOP');
  assert.equal(await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').inputValue(),'2','Declining STOP bypass restores selected phase');
  const doedreArt=hub.locator('#hubView [data-visual-phase="doedre-cesspool"]');
  await doedreArt.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const image=document.querySelector('[data-visual-phase="doedre-cesspool"] img');return !!image&&image.complete&&image.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await doedreArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Doedre quest visual explicitly marked as concept');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'4','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-love-pre"]').innerText()).includes('Hargan'),true,'Love is Dead Hargan before completion is separate stage');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Ankh of Eternity'),true,'Ankh item is contextual in pre-completion step');
  const act8Character=await hub.locator('#character').inputValue();
@@ -1195,8 +1200,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#character').inputValue(),act8Character,'Language mode does not mutate selected character');
  assert.equal(await hub.locator('#hubView [data-steam-act="8"]').getAttribute('data-phase'),'quay-love-pre','Language mode does not mutate quest phase');
  await selectSetting('hubGameNames','en');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'5','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-tolman-after"]').innerText()).includes('Clarissa'),true,'Post-Tolman Clarissa warning includes original NPC');
  assert.equal((await hub.locator('#hubView [data-stop-phase="quay-tolman-after"]').innerText()).includes('The Quay'),true,'Post-Tolman warning names exact area before exit');
  const tolmanArt=hub.locator('#hubView [data-visual-phase="quay-tolman-after"]');
@@ -1206,14 +1210,13 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await tolmanArt.locator('.hubVisualCheck').innerText()).includes('before leaving The Quay'),true,'English visual action check explains Clarissa timing');
  await selectSetting('hubDescriptionLanguage','th');
 
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'7','accept',false);
  assert.equal(await hub.locator('#hubView [data-phase="grain-gate"] .hubWalkCategory').count(),0,'Grain Gate lore/sidequest-only step does not show an empty NPC list');
  assert.equal(await stageItems('lore'),1,'Act 8 lone Official Orders lore is in the Grain Gate');
  assert.equal(await stageItems('sidequests'),1,'Act 8 Gemling Legion quest is linked to the Grain Gate');
  assert.equal(await hub.locator('#hubView [data-jump-type="ears"]').count(),0,'No NPC quick jump for a phase without dialogue');
 
- await hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select').selectOption('11');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="8"] .hubWalkNavigator select'),'11');
  assert.equal((await hub.locator('#hubView [data-stop-phase="yugul-before"]').innerText()).includes('Sin'),true,'Sin before Yugul warning is present');
  assert.equal((await hub.locator('#hubView [data-stop-phase="yugul-before"]').innerText()).includes('Hargan'),true,'Hargan before Yugul warning is present');
  const yugulArt=hub.locator('#hubView [data-visual-phase="yugul-before"]');
@@ -1235,15 +1238,13 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubView [data-act-summary="9"]').evaluate(x=>x.open),false,'Act 9 detailed overview secondary to route');
  assert.equal(await stageItems('waypoints'),2,'Blood Aqueduct and Highgate Waypoints mapped');
 
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'1');
  assert.equal((await hub.locator('#hubView [data-stop-phase="desert-storm-blade"]').innerText()).includes('General Adus'),true,'General Adus pre-Foothills dialogue is a STOP');
  const atAct9Stop=await hub.locator('#hubView [data-steam-act="9"]').getAttribute('data-phase');
- hub.once('dialog',d=>d.dismiss());
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'6','dismiss',true);
  assert.equal(await hub.locator('#hubView [data-steam-act="9"]').getAttribute('data-phase'),atAct9Stop,'Act 9 dropdown warns on unresolved STOPs');
  assert.equal(await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').inputValue(),'1','Cancelled Act9 jump restores original selector');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'6','accept',false);
  const rulers=hub.locator('#hubView .hubBranchChoice');
  assert.equal(await rulers.count(),1,'Highgate irreversible branch has its own explicit choice control');
  assert.equal(await rulers.locator('select').inputValue(),'undecided','No ruler inferred without player input');
@@ -1261,9 +1262,9 @@ async function verifyAct2PreSealConflict(browser,url){
   assert.equal(await irashaEntry.isChecked(),false,'Tasuni choice cannot mark an Irasha-branch entry as a substitute');
  }
  assert.equal((await hub.locator('#hubView .hubBranchChoice').innerText()).includes('100%'),true,'Tasuni branch warns against asserting 100% from unsupported IDs');
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'7');
  assert.equal(await hub.locator('#hubView [data-ruler-integrity="Tasuni"]').count(),1,'Tasuni mismatch warning persists beyond the choice phase');
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('6');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'6');
  await hub.locator('#hubView .hubBranchChoice select').selectOption('Irasha');
  assert.equal(await hub.locator('#hubView .hubBranchChoice select').evaluate(x=>document.activeElement===x),true,'Irasha record retains keyboard focus after rerender');
  assert.equal(await hub.locator('#hubView [data-ruler-branch="Irasha"]').count(),1,'Irasha choice matches existing local ID branch');
@@ -1273,13 +1274,12 @@ async function verifyAct2PreSealConflict(browser,url){
  : await hub.locator('#character option').first().getAttribute('value');
  await hub.locator('#character').selectOption(otherCharacter);
  await hub.locator('#hubCampaignAct').selectOption('9');
- hub.once('dialog',d=>d.accept());
- await hub.locator('.hubWalkNavigator select').selectOption('6');
+ await chooseRouteStep(hub,hub.locator('.hubWalkNavigator select'),'6','accept',false);
  assert.equal(await hub.locator('#hubView .hubBranchChoice select').inputValue(),'undecided','Second character has independent ruler choice');
  await hub.locator('#character').selectOption(act9Character);
  assert.equal(await hub.locator('#hubView .hubBranchChoice select').inputValue(),'Irasha','Original character retains its selected ruler');
  const featherArt=hub.locator('#hubView [data-visual-phase="garukhan-post"]');
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'5');
  await featherArt.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const a=document.querySelector('[data-visual-phase="garukhan-post"] img');return !!a&&a.complete&&a.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await featherArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Feather decision diagram is clearly conceptual');
@@ -1291,22 +1291,20 @@ async function verifyAct2PreSealConflict(browser,url){
  await selectSetting('hubGameNames','en');
  await selectSetting('hubDescriptionLanguage','th');
 
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'7','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="powder-acid"]').innerText()).includes('The Belly of the Beast'),true,'Both ingredients before Belly STOP appears');
  assert.equal((await hub.locator('#hubView [data-stop-phase="powder-acid"]').innerText()).includes('#446'),true,'Sin The Black Core is checked BEFORE Belly of the Beast');
  assert.equal((await hub.locator('#hubView [data-stop-phase="powder-acid"]').innerText()).includes('#447'),true,'Sin Cataclysm is checked BEFORE Belly of the Beast');
  assert.equal(await stageItems('ears'),3,'All three distinct Sin topics are available in pre-Belly stage');
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('8');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'8');
  assert.equal(await hub.locator('#hubView [data-phase="black-core"] .hubWalkCategory').count(),0,'Post-entry Belly phase does not misplace two earlier dialogues');
  // The act-wide 100% dashboard can still offer All Ears shortcuts; the phase-specific NPC list is correctly empty.
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'7');
  const emberArt=hub.locator('#hubView [data-visual-phase="powder-acid"]');
  await emberArt.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const a=document.querySelector('[data-visual-phase="powder-acid"] img');return !!a&&a.complete&&a.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await emberArt.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act9 Dark Ember source image is conceptual');
- hub.once('dialog',d=>d.accept());
- await hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="9"] .hubWalkNavigator select'),'9','accept',false);
  assert.equal((await hub.locator('#hubView [data-stop-phase="trinity-rescue"]').innerText()).includes('Act 10'),true,'Act9 Weylam rescue before Act10 warning visible');
  const rescueArt=hub.locator('#hubView [data-visual-phase="trinity-rescue"]');
  await rescueArt.locator(':scope > summary').click();
@@ -1319,9 +1317,9 @@ async function verifyAct2PreSealConflict(browser,url){
  await hub.locator('#hubCampaignAct').selectOption('10');
  assert.equal(await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select option').count(),10,'Act10 source route has ten stages');
  assert.equal(await hub.locator('#hubView [data-reference-act="10"] [data-group="ears"] .hubChapterCount').textContent().then(text=>Number(text.split('/').at(-1))),32,'Act10 all 32 dialogue IDs preserved');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'1');
  assert.equal(await stageItems('lore'),1,'Act10 first Cultist Tract in Ravaged Square');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('2');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'2');
  assert.equal(await hub.getByRole('checkbox',{name:/ทำในเกมแล้วจึงติ๊กตรงนี้.*Lilly/}).count(),1,'Act10 Tsoatha dialogue requires post-Safe Passage Lilly');
  assert.equal(await hub.locator('#hubView [data-post-quest-review="safe-passage-docks"]').evaluate(x=>x.open),true,'Act 10 post-Safe Passage review is opened by default');
  assert.equal((await hub.locator('#hubView [data-post-quest-review="safe-passage-docks"] > summary').innerText()).includes('หลังจบเควสต์'),true,'Act 10 source note has useful after-quest labeling, not an unexplained source disagreement');
@@ -1329,15 +1327,15 @@ async function verifyAct2PreSealConflict(browser,url){
  await lillyVisual.locator(':scope > summary').click();
  await hub.waitForFunction(()=>{const x=document.querySelector('[data-visual-phase="safe-passage-docks"] img');return !!x&&x.complete&&x.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await lillyVisual.innerText()).includes('ไม่ใช่ภาพหน้าจอเกมจริง'),true,'Act10 Lilly quest-art is explicitly not an in-game screenshot');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('3');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'3');
  assert.equal(await stageItems('sidequests'),1,'Act10 Map to Tsoatha optional quest correctly linked');
  assert.equal(await stageItems('waypoints'),1,'Act10 Reliquary Waypoint mapped');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('4');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'4');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('Elixir of Allure'),true,'Act10 Ossuary quest item explicit');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('5');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'5');
  assert.equal(await stageItems('sidequests'),1,'Act10 Vilenta Vengeance optional quest linked');
  assert.equal(await stageItems('waypoints'),1,'Act10 Control Blocks Waypoint linked');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('6');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'6');
  assert.equal(await stageItems('lore'),1,'Act10 Desecrated Chambers Cultist Tract mapped');
  assert.equal((await hub.locator('#hubView .hubQuestItems').innerText()).includes('The Staff of Purity'),true,'Act10 Death and Rebirth correct item');
  const staffArt=hub.locator('#hubView [data-visual-phase="chamber-staff"]');
@@ -1351,12 +1349,12 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await staffArt.locator('.hubVisualCheck').innerText()).includes('Staff of Purity'),true,'Act10 English visual check identifies item');
  await selectSetting('hubGameNames','en');
  await selectSetting('hubDescriptionLanguage','th');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'7');
  assert.equal(await hub.locator('#hubView [data-post-quest-review="bannon-sacrifice"]').evaluate(x=>x.open),true,'Act10 Death and Rebirth post-quest check is explicit');
  assert.equal((await hub.locator('#hubView [data-post-quest-review="bannon-sacrifice"]').innerText()).includes('#481'),true,'Act10 Lilly: Innocence condition names canonical ID 481');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('8');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'8');
  assert.equal(await stageItems('lore'),1,'Act10 final Cultist Tract linked to The Canals');
- await hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="10"] .hubWalkNavigator select'),'9');
  assert.equal((await hub.locator('#hubView [data-phase="kitava-after"]').innerText()).includes('Lilly'),true,'Act10 post-Kitava Lilly dialogue present');
  assert.equal(await hub.locator('#hubView [data-post-quest-review="kitava-after"]').evaluate(x=>x.open),true,'Act10 post-Kitava review is visible and accessible');
  assert.equal((await hub.locator('#hubView [data-post-quest-review="kitava-after"]').innerText()).includes('484'),true,'Act10 final post-quest explanation distinguishes historical All Ears counter');
@@ -1463,22 +1461,21 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal((await hub.locator('#hubView [data-evidence-act="2"]').innerText()).includes('คู่มือ Steam (ชื่อ 3.30; อัปเดต 16 พ.ย. 2026) ห้ามชัดเจนทั้งคุยและฆ่า Bandits ก่อน The Darkness'),true,'Act 2 reports the explicit Steam no-talk prohibition faithfully');
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),false,'player can close detailed contradictory-source disclosure');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'1');
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),false,'Act2 source-disagreement panel stays closed across quest steps');
  await hub.locator('#hubView [data-evidence-act="2"] > summary').click();
  assert.equal(await hub.locator('#hubView [data-evidence-act="2"]').evaluate(x=>x.open),true,'player can re-open conflicting sources and inspect them');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 opens with zone-based source chronology rather than seven stacked risk groups');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select option').count(),11,'Act 2 has an additional zero-canonical-ID pre-Seal source conflict gate');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('2');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'2');
  assert.equal((await hub.locator('#hubView [data-phase="western-forest"] .hubStopGate').innerText()).includes('Chamber of Sins'),true,'Act 2 explicitly stops premature Chamber of Sins progress');
- hub.once('dialog',d=>d.accept()); // Explicitly preview past the unreviewed pre-Seal risk without marking it as safe.
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'9','accept',false);
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubResearchConflict').innerText()).includes('Steam'),true,'Act 2 bandit first-contact timing is flagged as contradictory');
  await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual > summary').click();
  await hub.waitForFunction(()=>{const img=document.querySelector('#hubView [data-phase="bandit-decisions"] .hubQuestVisual img');return !!img&&img.complete&&img.naturalWidth>0;},{},{timeout:10000});
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubQuestVisual').innerText()).includes('ภาพประกอบ'),true,'Act 2 quest image is clearly labelled illustrative, not a game screenshot');
  for(const [index,phase,file] of [["3","sins-before-helena","sins-quest-illustration.svg"],["6","roots","roots-quest-illustration.svg"]]){
-   await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption(index);
+   await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),index);
    const visual=hub.locator('#hubView [data-visual-phase="'+phase+'"]');
    assert.equal(await visual.count(),1,'Act 2 source-linked quest visual exists: '+phase);
    await visual.locator(':scope > summary').click();
@@ -1492,8 +1489,7 @@ async function verifyAct2PreSealConflict(browser,url){
  const rect=await lastImage.evaluate(img=>({width:img.getBoundingClientRect().width,viewport:window.innerWidth,overflow:document.documentElement.scrollWidth>window.innerWidth+2}));
  assert.equal(rect.width<=rect.viewport&&rect.overflow===false,true,'quest visual remains readable and does not cause horizontal overflow at 390px');
  await hub.setViewportSize({width:1280,height:900});
- hub.once('dialog',d=>d.accept()); // Previewing from the pre-Seal stage now requires explicit user consent.
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'9','accept',false);
 
 
  assert.equal((await hub.locator('#hubView [data-phase="bandit-decisions"] .hubStopGate').innerText()).includes('ยังไม่ควร'),true,'Bandit killing must wait for relevant Darkness dialogue');
@@ -1605,7 +1601,7 @@ async function verifyAct2PreSealConflict(browser,url){
  assert.equal(await hub.locator('#hubCampaignAct').count(),1,'original guided route is usable under patch 3.30 after reference consent');
  await hub.locator('#hubCampaignAct').selectOption('2');
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').count(),1,'Act 2 safety checkpoints remain usable within the current patch reference view');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('0');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'0');
  assert.equal((await hub.locator('#hubView [data-stop-phase="forest-encampment"]').innerText()).includes('ยังไม่ควร'),true,'existing source-based STOP still visible in reference preview');
  await hub.locator('#hubNav [data-tab="collection"]').click();
  assert.equal(await hub.locator('#hubView [data-patch-reference="3.30"]').count(),1,'warning remains visible in collection view');
@@ -1657,22 +1653,21 @@ async function verifyAct2PreSealConflict(browser,url){
  await hub.locator('#hubSettings > summary').click();
 
  await hub.locator('#hubCampaignAct').selectOption('1');
- await hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select').selectOption('7');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="1"] .hubWalkNavigator select'),'7');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Allflame'),true,'Act 1 authored English guide covers Fairgraves item timing');
  assert.equal((await hub.locator('#hubView [data-stop-phase="fairgraves"]').innerText()).includes('STOP:'),true,'Act 1 English STOP preserves the Allflame risk');
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 1 English route instructions contain no untranslated Thai fragments');
 
  await hub.locator('#hubCampaignAct').selectOption('2');
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('7');
- if(!await hub.locator('#hubView [data-manual-review="true"] input').isChecked())hub.once('dialog',d=>d.accept()); // Test previews past an unreviewed STOP, never marking it completed.
- await hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select').selectOption('9');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'7');
+ if(!await hub.locator('#hubView [data-manual-review="true"] input').isChecked())await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="2"] .hubWalkNavigator select'),'9','accept',false);
  assert.equal(await hub.locator('#hubView [data-steam-act="2"]').getAttribute('data-phase'),'bandit-decisions','English inspection explicitly previews Act 2 after the pre-Seal STOP');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes('Steam guide (titled 3.30; updated 16 Nov 2026) explicitly forbids both talking and killing'),true,'Act 2 English route accurately states explicit Steam restriction before The Darkness');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bandit-decisions"]').innerText()).includes('BETWEEN kills'),true,'Act 2 English Bandit STOP names intermediate Eramir return');
  assert.equal(/[\u0E00-\u0E7F]/.test(await hub.locator('#hubView .hubWalkActions').textContent()),false,'Act 2 English route has no Thai text');
 
  await hub.locator('#hubCampaignAct').selectOption('3');
- await hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select').selectOption('1');
+ await chooseRouteStep(hub,hub.locator('#hubView [data-steam-act="3"] .hubWalkNavigator select'),'1');
  assert.equal((await hub.locator('#hubView .hubWalkActions').textContent()).includes("Tolman's Bracelet"),true,'Act 3 English guide identifies the exact item and NPC hand-in state');
  assert.equal((await hub.locator('#hubView [data-stop-phase="bracelet"]').innerText()).includes('Clarissa'),true,'Act 3 English STOP retains the Clarissa prerequisite');
 
@@ -1782,7 +1777,7 @@ async function verifyAct2PreSealConflict(browser,url){
      assert.equal(await capture.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'first-visit layout fits '+width+'px');
      await capture.screenshot({path:path.join(output,'after-first-'+width+'.png')});
    }
-   await capture.locator('.hubWalkNavigator select').selectOption('3');
+   await chooseRouteStep(capture,capture.locator('.hubWalkNavigator select'),'3');
    const task=capture.locator('[data-next-action="mudflats"]');
    await capture.setViewportSize({width:1280,height:900});
    await task.screenshot({path:path.join(output,'after-desktop-thai-stop.png')});

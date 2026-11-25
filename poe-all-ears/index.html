@@ -2,10 +2,21 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
+  <script>
+    document.documentElement.classList.add('hub-loading');
+    const hubLoadingTimeout = setTimeout(() => document.documentElement.classList.remove('hub-loading'), 4000);
+  </script>
+  <style>.hub-loading .wrap{visibility:hidden}</style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#141918">
   <meta name="description" content="สมุดบันทึก Achievement ของ Path of Exile: บทสนทนา NPC, Lore, Waypoint และเควสต์รอง ตรวจสิ่งที่ยังไม่ได้เก็บได้ในหน้าเดียว">
   <title>PoE Achievement Companion | All Ears · Lore · Waypoints · Quests</title>
+  <meta property="og:title" content="PoE Achievement Companion">
+  <meta property="og:description" content="A bilingual Path of Exile 1 checklist for All Ears, Lore, Waypoints and Side Quests.">
+  <meta property="og:image" content="https://zatanz.github.io/ggg/poe-all-ears/assets/quest-journal-share.png">
+  <meta property="og:image:alt" content="Concept illustration of a quest journal and route map">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="./assets/quest-journal-illustration.svg">
   <style>
     :root{color-scheme:dark;--bg:#121419;--surface:#1b1e25;--surface2:#252933;--line:#353945;--text:#f2eee6;--muted:#b7b5b1;--gold:#d6b777;--ok:#8bcbad;--risk:#ecb081;--shadow:0 18px 40px #0004}
     *{box-sizing:border-box}
@@ -245,5 +256,6 @@
 </script>
 <script src="./poe-language.js"></script>
 <script src="./hub.js"></script>
+<script>clearTimeout(hubLoadingTimeout);document.documentElement.classList.remove('hub-loading');</script>
 </body>
 </html>

@@ -365,3 +365,123 @@
   outline: 2px solid var(--brass, #c9a368);
   outline-offset: 2px;
 }
+
+/* Wraeclast field journal: original CSS treatment, no game artwork. */
+@font-face{font-family:JournalCinzel;src:url('./fonts/Cinzel-500.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:JournalCinzel;src:url('./fonts/Cinzel-700.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:JournalThai;src:url('./fonts/NotoSansThai-400.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:JournalThai;src:url('./fonts/NotoSansThai-700.ttf') format('truetype');font-weight:700;font-display:swap}
+.companionApp{--canvas:#100f0e;--journal:#1b1a18;--field:#26231f;--rule:#655338;--paper:#f3ebdb;--secondary:#d4c9b6;--brass:#d8bd82;--ink:#201a13;background:radial-gradient(ellipse at 50% -20%,#483a29 0,#181613 46%,#100f0e 78%);font-family:JournalThai, Tahoma, sans-serif;line-height:1.6}
+.companionApp .wrap{max-width:1380px;padding:22px 28px 64px}
+.companionApp .wrap>header{padding:0 0 8px;border-bottom:1px solid #5f4a2c}
+.companionApp header .kicker{font-family:JournalCinzel,Georgia,serif;letter-spacing:.16em;font-size:.7rem;color:#d7b976}
+.companionApp .wrap>header h1,.hubWalkFocus h2,.hubTaskHeading .hubNextActionItem{font-family:JournalCinzel,JournalThai,Georgia,serif;font-weight:700;letter-spacing:0;overflow-wrap:anywhere}
+.companionApp .wrap>header h1{font-size:clamp(25px,2.7vw,38px);line-height:1.25}
+.companionApp #hubNav{gap:4px;margin-top:14px;border-bottom:0}
+.companionApp #hubNav button{font-weight:700;min-height:46px;border:1px solid #534631;border-bottom:2px solid #534631;background:#1d1b19;color:#d7cbb6}
+.companionApp #hubNav button[aria-pressed="true"]{background:#392f20;color:#f4dfaf;border-color:#b69a61;box-shadow:inset 0 -2px #bc9754}
+.companionApp :is(button,select,summary){border-radius:2px}
+.companionApp :is(button,select){min-height:44px}
+.companionApp :is(button,select,input,summary,a):focus-visible,.hubCampaignRoute .hubInlineMark:has(input:focus-visible),.hubCampaignRoute .hubQuestConfirmation:has(input:focus-visible){outline:3px solid #ffe2a0;outline-offset:3px;box-shadow:0 0 0 2px #17130e}
+.hubCampaignContext{margin:12px 0}
+.hubCampaignContext .hubDataNotice{font-size:.81rem;line-height:1.5}
+#hubCampaignBar{border:1px solid #62533d;background:linear-gradient(150deg,#2a251e,#171615);box-shadow:inset 0 0 0 3px #171512,inset 0 0 0 4px #514329;padding:15px;margin-bottom:14px;gap:12px}
+.hubProfileLabel,.hubCampaignField>span{font-size:.82rem;color:#ead9b4}
+.hubProfile .ctrls select,#hubCampaignAct,.hubWalkNavigator select{border-color:#8b754d;background-color:#111110;min-height:46px}
+.hubCampaignRoute .hubWalkthrough{--journal-gutter:clamp(16px,3vw,32px);border:1px solid #92764b;border-top:4px solid #b08d54;background:linear-gradient(145deg,#24201a,#191816 60%);box-shadow:inset 0 0 0 3px #161410,inset 0 0 0 4px #55462e;padding-bottom:20px}
+.hubCampaignRoute .hubWalkNavigator{gap:10px;padding:16px 0;border-bottom:1px solid #67563a}
+.hubWalkNavigator .hubStepPosition,.hubWalkNavigator .hubWalkStageProgress{font-size:.84rem;color:#e1d1b0}
+.hubWalkStageProgress progress{height:7px;accent-color:#c5a065}
+.hubCampaignRoute .hubWalkthrough>.hubWalkFocus{padding:22px 0 0}
+.hubWalkFocus h2{font-size:clamp(24px,2.6vw,36px);line-height:1.25;color:#f5e6c7}
+.hubCampaignRoute .hubWalkthrough>.hubNextAction{padding:14px 0 20px;gap:12px}
+.hubCampaignRoute .hubActionInstructionsLabel{font-size:1rem;color:#e5c887}
+.hubCampaignRoute .hubWalkActions li{font-size:1rem;line-height:1.65;color:#f6efdf}
+.hubCampaignRoute .hubWalkActions li::before{background:#554126;color:#f4d58f}
+.hubQuestLocation{margin:0;padding:10px 12px;border-left:3px solid #ad8d59;background:#30291f;color:#ead9b4;line-height:1.55;overflow-wrap:anywhere}
+.hubTaskHeading{padding-top:14px;border-color:#6f5a3b}.hubTaskHeading>span{font-size:.8rem;letter-spacing:.05em;color:#d8b979}
+.hubTaskHeading .hubNextActionItem{font-size:1.18rem;line-height:1.4}
+.hubCampaignRoute .hubCurrentTaskFact{padding:9px 0;border-color:#534936}.hubCampaignRoute .hubCurrentTaskFact dt{color:#d6c4a6}.hubCampaignRoute .hubCurrentTaskFact dd{font-size:1rem;line-height:1.6}
+.hubCampaignRoute .hubStopGate{background:linear-gradient(#452b26,#321f1c);border:1px solid #cd9372;border-left:5px solid #dfaa85;color:#fff1e2;box-shadow:inset 0 0 0 3px #2b1c18;padding:16px}
+.hubCampaignRoute .hubStopGate strong{color:#ffd9b7}.hubCampaignRoute .hubStopGate p{font-size:1rem;line-height:1.65}
+.hubCampaignRoute .hubStopGate.reviewed{background:#26372c;border-color:#9fbc9c}
+.hubCampaignRoute .hubInlineCurrentChecklist .hubInlineMark{background:#d8bb7f;color:#1d1811;border:1px solid #f4dba3;min-height:56px;padding:12px 15px}
+.hubCampaignRoute .hubInlineCurrentChecklist .hubInlineMark:hover{background:#f0d59a}
+.hubCampaignRoute .hubNextAction>.hubQuestConfirmation{background:#201e1a;border-color:#756349;min-height:52px;color:#e9dec9}
+.hubStageLinks button,.hubCampaignRoute .hubNextAction button{border:1px solid #816b48;border-radius:2px;min-height:44px}
+.hubReferenceShelf,.hubAdvancedDashboard{border-color:#665539;background:#1d1b18}
+.hubReferenceShelf>summary,.hubAdvancedDashboard>summary{min-height:48px;padding:12px;color:#eed9a9}
+@media(min-width:1000px){
+ body[data-hub-tab="route"].companionApp .wrap{display:grid;grid-template-columns:minmax(230px,275px) minmax(0,1fr);gap:0 24px;align-items:start}
+ body[data-hub-tab="route"].companionApp .wrap>header,body[data-hub-tab="route"] .hubCampaignContext,body[data-hub-tab="route"] .hubAdvancedDashboard,body[data-hub-tab="route"] .foot{grid-column:1 / -1}
+ body[data-hub-tab="route"] #hubCampaignBar{grid-column:1;grid-row:3;display:grid;gap:16px;align-content:start;position:sticky;top:12px}
+ body[data-hub-tab="route"] #hubCampaignBar #hubToolbar{width:100%}
+ body[data-hub-tab="route"] #hubView{grid-column:2;grid-row:3;min-width:0}
+}
+@media(max-width:600px){
+ .companionApp .wrap{padding:12px 10px 48px}.companionApp .wrap>header h1{font-size:25px}.companionApp #hubNav{margin-top:10px}
+ .companionApp #hubNav button{font-size:.8rem;padding:8px 3px}.hubCampaignContext{margin:8px 0}
+ #hubCampaignBar{padding:10px;gap:8px;margin-bottom:10px}.hubProfile{flex-basis:155px}#hubCampaignBar #hubToolbar{flex-basis:95px}
+ .hubCampaignRoute .hubWalkNavigator{padding:10px 0}.hubCampaignRoute .hubWalkthrough>.hubWalkFocus{padding-top:15px}
+ .hubWalkFocus h2{font-size:25px}.hubCampaignRoute .hubWalkthrough>.hubNextAction{padding-top:10px}.hubCampaignRoute .hubStopGate{padding:13px}
+}
+@media(prefers-reduced-motion:reduce){.companionApp *{scroll-behavior:auto!important;transition:none!important}}
+
+/* STOP skip confirmation */
+.hubStopDialog{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;border:1px solid #bb9960;border-radius:2px;background:#211d19;color:#f3ebdb;box-shadow:inset 0 0 0 4px #171410,inset 0 0 0 5px #5b4b32,0 20px 80px #000b;font:400 1rem/1.65 JournalThai,Tahoma,sans-serif}
+.hubStopDialog::backdrop{background:rgb(0 0 0 / .78)}
+.hubStopDialog h2{margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid #806a46;color:#f1d59b;font:700 1.25rem/1.4 JournalCinzel,JournalThai,serif}
+.hubStopDialog p{margin:0 0 22px;white-space:pre-line;overflow-wrap:anywhere}
+.hubStopDialogActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.hubStopDialogActions button{min-height:48px;padding:10px 18px;border:1px solid #92764b;border-radius:2px;background:#29251f;color:#f4e8d4;font:700 1rem/1.35 JournalThai,Tahoma,sans-serif;cursor:pointer}
+.hubStopDialogActions .hubStopDialogConfirm{background:#d8bb7f;color:#20180e;border-color:#f1d69e}
+.hubStopDialogActions button:focus-visible{outline:3px solid #ffe2a0;outline-offset:3px}
+.hubReferenceFilters label{display:grid;gap:5px;color:var(--secondary);font-size:.86rem;min-width:0}.hubReferenceFilters label :is(input,select){width:100%}
+.hubItem label.hubName{display:block;cursor:pointer}
+@media(max-width:600px){.companionApp .wrap>header h1{font-size:28px}.hubStopDialog{padding:20px}.hubStopDialogActions button{flex:1 1 135px}}
+@media(max-width:600px){
+  #hubCampaignBar{padding-inline:16px}
+  .hubReferenceShelf>summary{padding-inline:16px}
+}
+
+/* Larger link targets and compact reading at narrow widths. */
+.hubCampaignRoute .hubWalkFooter > a,
+.hubCampaignRoute .hubReferenceShelf a.hubReport,
+.companionApp .foot .headlinks > a,
+.companionApp #hubGeneralReport,
+.companionApp .hubReport {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
+}
+.hubCampaignContext .hubDataNotice { text-wrap: pretty; }
+
+@media (max-width: 600px) {
+  .hubCampaignRoute .hubWalkthrough > .hubNextAction { gap: 8px; padding-top: 8px; }
+  .hubCampaignRoute .hubWalkFocus h2 { text-wrap: wrap; }
+  .hubQuestLocation { padding-block: 6px; }
+  .hubCampaignRoute .hubCurrentTaskFact { padding-block: 6px; }
+  .companionApp .foot .headlinks { gap: 0 16px; }
+}
+
+@media (max-width: 600px) {
+  .hubPatchInline .ctrls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+  }
+  .hubPatchInline #patch { grid-row: 2; grid-column: 1 / -1; }
+  .hubPatchInline #patchStatus { grid-row: 1; grid-column: 2; padding-block: 2px; }
+  body[data-hub-tab="route"] #hubCampaignBar {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    padding-block: 7px;
+  }
+  .hubCampaignContext { margin-block: 5px; }
+  .hubCampaignContext .hubDataNotice { text-wrap: balance; }
+}
+@media (max-width: 360px) {
+  .companionApp .wrap > header h1 { font-size: 25px; }
+  .companionApp #hubNav { margin-top: 7px; }
+}
